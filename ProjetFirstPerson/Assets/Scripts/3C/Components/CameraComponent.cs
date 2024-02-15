@@ -50,7 +50,10 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
         Cursor.visible = false;
     }
 
-    public void ComponentUpdate() { }
+    public void ComponentUpdate()
+    {
+        Application.targetFrameRate = 60;
+    }
 
     public void ComponentFixedUpdate()
     {
