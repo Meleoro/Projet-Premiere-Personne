@@ -8,4 +8,6 @@ public interface ICharacterComponent
     void ComponentUpdate();
 
     void ComponentFixedUpdate();
+    
+    void ComponentLateUpdate();
 }

@@ -17,13 +17,18 @@ public class CameraManager : GenericSingletonClass<CameraManager>
     private float currentLeftRightDuration;
     private float currentLeftRightAmplitude;
     private Vector3 wantedLocalRotation;
+    private float saveOriginalFOV;
     
     [Header("References")] 
     [SerializeField] private Transform parentTransform;
+    private Camera _camera;
 
 
     private void Start()
     {
+        _camera = GetComponent<Camera>();
+        saveOriginalFOV = _camera.fieldOfView;
+        
         originalYSave = transform.localPosition.y;
     }
 
@@ -60,32 +65,34 @@ public class CameraManager : GenericSingletonClass<CameraManager>
     {
         float timer = 0;
 
-        while (timer < currentUpDownDuration)
+        while (timer < currentUpDownDuration * 0.27f)
         {
             timer += Time.deltaTime;
             
             wantedLocalPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(originalYSave,
-                originalYSave + currentUpDownAmplitude, timer / currentUpDownDuration), transform.localPosition.z);
+                originalYSave + currentUpDownAmplitude, timer / (currentUpDownDuration * 0.27f)), transform.localPosition.z);
             
             yield return new WaitForSeconds(Time.deltaTime);
         }
         
-        while (timer > 0)
+        timer = 0;
+        while (timer < currentUpDownDuration * 0.46f)
         {
-            timer -= Time.deltaTime;
+            timer += Time.deltaTime;
             
-            wantedLocalPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(originalYSave - currentUpDownAmplitude,
-                originalYSave + currentUpDownAmplitude, timer / currentUpDownDuration), transform.localPosition.z);
+            wantedLocalPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(originalYSave + currentUpDownAmplitude,
+                originalYSave - currentUpDownAmplitude, timer / (currentUpDownDuration * 0.46f)), transform.localPosition.z);
             
             yield return new WaitForSeconds(Time.deltaTime);
         }
         
-        while (timer < currentUpDownDuration)
+        timer = 0;
+        while (timer < currentUpDownDuration * 0.27f)
         {
             timer += Time.deltaTime;
             
             wantedLocalPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(originalYSave - currentUpDownAmplitude,
-                originalYSave, timer / currentUpDownDuration), transform.localPosition.z);
+                originalYSave, timer / (currentUpDownDuration * 0.27f)), transform.localPosition.z);
             
             yield return new WaitForSeconds(Time.deltaTime);
         }
@@ -121,36 +128,38 @@ public class CameraManager : GenericSingletonClass<CameraManager>
     {
         float timer = 0;
 
-        while (timer < currentLeftRightDuration)
+        while (timer < currentLeftRightDuration * 0.25f)
         {
-            timer += Time.deltaTime * 2;
+            timer += Time.deltaTime;
             
             wantedLocalRotation = new Vector3(transform.localRotation.eulerAngles.x, 
-                transform.localRotation.eulerAngles.y, Mathf.Lerp(0, currentLeftRightAmplitude, timer / currentLeftRightDuration));
+                transform.localRotation.eulerAngles.y, Mathf.Lerp(0, currentLeftRightAmplitude, timer / (currentLeftRightDuration * 0.25f)));
             
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
-        yield return new WaitForSeconds(currentLeftRightDuration * 0.1f);
+        //yield return new WaitForSeconds(currentLeftRightDuration * 0.1f);
         
-        while (timer > 0)
+        timer = 0;
+        while (timer < currentLeftRightDuration * 0.5f)
         {
-            timer -= Time.deltaTime;
+            timer += Time.deltaTime;
             
             wantedLocalRotation = new Vector3(transform.localRotation.eulerAngles.x, 
-                transform.localRotation.eulerAngles.y, Mathf.Lerp(-currentLeftRightAmplitude, currentLeftRightAmplitude, timer / currentLeftRightDuration));
+                transform.localRotation.eulerAngles.y, Mathf.Lerp(currentLeftRightAmplitude, -currentLeftRightAmplitude, timer / (currentLeftRightDuration * 0.5f)));
             
             yield return new WaitForSeconds(Time.deltaTime);
         }
         
-        yield return new WaitForSeconds(currentLeftRightDuration * 0.1f);
+        //yield return new WaitForSeconds(currentLeftRightDuration * 0.1f);
         
-        while (timer < currentLeftRightDuration)
+        timer = 0;
+        while (timer < currentLeftRightDuration * 0.25f)
         {
-            timer += Time.deltaTime * 2;
+            timer += Time.deltaTime;
             
             wantedLocalRotation = new Vector3(transform.localRotation.eulerAngles.x, 
-                transform.localRotation.eulerAngles.y, Mathf.Lerp(-currentLeftRightAmplitude, 0, timer / currentLeftRightDuration));
+                transform.localRotation.eulerAngles.y, Mathf.Lerp(-currentLeftRightAmplitude, 0, timer / (currentLeftRightDuration * 0.25f)));
             
             yield return new WaitForSeconds(Time.deltaTime);
         }
@@ -159,5 +168,14 @@ public class CameraManager : GenericSingletonClass<CameraManager>
     }
 
     #endregion
-    
+
+
+    #region FOV FUNCTION
+
+    public void ChangeFOV(float addedFOV, float lerpSpeed)
+    {
+        _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView, saveOriginalFOV + addedFOV, Time.deltaTime * lerpSpeed);
+    }
+
+    #endregion
 }

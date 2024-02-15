@@ -59,7 +59,15 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         MoveCharacter();
     }
 
-    public void ComponentFixedUpdate() { }
+    public void ComponentFixedUpdate()
+    {
+        
+    }
+
+    public void ComponentLateUpdate()
+    {
+        
+    }
 
 
     // ACTUALISE THE MOVE DIRECTION INPUT AND THE CURRENT SPEED ACCORDING TO IF THE PLAYER WANTS TO RUN OR NOT
@@ -91,5 +99,6 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         
         // We apply the feel to the camera according to our current speed
         cameraComponent.DoMoveFeel(rb.velocity.magnitude / runSpeed);
+        cameraComponent.ModifyFOV(rb.velocity.magnitude / runSpeed);
     }
 }

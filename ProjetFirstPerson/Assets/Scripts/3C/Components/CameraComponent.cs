@@ -24,6 +24,11 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     [ShowIf("doMoveFeel")] [SerializeField] private bool doLeftRightFeel;       // If true, the camera rotate slightly on the left and the right when the character moves
     [ShowIf(EConditionOperator.And, "doMoveFeel", "doLeftRightFeel")] [SerializeField] private float leftRightFeelDuration = 10;        // Contains how much the head will rotate
     [ShowIf(EConditionOperator.And, "doMoveFeel", "doLeftRightFeel")] [SerializeField] private float leftRightFeelAmplitude = 0.05f;       // Contains how fast the head will rotate
+
+    [Header("FOV Parameters")] 
+    [SerializeField] private bool doFOVEffect;
+    [ShowIf("doFOVEffect")] [SerializeField] private float addedFOVMax = 5;
+    [ShowIf("doFOVEffect")] [SerializeField] private float FOVLerpSpeed = 6;
     
     [Header("Private Infos")] 
     private Vector2 inputDirection;
@@ -32,11 +37,11 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     private float moveFeelTimer;
     private bool moveFeelGoDown;
     private Coroutine upDownCoroutine;
-
+    
     [Header("References")] 
     [SerializeField] private Transform wantedCameraPos;
     [SerializeField] private Transform characterCamera;
-
+    
     
 
     private void Start()
@@ -44,36 +49,35 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-    
+
     public void ComponentUpdate() { }
 
     public void ComponentFixedUpdate()
     {
-        MoveCamera();
-        OrientateCamera();
+        /*MoveCamera();
+        RotateCamera();*/
     }
 
-    
-    #region MAIN FUNCTIONS
+    public void ComponentLateUpdate()
+    {
+        ActualiseInputs();
+        
+        MoveCamera();
+        RotateCamera();
+    }
 
+
+    #region MAIN FUNCTIONS
+    
     // MOVES THE CAMERA
     private void MoveCamera()
     {
-        characterCamera.position = wantedCameraPos.position;
+        characterCamera.position = Vector3.Lerp(characterCamera.position, wantedCameraPos.position, Time.deltaTime * 50);
     }
-    
-    // CALLED FOR THE ORIENTATION OF THE CAMERA ACCORDING TO INPUTS AND SENSIBILITY
-    private void OrientateCamera()
+
+    // ROTATES THE CAMERA
+    private void RotateCamera()
     {
-        // First we actualise the rotation variables 
-        inputDirection = new Vector2(Input.GetAxis("Mouse X") * Time.deltaTime * sensibilityX, Input.GetAxis("Mouse Y") * Time.deltaTime * sensibilityY);
-        
-        currentRotation.x -= inputDirection.y;
-        currentRotation.y += inputDirection.x;
-
-        currentRotation.x = Mathf.Clamp(currentRotation.x, -cameraYLimit, cameraYLimit);     // Avoids that the camera flips vertically
-
-        // Then we apply these variables
         if (lerpCameraRotation)
         {
             lerpedRotation = Vector2.Lerp(lerpedRotation, currentRotation, lerpSpeed * Time.deltaTime);
@@ -84,6 +88,18 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
         {
             characterCamera.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, 0);
         }
+    }
+    
+    
+    // CALLED FOR THE ACTUALISE THE PLAYER INPUTS
+    private void ActualiseInputs()
+    {
+        inputDirection = new Vector2(Input.GetAxis("Mouse X") * Time.deltaTime * sensibilityX, Input.GetAxis("Mouse Y") * Time.deltaTime * sensibilityY);
+        
+        currentRotation.x -= inputDirection.y;
+        currentRotation.y += inputDirection.x;
+
+        currentRotation.x = Mathf.Clamp(currentRotation.x, -cameraYLimit, cameraYLimit);     // Avoids that the camera flips vertically
     }
 
     #endregion
@@ -116,6 +132,19 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
             }
         }
     }
+
+    /// <summary>
+    /// CALLED TO MODIFY THE FOV OF THE CAMERA FROM THE MOVEMENT SPEED
+    /// </summary>
+    /// <param name="currentModifier"> MODIFIER THAT DEPENDS OF THE CURRENT SPEED OF THE PLAYER </param>
+    public void ModifyFOV(float currentModifier)
+    {
+        if (doFOVEffect)
+        {
+            CameraManager.Instance.ChangeFOV(addedFOVMax * currentModifier, FOVLerpSpeed);
+        }
+    }
+    
     #endregion
     
 }

@@ -24,14 +24,22 @@ public class CharacterManager : MonoBehaviour
             characterComponents[i].ComponentUpdate();
         }
     }
-
-
+    
     private void FixedUpdate()
     {
         // We execute the fixed updates of all the components attached 
         for (int i = 0; i < characterComponents.Count; i++)
         {
             characterComponents[i].ComponentFixedUpdate();
+        }
+    }
+    
+    private void LateUpdate()
+    {
+        // We execute the late updates of all the components attached 
+        for (int i = 0; i < characterComponents.Count; i++)
+        {
+            characterComponents[i].ComponentLateUpdate();
         }
     }
 }
