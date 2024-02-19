@@ -52,7 +52,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
 
     public void ComponentUpdate()
     {
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
     }
 
     public void ComponentFixedUpdate()
@@ -86,10 +86,12 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
             lerpedRotation = Vector2.Lerp(lerpedRotation, currentRotation, lerpSpeed * Time.deltaTime);
             
             characterCamera.rotation = Quaternion.Euler(lerpedRotation.x, lerpedRotation.y, 0);
+            wantedCameraPos.rotation = Quaternion.Euler(0, lerpedRotation.y, 0);
         }
         else
         {
             characterCamera.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, 0);
+            wantedCameraPos.rotation = Quaternion.Euler(0, lerpedRotation.y, 0);
         }
     }
     
@@ -97,7 +99,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     // CALLED FOR THE ACTUALISE THE PLAYER INPUTS
     private void ActualiseInputs()
     {
-        inputDirection = new Vector2(Input.GetAxis("Mouse X") * Time.deltaTime * sensibilityX, Input.GetAxis("Mouse Y") * Time.deltaTime * sensibilityY);
+        inputDirection = new Vector2(Mouse.current.delta.x.ReadValue() * sensibilityX, Mouse.current.delta.y.ReadValue() * sensibilityY);
         
         currentRotation.x -= inputDirection.y;
         currentRotation.y += inputDirection.x;

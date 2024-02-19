@@ -988,8 +988,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 444201ff6defe0f4884d0612b00929ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensibilityX: 500
-  sensibilityY: 350
+  sensibilityX: 0.1
+  sensibilityY: 0.07
   cameraYLimit: 90
   lerpCameraRotation: 1
   lerpSpeed: 10
@@ -1023,6 +1023,7 @@ MonoBehaviour:
   runSpeed: 6.5
   runAcceleration: 1500
   rb: {fileID: 1372626074}
+  wantedCamPos: {fileID: 1176570732}
 --- !u!54 &1372626074
 Rigidbody:
   m_ObjectHideFlags: 0

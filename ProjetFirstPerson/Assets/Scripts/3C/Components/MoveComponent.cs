@@ -22,6 +22,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
 
     [Header("References")] 
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private Transform wantedCamPos;
     private Controls controls;
     private CameraComponent cameraComponent;
 
@@ -75,7 +76,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     {
         // First we take the wanted move direction and transform it according to the camera rotation 
         inputDirection = controls.Player.MoveAxis.ReadValue<Vector2>();
-        inputDirection = CameraManager.Instance.transform.TransformDirection(new Vector3(inputDirection.x, 0, inputDirection.y));
+        inputDirection = wantedCamPos.TransformDirection(new Vector3(inputDirection.x, 0, inputDirection.y));
         
         // Then we look if the player can and wants to run to actualise the current speed
         currentAcceleration = walkAcceleration;
