@@ -34,7 +34,7 @@ public class TestLeg : MonoBehaviour
 
     private void Update()
     {
-        ApplyIK2();
+        ApplyIK1();
     }
 
 
