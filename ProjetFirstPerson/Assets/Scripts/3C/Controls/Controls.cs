@@ -53,6 +53,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""f34c793c-5e35-450b-996f-b96323c38a24"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -154,6 +163,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""MouseScroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d034ffe-1ab6-4771-bac7-dd8e34b063af"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -171,6 +191,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_MoveAxis = m_Player.FindAction("MoveAxis", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_MouseScroll = m_Player.FindAction("MouseScroll", throwIfNotFound: true);
+        m_Player_UseItem = m_Player.FindAction("UseItem", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -235,6 +256,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MoveAxis;
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_MouseScroll;
+    private readonly InputAction m_Player_UseItem;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -242,6 +264,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @MoveAxis => m_Wrapper.m_Player_MoveAxis;
         public InputAction @Run => m_Wrapper.m_Player_Run;
         public InputAction @MouseScroll => m_Wrapper.m_Player_MouseScroll;
+        public InputAction @UseItem => m_Wrapper.m_Player_UseItem;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -260,6 +283,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @MouseScroll.started += instance.OnMouseScroll;
             @MouseScroll.performed += instance.OnMouseScroll;
             @MouseScroll.canceled += instance.OnMouseScroll;
+            @UseItem.started += instance.OnUseItem;
+            @UseItem.performed += instance.OnUseItem;
+            @UseItem.canceled += instance.OnUseItem;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -273,6 +299,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @MouseScroll.started -= instance.OnMouseScroll;
             @MouseScroll.performed -= instance.OnMouseScroll;
             @MouseScroll.canceled -= instance.OnMouseScroll;
+            @UseItem.started -= instance.OnUseItem;
+            @UseItem.performed -= instance.OnUseItem;
+            @UseItem.canceled -= instance.OnUseItem;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -304,5 +333,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnMoveAxis(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnMouseScroll(InputAction.CallbackContext context);
+        void OnUseItem(InputAction.CallbackContext context);
     }
 }

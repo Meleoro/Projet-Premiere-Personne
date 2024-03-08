@@ -8,6 +8,9 @@ public class InventoryManager : GenericSingletonClass<InventoryManager>
     [Header("Parameters")] 
     [Range(0, 10)] public int inventorySlotsAmount;
 
+    [Header("Public Infos")]
+    public ItemData selectedItem;
+    
     [Header("Private Infos")] 
     private float currentScrollValue;
     private int selectedIndex;
@@ -37,13 +40,15 @@ public class InventoryManager : GenericSingletonClass<InventoryManager>
     private void Update()
     {
         if (controls.Player.MouseScroll.ReadValue<float>() > 1)
-        {
             ChangeSelected(true);
-        }
+        
         else if (controls.Player.MouseScroll.ReadValue<float>() < -1)
-        {
             ChangeSelected(false);
-        }
+        
+
+        if (controls.Player.UseItem.WasPerformedThisFrame())
+            UseItem();
+        
     }
 
     
@@ -58,5 +63,46 @@ public class InventoryManager : GenericSingletonClass<InventoryManager>
             selectedIndex = inventorySlotsAmount - 1;
         
         inventoryUIScript.ChangeSelectedSlot(selectedIndex);
+    }
+
+    private void UseItem()
+    {
+        selectedItem = inventoryUIScript.GetSelectedItemData();
+        
+        if (selectedItem)
+        {
+            switch (selectedItem.function)
+            {
+                case ObjectFunction.heal :
+                    Debug.Log("You healed" + selectedItem.HPHealed + "PVs");
+                    break;
+            }
+            
+            RemoveItem();
+        }
+    }
+
+
+    public bool VerifyInventoryFull()
+    {
+        for (int i = 0; i < inventoryUIScript.inventorySlotsScripts.Count; i++)
+        {
+            if (!inventoryUIScript.inventorySlotsScripts[i].currentSlotItem)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
+    public void AddItem(ItemData addedItemData)
+    {
+        inventoryUIScript.AddItem(addedItemData);
+    }
+
+    private void RemoveItem()
+    {
+        inventoryUIScript.RemoveItem(selectedIndex);
     }
 }

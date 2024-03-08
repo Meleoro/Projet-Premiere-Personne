@@ -4,17 +4,40 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CharacterManager : MonoBehaviour
+public class CharacterManager : GenericSingletonClass<CharacterManager>
 {
     [Header("Parameters")] 
     private List<ICharacterComponent> characterComponents = new List<ICharacterComponent>();
+
+    [Header("Public Infos")] 
+    public IInteractible interactibleAtRange;
+
+    [Header("References")] 
+    private Controls controls;
+
+
+    private void Awake()
+    {
+        controls = new Controls();
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Disable();
+    }
 
 
     private void Start()
     {
         characterComponents = GetComponents<ICharacterComponent>().ToList();
     }
-
+    
+    
 
     private void Update()
     {
@@ -22,6 +45,12 @@ public class CharacterManager : MonoBehaviour
         for (int i = 0; i < characterComponents.Count; i++)
         {
             characterComponents[i].ComponentUpdate();
+        }
+
+        if (controls.Player.UseItem.WasPerformedThisFrame())
+        {
+            if(interactibleAtRange != null)
+                interactibleAtRange.Interact();
         }
     }
     

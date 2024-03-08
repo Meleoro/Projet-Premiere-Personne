@@ -10,6 +10,9 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private float selectDuration;
     [Range(0f, 1f)] [SerializeField] private float addedAlphaSelect;
     
+    [Header("Public Infos")]
+    public ItemData currentSlotItem;
+    
     [Header("Private Infos")] 
     private Coroutine currentCoroutine;
     private List<float> originalAlphas = new();
@@ -30,7 +33,9 @@ public class InventorySlot : MonoBehaviour
     }
 
 
-    
+
+    #region SELECT FUNCTIONS
+
     public void SelectSlot()
     {
         isSelected = true;
@@ -87,4 +92,9 @@ public class InventorySlot : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
     }
+
+    #endregion
+    
+    
+    
 }

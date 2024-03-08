@@ -60,4 +60,35 @@ public class InventoryManagerUI : MonoBehaviour
         selectedSlot.SelectSlot();
     }
 
+
+    public ItemData GetSelectedItemData()
+    {
+        return selectedSlot.currentSlotItem;
+    }
+
+    
+    public void AddItem(ItemData itemData)
+    {
+        if (!selectedSlot.currentSlotItem)
+        {
+            selectedSlot.currentSlotItem = itemData;
+        }
+
+        else
+        {
+            for (int i = 0; i < inventorySlotsScripts.Count; i++)
+            {
+                if (!inventorySlotsScripts[i].currentSlotItem)
+                {
+                    inventorySlotsScripts[i].currentSlotItem = itemData;
+                    break;
+                }
+            }
+        }
+    }
+
+    public void RemoveItem(int index)
+    {
+        inventorySlotsScripts[index].currentSlotItem = null;
+    }
 }
