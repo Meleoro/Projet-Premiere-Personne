@@ -14,11 +14,14 @@ public class Item : MonoBehaviour, IInteractible
 
     private void Update()
     {
+        HideUI();
+        
         if (isInRange)
         {
             if (VerifyLookingItem())
             {
-                Debug.Log("Can pick item");
+                DisplayUI();
+                
                 CharacterManager.Instance.interactibleAtRange = this;
             }
         }
@@ -30,6 +33,7 @@ public class Item : MonoBehaviour, IInteractible
         if (!InventoryManager.Instance.VerifyInventoryFull())
         {
             InventoryManager.Instance.AddItem(itemData);
+            HideUI();
         
             Destroy(gameObject);
         }
@@ -53,12 +57,12 @@ public class Item : MonoBehaviour, IInteractible
 
     private void DisplayUI()
     {
-        
+        UIManager.Instance.DisplayInteractIcon();
     }
 
     private void HideUI()
     {
-        
+        UIManager.Instance.HideInteractIcon();
     }
 
 
