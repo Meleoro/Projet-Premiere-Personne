@@ -16,8 +16,10 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
     private Controls controls;
 
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
+        
         controls = new Controls();
     }
 
@@ -46,8 +48,8 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
         {
             characterComponents[i].ComponentUpdate();
         }
-
-        if (controls.Player.UseItem.WasPerformedThisFrame())
+        
+        if (controls.Player.PickItem.WasPerformedThisFrame())
         {
             if(interactibleAtRange != null)
                 interactibleAtRange.Interact();

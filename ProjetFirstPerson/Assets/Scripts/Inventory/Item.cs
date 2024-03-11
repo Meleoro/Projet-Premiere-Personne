@@ -16,19 +16,38 @@ public class Item : MonoBehaviour, IInteractible
     {
         if (isInRange)
         {
-            CharacterManager.Instance.interactibleAtRange = this;
+            if (VerifyLookingItem())
+            {
+                Debug.Log("Can pick item");
+                CharacterManager.Instance.interactibleAtRange = this;
+            }
         }
     }
     
 
     public void Interact()
     {
-        if (InventoryManager.Instance.VerifyInventoryFull())
+        if (!InventoryManager.Instance.VerifyInventoryFull())
         {
             InventoryManager.Instance.AddItem(itemData);
         
             Destroy(gameObject);
         }
+    }
+
+
+    private bool VerifyLookingItem()
+    {
+        Vector3 dirCamItem = transform.position - CameraManager.Instance.transform.position;
+        Vector3 dirCamLook = CameraManager.Instance.transform.forward;
+
+        Vector3 crossProduct = Vector3.Cross(dirCamItem, dirCamLook);
+
+        if (crossProduct.sqrMagnitude < 0.3f)
+            return true;
+
+        else
+            return false;
     }
 
 

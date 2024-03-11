@@ -9,6 +9,7 @@ public class ItemData : ScriptableObject
     [field : SerializeField] public string name { get; private set; }
     [field : SerializeField] public string description { get; private set; }
     [field : SerializeField] public ObjectFunction function { get; private set; }
+    [field : SerializeField] public Sprite itemSprite { get; private set; }
     
     [field : Header("Heal")]
     [field : ShowIf("function",ObjectFunction.heal)] 

@@ -20,6 +20,7 @@ public class InventorySlot : MonoBehaviour
     private bool isSelected;
     
     [Header("References")] 
+    [SerializeField] private Image itemImage;
     [SerializeField] private List<Image> slotImages = new();
 
 
@@ -32,6 +33,20 @@ public class InventorySlot : MonoBehaviour
         }
     }
 
+
+    public void AddItem(ItemData itemData)
+    {
+        itemImage.gameObject.SetActive(true);
+        itemImage.sprite = itemData.itemSprite;
+        currentSlotItem = itemData;
+    }
+
+    public void RemoveItem()
+    {
+        itemImage.gameObject.SetActive(false);
+        itemImage.sprite = null;
+        currentSlotItem = null;
+    }
 
 
     #region SELECT FUNCTIONS

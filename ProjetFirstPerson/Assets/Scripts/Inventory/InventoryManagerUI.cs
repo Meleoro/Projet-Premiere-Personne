@@ -69,9 +69,12 @@ public class InventoryManagerUI : MonoBehaviour
     
     public void AddItem(ItemData itemData)
     {
+        if (!selectedSlot)
+            selectedSlot = inventorySlotsScripts[0];
+        
         if (!selectedSlot.currentSlotItem)
         {
-            selectedSlot.currentSlotItem = itemData;
+            selectedSlot.AddItem(itemData);
         }
 
         else
@@ -80,7 +83,7 @@ public class InventoryManagerUI : MonoBehaviour
             {
                 if (!inventorySlotsScripts[i].currentSlotItem)
                 {
-                    inventorySlotsScripts[i].currentSlotItem = itemData;
+                    inventorySlotsScripts[i].AddItem(itemData);
                     break;
                 }
             }
@@ -89,6 +92,6 @@ public class InventoryManagerUI : MonoBehaviour
 
     public void RemoveItem(int index)
     {
-        inventorySlotsScripts[index].currentSlotItem = null;
+        inventorySlotsScripts[index].RemoveItem();
     }
 }
