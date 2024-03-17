@@ -88,7 +88,7 @@ namespace Creature
             else
             {
                 legsAveragePos = originalLegsPos - legsAveragePos;
-                currentLegsAverageLerp = Vector3.Lerp(currentLegsAverageLerp, legsAveragePos, Time.deltaTime * 15);
+                currentLegsAverageLerp = Vector3.Lerp(currentLegsAverageLerp, legsAveragePos, Time.deltaTime * 10);
                 
                 transformToRotate.localRotation = Quaternion.Euler( transformToRotate.localEulerAngles.x,  transformToRotate.localEulerAngles.y, legsAveragePos.y * 80);
             }
@@ -101,8 +101,6 @@ namespace Creature
 
         private void AdaptHeightBodyParts()
         {
-            Debug.DrawRay(transformToRotate.position, -transformToRotate.up * maxGroundDist);
-            
             if (Physics.Raycast(transformToRotate.position, -transformToRotate.up, out RaycastHit hit, maxGroundDist, LayerManager.Instance.groundLayer))
             {
                 float groundDist = Vector3.Distance(transformToRotate.position, hit.point);
