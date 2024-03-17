@@ -8,10 +8,14 @@ namespace IK
         [Header("Parameters")] 
         [SerializeField] private float maxBodyJointRot;
         [SerializeField] private bool rotateBackWhenMax;
+
+        [Header("Private Infos")] 
+        private float straightTimer;
         
         [Header("References")]
-        [SerializeField] private Transform bodyJoint;
-        [SerializeField] private Transform bodyBack;
+        public Transform bodyJoint;
+        public Transform backJoint;
+        public Transform backTransform;
         [SerializeField] private Transform target;
         
 
@@ -31,9 +35,21 @@ namespace IK
                 {
                     float addedY = atan - Mathf.Clamp(atan, -maxBodyJointRot, maxBodyJointRot);
                     
-                    Vector3 eulerBack = bodyBack.localEulerAngles;
+                    Vector3 eulerBack = backJoint.localEulerAngles;
                     eulerBack.y = addedY;
-                    bodyBack.localEulerAngles = eulerBack;
+                    backJoint.localEulerAngles = eulerBack;
+
+                    straightTimer = 1;
+                }
+                else
+                {
+                    straightTimer -= Time.deltaTime;
+
+                    float addedY = (backJoint.localEulerAngles.y > 0) ? Mathf.Lerp(0, maxBodyJointRot, straightTimer) : Mathf.Lerp(0, -maxBodyJointRot, straightTimer);
+                    
+                    Vector3 eulerBack = backJoint.localEulerAngles;
+                    eulerBack.y = addedY;
+                    backJoint.localEulerAngles = eulerBack;
                 }
             }
             

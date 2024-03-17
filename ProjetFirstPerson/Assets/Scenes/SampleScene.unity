@@ -171,7 +171,8 @@ MonoBehaviour:
   maxBodyJointRot: 15
   rotateBackWhenMax: 1
   bodyJoint: {fileID: 1219974024}
-  bodyBack: {fileID: 894065909}
+  backJoint: {fileID: 894065909}
+  backTransform: {fileID: 288078966}
   target: {fileID: 1125054989}
 --- !u!1 &171313946
 GameObject:
@@ -1003,10 +1004,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxGroundDist: 2
-  wantedGroundDist: 1.45
+  wantedGroundDist: 1.55
   rotateSpeed: 2
   doDebugMovement: 1
   debugWantedPos: {fileID: 1627731945}
+  bodyIKScript: {fileID: 109204733}
   targetIKBody: {fileID: 1125054989}
   transformToRotate: {fileID: 894065909}
 --- !u!195 &483404424
@@ -1019,7 +1021,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 0
@@ -1044,11 +1046,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxMovingLegsAmount: 2
-  legMaxDist: 2.25
+  legMaxDist: 2.1
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  legMoveDuration: 0.25
+  legMoveDuration: 0.22
   movementY:
     serializedVersion: 2
     m_Curve:
@@ -1062,8 +1064,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.20082048
     - serializedVersion: 3
-      time: 0.692515
-      value: 0.13487083
+      time: 0.53298163
+      value: 0.49780726
       inSlope: 0.06687935
       outSlope: 0.06687935
       tangentMode: 0

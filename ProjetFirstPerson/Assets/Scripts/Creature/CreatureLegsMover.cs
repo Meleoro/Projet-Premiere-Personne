@@ -33,7 +33,8 @@ namespace Creature
             
             for (int i = 0; i < legsTargets.Count; i++)
             {
-                legs.Add(new Leg(legsTargets[i], legsOrigins[i]));
+                legs.Add(new Leg(legsTargets[i], legsOrigins[i], Vector3.Distance(legsOrigins[i].position, transform.position) > 1, 
+                    transform.InverseTransformPoint(legsOrigins[i].position)));
             }
         }
 
@@ -100,13 +101,13 @@ namespace Creature
 
             for (int i = 0; i < 45; i++)
             {
-                Debug.DrawRay(origin, currentLeg.origin.TransformDirection(raycastDir * legMaxDist), Color.blue, 1);
+                Debug.DrawRay(origin - currentLeg.origin.right * 0.5f, currentLeg.origin.TransformDirection(raycastDir * (legMaxDist * 1.2f)), Color.blue, 1);
                 
-                if (Physics.Raycast(origin - currentLeg.origin.right * 0.5f, currentLeg.origin.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist, groundLayer))
+                if (Physics.Raycast(origin - currentLeg.origin.right * 0.5f, currentLeg.origin.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist * 1.2f, groundLayer))
                 {
                     float dist = Vector3.Distance(hit.point, currentTargetPos);
 
-                    if (dist > currentMax)
+                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 0.95f)
                     {
                         currentMax = dist;
                         chosenPos = hit.point;
@@ -157,13 +158,18 @@ namespace Creature
 public class Leg
 {
     public bool isMoving;
+    public bool isFrontLeg;
     public Transform target;
     public Transform origin;
 
-    public Leg(Transform target, Transform origin)
+    public Vector3 originalPos;
+
+    public Leg(Transform target, Transform origin, bool isFrontLeg, Vector3 originalPos)
     {
         isMoving = false;
+        this.isFrontLeg = isFrontLeg;
         this.target = target;
         this.origin = origin;
+        this.originalPos = originalPos;
     }
 }
