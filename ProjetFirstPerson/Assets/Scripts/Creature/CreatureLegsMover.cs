@@ -16,8 +16,10 @@ namespace Creature
         [SerializeField] private float legMoveDuration;
         [SerializeField] private AnimationCurve movementY;
         
+        [Header("Public Infos")] 
+        public List<Leg> legs = new List<Leg>();
+        
         [Header("Private Infos")] 
-        private List<Leg> legs;
         private int currentMovingLegsAmount;
         
         [Header("References")] 
@@ -41,7 +43,7 @@ namespace Creature
             VerifyLegs();
         }
 
-        
+         
         private void VerifyLegs()
         {
             if (currentMovingLegsAmount >= maxMovingLegsAmount) return;
@@ -100,7 +102,7 @@ namespace Creature
             {
                 Debug.DrawRay(origin, currentLeg.origin.TransformDirection(raycastDir * legMaxDist), Color.blue, 1);
                 
-                if (Physics.Raycast(origin, currentLeg.origin.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist, groundLayer))
+                if (Physics.Raycast(origin - currentLeg.origin.right * 0.5f, currentLeg.origin.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist, groundLayer))
                 {
                     float dist = Vector3.Distance(hit.point, currentTargetPos);
 
@@ -128,11 +130,21 @@ namespace Creature
             while (timer < legMoveDuration)
             {
                 timer += Time.deltaTime;
+                
+                float wantedY = 0;
                 float addedY = movementY.Evaluate(timer / legMoveDuration);
+                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 0.5f, -currentLeg.target.up, out RaycastHit hit, 1,
+                        LayerManager.Instance.groundLayer))
+                {
+                    wantedY = hit.point.y + addedY;
+                }
                 
                 Vector3 wantedPos = Vector3.Lerp(startPos, localEnd, timer / legMoveDuration) + new Vector3(0, addedY, 0);
                 
                 currentLeg.target.position = transform.TransformPoint(wantedPos);
+                
+                if(wantedY != 0)
+                    currentLeg.target.position = new Vector3(currentLeg.target.position.x, wantedY, currentLeg.target.position.z);
 
                 yield return new WaitForSeconds(Time.deltaTime);
             }

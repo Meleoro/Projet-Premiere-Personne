@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace IK
@@ -12,14 +13,14 @@ namespace IK
         [SerializeField] private Transform bodyJoint;
         [SerializeField] private Transform bodyBack;
         [SerializeField] private Transform target;
-
+        
 
         private void Update()
         {
-            ApplyIK();
+            ApplyMainIK();
         }
 
-        private void ApplyIK()
+        private void ApplyMainIK()
         {
             Vector3 dif = bodyJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
