@@ -95,6 +95,7 @@ namespace Creature
             }
 
             zRotationLerp = Mathf.Lerp(zRotationLerp, -dirToRotateTo.y, Time.deltaTime * 5);
+            zRotationLerp = Mathf.Clamp(zRotationLerp, -0.5f, 0.5f);
             
             transformToRotate.localRotation = Quaternion.Euler( transformToRotate.localEulerAngles.x,  transformToRotate.localEulerAngles.y, zRotationLerp * 20 + currentLegsAverageLerp.y * 60);
         }
@@ -152,19 +153,22 @@ namespace Creature
                 {
                     if (legsScript.legs[i].isFrontLeg)
                     {
-                        Vector3 dif = legsScript.legs[i].originalPos - transform.InverseTransformPoint(legsScript.legs[i].target.position);
-                        
-                        if(transform.InverseTransformPoint(legsScript.legs[i].target.position).x < 0)
+                        Vector3 dif = legsScript.legs[i].originalPos - bodyIKScript.bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position);
+
+                        if (bodyIKScript.bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position).z < 0)
+                        {
+                            Debug.Log(bodyIKScript.bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position).z);
                             frontAveragePos += new Vector3(-dif.y, dif.y, dif.z);
+                        }
                         
                         else
                             frontAveragePos += new Vector3(dif.y, dif.y, dif.z);
                     }
                     else
                     {
-                        Vector3 dif = legsScript.legs[i].originalPos - transform.InverseTransformPoint(legsScript.legs[i].target.position);
+                        Vector3 dif = legsScript.legs[i].originalPos - bodyIKScript.bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position);
                         
-                        if(transform.InverseTransformPoint(legsScript.legs[i].target.position).x < 0)
+                        if(bodyIKScript.bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position).z < 0)
                             backAveragePos += new Vector3(-dif.y, dif.y, dif.z);
                         
                         else

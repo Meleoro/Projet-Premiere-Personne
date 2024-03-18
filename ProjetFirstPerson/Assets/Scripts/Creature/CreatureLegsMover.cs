@@ -81,10 +81,18 @@ namespace Creature
         {
             float distOriginTarget = Vector3.Distance(currentLeg.origin.position, currentLeg.target.position);
 
-            if (distOriginTarget > legMaxDist)
+            if (currentLeg.timerCooldownMove <= 0)
             {
-                return true;
+                if (distOriginTarget > legMaxDist && currentLeg.timerCooldownMove <= 0) 
+                {
+                    return true;
+                }
             }
+            else
+            {
+                currentLeg.timerCooldownMove -= Time.deltaTime;
+            }
+            
 
             return false;
         }
@@ -149,18 +157,21 @@ namespace Creature
 
                 yield return new WaitForSeconds(Time.deltaTime);
             }
-            
+
+            currentLeg.timerCooldownMove = 0.1f;
             currentLeg.isMoving = false;
         }
     }
 }
 
+[Serializable]
 public class Leg
 {
     public bool isMoving;
     public bool isFrontLeg;
     public Transform target;
     public Transform origin;
+    public float timerCooldownMove;
 
     public Vector3 originalPos;
 
