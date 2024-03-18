@@ -43,6 +43,7 @@ namespace IK
                 }
                 else
                 {
+                    Debug.Log(straightTimer);
                     straightTimer -= Time.deltaTime;
 
                     float addedY = (backJoint.localEulerAngles.y > 0) ? Mathf.Lerp(0, maxBodyJointRot, straightTimer) : Mathf.Lerp(0, -maxBodyJointRot, straightTimer);

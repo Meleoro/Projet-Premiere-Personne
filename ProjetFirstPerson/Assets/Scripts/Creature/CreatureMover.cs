@@ -157,7 +157,6 @@ namespace Creature
 
                         if (bodyIKScript.bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position).z < 0)
                         {
-                            Debug.Log(bodyIKScript.bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position).z);
                             frontAveragePos += new Vector3(-dif.y, dif.y, dif.z);
                         }
                         
