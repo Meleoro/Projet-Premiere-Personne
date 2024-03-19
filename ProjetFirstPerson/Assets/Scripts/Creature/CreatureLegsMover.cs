@@ -27,14 +27,14 @@ namespace Creature
         [SerializeField] private List<Transform> legsOrigins;
 
 
-        private void Start()
+        private void Awake()
         {
             legs = new List<Leg>();
             
             for (int i = 0; i < legsTargets.Count; i++)
             {
                 legs.Add(new Leg(legsTargets[i], legsOrigins[i], Vector3.Distance(legsOrigins[i].position, transform.position) > 1, 
-                    transform.InverseTransformPoint(legsOrigins[i].position)));
+                    transform.InverseTransformPoint(legsTargets[i].position)));
             }
         }
 
@@ -105,7 +105,7 @@ namespace Creature
             Vector3 raycastDir = currentLeg.origin.InverseTransformDirection(Vector3.down).RotateDirection(45, Vector3.forward);
 
             float currentMax = 0;
-            Vector3 chosenPos = Vector3.zero;
+            Vector3 chosenPos = transform.TransformPoint(currentLeg.originalPos);
 
             for (int i = 0; i < 45; i++)
             {
