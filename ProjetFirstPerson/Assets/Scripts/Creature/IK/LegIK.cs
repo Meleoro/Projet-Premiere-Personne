@@ -48,7 +48,7 @@ namespace IK
             float joint1Angle;
             float joint2Angle;
 
-            if (l1 + l2 < l3)
+            if (l1 + l2 < l3 - 0.01f)
             {
                 joint1Angle = inverseArticulation ? -angleAtan : angleAtan;
                 joint2Angle = 0f;
