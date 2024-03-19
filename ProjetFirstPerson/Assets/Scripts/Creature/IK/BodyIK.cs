@@ -11,6 +11,7 @@ namespace IK
 
         [Header("Private Infos")] 
         private float straightTimer;
+        private float currentAtan;
         
         [Header("References")]
         public Transform bodyJoint;
@@ -28,33 +29,24 @@ namespace IK
         {
             Vector3 dif = bodyJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
+            
+            if (atan < -160f && currentAtan > 160f)
+                currentAtan -= 360f;
+            else if (currentAtan < -160f && atan > 160f)
+                currentAtan += 360f;
 
+            currentAtan = Mathf.Lerp(currentAtan, atan, Time.deltaTime * 5);
+            
             if (rotateBackWhenMax)
             {
-                if (Mathf.Abs(atan) > maxBodyJointRot)
-                {
-                    float addedY = atan - Mathf.Clamp(atan, -maxBodyJointRot, maxBodyJointRot);
-                    
-                    Vector3 eulerBack = backJoint.localEulerAngles;
-                    eulerBack.y = addedY;
-                    backJoint.localEulerAngles = eulerBack;
+                Vector3 eulerBack = backJoint.localEulerAngles;
+                eulerBack.y = currentAtan;
+                backJoint.localEulerAngles = eulerBack;
 
-                    straightTimer = 1;
-                }
-                else
-                {
-                    Debug.Log(straightTimer);
-                    straightTimer -= Time.deltaTime;
-
-                    float addedY = (backJoint.localEulerAngles.y > 0) ? Mathf.Lerp(0, maxBodyJointRot, straightTimer) : Mathf.Lerp(0, -maxBodyJointRot, straightTimer);
-                    
-                    Vector3 eulerBack = backJoint.localEulerAngles;
-                    eulerBack.y = addedY;
-                    backJoint.localEulerAngles = eulerBack;
-                }
+                straightTimer = 1;
             }
             
-            atan = Mathf.Clamp(atan, -maxBodyJointRot, maxBodyJointRot);
+            atan = atan - currentAtan;
         
             Vector3 eulerJointBody = bodyJoint.localEulerAngles;
             eulerJointBody.y = atan;
