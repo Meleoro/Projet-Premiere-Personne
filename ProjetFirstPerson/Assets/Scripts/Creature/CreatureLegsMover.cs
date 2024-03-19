@@ -142,7 +142,7 @@ namespace Creature
                 
                 float wantedY = 0;
                 float addedY = movementY.Evaluate(timer / legMoveDuration);
-                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 0.5f, -currentLeg.target.up, out RaycastHit hit, 1,
+                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out RaycastHit hit, 2f,
                         LayerManager.Instance.groundLayer))
                 {
                     wantedY = hit.point.y + addedY;

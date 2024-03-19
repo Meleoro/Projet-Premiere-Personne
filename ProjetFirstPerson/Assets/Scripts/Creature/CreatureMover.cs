@@ -23,6 +23,7 @@ namespace Creature
         private float addedForceY;
         private float timerNoiseY;
         private float zRotationLerp;
+        private float saveSpeed;
         private Vector3 originalLegsPos;
         private Vector3 currentLegsAverageLerp;
         private bool goDown;
@@ -39,6 +40,8 @@ namespace Creature
         {
             navMeshAgent = GetComponent<NavMeshAgent>();
             legsScript = GetComponent<CreatureLegsMover>();
+
+            saveSpeed = navMeshAgent.speed;
         }
 
 
@@ -49,6 +52,7 @@ namespace Creature
 
             AdaptHeightBody();
             AdaptJointsRotations();
+            AdaptSpeedWhenRotation();
         }
 
         
@@ -185,6 +189,14 @@ namespace Creature
             
             bodyIKScript.bodyJoint.localRotation = Quaternion.Euler(currentXRotateBodyFront * 10, bodyIKScript.bodyJoint.localEulerAngles.y, currentZRotateBodyFront);
             bodyIKScript.backTransform.localRotation = Quaternion.Euler(currentXRotateBodyBack * 10, bodyIKScript.backTransform.localEulerAngles.y, currentZRotateBodyBack);
+        }
+
+
+        private void AdaptSpeedWhenRotation()
+        {
+            float currentRotationDif = bodyIKScript.currentRotationDif;
+
+            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.1f, currentRotationDif / 20f);
         }
 
         #endregion

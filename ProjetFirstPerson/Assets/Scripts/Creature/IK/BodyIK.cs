@@ -6,12 +6,14 @@ namespace IK
     public class BodyIK : MonoBehaviour
     {
         [Header("Parameters")] 
-        [SerializeField] private float maxBodyJointRot;
         [SerializeField] private bool rotateBackWhenMax;
 
+        [Header("Public Infos")] 
+        public float currentRotationDif;
+        
         [Header("Private Infos")] 
-        private float straightTimer;
         private float currentAtan;
+        private float currentAtanBack;
         
         [Header("References")]
         public Transform bodyJoint;
@@ -30,23 +32,29 @@ namespace IK
             Vector3 dif = bodyJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
             
-            if (atan < -160f && currentAtan > 160f)
+            if (atan < -100f && currentAtanBack > 100f)
+                currentAtanBack -= 360f;
+            else if (currentAtanBack < -100f && atan > 100f)
+                currentAtanBack += 360f;
+            
+            if (atan < -100f && currentAtan > 100f)
                 currentAtan -= 360f;
-            else if (currentAtan < -160f && atan > 160f)
+            else if (currentAtan < -100f && atan > 100f)
                 currentAtan += 360f;
 
             currentAtan = Mathf.Lerp(currentAtan, atan, Time.deltaTime * 5);
+            currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * 3);
+
+            currentRotationDif = Mathf.Abs(currentAtan - currentAtanBack);
             
             if (rotateBackWhenMax)
             {
                 Vector3 eulerBack = backJoint.localEulerAngles;
-                eulerBack.y = currentAtan;
+                eulerBack.y = currentAtanBack;
                 backJoint.localEulerAngles = eulerBack;
-
-                straightTimer = 1;
             }
             
-            atan = atan - currentAtan;
+            atan = currentAtan - currentAtanBack;
         
             Vector3 eulerJointBody = bodyJoint.localEulerAngles;
             eulerJointBody.y = atan;

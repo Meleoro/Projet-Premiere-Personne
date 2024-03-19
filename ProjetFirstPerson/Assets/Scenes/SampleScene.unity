@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3653b55a990b09439bd7b30bbaae2ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxBodyJointRot: 15
   rotateBackWhenMax: 1
+  currentRotationDif: 0
   bodyJoint: {fileID: 1219974024}
   backJoint: {fileID: 894065909}
   backTransform: {fileID: 288078966}
@@ -1005,7 +1005,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxGroundDist: 2
   wantedGroundDist: 1.55
-  rotateSpeed: 2
+  rotateSpeed: 10
   doDebugMovement: 1
   debugWantedPos: {fileID: 1627731945}
   bodyIKScript: {fileID: 109204733}
