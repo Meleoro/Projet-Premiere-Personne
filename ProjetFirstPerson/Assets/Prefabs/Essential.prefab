@@ -75,7 +75,7 @@ MonoBehaviour:
   leftRightFeelDuration: 1.6
   leftRightFeelAmplitude: 2
   doFOVEffect: 1
-  addedFOVMax: 7
+  addedFOVMax: 5
   FOVLerpSpeed: 7
   wantedCameraPos: {fileID: 3191963914546153222}
   characterCamera: {fileID: 8258690270071513285}
@@ -628,6 +628,55 @@ MonoBehaviour:
   inventorySlot: {fileID: 6576854395954044896, guid: 9ce50c3c8285fea499bf90d44b32be9d,
     type: 3}
   originalTransformSlotLocation: {fileID: 5364481971942748988}
+--- !u!1 &4955401389023305199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3243892517543941606}
+  - component: {fileID: 2383068855133267159}
+  m_Layer: 0
+  m_Name: AdrenalineVolume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3243892517543941606
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4955401389023305199}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8258690270071513285}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2383068855133267159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4955401389023305199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 1
+  blendDistance: 0
+  weight: 0
+  sharedProfile: {fileID: 11400000, guid: a54f94b16a58b4545890cb26a1b6f209, type: 2}
 --- !u!1 &5781816748784015832
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,6 +708,7 @@ Transform:
   m_Children:
   - {fileID: 108255773358969520}
   - {fileID: 2751256505373783880}
+  - {fileID: 3243892517543941606}
   m_Father: {fileID: 7813203946165383007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5874794172656766803
@@ -738,6 +788,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   staminaVolume: {fileID: 2456489677506288962}
+  adrenalineVolume: {fileID: 2383068855133267159}
 --- !u!1 &5914368939120287252
 GameObject:
   m_ObjectHideFlags: 0
