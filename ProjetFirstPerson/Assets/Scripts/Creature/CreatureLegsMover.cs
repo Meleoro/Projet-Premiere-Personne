@@ -104,11 +104,11 @@ namespace Creature
             Vector3 raycastDir = currentLeg.origin.InverseTransformDirection(Vector3.down).RotateDirection(45, Vector3.forward);
 
             float currentMax = 0;
-            Vector3 chosenPos = Vector3.zero;
+            Vector3 chosenPos = currentLeg.origin.position - Vector3.down * 0.9f;
 
             for (int i = 0; i < 45; i++)
             {
-                Debug.DrawRay(origin - currentLeg.origin.right * 0.5f, currentLeg.origin.TransformDirection(raycastDir * (legMaxDist * 1.2f)), Color.blue, 1);
+                Debug.DrawRay(origin - currentLeg.origin.right * 0.5f, currentLeg.origin.TransformDirection(raycastDir * (legMaxDist * 1.5f)), Color.blue, 1);
                 
                 if (Physics.Raycast(origin - currentLeg.origin.right * 0.5f, currentLeg.origin.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist * 1.2f, groundLayer))
                 {

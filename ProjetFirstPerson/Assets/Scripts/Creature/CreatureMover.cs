@@ -101,7 +101,7 @@ namespace Creature
             zRotationLerp = Mathf.Lerp(zRotationLerp, -dirToRotateTo.y, Time.deltaTime * 5);
             zRotationLerp = Mathf.Clamp(zRotationLerp, -0.5f, 0.5f);
             
-            transformToRotate.localRotation = Quaternion.Euler( transformToRotate.localEulerAngles.x,  transformToRotate.localEulerAngles.y, zRotationLerp * 20 + currentLegsAverageLerp.y * 60);
+            transformToRotate.localRotation = Quaternion.Euler( transformToRotate.localEulerAngles.x,  transformToRotate.localEulerAngles.y, zRotationLerp * 20 + currentLegsAverageLerp.y * 65);
         }
 
         #endregion
@@ -187,7 +187,7 @@ namespace Creature
             currentZRotateBodyBack = Mathf.Lerp(currentZRotateBodyBack, backAveragePos.y, Time.deltaTime * 8);
             
             
-            bodyIKScript.bodyJoint.localRotation = Quaternion.Euler(currentXRotateBodyFront * 10, bodyIKScript.bodyJoint.localEulerAngles.y, currentZRotateBodyFront);
+            bodyIKScript.bodyJoint.localRotation = Quaternion.Euler(currentXRotateBodyFront * 10, bodyIKScript.bodyJoint.localEulerAngles.y, currentZRotateBodyFront - 7);
             bodyIKScript.backTransform.localRotation = Quaternion.Euler(currentXRotateBodyBack * 10, bodyIKScript.backTransform.localEulerAngles.y, currentZRotateBodyBack);
         }
 
