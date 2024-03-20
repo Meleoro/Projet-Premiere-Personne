@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.WSA;
 
 [RequireComponent(typeof(MoveComponent), typeof(CharacterManager))]
 public class StaminaComponent : MonoBehaviour, ICharacterComponent
@@ -77,21 +78,26 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
     }
 
 
+    private float staminaLerpValue;
     private void ApplyVolume()
     {
         if (currentStamina < staminaAmount * tiredVolumeRatioAppear)
         {
             float currentRatio = 1 - currentStamina / (staminaAmount * tiredVolumeRatioAppear);
-            VolumeManager.Instance.staminaVolume.weight = currentRatio;
+
+            staminaLerpValue = Mathf.Lerp(staminaLerpValue, currentRatio, Time.deltaTime * 5);
+            VolumeManager.Instance.staminaVolume.weight = staminaLerpValue;
         }
         else
         {
+            staminaLerpValue = Mathf.Lerp(staminaLerpValue, 0, Time.deltaTime * 5);
             VolumeManager.Instance.staminaVolume.weight = 0;
         }
     }
     
     private void UseAdrenaline(ItemData staminaData)
     {
-        
+        if (staminaData.rechargeStamina)
+            currentStamina = staminaAmount;
     }
 }

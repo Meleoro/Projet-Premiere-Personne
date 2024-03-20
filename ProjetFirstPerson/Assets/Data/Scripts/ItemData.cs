@@ -22,6 +22,8 @@ public class ItemData : ScriptableObject
     [field : SerializeField] public float speedIncrease { get; private set; }
     [field : ShowIf("function", ObjectFunction.adrenaline)] 
     [field : SerializeField] public float stamCostDecrease { get; private set; }
+    [field : ShowIf("function", ObjectFunction.adrenaline)] 
+    [field : SerializeField] public bool rechargeStamina { get; private set; }
     
     [field : Header("Battery")]
     [field : ShowIf("function", ObjectFunction.battery)] 

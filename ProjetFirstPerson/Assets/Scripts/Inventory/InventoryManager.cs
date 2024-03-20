@@ -76,6 +76,10 @@ public class InventoryManager : GenericSingletonClass<InventoryManager>
                 case ObjectFunction.heal :
                     Debug.Log("You healed" + selectedItem.HPHealed + "PVs");
                     break;
+                
+                case ObjectFunction.adrenaline :
+                    CharacterManager.Instance.UseAdrenaline(selectedItem);
+                    break;
             }
             
             RemoveItem();
