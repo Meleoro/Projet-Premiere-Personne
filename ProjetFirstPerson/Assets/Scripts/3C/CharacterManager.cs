@@ -12,6 +12,9 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
     [Header("Public Infos")] 
     public IInteractible interactibleAtRange;
 
+    [Header("Actions")] 
+    public Action<ItemData> UseAdrenaline;
+
     [Header("References")] 
     private Controls controls;
 

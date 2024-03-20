@@ -15,6 +15,9 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     [ShowIf("canRun")] [SerializeField] private float runSpeed;
     [ShowIf("canRun")] [SerializeField] private float runAcceleration;
 
+    [Header("Public Infos")] 
+    public bool isRunning;
+    
     [Header("Private Infos")]
     private Vector3 inputDirection;
     private float currentSpeed;
@@ -25,6 +28,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     [SerializeField] private Transform wantedCamPos;
     private Controls controls;
     private CameraComponent cameraComponent;
+    private StaminaComponent staminaComponent;
 
 
     private void Awake()
@@ -46,10 +50,13 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     private void Start()
     {
         cameraComponent = GetComponent<CameraComponent>();
+        staminaComponent = GetComponent<StaminaComponent>();
+        
+        GetComponent<CharacterManager>().UseAdrenaline += UseAdrenaline;
         
         if (!rb)
         {
-            Debug.LogError("Il manque la référence du rigidbody sur le script de movement les GDs");
+            Debug.LogError("Il manque la référence du rigidbody sur le script de movement");
         }
     }
 
@@ -81,6 +88,17 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         // Then we look if the player can and wants to run to actualise the current speed
         currentAcceleration = walkAcceleration;
         currentSpeed = walkSpeed;
+
+        if (staminaComponent)
+        {
+            if (!staminaComponent.hasStamina)
+            {
+                currentAcceleration = walkAcceleration;
+                currentSpeed = walkSpeed;
+                
+                return;
+            }
+        }
         
         if (canRun)
         {
@@ -101,5 +119,17 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         // We apply the feel to the camera according to our current speed
         cameraComponent.DoMoveFeel(rb.velocity.magnitude / runSpeed);
         cameraComponent.ModifyFOV(rb.velocity.magnitude / runSpeed);
+
+        // Run bool for stamina script
+        if (rb.velocity.magnitude >= runSpeed - 0.1f)
+            isRunning = true;
+        
+        else
+            isRunning = false;
+    }
+
+    private void UseAdrenaline(ItemData adrenalineData)
+    {
+        
     }
 }

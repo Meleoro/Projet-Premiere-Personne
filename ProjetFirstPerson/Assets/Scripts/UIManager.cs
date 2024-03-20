@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,7 +10,14 @@ public class UIManager : GenericSingletonClass<UIManager>
     [Header("References")]
     [SerializeField] private Image interactImage;
 
+
+    private void Start()
+    {
+        HideInteractIcon();
+    }
     
+    
+
     #region SELECTION
 
     public void DisplayInteractIcon()
