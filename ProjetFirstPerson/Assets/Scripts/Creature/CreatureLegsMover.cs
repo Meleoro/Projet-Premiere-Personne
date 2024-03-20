@@ -93,7 +93,6 @@ namespace Creature
                 currentLeg.timerCooldownMove -= Time.deltaTime;
             }
             
-
             return false;
         }
 
@@ -105,7 +104,7 @@ namespace Creature
             Vector3 raycastDir = currentLeg.origin.InverseTransformDirection(Vector3.down).RotateDirection(45, Vector3.forward);
 
             float currentMax = 0;
-            Vector3 chosenPos = transform.TransformPoint(currentLeg.originalPos);
+            Vector3 chosenPos = Vector3.zero;
 
             for (int i = 0; i < 45; i++)
             {
