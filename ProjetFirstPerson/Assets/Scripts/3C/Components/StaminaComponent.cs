@@ -20,6 +20,7 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
     [Header("Private Infos")] 
     private float currentStamina;
     private float regainTimer;
+    private float loseSpeedModifier;
     private bool wasRunning;
 
     [Header("References")] 
@@ -32,6 +33,7 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
         GetComponent<CharacterManager>().UseAdrenaline += UseAdrenaline;
 
         currentStamina = staminaAmount;
+        loseSpeedModifier = 1;
     }
 
 
@@ -40,7 +42,7 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
         if (moveScript.isRunning)
         {
             wasRunning = true;
-            currentStamina -= Time.deltaTime * staminaLoseSpeed;
+            currentStamina -= Time.deltaTime * (staminaLoseSpeed / loseSpeedModifier);
         }
         else
         {
@@ -91,13 +93,47 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
         else
         {
             staminaLerpValue = Mathf.Lerp(staminaLerpValue, 0, Time.deltaTime * 5);
-            VolumeManager.Instance.staminaVolume.weight = 0;
+            VolumeManager.Instance.staminaVolume.weight = staminaLerpValue;
         }
     }
+    
     
     private void UseAdrenaline(ItemData staminaData)
     {
         if (staminaData.rechargeStamina)
             currentStamina = staminaAmount;
+
+        loseSpeedModifier = staminaData.stamCostDecrease;
+
+        StartCoroutine(UseAdrenalineCoroutine(staminaData));
+    }
+
+    private IEnumerator UseAdrenalineCoroutine(ItemData staminaData)
+    {
+        float timer = 0;
+
+        while (timer < staminaData.effectDuration)
+        {
+            timer += Time.deltaTime;
+
+            VolumeManager.Instance.adrenalineVolume.weight =
+                Mathf.Lerp(VolumeManager.Instance.adrenalineVolume.weight, 1, Time.deltaTime * 2);
+
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        loseSpeedModifier = 1;
+        
+        timer = 0;
+        while (timer < 1)
+        {
+            timer += Time.deltaTime;
+
+            VolumeManager.Instance.adrenalineVolume.weight =
+                Mathf.Lerp(VolumeManager.Instance.adrenalineVolume.weight, 0, Time.deltaTime * 2);
+
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        VolumeManager.Instance.adrenalineVolume.weight = 0;
     }
 }

@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using Task = System.Threading.Tasks.Task;
 
 public class MoveComponent : MonoBehaviour, ICharacterComponent
 {
@@ -22,6 +24,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     private Vector3 inputDirection;
     private float currentSpeed;
     private float currentAcceleration;
+    private float addedSpeed;
 
     [Header("References")] 
     [SerializeField] private Rigidbody rb;
@@ -114,11 +117,11 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     private void MoveCharacter()
     {
         rb.AddForce(inputDirection * (Time.deltaTime * currentAcceleration), ForceMode.Force);
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, currentSpeed);
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, currentSpeed + addedSpeed);
         
         // We apply the feel to the camera according to our current speed
-        cameraComponent.DoMoveFeel(rb.velocity.magnitude / runSpeed);
-        cameraComponent.ModifyFOV(rb.velocity.magnitude / runSpeed);
+        cameraComponent.DoMoveFeel(rb.velocity.magnitude / (runSpeed + addedSpeed));
+        cameraComponent.ModifyFOV(rb.velocity.magnitude / (runSpeed + addedSpeed));
 
         // Run bool for stamina script
         if (rb.velocity.magnitude >= runSpeed - 0.1f)
@@ -128,8 +131,17 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
             isRunning = false;
     }
 
+    
     private void UseAdrenaline(ItemData adrenalineData)
     {
-        
+        addedSpeed = adrenalineData.speedIncrease;
+        StartCoroutine(AdrenalineCoroutine(adrenalineData.effectDuration));
+    }
+
+    private IEnumerator AdrenalineCoroutine(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        addedSpeed = 0;
     }
 }

@@ -7,4 +7,5 @@ public class VolumeManager : GenericSingletonClass<VolumeManager>
 {
     [Header("References")] 
     public Volume staminaVolume;
+    public Volume adrenalineVolume;
 }
