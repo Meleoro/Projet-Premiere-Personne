@@ -32,14 +32,14 @@ namespace IK
             Vector3 dif = bodyJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
             
-            if (atan < -100f && currentAtanBack > 100f)
+            if (atan < -80f && currentAtanBack > 80f)
                 currentAtanBack -= 360f;
-            else if (currentAtanBack < -100f && atan > 100f)
+            else if (currentAtanBack < -80f && atan > 80f)
                 currentAtanBack += 360f;
             
-            if (atan < -100f && currentAtan > 100f)
+            if (atan < -80f && currentAtan > 80f)
                 currentAtan -= 360f;
-            else if (currentAtan < -100f && atan > 100f)
+            else if (currentAtan < -80f && atan > 80f)
                 currentAtan += 360f;
 
             currentAtan = Mathf.Lerp(currentAtan, atan, Time.deltaTime * 5);
