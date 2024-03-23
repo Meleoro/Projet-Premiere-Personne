@@ -17,7 +17,7 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
     public bool hasStamina;
     
     [Header("Private Infos")] 
-    private float currentStamina;
+    [SerializeField] private float currentStamina;
     private float regainTimer;
     private float loseSpeedModifier;
     private bool wasRunning;
