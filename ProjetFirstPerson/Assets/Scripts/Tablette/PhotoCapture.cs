@@ -17,11 +17,15 @@ public class PhotoCapture : MonoBehaviour
 
     [Header("Other Variables")]
     [SerializeField] private Transform player;
-    public List<Sprite> photoList;
+    public List<PhotoClass> MyPhotos;
 
     private void Start()
     {
         screenCapture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
+
+        // Suppression et création du dossier data
+        Directory.Delete(Application.dataPath + "/Scripts/Tablette/Data", true);
+        Directory.CreateDirectory(Application.dataPath + "/Scripts/Tablette/Data");
     }
 
     private void Update()
@@ -38,6 +42,23 @@ public class PhotoCapture : MonoBehaviour
                 RemovePhoto();
             }
         }
+
+      // Test
+        if(Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            photoDisplayArea.sprite = MyPhotos[0].screenPhoto;
+            photoFrame.SetActive(true);
+        }
+        if(Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            photoDisplayArea.sprite = MyPhotos[1].screenPhoto;
+            photoFrame.SetActive(true);
+        }
+        if(Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            photoDisplayArea.sprite = MyPhotos[2].screenPhoto;
+            photoFrame.SetActive(true);
+        } 
     }
 
     IEnumerator CapturePhoto()
@@ -51,6 +72,7 @@ public class PhotoCapture : MonoBehaviour
 
         screenCapture.ReadPixels(regionToRead,0,0,false);
         screenCapture.Apply();
+
         ShowPhoto();
     }
 
@@ -59,24 +81,8 @@ public class PhotoCapture : MonoBehaviour
         Sprite photoSprite = Sprite.Create(screenCapture, new Rect(0.0f,0.0f, screenCapture.width, screenCapture.height), new Vector2(0.5f,0.5f), 100.0f);
         photoDisplayArea.sprite = photoSprite;
         photoFrame.SetActive(true);
-    
-        photoList.Add(photoSprite);
 
-     //   SaveScreenShot();
-
-   /*     byte[] photoByte = screenCapture.EncodeToPNG();
-        string fileName = DateTime.Now.ToString("MyPhoto" + ".png");
-        string filePath = AssetDatabase.GenerateUniqueAssetPath("Assets/Scripts/Tablette/Data/MyPhotoClass");
-        File.WriteAllBytes(filePath,photoByte); */
-
-        // Add photo in scriptable object
-        PhotoClass currentPhoto = ScriptableObject.CreateInstance<PhotoClass>();
-        currentPhoto.index = photoList.Count;
-        currentPhoto.posPhoto = player.position;
-        currentPhoto.screenPhoto = photoList[photoList.Count];
-
-        var uniqueFileName =  AssetDatabase.GenerateUniqueAssetPath("Assets/Scripts/Tablette/Data/PhotoClass.asset");
-        AssetDatabase.CreateAsset(currentPhoto, uniqueFileName);
+        SaveScreenShot();
     }
 
     void RemovePhoto()
@@ -86,15 +92,37 @@ public class PhotoCapture : MonoBehaviour
         cameraUI.SetActive(true);
     }
 
-  /*  void SaveScreenShot()
+    void SaveScreenShot()
     {
-        string fileName = Path.GetRandomFileName() + ".png";
-        string filePath = Path.Combine(Application.persistentDataPath, fileName);
+        // Enregistrement de la photo dans le dossier
+        Directory.CreateDirectory(Application.dataPath + "/Scripts/Tablette/Data/Resources");
+
+        string fileName = Path.GetRandomFileName();
+        string filePath = Path.Combine(Application.dataPath + "/Scripts/Tablette/Data/Resources/" + fileName);
         byte[] pngShot = screenCapture.EncodeToPNG();
 
-        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-        File.WriteAllBytes(filePath, pngShot);
+        File.WriteAllBytes(filePath + ".png", pngShot);
+        UnityEditor.AssetDatabase.Refresh();
 
-        Debug.Log("Screen saved to : " + filePath);
-    } */
+        // Chargement du fichier pour pouvoir le manipuler ensuite
+        var texture = Resources.Load<Texture2D>(fileName);
+        AddPhotoInScritableObject(texture);
+    }
+
+    void AddPhotoInScritableObject(Texture2D tex)
+    {
+        // Transformaion de la texture en sprite
+        Sprite Mytex = Sprite.Create(tex, new Rect(0.0f,0.0f, 2048, 1024), new Vector2(0.5f,0.5f), 100.0f);
+
+        // Add photo in scriptable object
+        PhotoClass currentPhoto = ScriptableObject.CreateInstance<PhotoClass>();
+        MyPhotos.Add(currentPhoto);
+        currentPhoto.index = MyPhotos.Count;
+        currentPhoto.posPhoto = player.position;
+        currentPhoto.screenPhoto = Mytex;
+
+        var uniqueFileName =  AssetDatabase.GenerateUniqueAssetPath("Assets/Scripts/Tablette/Data/MyPhoto.asset");
+        AssetDatabase.CreateAsset(currentPhoto, uniqueFileName);
+        
+    }
 }
