@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using System;
 using System.IO;
+using System.Data.SqlTypes;
 
 public class PhotoCapture : MonoBehaviour
 {
@@ -17,7 +18,15 @@ public class PhotoCapture : MonoBehaviour
 
     [Header("Other Variables")]
     [SerializeField] private Transform player;
-    public List<PhotoClass> MyPhotos;
+
+[Serializable]
+    public class MyPhoto
+{
+    public int Myindex;
+    public Vector3 MyposPhoto;
+    public Sprite MyscreenPhoto;
+}
+public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
     private void Start()
     {
@@ -46,17 +55,18 @@ public class PhotoCapture : MonoBehaviour
       // Test
         if(Input.GetKeyDown(KeyCode.Keypad0))
         {
-            photoDisplayArea.sprite = MyPhotos[0].screenPhoto;
+            photoDisplayArea.sprite = MyPhotos[0].MyscreenPhoto;
             photoFrame.SetActive(true);
+            Debug.Log(MyPhotos[0].MyposPhoto);
         }
         if(Input.GetKeyDown(KeyCode.Keypad1))
         {
-            photoDisplayArea.sprite = MyPhotos[1].screenPhoto;
+            photoDisplayArea.sprite = MyPhotos[1].MyscreenPhoto;
             photoFrame.SetActive(true);
         }
         if(Input.GetKeyDown(KeyCode.Keypad2))
         {
-            photoDisplayArea.sprite = MyPhotos[2].screenPhoto;
+            photoDisplayArea.sprite = MyPhotos[2].MyscreenPhoto;
             photoFrame.SetActive(true);
         } 
     }
@@ -102,27 +112,31 @@ public class PhotoCapture : MonoBehaviour
         byte[] pngShot = screenCapture.EncodeToPNG();
 
         File.WriteAllBytes(filePath + ".png", pngShot);
-        UnityEditor.AssetDatabase.Refresh();
 
         // Chargement du fichier pour pouvoir le manipuler ensuite
-        var texture = Resources.Load<Texture2D>(fileName);
+        byte[] bytes = File.ReadAllBytes(filePath + ".png");
+        Texture2D texture = new Texture2D(2, 2);
+        texture.LoadImage(bytes);
         AddPhotoInScritableObject(texture);
     }
 
     void AddPhotoInScritableObject(Texture2D tex)
     {
-        // Transformaion de la texture en sprite
-        Sprite Mytex = Sprite.Create(tex, new Rect(0.0f,0.0f, 2048, 1024), new Vector2(0.5f,0.5f), 100.0f);
+        // Transformation de la texture en sprite
+        Sprite Mytex = Sprite.Create(tex, new Rect(0.0f,0.0f, 1920, 1080), new Vector2(0.5f,0.5f), 100.0f);
+        Debug.Log(Mytex);
 
         // Add photo in scriptable object
-        PhotoClass currentPhoto = ScriptableObject.CreateInstance<PhotoClass>();
-        MyPhotos.Add(currentPhoto);
-        currentPhoto.index = MyPhotos.Count;
-        currentPhoto.posPhoto = player.position;
-        currentPhoto.screenPhoto = Mytex;
-
-        var uniqueFileName =  AssetDatabase.GenerateUniqueAssetPath("Assets/Scripts/Tablette/Data/MyPhoto.asset");
-        AssetDatabase.CreateAsset(currentPhoto, uniqueFileName);
-        
+        AddPhotos(MyPhotos.Count,player.position,Mytex);
     }
+    
+    public void AddPhotos(int index, Vector3 pos, Sprite sprite)
+          {
+            MyPhoto tmp = new MyPhoto();
+            tmp.Myindex = index;
+            tmp.MyposPhoto = pos;
+            tmp.MyscreenPhoto = sprite;
+
+            MyPhotos.Add(tmp);
+          }
 }
