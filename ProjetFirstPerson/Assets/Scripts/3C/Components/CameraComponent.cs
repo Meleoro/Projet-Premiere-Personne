@@ -46,8 +46,21 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        LockedCursor(true);
+    }
+
+    public void LockedCursor(bool isLocked)
+    {
+        if(isLocked)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     public void ComponentUpdate()
