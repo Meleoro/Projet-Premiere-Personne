@@ -42,9 +42,6 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         // Suppression et création du dossier data
         Directory.Delete(Application.dataPath + "/Scripts/Tablette/Data", true);
         Directory.CreateDirectory(Application.dataPath + "/Scripts/Tablette/Data");
-
-        // Désactivation de l'album
-        Album.SetActive(false);
     }
 
     private void Update()
