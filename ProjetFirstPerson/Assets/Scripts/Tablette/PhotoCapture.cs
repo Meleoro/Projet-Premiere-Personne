@@ -153,8 +153,9 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             MyPhotos.Add(tmp);
 
             // Add Photo to album
-            GameObject AlbumSlot = Instantiate(SlotAlbum, Vector3.zero, Quaternion.identity, Album.transform);
+            GameObject AlbumSlot = Instantiate(SlotAlbum, new Vector3(Screen.width / 2, Screen.height / 2, 0), Quaternion.identity, Album.transform);
             AlbumSlot.transform.GetChild(0).GetComponent<Image>().sprite = sprite;
+            AlbumSlot.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(Album.GetComponent<AlbumSlot>().SelectSlot);
           }
 
    /* public void RefreshAlbum(Sprite TheSprite)
