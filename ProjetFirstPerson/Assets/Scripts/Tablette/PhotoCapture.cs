@@ -10,7 +10,7 @@ public class PhotoCapture : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private CameraComponent cameraComponent;
-    [SerializeField] private UiManager uiManager;
+    [SerializeField] private UIManager uiManager;
 
     [Header("Photo Taker")]
     [SerializeField] private Image photoDisplayArea;
