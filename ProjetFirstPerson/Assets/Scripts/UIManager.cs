@@ -29,7 +29,6 @@ public class UIManager : GenericSingletonClass<UIManager>
 
     void Update()
     {
-        Debug.Log(EventSystem.current.currentSelectedGameObject);
         // Quand le joueur clic, on check si un élément est séléctionné dans l'Event system et on fait une variable
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -67,7 +66,7 @@ public class UIManager : GenericSingletonClass<UIManager>
         }
 
         // Si un élément de board est séléctionné, il suit le curseur de la souris
-        if(currentSelect != null)
+        if(currentSelect != null && currentSelect.CompareTag("MovingUI"))
         {
             Transform HisParent = currentSelect.GetComponent<ElementsOfBoard>().MyParent.transform;
             HisParent.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
