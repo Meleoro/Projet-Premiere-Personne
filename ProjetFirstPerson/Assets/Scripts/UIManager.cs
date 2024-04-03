@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class UIManager : GenericSingletonClass<UIManager>
 {
@@ -17,7 +18,9 @@ public class UIManager : GenericSingletonClass<UIManager>
     public bool isUIActive;
     public GameObject currentSelect;
 
-
+    [Header("Manipulation Variables")]
+    [SerializeField] private bool isRotating;
+    [SerializeField] private Vector3 mousePos;
     private void Start()
     {
         HideInteractIcon();
@@ -39,10 +42,47 @@ public class UIManager : GenericSingletonClass<UIManager>
                 currentSelect = EventSystem.current.currentSelectedGameObject;
             }
         }
+
+        // La rotation des objets
+        if(Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            mousePos = Input.mousePosition;
+        }
+        if(Input.GetKey(KeyCode.Mouse1))
+        {
+            if(currentSelect != null)
+            {
+                Transform HisParent = currentSelect.GetComponent<ElementsOfBoard>().MyParent.transform;
+                HisParent.localEulerAngles = new Vector3(0,0,Input.mousePosition.y);
+                isRotating = true;
+                Cursor.visible = false;
+            }
+        }
+        if(Input.GetKeyUp(KeyCode.Mouse1))
+        {
+                isRotating = false;
+                Cursor.visible = true;
+                Mouse.current.WarpCursorPosition(mousePos);
+        }
+        
         // Si un élément de board est séléctionné, il suit le curseur de la souris
         if(currentSelect != null)
         {
-            currentSelect.GetComponent<ElementsOfBoard>().MyParent.transform.position = Input.mousePosition;
+            Transform HisParent = currentSelect.GetComponent<ElementsOfBoard>().MyParent.transform;
+            HisParent.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
+
+            if(!isRotating)
+            {
+                HisParent.position = Input.mousePosition;
+            }
+            if(HisParent.localScale.x <= 0.1f)
+            {
+                HisParent.localScale = new Vector3(0.1f,0.1f,0);
+            }
+           else if(HisParent.localScale.x >= 3f)
+            {
+                HisParent.localScale = new Vector3(3f,3f,0);
+            }
         }
 
         // Test Ouvrir Album

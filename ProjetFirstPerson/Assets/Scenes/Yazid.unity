@@ -9921,6 +9921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f998acef59cd08844a901dd0727afb20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentNoiseType: 0
 --- !u!114 &1372626072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9967,7 +9968,12 @@ MonoBehaviour:
   canRun: 1
   runSpeed: 6.5
   runAcceleration: 1500
+  canCrouch: 0
+  crouchSpeed: 0
+  crouchAcceleration: 0
   isRunning: 0
+  isCrouching: 0
+  currentVelocity: {x: 0, y: 0, z: 0}
   rb: {fileID: 1372626074}
   wantedCamPos: {fileID: 1176570732}
 --- !u!54 &1372626074
@@ -13002,6 +13008,11 @@ PrefabInstance:
       propertyPath: Album
       value: 
       objectReference: {fileID: 1961709287}
+    - target: {fileID: 4233669605135011329, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: speedMove
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4233669605135011329, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: cameraComponent
