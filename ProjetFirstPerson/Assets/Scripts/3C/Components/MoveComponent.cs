@@ -16,8 +16,15 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     [ShowIf("canRun")] [SerializeField] private float runSpeed;
     [ShowIf("canRun")] [SerializeField] private float runAcceleration;
 
+    [Header("Crouch Parameters")] 
+    [SerializeField] private bool canCrouch;
+    [ShowIf("canCrouch")] [SerializeField] private float crouchSpeed;
+    [ShowIf("canCrouch")] [SerializeField] private float crouchAcceleration;
+
     [Header("Public Infos")] 
     public bool isRunning;
+    public bool isCrouching;
+    public Vector3 currentVelocity;
     
     [Header("Private Infos")]
     private Vector3 inputDirection;
@@ -128,6 +135,8 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         
         else
             isRunning = false;
+
+        currentVelocity = rb.velocity;
     }
 
     
