@@ -8,14 +8,15 @@ public class AreaText : MonoBehaviour
 {
     public Text textZone;
     public bool ButttonPressed;
-    [SerializeField] private GameObject ButtonParent, ColorChartPanel;
+    [SerializeField] private GameObject ButtonParent, ColorChartPanelBG, ColorChartPanelText;
     [SerializeField] private bool isFontStyle, isColoring;
     [HideInInspector] public string SizeTextFunctionName;
     // Start is called before the first frame update
     void Start()
     {
         ButtonParent.SetActive(false);
-        ColorChartPanel.SetActive(false);
+        ColorChartPanelBG.SetActive(false);
+        ColorChartPanelText.SetActive(false);
     }
 
     // Update is called once per frame
@@ -76,18 +77,27 @@ public class AreaText : MonoBehaviour
         }
 
         // Couleur des textes
-        public void OpenColorPanel()
+        public void OpenColorPanel(int value)
         {
             isColoring = !isColoring;
             if(isColoring)
             {
-                ColorChartPanel.SetActive(true);
-                Debug.Log("true");
+              if(value == 0)
+              {
+                ColorChartPanelBG.SetActive(true);
+                ColorChartPanelText.SetActive(false);
+              }
+              if(value == 1)
+              {
+                ColorChartPanelBG.SetActive(false);
+                ColorChartPanelText.SetActive(true);
+              }
             }
+
             else
             {
-                ColorChartPanel.SetActive(false);
-                Debug.Log("false");
+                ColorChartPanelBG.SetActive(false);
+                ColorChartPanelText.SetActive(false);
             }
         }
 }
