@@ -54,7 +54,7 @@ namespace IK
                 backJoint.localEulerAngles = eulerBack;
             }
             
-            atan = currentAtan - currentAtanBack;
+            atan = currentAtan;
         
             Vector3 eulerJointBody = bodyJoint.localEulerAngles;
             eulerJointBody.y = atan;
