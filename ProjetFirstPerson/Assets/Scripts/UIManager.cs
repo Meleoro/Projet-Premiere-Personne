@@ -83,20 +83,7 @@ public class UIManager : GenericSingletonClass<UIManager>
            else if(HisParent.localScale.x >= 3f)
             {
                 HisParent.localScale = new Vector3(3f,3f,0);
-            }
-
-            // Si c'est un texte, tu peux augmenter et réduire la taille de la police
-            if(HisParent.CompareTag("TextArea"))
-            {
-                if(Input.GetKey(KeyCode.UpArrow))
-                {
-                    currentSelect.GetComponent<Text>().fontSize += 1;
-                }
-                if(Input.GetKey(KeyCode.DownArrow))
-                {
-                    currentSelect.GetComponent<Text>().fontSize -= 1;
-                }
-            }        
+            }    
         }
 
         // Test Ouvrir Album
