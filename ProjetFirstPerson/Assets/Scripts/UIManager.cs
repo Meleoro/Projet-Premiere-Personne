@@ -50,13 +50,13 @@ public class UIManager : GenericSingletonClass<UIManager>
         {
              if (!Album.activeSelf)
             {
-                cameraComponent.LockedCursor(false);
+                cameraComponent.LockedCursor(1);
                 Album.SetActive(true);
                 isUIActive = true;
             }
             else
             {
-                cameraComponent.LockedCursor(true);
+                cameraComponent.LockedCursor(2);
                 Album.SetActive(false);
                 isUIActive = false;
             }
