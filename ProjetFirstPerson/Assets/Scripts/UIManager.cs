@@ -29,6 +29,7 @@ public class UIManager : GenericSingletonClass<UIManager>
 
     void Update()
     {
+        Debug.Log(EventSystem.current.currentSelectedGameObject);
         // Quand le joueur clic, on check si un élément est séléctionné dans l'Event system et on fait une variable
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -64,7 +65,7 @@ public class UIManager : GenericSingletonClass<UIManager>
                 Cursor.visible = true;
                 Mouse.current.WarpCursorPosition(mousePos);
         }
-        
+
         // Si un élément de board est séléctionné, il suit le curseur de la souris
         if(currentSelect != null)
         {
@@ -83,6 +84,19 @@ public class UIManager : GenericSingletonClass<UIManager>
             {
                 HisParent.localScale = new Vector3(3f,3f,0);
             }
+
+            // Si c'est un texte, tu peux augmenter et réduire la taille de la police
+            if(HisParent.CompareTag("TextArea"))
+            {
+                if(Input.GetKey(KeyCode.UpArrow))
+                {
+                    currentSelect.GetComponent<Text>().fontSize += 1;
+                }
+                if(Input.GetKey(KeyCode.DownArrow))
+                {
+                    currentSelect.GetComponent<Text>().fontSize -= 1;
+                }
+            }        
         }
 
         // Test Ouvrir Album
