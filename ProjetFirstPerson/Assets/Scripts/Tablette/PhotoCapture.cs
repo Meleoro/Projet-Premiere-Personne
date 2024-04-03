@@ -116,7 +116,6 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
     {
         // Transformation de la texture en sprite
         Sprite Mytex = Sprite.Create(tex, new Rect(0.0f,0.0f, 1920, 1080), new Vector2(0.5f,0.5f), 100.0f);
-        Debug.Log(Mytex);
 
         // Add photo in scriptable object
         AddPhotos(MyPhotos.Count,player.position,Mytex);

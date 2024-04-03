@@ -64,9 +64,9 @@ public class UIManager : GenericSingletonClass<UIManager>
                 Cursor.visible = true;
                 Mouse.current.WarpCursorPosition(mousePos);
         }
-        
+
         // Si un élément de board est séléctionné, il suit le curseur de la souris
-        if(currentSelect != null)
+        if(currentSelect != null && currentSelect.CompareTag("MovingUI"))
         {
             Transform HisParent = currentSelect.GetComponent<ElementsOfBoard>().MyParent.transform;
             HisParent.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
@@ -82,7 +82,7 @@ public class UIManager : GenericSingletonClass<UIManager>
            else if(HisParent.localScale.x >= 3f)
             {
                 HisParent.localScale = new Vector3(3f,3f,0);
-            }
+            }    
         }
 
         // Test Ouvrir Album
