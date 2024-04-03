@@ -46,7 +46,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
 
     private void Start()
     {
-      //  LockedCursor(true);
+        LockedCursor(true);
     }
 
     public void LockedCursor(bool isLocked)
