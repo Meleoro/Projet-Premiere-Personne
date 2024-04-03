@@ -14,11 +14,14 @@ namespace Creature
         [SerializeField] private float earLoudRadius;
         [SerializeField] private float earNormalRadius;
         [SerializeField] private float visionRange;
-        [SerializeField] private float visionRadius;
+        [SerializeField] [Range(0, 60)] private int visionRadiusX;
+        [SerializeField] [Range(0, 60)] private int visionRadiusY;
 
         [Header("Public Infos")] 
         public bool heardSomething;
         [HideInInspector] public Vector3 heardLocation;
+        public bool seenSomething;
+        [HideInInspector] public Vector3 seenLocation;
 
         [Header("References")] 
         [SerializeField] private Transform mainRotationJoint;
@@ -34,6 +37,7 @@ namespace Creature
         private void Update()
         {
             DoEarAI();
+            DoViewAI();
             
             for (int i = 0; i < creatureComponents.Count; i++)
             {
@@ -50,8 +54,6 @@ namespace Creature
             
             if (Vector3.Distance(mainRotationJoint.position, CharacterManager.Instance.transform.position) < earLoudRadius)
             {
-                Debug.Log(12);
-                
                 if (CharacterManager.Instance.currentNoiseType == NoiseType.Loud)
                 {
                     heardSomething = true;
@@ -69,6 +71,37 @@ namespace Creature
             }
         }
 
+        private void DoViewAI()
+        {
+            bool playerInView = false;
+            Vector3 currentDir = -mainRotationJoint.right;
+            currentDir = Quaternion.Euler(-visionRadiusX * 0.5f, -visionRadiusY * 0.5f, 0) * currentDir;
+            
+            for (int x = 0; x < visionRadiusX; x+=4)
+            {
+                for (int y = 0; y < visionRadiusX; y+=4)
+                {
+                    //Debug.DrawLine(mainRotationJoint.position, mainRotationJoint.position + currentDir * visionRange, Color.cyan, 0.1f);
+
+                    if (Physics.Raycast(mainRotationJoint.position, currentDir, out RaycastHit hit, visionRange,
+                            LayerManager.Instance.playerGroundLayer))
+                    {
+                        if (hit.collider.CompareTag("Player"))
+                        {
+                            seenSomething = true;
+                            seenLocation = hit.collider.transform.position;
+
+                            return;
+                        }
+                    }
+                    
+                    currentDir = Quaternion.Euler(0, 4, 0) * currentDir;
+                }
+                
+                currentDir = Quaternion.Euler(4, -visionRadiusY, 0) * currentDir;
+            }
+        }
+
 
         private void OnDrawGizmosSelected()
         {
@@ -80,7 +113,10 @@ namespace Creature
             
             Gizmos.color = Color.white;
             Gizmos.matrix = Matrix4x4.TRS(mainRotationJoint.position, mainRotationJoint.rotation * Quaternion.Euler(0, -90, 0), Vector3.one);
-            Gizmos.DrawFrustum(Vector3.zero, visionRadius, visionRange, 0, 1);
+            Gizmos.DrawFrustum(Vector3.zero, visionRadiusX, visionRange, 0, (float)-visionRadiusX / visionRadiusY);
         }
     }
+    
+    
+    
 }
