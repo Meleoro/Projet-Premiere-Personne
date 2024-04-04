@@ -9,6 +9,7 @@ public class BoardMenu : MonoBehaviour
 {
     [Header("List Objects In Board")]
     public List<GameObject> TextAreaElement;
+    [SerializeField] private GameObject MyBoard;
 
     [Header("Manipulation Variables")]
     public GameObject currentSelect;
@@ -30,9 +31,12 @@ public class BoardMenu : MonoBehaviour
         // Quand le joueur clic, on check si un élément est séléctionné dans l'Event system et on fait une variable
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if(currentSelect != null && currentSelect.transform.parent.parent.CompareTag("TextArea"))
+            if(currentSelect != null)
             {
-                currentSelect.transform.parent.parent.GetComponent<AreaText>().OptionTextPanel.SetActive(true);
+                if(currentSelect.transform.parent.parent.CompareTag("TextArea"))
+                {
+                    currentSelect.transform.parent.parent.GetComponent<AreaText>().OptionTextPanel.SetActive(true);
+                }
                 currentSelect = null;
                 EventSystem.current.SetSelectedGameObject(null);
                 return;
@@ -45,9 +49,10 @@ public class BoardMenu : MonoBehaviour
 
             if(EventSystem.current.currentSelectedGameObject == null)
             {
-                for(int i = 0; i <= TextAreaElement.Count ; i++)
+                for(int i = 0; i < TextAreaElement.Count ; i++)
                 {
-                    TextAreaElement[i].transform.GetComponent<AreaText>().OptionTextPanel.SetActive(false);
+                    Debug.Log("ok");
+                    TextAreaElement[i].GetComponent<AreaText>().OptionTextPanel.SetActive(false);
                 }
                 return;
             }
@@ -97,8 +102,9 @@ public class BoardMenu : MonoBehaviour
         }
     }
 
-    public void AddTextOnBoard(GameObject newTextArea)
+    public void AddTextOnBoard(GameObject TextArea)
     {
+        GameObject newTextArea = Instantiate(TextArea,Vector3.zero,Quaternion.identity, MyBoard.transform);
         TextAreaElement.Add(newTextArea);
     }
 }
