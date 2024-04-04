@@ -8,13 +8,14 @@ public class AreaText : MonoBehaviour
 {
     public Text textZone;
     public bool ButttonPressed;
-    [SerializeField] private GameObject ButtonParent, ColorChartPanelBG, ColorChartPanelText;
-    [SerializeField] private bool isFontStyle, isColoring;
+    [SerializeField] private GameObject ButtonParentFontStyle, ButtonParentTextAlignement, ColorChartPanelBG, ColorChartPanelText;
+    [SerializeField] private bool isFontStyle, isAlignement, isColoring;
     [HideInInspector] public string SizeTextFunctionName;
     // Start is called before the first frame update
     void Start()
     {
-        ButtonParent.SetActive(false);
+        ButtonParentTextAlignement.SetActive(false);
+        ButtonParentFontStyle.SetActive(false);
         ColorChartPanelBG.SetActive(false);
         ColorChartPanelText.SetActive(false);
     }
@@ -53,14 +54,15 @@ public class AreaText : MonoBehaviour
             isFontStyle = !isFontStyle;
             if(isFontStyle)
             {
-                ButtonParent.SetActive(true);
+                ButtonParentFontStyle.SetActive(true);
             }
             else
             {
-                ButtonParent.SetActive(false);
+                ButtonParentFontStyle.SetActive(false);
             }
         }
-        public void BoldText(int fontStyleValue)
+        
+        public void FontStyleText(int fontStyleValue)
         {
             if(fontStyleValue == 0)
             {
@@ -73,6 +75,36 @@ public class AreaText : MonoBehaviour
            else if(fontStyleValue == 2)
             {
                 textZone.GetComponent<Text>().fontStyle = FontStyle.Italic;
+            }
+        }
+
+        // Text Alignement
+        public void OpenAlignementPanel()
+        {
+            isAlignement = !isAlignement;
+            if(isAlignement)
+            {
+                ButtonParentTextAlignement.SetActive(true);
+            }
+            else
+            {
+                ButtonParentTextAlignement.SetActive(false);
+            }
+        }
+
+        public void AlignementText(int AlignementValue)
+        {
+            if(AlignementValue == 0)
+            {
+                textZone.GetComponent<Text>().alignment = TextAnchor.UpperLeft;
+            }
+           else if(AlignementValue == 1)
+            {
+                textZone.GetComponent<Text>().alignment = TextAnchor.UpperCenter;
+            }
+           else if(AlignementValue == 2)
+            {
+                textZone.GetComponent<Text>().alignment = TextAnchor.UpperRight;
             }
         }
 
