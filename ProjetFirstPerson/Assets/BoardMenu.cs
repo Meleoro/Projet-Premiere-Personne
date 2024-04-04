@@ -19,10 +19,7 @@ public class BoardMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i <= TextAreaElement.Count ; i++)
-                {
-                    TextAreaElement[i].transform.GetComponent<AreaText>().OptionTextPanel.SetActive(false);
-                }
+        
     }
 
     // Update is called once per frame
@@ -104,7 +101,7 @@ public class BoardMenu : MonoBehaviour
 
     public void AddTextOnBoard(GameObject TextArea)
     {
-        GameObject newTextArea = Instantiate(TextArea,Vector3.zero,Quaternion.identity, MyBoard.transform);
+        GameObject newTextArea = Instantiate(TextArea,new Vector3(Screen.width / 2, Screen.height / 2, 0),Quaternion.identity, MyBoard.transform);
         TextAreaElement.Add(newTextArea);
     }
 }
