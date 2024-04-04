@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 
 public class BoardMenu : MonoBehaviour
 {
@@ -16,15 +18,24 @@ public class BoardMenu : MonoBehaviour
     [SerializeField] private bool isRotating;
     [SerializeField] private Vector3 mousePos;
 
+    [Header("Black Line Variable")]
+    [SerializeField] private GameObject Arrow;
+    public bool isCreateArrow;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Mouse0) && isCreateArrow)
+        {
+            Instantiate(Arrow, Input.mousePosition, Quaternion.identity, MyBoard.transform);
+            isCreateArrow = false;
+        }
+
         // Quand le joueur clic, on check si un élément est séléctionné dans l'Event system et on fait une variable
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -103,5 +114,9 @@ public class BoardMenu : MonoBehaviour
     {
         GameObject newTextArea = Instantiate(TextArea,new Vector3(Screen.width / 2, Screen.height / 2, 0),Quaternion.identity, MyBoard.transform);
         TextAreaElement.Add(newTextArea);
+    }
+    public void AddArrowOnBoardMode()
+    {
+        isCreateArrow = true;
     }
 }
