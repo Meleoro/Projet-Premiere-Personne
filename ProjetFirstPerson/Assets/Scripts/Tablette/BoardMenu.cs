@@ -10,7 +10,7 @@ using UnityEditor.Experimental.GraphView;
 public class BoardMenu : MonoBehaviour
 {
     [Header("List Objects In Board")]
-    public List<GameObject> TextAreaElement;
+    public List<GameObject> listBoardElement;
     [SerializeField] private GameObject MyBoard;
 
     [Header("Manipulation Variables")]
@@ -39,31 +39,28 @@ public class BoardMenu : MonoBehaviour
         // Quand le joueur clic, on check si un élément est séléctionné dans l'Event system et on fait une variable
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if(currentSelect != null)
+            GameObject NewGameObject = EventSystem.current.currentSelectedGameObject;
+            if(NewGameObject == currentSelect && NewGameObject != null && currentSelect.CompareTag("MovingUI"))
             {
-                if(currentSelect.transform.parent.parent.CompareTag("TextArea"))
-                {
-                    currentSelect.transform.parent.parent.GetComponent<AreaText>().OptionTextPanel.SetActive(true);
-                }
-                currentSelect = null;
-                EventSystem.current.SetSelectedGameObject(null);
-                return;
+                    currentSelect.GetComponent<ElementsOfBoard>().OptionPanel.SetActive(true);
+                    EventSystem.current.SetSelectedGameObject(null);
+                    currentSelect = null;
             }
-            if(EventSystem.current.currentSelectedGameObject != null)
+            
+            else if(EventSystem.current.currentSelectedGameObject == null)
             {
-                currentSelect = EventSystem.current.currentSelectedGameObject;
-                return;
+                for(int i = 0; i < listBoardElement.Count ; i++)
+                 {
+                    listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().OptionPanel.SetActive(false);
+                 }
             }
 
-            if(EventSystem.current.currentSelectedGameObject == null)
+            else
             {
-                for(int i = 0; i < TextAreaElement.Count ; i++)
-                {
-                    Debug.Log("ok");
-                    TextAreaElement[i].GetComponent<AreaText>().OptionTextPanel.SetActive(false);
-                }
-                return;
+                currentSelect = EventSystem.current.currentSelectedGameObject;
             }
+
+            
         }
 
         // La rotation des objets
@@ -110,10 +107,10 @@ public class BoardMenu : MonoBehaviour
         }
     }
 
-    public void AddTextOnBoard(GameObject TextArea)
+    public void AddElementOnBoard(GameObject element)
     {
-        GameObject newTextArea = Instantiate(TextArea,new Vector3(Screen.width / 2, Screen.height / 2, 0),Quaternion.identity, MyBoard.transform);
-        TextAreaElement.Add(newTextArea);
+        GameObject newElement = Instantiate(element,new Vector3(Screen.width / 2, Screen.height / 2, 0),Quaternion.identity, MyBoard.transform);
+        listBoardElement.Add(newElement);
     }
     public void AddArrowOnBoardMode()
     {

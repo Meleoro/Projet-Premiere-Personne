@@ -8,7 +8,6 @@ public class AreaText : MonoBehaviour
 {
     public Text textZone;
     public bool ButttonPressed;
-    [SerializeField] public GameObject OptionTextPanel;
     [SerializeField] private GameObject ButtonParentFontStyle, ButtonParentTextAlignement, ColorChartPanelBG, ColorChartPanelText;
     [SerializeField] private bool isFontStyle, isAlignement, isColoring;
     [HideInInspector] public string SizeTextFunctionName;

@@ -1168,7 +1168,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 497032878}
         m_TargetAssemblyTypeName: BoardMenu, Assembly-CSharp
-        m_MethodName: AddTextOnBoard
+        m_MethodName: AddElementOnBoard
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 3867971205875252885, guid: 295a7f7ce8bba31488c05853ae284056,
@@ -4564,6 +4564,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraComponent: {fileID: 1618496321}
   uiManager: {fileID: 1081356909}
+  boardMenu: {fileID: 497032878}
   photoDisplayArea: {fileID: 261804214}
   photoFrame: {fileID: 1725391333}
   cameraUI: {fileID: 1081356907}
@@ -4599,7 +4600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ef50f575a4e8d429b2988155a5ae70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TextAreaElement:
+  listBoardElement:
   - {fileID: 1486273113}
   MyBoard: {fileID: 1628886509}
   currentSelect: {fileID: 0}
