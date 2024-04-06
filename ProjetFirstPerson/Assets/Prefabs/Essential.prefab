@@ -164,6 +164,8 @@ MonoBehaviour:
   doFOVEffect: 1
   addedFOVMax: 10
   FOVLerpSpeed: 9
+  canRotate: 1
+  canMove: 1
   wantedCameraPos: {fileID: 3191963914546153222}
   characterCamera: {fileID: 8258690270071513285}
 --- !u!114 &2925051965562705916
@@ -180,6 +182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 3
   walkAcceleration: 1000
+  canMove: 1
   canRun: 1
   runSpeed: 5.5
   runAcceleration: 1500
@@ -436,7 +439,6 @@ MonoBehaviour:
   cameraComponent: {fileID: 0}
   Album: {fileID: 0}
   isUIActive: 0
-  currentSelect: {fileID: 0}
 --- !u!1 &1435140095530717798
 GameObject:
   m_ObjectHideFlags: 0
