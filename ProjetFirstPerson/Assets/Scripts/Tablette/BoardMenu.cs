@@ -18,7 +18,7 @@ public class BoardMenu : MonoBehaviour
     [SerializeField] private bool isRotating;
     [SerializeField] private Vector3 mousePos;
 
-    [Header("Black Line Variable")]
+    [Header("Arrow Variable")]
     [SerializeField] private GameObject Arrow;
     public bool isCreateArrow;
 
@@ -72,8 +72,8 @@ public class BoardMenu : MonoBehaviour
         {
             if(currentSelect != null)
             {
-                Transform HisParent = currentSelect.GetComponent<ElementsOfBoard>().MyParent.transform;
-                HisParent.localEulerAngles = new Vector3(0,0,Input.mousePosition.y);
+                Transform HisMovingObject = currentSelect.GetComponent<ElementsOfBoard>().MyMovingObject.transform;
+                HisMovingObject.localEulerAngles = new Vector3(0,0,Input.mousePosition.y);
                 isRotating = true;
                 Cursor.visible = false;
             }
@@ -88,21 +88,21 @@ public class BoardMenu : MonoBehaviour
         // Si un élément de board est séléctionné, il suit le curseur de la souris
         if(currentSelect != null && currentSelect.CompareTag("MovingUI"))
         {
-            Transform HisParent = currentSelect.GetComponent<ElementsOfBoard>().MyParent.transform;
-            HisParent.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
+            Transform HisMovingObject = currentSelect.GetComponent<ElementsOfBoard>().MyMovingObject.transform;
+            HisMovingObject.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
             Debug.Log(currentSelect);
 
             if(!isRotating)
             {
-                HisParent.position = Input.mousePosition;
+                HisMovingObject.position = Input.mousePosition;
             }
-            if(HisParent.localScale.x <= 0.1f)
+            if(HisMovingObject.localScale.x <= 0.1f)
             {
-                HisParent.localScale = new Vector3(0.1f,0.1f,0);
+                HisMovingObject.localScale = new Vector3(0.1f,0.1f,0);
             }
-           else if(HisParent.localScale.x >= 3f)
+           else if(HisMovingObject.localScale.x >= 3f)
             {
-                HisParent.localScale = new Vector3(3f,3f,0);
+                HisMovingObject.localScale = new Vector3(3f,3f,0);
             }    
         }
     }
@@ -110,6 +110,12 @@ public class BoardMenu : MonoBehaviour
     public void AddElementOnBoard(GameObject element)
     {
         GameObject newElement = Instantiate(element,new Vector3(Screen.width / 2, Screen.height / 2, 0),Quaternion.identity, MyBoard.transform);
+        listBoardElement.Add(newElement);
+    }
+    public void AddBackgroundOnBoard(GameObject background)
+    {
+        GameObject newElement = Instantiate(background,new Vector3(Screen.width / 2, Screen.height / 2, 0),Quaternion.identity, MyBoard.transform);
+        newElement.transform.SetSiblingIndex(0);
         listBoardElement.Add(newElement);
     }
     public void AddArrowOnBoardMode()
