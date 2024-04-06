@@ -10,7 +10,8 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     [Header("Main Parameters")] 
     [SerializeField] private float walkSpeed;
     [SerializeField] private float walkAcceleration;
-
+    public bool canMove;
+    
     [Header("Run Parameters")] 
     [SerializeField] private bool canRun;
     [ShowIf("canRun")] [SerializeField] private float runSpeed;
@@ -73,7 +74,9 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     public void ComponentUpdate()
     {
         ManageInputs();
-        MoveCharacter();
+        
+        if(canMove)
+            MoveCharacter();
     }
 
     public void ComponentFixedUpdate()
