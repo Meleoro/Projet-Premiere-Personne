@@ -10,7 +10,7 @@ using UnityEditor.Experimental.GraphView;
 public class BoardMenu : MonoBehaviour
 {
     [Header("List Objects In Board")]
-    public List<GameObject> TextAreaElement;
+    public List<GameObject> listBoardElement;
     [SerializeField] private GameObject MyBoard;
 
     [Header("Manipulation Variables")]
@@ -18,7 +18,7 @@ public class BoardMenu : MonoBehaviour
     [SerializeField] private bool isRotating;
     [SerializeField] private Vector3 mousePos;
 
-    [Header("Black Line Variable")]
+    [Header("Arrow Variable")]
     [SerializeField] private GameObject Arrow;
     public bool isCreateArrow;
 
@@ -39,31 +39,28 @@ public class BoardMenu : MonoBehaviour
         // Quand le joueur clic, on check si un élément est séléctionné dans l'Event system et on fait une variable
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if(currentSelect != null)
+            GameObject NewGameObject = EventSystem.current.currentSelectedGameObject;
+            if(NewGameObject == currentSelect && NewGameObject != null && currentSelect.CompareTag("MovingUI"))
             {
-                if(currentSelect.transform.parent.parent.CompareTag("TextArea"))
-                {
-                    currentSelect.transform.parent.parent.GetComponent<AreaText>().OptionTextPanel.SetActive(true);
-                }
-                currentSelect = null;
-                EventSystem.current.SetSelectedGameObject(null);
-                return;
+                    currentSelect.GetComponent<ElementsOfBoard>().OptionPanel.SetActive(true);
+                    EventSystem.current.SetSelectedGameObject(null);
+                    currentSelect = null;
             }
-            if(EventSystem.current.currentSelectedGameObject != null)
+            
+            else if(EventSystem.current.currentSelectedGameObject == null)
             {
-                currentSelect = EventSystem.current.currentSelectedGameObject;
-                return;
+                for(int i = 0; i < listBoardElement.Count ; i++)
+                 {
+                    listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().OptionPanel.SetActive(false);
+                 }
             }
 
-            if(EventSystem.current.currentSelectedGameObject == null)
+            else
             {
-                for(int i = 0; i < TextAreaElement.Count ; i++)
-                {
-                    Debug.Log("ok");
-                    TextAreaElement[i].GetComponent<AreaText>().OptionTextPanel.SetActive(false);
-                }
-                return;
+                currentSelect = EventSystem.current.currentSelectedGameObject;
             }
+
+            
         }
 
         // La rotation des objets
@@ -75,8 +72,8 @@ public class BoardMenu : MonoBehaviour
         {
             if(currentSelect != null)
             {
-                Transform HisParent = currentSelect.GetComponent<ElementsOfBoard>().MyParent.transform;
-                HisParent.localEulerAngles = new Vector3(0,0,Input.mousePosition.y);
+                Transform HisMovingObject = currentSelect.GetComponent<ElementsOfBoard>().MyMovingObject.transform;
+                HisMovingObject.localEulerAngles = new Vector3(0,0,Input.mousePosition.y);
                 isRotating = true;
                 Cursor.visible = false;
             }
@@ -91,29 +88,35 @@ public class BoardMenu : MonoBehaviour
         // Si un élément de board est séléctionné, il suit le curseur de la souris
         if(currentSelect != null && currentSelect.CompareTag("MovingUI"))
         {
-            Transform HisParent = currentSelect.GetComponent<ElementsOfBoard>().MyParent.transform;
-            HisParent.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
+            Transform HisMovingObject = currentSelect.GetComponent<ElementsOfBoard>().MyMovingObject.transform;
+            HisMovingObject.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
             Debug.Log(currentSelect);
 
             if(!isRotating)
             {
-                HisParent.position = Input.mousePosition;
+                HisMovingObject.position = Input.mousePosition;
             }
-            if(HisParent.localScale.x <= 0.1f)
+            if(HisMovingObject.localScale.x <= 0.1f)
             {
-                HisParent.localScale = new Vector3(0.1f,0.1f,0);
+                HisMovingObject.localScale = new Vector3(0.1f,0.1f,0);
             }
-           else if(HisParent.localScale.x >= 3f)
+           else if(HisMovingObject.localScale.x >= 3f)
             {
-                HisParent.localScale = new Vector3(3f,3f,0);
+                HisMovingObject.localScale = new Vector3(3f,3f,0);
             }    
         }
     }
 
-    public void AddTextOnBoard(GameObject TextArea)
+    public void AddElementOnBoard(GameObject element)
     {
-        GameObject newTextArea = Instantiate(TextArea,new Vector3(Screen.width / 2, Screen.height / 2, 0),Quaternion.identity, MyBoard.transform);
-        TextAreaElement.Add(newTextArea);
+        GameObject newElement = Instantiate(element,new Vector3(Screen.width / 2, Screen.height / 2, 0),Quaternion.identity, MyBoard.transform);
+        listBoardElement.Add(newElement);
+    }
+    public void AddBackgroundOnBoard(GameObject background)
+    {
+        GameObject newElement = Instantiate(background,new Vector3(Screen.width / 2, Screen.height / 2, 0),Quaternion.identity, MyBoard.transform);
+        newElement.transform.SetSiblingIndex(0);
+        listBoardElement.Add(newElement);
     }
     public void AddArrowOnBoardMode()
     {

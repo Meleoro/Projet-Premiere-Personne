@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class ElementsOfBoard : MonoBehaviour
 {
-    public GameObject MyParent;
+    [SerializeField] public GameObject MyMovingObject;
+    [SerializeField] public GameObject OptionPanel;
 }

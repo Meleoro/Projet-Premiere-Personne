@@ -11,6 +11,7 @@ public class PhotoCapture : MonoBehaviour
     [Header("References")]
     [SerializeField] private CameraComponent cameraComponent;
     [SerializeField] private UIManager uiManager;
+    [SerializeField] private BoardMenu boardMenu;
 
     [Header("Photo Taker")]
     [SerializeField] private Image photoDisplayArea;
@@ -131,7 +132,8 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             MyPhotos.Add(tmp);
 
             // Add Photo to album
-            GameObject AlbumSlot = Instantiate(SlotAlbum, new Vector3(Screen.width / 2, Screen.height / 2, 0), Quaternion.identity, Album.transform);
+            GameObject AlbumSlot = SlotAlbum;
             AlbumSlot.transform.GetChild(0).GetComponent<Image>().sprite = sprite;
+            boardMenu.AddElementOnBoard(AlbumSlot);
           }
 }
