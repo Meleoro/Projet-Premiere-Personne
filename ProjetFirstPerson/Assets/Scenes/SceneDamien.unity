@@ -1432,7 +1432,7 @@ PrefabInstance:
     - target: {fileID: 9085784738256536592, guid: c21574a285064aa48810bf40948aacb5,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10849,6 +10849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f998acef59cd08844a901dd0727afb20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentNoiseType: 0
 --- !u!114 &1372626072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10876,6 +10877,8 @@ MonoBehaviour:
   doFOVEffect: 1
   addedFOVMax: 10
   FOVLerpSpeed: 9
+  canRotate: 0
+  canMove: 0
   wantedCameraPos: {fileID: 1176570732}
   characterCamera: {fileID: 1128338940}
 --- !u!114 &1372626073
@@ -10892,10 +10895,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 3
   walkAcceleration: 1000
+  canMove: 0
   canRun: 1
   runSpeed: 6.5
   runAcceleration: 1500
+  canCrouch: 0
+  crouchSpeed: 0
+  crouchAcceleration: 0
   isRunning: 0
+  isCrouching: 0
+  currentVelocity: {x: 0, y: 0, z: 0}
   rb: {fileID: 1372626074}
   wantedCamPos: {fileID: 1176570732}
 --- !u!54 &1372626074
