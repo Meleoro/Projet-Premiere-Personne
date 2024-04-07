@@ -12,18 +12,26 @@ namespace IK
         [Header("Private Infos")]
         private float l1;
         private float l2;
+        private Vector3 offset1;
+        private Vector3 offset2;
         
         [Header("References")]
         [SerializeField] private Transform joint0;
         [SerializeField] private Transform joint1;
         [SerializeField] private Transform effector;
         [SerializeField] private Transform target;
+        [SerializeField] private Transform foot;
 
 
         private void Start()
         {
             l1 = Vector3.Distance(joint0.position, joint1.position);
             l2 = Vector3.Distance(joint1.position, effector.position);
+
+            offset1 = joint0.localEulerAngles;
+            
+            if(foot)
+                offset2 = foot.eulerAngles;
         }
 
         private void Update()
@@ -36,7 +44,7 @@ namespace IK
             // First we rotate on the y axis
             Vector3 dif = (joint0.position - target.position);
             //float angleAtan2 = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
-            joint0.localEulerAngles = new Vector3(0, 0, 0);
+            joint0.localEulerAngles = new Vector3(offset1.x, offset1.y, 0);
             
             
             float l3 = Vector3.Distance(joint0.position, target.position);
@@ -74,16 +82,21 @@ namespace IK
                     joint2Angle = 180f - angleBeta;
                 }
             }
+
+            float addedAngle = Vector3.Angle(joint0.InverseTransformDirection(Vector3.down), -joint0.right);
             
 
             Vector3 eulerJoint1 = joint0.localEulerAngles;
-            eulerJoint1.z = joint1Angle;
+            eulerJoint1.z = joint1Angle + addedAngle;
             //eulerJoint1.y = angleAtan2;
             joint0.localEulerAngles = eulerJoint1;
             
             Vector3 eulerJoint2 = joint1.localEulerAngles;
             eulerJoint2.z = joint2Angle;
             joint1.localEulerAngles = eulerJoint2;
+
+            if(foot)
+                foot.transform.eulerAngles = offset2;
         }
     }
 }

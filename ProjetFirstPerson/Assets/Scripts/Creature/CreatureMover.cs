@@ -47,12 +47,12 @@ namespace Creature
 
         public void ComponentUpdate()
         {
-            SetNextPos();
+            /*SetNextPos();
             ManageRotation();
 
             AdaptHeightBody();
             AdaptJointsRotations();
-            AdaptSpeedWhenRotation();
+            AdaptSpeedWhenRotation();*/
         }
 
         

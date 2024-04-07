@@ -17,7 +17,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     [ShowIf("lerpCameraRotation")] [SerializeField] private float lerpSpeed = 10;
     
     [Header("Move Up Down Feel Parameters")]
-    [SerializeField] private bool doMoveFeel;
+    public bool doMoveFeel;
     [ShowIf("doMoveFeel")] [SerializeField] private bool doUpDownFeel;          // If true, the camera moves up and down when the character moves
     [ShowIf(EConditionOperator.And, "doMoveFeel", "doUpDownFeel")] [SerializeField] private float upDownFeelAmplitude = 0.05f;        // Contains how much the head will move
     [ShowIf(EConditionOperator.And, "doMoveFeel", "doUpDownFeel")] [SerializeField] private float upDownFeelDuration = 1;          // Contains how fast the head will move
@@ -26,9 +26,13 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     [ShowIf(EConditionOperator.And, "doMoveFeel", "doLeftRightFeel")] [SerializeField] private float leftRightFeelAmplitude = 0.05f;       // Contains how fast the head will rotate
 
     [Header("FOV Parameters")] 
-    [SerializeField] private bool doFOVEffect;
+    public bool doFOVEffect;
     [ShowIf("doFOVEffect")] [SerializeField] private float addedFOVMax = 5;
     [ShowIf("doFOVEffect")] [SerializeField] private float FOVLerpSpeed = 6;
+
+    [Header("Flags")] 
+    public bool canRotate;
+    public bool canMove;
     
     [Header("Private Infos")] 
     private Vector2 inputDirection;
@@ -39,27 +43,32 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     private Coroutine upDownCoroutine;
     
     [Header("References")] 
-    [SerializeField] private Transform wantedCameraPos;
+    public Transform wantedCameraPos;
     [SerializeField] private Transform characterCamera;
     
     
 
     private void Start()
     {
-      //  LockedCursor(true);
+        LockedCursor(2);
     }
 
-    public void LockedCursor(bool isLocked)
+    public void LockedCursor(int value)
     {
-        if(isLocked)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        else
+        if(value == 0)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+        }
+        else if(value == 1)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+        else if(value == 2)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 
@@ -78,8 +87,11 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     {
         ActualiseInputs();
         
-        MoveCamera();
-        RotateCamera();
+        if(canMove)
+            MoveCamera();
+        
+        if(canRotate)
+            RotateCamera();
     }
 
 

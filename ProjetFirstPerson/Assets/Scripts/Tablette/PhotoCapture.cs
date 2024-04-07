@@ -10,7 +10,8 @@ public class PhotoCapture : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private CameraComponent cameraComponent;
-    [SerializeField] private UiManager uiManager;
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private BoardMenu boardMenu;
 
     [Header("Photo Taker")]
     [SerializeField] private Image photoDisplayArea;
@@ -58,24 +59,6 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                 RemovePhoto();
             }
         }
-
-      // Test Voir Photo
-        if(Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            photoDisplayArea.sprite = MyPhotos[0].MyscreenPhoto;
-            photoFrame.SetActive(true);
-            Debug.Log(MyPhotos[0].MyposPhoto);
-        }
-        if(Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            photoDisplayArea.sprite = MyPhotos[1].MyscreenPhoto;
-            photoFrame.SetActive(true);
-        }
-        if(Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            photoDisplayArea.sprite = MyPhotos[2].MyscreenPhoto;
-            photoFrame.SetActive(true);
-        } 
     }
 
     IEnumerator CapturePhoto()
@@ -134,7 +117,6 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
     {
         // Transformation de la texture en sprite
         Sprite Mytex = Sprite.Create(tex, new Rect(0.0f,0.0f, 1920, 1080), new Vector2(0.5f,0.5f), 100.0f);
-        Debug.Log(Mytex);
 
         // Add photo in scriptable object
         AddPhotos(MyPhotos.Count,player.position,Mytex);
@@ -150,17 +132,8 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             MyPhotos.Add(tmp);
 
             // Add Photo to album
-            GameObject AlbumSlot = Instantiate(SlotAlbum, new Vector3(Screen.width / 2, Screen.height / 2, 0), Quaternion.identity, Album.transform);
+            GameObject AlbumSlot = SlotAlbum;
             AlbumSlot.transform.GetChild(0).GetComponent<Image>().sprite = sprite;
-            AlbumSlot.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(Album.GetComponent<AlbumSlot>().SelectSlot);
+            boardMenu.AddElementOnBoard(AlbumSlot);
           }
-
-   /* public void RefreshAlbum(Sprite TheSprite)
-          {
-            for (int i = 0; i <= MyPhotos.Count ; i++)
-            {
-                GameObject AlbumSlot = Instantiate(SlotAlbum, Vector3.zero, Quaternion.identity, Album.transform);
-                AlbumSlot.transform.GetChild(0).GetComponent<Image>().sprite = TheSprite;
-            }
-          } */
 }
