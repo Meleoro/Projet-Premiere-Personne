@@ -16,7 +16,7 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
   
 
     [Header("Private Infos")] 
-    private bool isInRange;
+    public bool isInRange;
     private MeshRenderer playerCapsule;
     private BoxCollider collider;
 
