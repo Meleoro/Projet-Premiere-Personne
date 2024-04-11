@@ -10,6 +10,7 @@ public class BalanceManager : MonoBehaviour
     public GameObject poid2Position;
     public int registedPoids1;
     public int registedPoids2;
+    
 
     public void CheckPoids()
     {

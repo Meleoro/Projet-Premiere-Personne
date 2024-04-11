@@ -88,7 +88,7 @@ public class TriangleManager : MonoBehaviour
     public void CheckIfDone() // Si c'est la bonne combinaison
     {
         string answer = String.Concat(dalleOrder[0].myName, dalleOrder[1].myName, dalleOrder[2].myName, dalleOrder[3].myName, dalleOrder[4].myName);
-        if (answer == "SingeBêteElephantHommeTigre") // Mettre les nom des dalles dans le bon ordre
+        if (answer == "VioletBleuBlancOrangeVert") // Mettre les nom des dalles dans le bon ordre
         {
             interactManager.GetOutInteraction();
             interactManager.OpenDoor();

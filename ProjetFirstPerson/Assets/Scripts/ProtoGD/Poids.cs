@@ -7,7 +7,7 @@ public class Poids : MonoBehaviour
 {
     public BalanceManager manager;
     public int poids;
-    public bool isOnSpot;
+    public int currentSpot;
     public Material MaterialOn;
     public Material MaterialOff;
     private MeshRenderer mesh;
@@ -21,13 +21,13 @@ public class Poids : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (!isOnSpot)
+        if (currentSpot == 0)
         {
             if (manager.poid1Free)
             {
                 transform.position = manager.poid1Position.transform.position;
                 manager.poid1Free = false;
-                isOnSpot = true;
+                currentSpot = 1;
                 manager.registedPoids1 = poids;
                 manager.CheckPoids();
             }
@@ -36,7 +36,7 @@ public class Poids : MonoBehaviour
             {
                 transform.position = manager.poid2Position.transform.position;
                 manager.poid2Free = false;
-                isOnSpot = true;
+                currentSpot = 2;               
                 manager.registedPoids2 = poids;
                 manager.CheckPoids();
             }
@@ -44,9 +44,14 @@ public class Poids : MonoBehaviour
         else
         {
             transform.position = originalPos;
-            manager.poid1Free = true;
-            manager.poid2Free = true;
-            isOnSpot = false;
+            
+            if(currentSpot == 1)
+                manager.poid1Free = true;
+            
+            if(currentSpot == 2)
+                manager.poid2Free = true;
+            
+            currentSpot = 0;
         }
     }
 
