@@ -35,6 +35,9 @@ public class TriangleManager : MonoBehaviour
                     wantedDallePosition2, moveSpeed * Time.deltaTime); //Bouge la dalle du dessus
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Break))
+            CheckIfDone();
     }
 
     public void ChangeDalleOrder(int index)
@@ -49,7 +52,7 @@ public class TriangleManager : MonoBehaviour
         
         
             (dalleOrder[index - 1], dalleOrder[index]) = (dalleOrder[index], dalleOrder[index - 1]); //Change l'ordre dans l'array
-            CheckIfDone();
+          
         }
         else // Si c'est la dalle la plus haute
         {
@@ -60,7 +63,7 @@ public class TriangleManager : MonoBehaviour
             StartCoroutine(MoveDalles());
             
             (dalleOrder[^1], dalleOrder[index]) = (dalleOrder[index], dalleOrder[^1]); //Change l'ordre dans l'array
-            CheckIfDone();
+           
         }
     }
 
@@ -92,6 +95,11 @@ public class TriangleManager : MonoBehaviour
         {
             interactManager.GetOutInteraction();
             interactManager.OpenDoor();
+        }
+        else
+        {
+            interactManager.GetOutInteraction();
+            // attirer la bête
         }
             
     }
