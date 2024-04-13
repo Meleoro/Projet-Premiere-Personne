@@ -19,7 +19,6 @@ namespace Creature
         [SerializeField] private Transform debugWantedPos;
 
         [Header("Private Infos")] 
-        private float timerMovement;
         private float addedForceY;
         private float timerNoiseY;
         private float zRotationLerp;
@@ -47,12 +46,12 @@ namespace Creature
 
         public void ComponentUpdate()
         {
-            /*SetNextPos();
+            SetNextPos();
             ManageRotation();
 
             AdaptHeightBody();
-            AdaptJointsRotations();
-            AdaptSpeedWhenRotation();*/
+            //AdaptJointsRotations();
+            AdaptSpeedWhenRotation();
         }
 
         
@@ -187,8 +186,8 @@ namespace Creature
             currentZRotateBodyBack = Mathf.Lerp(currentZRotateBodyBack, backAveragePos.y, Time.deltaTime * 8);
             
             
-            bodyIKScript.bodyJoint.localRotation = Quaternion.Euler(currentXRotateBodyFront * 10, bodyIKScript.bodyJoint.localEulerAngles.y, currentZRotateBodyFront - 7);
-            bodyIKScript.backTransform.localRotation = Quaternion.Euler(currentXRotateBodyBack * 10, bodyIKScript.backTransform.localEulerAngles.y, currentZRotateBodyBack);
+            bodyIKScript.bodyJoint.localRotation = Quaternion.Euler(currentXRotateBodyFront * 5, bodyIKScript.bodyJoint.localEulerAngles.y, currentZRotateBodyFront + 10);
+            bodyIKScript.backTransform.localRotation = Quaternion.Euler(currentXRotateBodyBack * 5, bodyIKScript.backTransform.localEulerAngles.y, currentZRotateBodyBack);
         }
 
 

@@ -1054,6 +1054,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1627731945}
+  - component: {fileID: 1627731946}
   m_Layer: 0
   m_Name: DebugTarget
   m_TagString: Untagged
@@ -1076,6 +1077,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1627731946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627731944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de70feee5c9bd5d4a8ce8c21f4c63404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1724460484
 GameObject:
   m_ObjectHideFlags: 0
@@ -2777,8 +2790,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b49174d4b1097724da173bd426f12533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMovingLegsAmount: 3
-  legMaxDist: 2.1
+  maxMovingLegsAmount: 2
+  legMaxDist: 1.8
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -4578,12 +4591,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28f642a9d8518914a8f0fc15bd550d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inverseArticulation: 1
+  inverseArticulation: 0
   joint0: {fileID: 2531824227034456231}
   joint1: {fileID: 6921849572734329573}
+  joint2: {fileID: 0}
   effector: {fileID: 2065014411}
   target: {fileID: 1381693373245893357}
-  foot: {fileID: 4323776932262517873}
+  foot:
+  - {fileID: 4323776932262517873}
 --- !u!33 &4089109441477635085
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4838,7 +4853,7 @@ MonoBehaviour:
   maxGroundDist: 2
   wantedGroundDist: 1.55
   rotateSpeed: 10
-  doDebugMovement: 0
+  doDebugMovement: 1
   debugWantedPos: {fileID: 1627731945}
   bodyIKScript: {fileID: 6474423269391015777}
   targetIKBody: {fileID: 1196901077681860081}
@@ -6416,12 +6431,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3653b55a990b09439bd7b30bbaae2ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateBackWhenMax: 0
+  rotationSpeed: 0.2
   currentRotationDif: 0
-  bodyJoint: {fileID: 801632296}
-  backJoint: {fileID: 801632296}
+  currentAtan: 0
+  currentAtanBack: 0
+  bodyJoint: {fileID: 6284768130448452517}
+  backJoint: {fileID: 1326204809116197104}
   backTransform: {fileID: 801632296}
   target: {fileID: 1196901077681860081}
+  legsScript: {fileID: 1755608200974436895}
 --- !u!1 &6520375269037779782
 GameObject:
   m_ObjectHideFlags: 0
@@ -6593,12 +6611,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28f642a9d8518914a8f0fc15bd550d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inverseArticulation: 1
+  inverseArticulation: 0
   joint0: {fileID: 4366595399917121593}
   joint1: {fileID: 2701998220031302422}
+  joint2: {fileID: 0}
   effector: {fileID: 1285940222}
   target: {fileID: 5832169537492388793}
-  foot: {fileID: 7883630771844115599}
+  foot:
+  - {fileID: 7883630771844115599}
 --- !u!1 &6790280981226104794
 GameObject:
   m_ObjectHideFlags: 0
@@ -6862,14 +6882,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 967997156373622501}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.00000005759825, y: 0.000000016693727, z: 0.11989609, w: 0.99278647}
+  m_LocalRotation: {x: -0.0053342325, y: -0.04417023, z: 0.11977548, w: 0.9918036}
   m_LocalPosition: {x: -0.31938446, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4915676653615500418}
   m_Father: {fileID: 6284768130448452517}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -5.1, z: 13.772}
 --- !u!1 &7022320475840489541
 GameObject:
   m_ObjectHideFlags: 0
@@ -7745,12 +7765,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28f642a9d8518914a8f0fc15bd550d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inverseArticulation: 0
+  inverseArticulation: 1
   joint0: {fileID: 552680583688428992}
   joint1: {fileID: 4442323225664037200}
+  joint2: {fileID: 3638363773885554926}
   effector: {fileID: 1538396415}
   target: {fileID: 5462365715301687857}
-  foot: {fileID: 0}
+  foot:
+  - {fileID: 3891590315351605978}
+  - {fileID: 1745219123408364151}
+  - {fileID: 2642720688179175227}
+  - {fileID: 613575934926247210}
 --- !u!1001 &8405719981896663159
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8162,12 +8187,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28f642a9d8518914a8f0fc15bd550d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inverseArticulation: 0
+  inverseArticulation: 1
   joint0: {fileID: 7005551511828434208}
   joint1: {fileID: 8542698388874359168}
+  joint2: {fileID: 2752148649742823877}
   effector: {fileID: 1724460485}
   target: {fileID: 2867477999581485883}
-  foot: {fileID: 0}
+  foot:
+  - {fileID: 1023796414181168114}
+  - {fileID: 7463961595586256206}
+  - {fileID: 8761545194023709809}
+  - {fileID: 720375431528630334}
 --- !u!1 &8952092717649476556
 GameObject:
   m_ObjectHideFlags: 0
@@ -8268,6 +8298,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ProtoCreature
+      objectReference: {fileID: 0}
+    - target: {fileID: 785996410052457066, guid: ce9756547e7585f4abc85c2a1d5e5a6b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2455334454527871150, guid: ce9756547e7585f4abc85c2a1d5e5a6b,
         type: 3}

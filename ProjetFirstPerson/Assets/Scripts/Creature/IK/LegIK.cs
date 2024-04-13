@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 namespace IK
@@ -13,14 +14,16 @@ namespace IK
         private float l1;
         private float l2;
         private Vector3 offset1;
-        private Vector3 offset2;
+        private Vector3[] footOffsetsLocal;
+        private Vector3[] footOffsetsWorld;
         
         [Header("References")]
         [SerializeField] private Transform joint0;
         [SerializeField] private Transform joint1;
+        [SerializeField] private Transform joint2;
         [SerializeField] private Transform effector;
         [SerializeField] private Transform target;
-        [SerializeField] private Transform foot;
+        [SerializeField] private Transform[] foot;
 
 
         private void Start()
@@ -29,15 +32,92 @@ namespace IK
             l2 = Vector3.Distance(joint1.position, effector.position);
 
             offset1 = joint0.localEulerAngles;
-            
-            if(foot)
-                offset2 = foot.eulerAngles;
+
+            footOffsetsWorld = new Vector3[foot.Length];
+            footOffsetsLocal = new Vector3[foot.Length];
+            for(int i = 0; i < foot.Length; i++)
+            {
+                footOffsetsWorld[i] = foot[i].eulerAngles;
+                footOffsetsLocal[i] = foot[i].localEulerAngles;
+            }
         }
+
 
         private void Update()
         {
-            ApplyIK();
+            // Keeps the leg aligned with the body
+            joint0.localEulerAngles = new Vector3(offset1.x, offset1.y, 0);
+
+            if(joint2 != null)
+            {
+                ApplyIK2(joint0, joint1, inverseArticulation);
+                ApplyIK2(joint1, joint2, !inverseArticulation);
+            }
+            else
+            {
+                ApplyIK2(joint0, joint1, inverseArticulation);
+            }
         }
+
+
+        private void ApplyIK2(Transform jointA, Transform jointB, bool inverse)
+        {
+            // We calculate the lengthes of the sides of the triangle
+            float lA = Vector3.Distance(jointA.position, jointB.position);
+            float lB = Vector3.Distance(jointB.position, effector.position);
+            float lC = Vector3.Distance(jointA.position, target.position);
+
+            // We get the direction from the origin joint to the target in world space and local space
+            Vector3 dif = (jointA.position - target.position);
+            Vector3 localDif = joint0.InverseTransformDirection(dif).normalized;
+
+
+            float angleAtan = Mathf.Atan2(localDif.y, localDif.x) * Mathf.Rad2Deg;
+            float angleJointA;
+            float angleJointB;
+
+            // If the target is out of range
+            if(lA + lB < lC + 0.015f)
+            {
+                angleJointA = angleAtan;
+                angleJointB = 0;
+            }
+
+            // If the target is in the range of the leg
+            else
+            {
+                // Angle alpha
+                float cosAngleAlpha = (lC * lC + lA * lA - lB * lB) / (2 * lC * lA);
+                float angleAlpha = Mathf.Acos(cosAngleAlpha) * Mathf.Rad2Deg;
+
+                // Angle beta
+                float cosAngleBeta = (lB * lB + lA * lA - lC * lC) / (2 * lB * lA);
+                float angleBeta = Mathf.Acos(cosAngleBeta) * Mathf.Rad2Deg;
+
+                angleJointA = inverse ? angleAtan - angleAlpha : angleAtan + angleAlpha;
+                angleJointB = inverse ? 180f - angleBeta : 180f + angleBeta;
+            }
+
+
+            // We apply the angles to the joints
+            Vector3 eulerJoint1 = jointA.localEulerAngles;
+            eulerJoint1.z = angleJointA;
+            jointA.localEulerAngles = eulerJoint1;
+
+            Vector3 eulerJoint2 = jointB.localEulerAngles;
+            eulerJoint2.z = angleJointB;
+            jointB.localEulerAngles = eulerJoint2;
+
+            
+            // We keep the toes / feet to a given rotation
+            for (int i = 0; i < foot.Length; i++)
+            {
+                foot[i].localEulerAngles = footOffsetsLocal[i];
+                foot[i].eulerAngles = new Vector3(foot[i].eulerAngles.x, foot[i].eulerAngles.y, footOffsetsWorld[i].z); ;
+            }
+        }
+
+
 
         private void ApplyIK()
         {
@@ -95,8 +175,12 @@ namespace IK
             eulerJoint2.z = joint2Angle;
             joint1.localEulerAngles = eulerJoint2;
 
-            if(foot)
-                foot.transform.eulerAngles = offset2;
+
+            for (int i = 0; i < foot.Length; i++)
+            {
+                foot[i].localEulerAngles = footOffsetsLocal[i];
+                foot[i].eulerAngles = new Vector3(foot[i].eulerAngles.x, foot[i].eulerAngles.y, footOffsetsWorld[i].z); ;
+            }
         }
     }
 }
