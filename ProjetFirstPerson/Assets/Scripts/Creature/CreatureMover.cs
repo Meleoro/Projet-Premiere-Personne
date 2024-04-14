@@ -202,7 +202,7 @@ namespace Creature
         {
             float currentRotationDif = bodyIKScript.currentRotationDif;
 
-            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.1f, currentRotationDif / 20f);
+            //navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.1f, currentRotationDif);
         }
 
         #endregion

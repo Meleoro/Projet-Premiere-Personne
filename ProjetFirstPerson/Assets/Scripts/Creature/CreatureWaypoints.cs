@@ -32,7 +32,8 @@ namespace Creature
 
         private void Start()
         {
-            waypoints = possiblePaths[0].waypoints;
+            if(possiblePaths.Count > 0) 
+                waypoints = possiblePaths[0].waypoints;
 
             creatureMoverScript = GetComponent<CreatureMover>();
             mainScript = GetComponent<CreatureManager>();
