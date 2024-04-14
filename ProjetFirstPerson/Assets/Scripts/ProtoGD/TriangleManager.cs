@@ -36,7 +36,7 @@ public class TriangleManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Break))
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
             CheckIfDone();
     }
 

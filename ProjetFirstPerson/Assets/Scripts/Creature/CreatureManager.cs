@@ -24,7 +24,7 @@ namespace Creature
         [SerializeField] private float suspisionThresholdSuspicieux = 50;
         [SerializeField] private float suspisionThresholdAggressif = 100;
 
-        [Header("Valeurs Listen")]      // Pour chacune de ces valeurs, il faut les voir comme 'combien de suspision sont ajoutées par secondes' car elles seront multipliés par le delta time (sauf l'intéraction)
+        [Header("Valeurs Listen")]      // Pour chacune de ces valeurs, il faut les voir comme 'combien de suspision sont ajoutï¿½es par secondes' car elles seront multipliï¿½s par le delta time (sauf l'intï¿½raction)
         [SerializeField] private float suspisionAddedMarche;
         [SerializeField] private float suspisionAddedCourse;
         [SerializeField] private float suspisionAddedMarcheSneak;
@@ -38,7 +38,7 @@ namespace Creature
         [HideInInspector] public bool seenSomething;
         [HideInInspector] public Vector3 seenLocation;
         [HideInInspector] public CreatureState currentState;
-        [HideInInspector] public float currentSuspicion;
+         public float currentSuspicion;
 
         [Header("Private Infos")]
 
@@ -65,7 +65,7 @@ namespace Creature
             DoViewAI();
             ManageSuspision();
 
-            if (saveSuspision == currentSuspicion)
+            if (saveSuspision == currentSuspicion && currentSuspicion > 0)
                 currentSuspicion -= (currentState == CreatureState.aggressive) ? Time.deltaTime * suspisionLostSpeedAggressive : Time.deltaTime * suspisionLostSpeed;
 
 
@@ -133,7 +133,8 @@ namespace Creature
 
                             Debug.Log(12);
 
-                            currentSuspicion += Time.deltaTime * suspisionAddedView;
+                            if(currentSuspicion < 200)
+                                currentSuspicion += Time.deltaTime * suspisionAddedView;
 
                             return;
                         }

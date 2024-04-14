@@ -19,11 +19,11 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
     public bool isInRange;
     private MeshRenderer playerCapsule;
     
-    private BoxCollider collider;
+    private BoxCollider _collider;
 
     private void Start()
     {
-        collider = GetComponent<BoxCollider>();
+        _collider = GetComponent<BoxCollider>();
         playerCapsule = move.transform.GetChild(0).GetComponent<MeshRenderer>();
     }
 
@@ -53,7 +53,7 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
         CameraManager.Instance.transform.parent.transform.position = cameraPos.transform.position;
         CameraManager.Instance.transform.parent.transform.rotation = Quaternion.Euler(desiredRotation);
         hud.SetActive(false);
-        collider.enabled = false;
+        _collider.enabled = false;
         cam.LockedCursor(0);
 
         move.canMove = false;
@@ -71,7 +71,7 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
         CameraManager.Instance.transform.parent.transform.rotation = Quaternion.identity;
         hud.SetActive(true);
         cam.LockedCursor(2);
-        collider.enabled = true;
+        _collider.enabled = true;
 
         move.canMove = true;
         playerCapsule.enabled = true;
