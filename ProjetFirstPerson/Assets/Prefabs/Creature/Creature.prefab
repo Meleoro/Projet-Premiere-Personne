@@ -2464,6 +2464,7 @@ GameObject:
   - component: {fileID: 1087924954602256971}
   - component: {fileID: 742986682100834661}
   - component: {fileID: 3208277337668680452}
+  - component: {fileID: 1907488652674507173}
   - component: {fileID: 8820248073617537668}
   m_Layer: 7
   m_Name: Body
@@ -2533,19 +2534,22 @@ MonoBehaviour:
   visionRange: 15.47
   visionRadiusX: 36
   visionRadiusY: 36
-  suspisionLostSpeed: 0
+  suspisionLostSpeed: 20
+  suspisionLostSpeedAggressive: 40
   suspisionThresholdSuspicieux: 50
   suspisionThresholdAggressif: 100
-  suspisionAddedMarche: 0
-  suspisionAddedCourse: 0
-  suspisionAddedMarcheSneak: 0
-  suspisionAddedInteraction: 0
-  suspisionAddedView: 0
+  suspisionAddedMarche: 15
+  suspisionAddedCourse: 30
+  suspisionAddedMarcheSneak: 15
+  suspisionAddedInteraction: 50
+  suspisionAddedView: 50
   heardSomething: 0
   heardLocation: {x: 0, y: 0, z: 0}
   seenSomething: 0
   seenLocation: {x: 0, y: 0, z: 0}
-  mainRotationJoint: {fileID: 7941660980973429839}
+  currentState: 0
+  currentSuspicion: 0
+  mainRotationJoint: {fileID: 2153052334229681685}
 --- !u!114 &742986682100834661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2561,8 +2565,9 @@ MonoBehaviour:
   maxGroundDist: 2
   wantedGroundDist: 1.55
   rotateSpeed: 10
-  doDebugMovement: 1
+  doDebugMovement: 0
   debugWantedPos: {fileID: 0}
+  wantedPos: {x: 0, y: 0, z: 0}
   bodyIKScript: {fileID: 4909961454236998539}
   targetIKBody: {fileID: 8221315106921239298}
   transformToRotate: {fileID: 7941660980973429839}
@@ -2637,6 +2642,24 @@ MonoBehaviour:
   - {fileID: 1318804004532732100}
   - {fileID: 7135503675190779750}
   - {fileID: 8287600910386240132}
+--- !u!114 &1907488652674507173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3603329425335978045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f34d3a6faec9454893988982efd6277, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  possiblePaths:
+  - {fileID: 0}
+  angerPerCycle: 0
+  neededPfDist: 0
+  suspicionWaitDuration: 3
+  waypoints: []
 --- !u!195 &8820248073617537668
 NavMeshAgent:
   m_ObjectHideFlags: 0
