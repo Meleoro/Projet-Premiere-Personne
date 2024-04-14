@@ -18,6 +18,9 @@ namespace Creature
         [SerializeField] private bool doDebugMovement;
         [SerializeField] private Transform debugWantedPos;
 
+        [Header("Public Infos")]
+        [HideInInspector] public Transform wantedPos;
+
         [Header("Private Infos")] 
         private float addedForceY;
         private float timerNoiseY;
@@ -62,6 +65,10 @@ namespace Creature
             if (doDebugMovement)
             {
                 navMeshAgent.SetDestination(debugWantedPos.position);
+            }
+            else
+            {
+                navMeshAgent.SetDestination(wantedPos.position);
             }
         }
 
