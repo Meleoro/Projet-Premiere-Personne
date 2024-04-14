@@ -18,6 +18,7 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
     [Header("Private Infos")] 
     public bool isInRange;
     private MeshRenderer playerCapsule;
+    
     private BoxCollider collider;
 
     private void Start()
@@ -35,11 +36,9 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
             if (VerifyLookingItem())
             {
                 DisplayUI();
-                
-                CharacterManager.Instance.interactibleAtRange = this;
             }
         }
-        
+     
         if(Input.GetKeyDown(KeyCode.Escape))
             GetOutInteraction();
     }
@@ -122,6 +121,7 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
         if (other.CompareTag("Player"))
         {
             isInRange = true;
+            CharacterManager.Instance.interactibleAtRange = this;
         }
     }
 
@@ -131,6 +131,7 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
         if (other.CompareTag("Player"))
         {
             isInRange = false;
+            CharacterManager.Instance.interactibleAtRange = null;
         }
     }
     #endregion

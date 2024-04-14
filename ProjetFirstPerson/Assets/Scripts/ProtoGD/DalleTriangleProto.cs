@@ -18,6 +18,7 @@ public class dalleTriangleProto : MonoBehaviour
         mesh = GetComponent<MeshRenderer>();
     }
 
+    
     private void OnMouseDown()
     {
         manager.ChangeDalleOrder(myIndex);
