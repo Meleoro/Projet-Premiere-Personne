@@ -19,7 +19,7 @@ namespace Creature
         [SerializeField] private Transform debugWantedPos;
 
         [Header("Public Infos")]
-        [HideInInspector] public Transform wantedPos;
+        [HideInInspector] public Vector3 wantedPos;
 
         [Header("Private Infos")] 
         private float addedForceY;
@@ -68,7 +68,7 @@ namespace Creature
             }
             else
             {
-                navMeshAgent.SetDestination(wantedPos.position);
+                navMeshAgent.SetDestination(wantedPos);
             }
         }
 

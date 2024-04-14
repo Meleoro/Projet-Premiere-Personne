@@ -20,6 +20,7 @@ namespace Creature
 
         [Header("Suspision Parameters")]
         [SerializeField] private float suspisionLostSpeed;
+        [SerializeField] private float suspisionLostSpeedAggressive;
         [SerializeField] private float suspisionThresholdSuspicieux = 50;
         [SerializeField] private float suspisionThresholdAggressif = 100;
 
@@ -36,35 +37,36 @@ namespace Creature
         [HideInInspector] public Vector3 heardLocation;
         [HideInInspector] public bool seenSomething;
         [HideInInspector] public Vector3 seenLocation;
-
+        [HideInInspector] public CreatureState currentState;
+        [HideInInspector] public float currentSuspicion;
 
         [Header("Private Infos")]
-        private float currentSuspision;
-        private CreatureState currentState;
 
 
         [Header("References")] 
         [SerializeField] private Transform mainRotationJoint;
         private List<ICreatureComponent> creatureComponents = new List<ICreatureComponent>();
+        private CreatureWaypoints waypointsScript;
 
         
         private void Start()
         {
             creatureComponents = GetComponents<ICreatureComponent>().ToList();
+            waypointsScript = GetComponent<CreatureWaypoints>();
         }
 
 
         private void Update()
         {
             // Do AI Part
-            float saveSuspision = currentSuspision;
+            float saveSuspision = currentSuspicion;
 
             DoEarAI();
             DoViewAI();
             ManageSuspision();
 
-            if (saveSuspision == currentSuspision)
-                currentSuspision -= Time.deltaTime * suspisionLostSpeed;
+            if (saveSuspision == currentSuspicion)
+                currentSuspicion -= (currentState == CreatureState.aggressive) ? Time.deltaTime * suspisionLostSpeedAggressive : Time.deltaTime * suspisionLostSpeed;
 
 
             // Moves the body, rotates it, moves the legs etc...
@@ -77,7 +79,7 @@ namespace Creature
 
         private void DoEarAI()
         {
-            if (currentState == CreatureState.suspicious)
+            if (currentState != CreatureState.none)
                 return;
             
             
@@ -87,7 +89,7 @@ namespace Creature
                 {
                     heardLocation = CharacterManager.Instance.transform.position;
 
-                    currentSuspision += Time.deltaTime * suspisionAddedCourse;
+                    currentSuspicion += Time.deltaTime * suspisionAddedCourse;
                 }
                 
                 else if (Vector3.Distance(mainRotationJoint.position, CharacterManager.Instance.transform.position) < earNormalRadius)
@@ -96,14 +98,14 @@ namespace Creature
                     {
                         heardLocation = CharacterManager.Instance.transform.position;
 
-                        currentSuspision += Time.deltaTime * suspisionAddedMarche;
+                        currentSuspicion += Time.deltaTime * suspisionAddedMarche;
                     }
 
                     else if(Vector3.Distance(mainRotationJoint.position, CharacterManager.Instance.transform.position) < earLowRadius)
                     {
                         heardLocation = CharacterManager.Instance.transform.position;
 
-                        currentSuspision += Time.deltaTime * suspisionAddedMarcheSneak;
+                        currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneak;
                     }
                 }
             }
@@ -119,7 +121,7 @@ namespace Creature
             {
                 for (int y = 0; y < visionRadiusX; y+=4)
                 {
-                    //Debug.DrawLine(mainRotationJoint.position, mainRotationJoint.position + currentDir * visionRange, Color.cyan, 0.1f);
+                    Debug.DrawLine(mainRotationJoint.position, mainRotationJoint.position + currentDir * visionRange, Color.cyan, 0.1f);
 
                     if (Physics.Raycast(mainRotationJoint.position, currentDir, out RaycastHit hit, visionRange,
                             LayerManager.Instance.playerGroundLayer))
@@ -129,7 +131,9 @@ namespace Creature
                             seenSomething = true;
                             seenLocation = hit.collider.transform.position;
 
-                            currentSuspision += Time.deltaTime * suspisionAddedView;
+                            Debug.Log(12);
+
+                            currentSuspicion += Time.deltaTime * suspisionAddedView;
 
                             return;
                         }
@@ -145,14 +149,26 @@ namespace Creature
 
         private void ManageSuspision()
         {
-            if(currentSuspision > suspisionThresholdSuspicieux && currentState != CreatureState.suspicious)
+            if(currentSuspicion > suspisionThresholdSuspicieux && currentState == CreatureState.none)
             {
+                Debug.Log("IsSuspicious");
+
                 currentState = CreatureState.suspicious;
+                waypointsScript.ChangeDestinationSuspicious(heardLocation);
             }
 
-            else if (currentSuspision > suspisionThresholdAggressif && currentState != CreatureState.aggressive)
+            else if (currentSuspicion > suspisionThresholdAggressif || currentState == CreatureState.aggressive)
             {
+                Debug.Log("IsAggressive");
+
                 currentState = CreatureState.aggressive;
+                waypointsScript.ChangeDestinationAggressive(seenLocation);
+
+                if(currentSuspicion <= 0)
+                {
+                    currentState = CreatureState.none;
+                    waypointsScript.RestartWaypointBehavior();
+                }
             }
         }
 

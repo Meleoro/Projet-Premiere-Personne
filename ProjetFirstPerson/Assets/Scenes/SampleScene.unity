@@ -1456,28 +1456,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1087924954602256971, guid: 95a3e0610d474f242b64811e6b881b8e,
         type: 3}
+      propertyPath: mainRotationJoint
+      value: 
+      objectReference: {fileID: 1326204809116197104}
+    - target: {fileID: 1087924954602256971, guid: 95a3e0610d474f242b64811e6b881b8e,
+        type: 3}
       propertyPath: suspisionAddedView
-      value: 25
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 1087924954602256971, guid: 95a3e0610d474f242b64811e6b881b8e,
         type: 3}
       propertyPath: suspisionAddedCourse
-      value: 10
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1087924954602256971, guid: 95a3e0610d474f242b64811e6b881b8e,
         type: 3}
       propertyPath: suspisionAddedMarche
-      value: 5
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1087924954602256971, guid: 95a3e0610d474f242b64811e6b881b8e,
         type: 3}
       propertyPath: suspisionAddedInteraction
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 1087924954602256971, guid: 95a3e0610d474f242b64811e6b881b8e,
         type: 3}
       propertyPath: suspisionAddedMarcheSneak
-      value: 5
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3320488307102110270, guid: 95a3e0610d474f242b64811e6b881b8e,
         type: 3}
@@ -1611,6 +1616,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c95f2f9fcecbba643a30eaf70d80938b, type: 3}
+--- !u!4 &1326204809116197104 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2153052334229681685, guid: 95a3e0610d474f242b64811e6b881b8e,
+    type: 3}
+  m_PrefabInstance: {fileID: 65025564545481435}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3581504377008245570
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1701,6 +1712,7 @@ MonoBehaviour:
   - {fileID: 1941099056}
   angerPerCycle: 0
   neededPfDist: 0
+  suspicionWaitDuration: 3
   waypoints: []
 --- !u!1001 &8405719981896663159
 PrefabInstance:

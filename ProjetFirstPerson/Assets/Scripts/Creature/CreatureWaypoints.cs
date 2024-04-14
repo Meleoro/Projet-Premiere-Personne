@@ -11,6 +11,7 @@ namespace Creature
         [SerializeField] private List<WaypointsManager> possiblePaths = new List<WaypointsManager>();
         [SerializeField] private float angerPerCycle;
         [SerializeField] private float neededPfDist;
+        [SerializeField] private float suspicionWaitDuration;
 
         [Header("Public Infos")]
         public List<Waypoint> waypoints = new List<Waypoint>();
@@ -21,10 +22,11 @@ namespace Creature
         private Waypoint currentWaypoint;
         private int currentIndex;
         private float waitTimer;
+        private Vector3 placeToGo;
 
         [Header("References")]
         private CreatureMover creatureMoverScript;
-
+        private CreatureManager mainScript;
 
 
 
@@ -33,7 +35,9 @@ namespace Creature
             waypoints = possiblePaths[0].waypoints;
 
             creatureMoverScript = GetComponent<CreatureMover>();
-            creatureMoverScript.wantedPos = waypoints[0].transform;
+            mainScript = GetComponent<CreatureManager>();
+
+            creatureMoverScript.wantedPos = waypoints[0].transform.position;
             currentIndex = 0;
             currentWaypoint = waypoints[0];
         }
@@ -48,8 +52,18 @@ namespace Creature
                     ReachedWaypoint();
                 }
             }
+
+            else
+            {
+                if (Vector3.Distance(transform.position, placeToGo) < 3f)
+                {
+                    ReachedPlaceToGo();
+                }
+            }
         }
 
+
+        #region NORMAL BEHAVIOR
 
         private void ReachedWaypoint()
         {
@@ -69,20 +83,63 @@ namespace Creature
 
             waitTimer = 0;
             currentWaypoint = waypoints[currentIndex];
-            creatureMoverScript.wantedPos = currentWaypoint.transform;
+            creatureMoverScript.wantedPos = currentWaypoint.transform.position;
         }
 
+        #endregion
 
 
-        public void StopWaypointBehavior()
+        #region OTHER BEHVAIORS
+
+        private void ReachedPlaceToGo()
+        {
+            waitTimer += Time.deltaTime;
+
+            if(waitTimer > suspicionWaitDuration)
+            {
+                RestartWaypointBehavior();
+
+                mainScript.currentState = CreatureState.none;
+            }
+        }
+
+        #endregion
+
+
+        /// <summary>
+        /// Called when the creature is suspicious to setup her destination point
+        /// </summary>
+        public void ChangeDestinationSuspicious(Vector3 suspicousPlace)
         {
             stoppedNormalBehavior = true;
             waitTimer = 0;
+
+            placeToGo = suspicousPlace;
+            creatureMoverScript.wantedPos = suspicousPlace;
         }
+
+
+        /// <summary>
+        /// Called when the creature is suspicious to setup her destination point
+        /// </summary>
+        public void ChangeDestinationAggressive(Vector3 suspicousPlace)
+        {
+            stoppedNormalBehavior = true;
+            waitTimer = 0;
+
+            placeToGo = suspicousPlace;
+            creatureMoverScript.wantedPos = suspicousPlace;
+        }
+
 
         public void RestartWaypointBehavior()
         {
             stoppedNormalBehavior = false;
+            waitTimer = 0;
+
+            mainScript.currentSuspicion = 0;
+
+            creatureMoverScript.wantedPos = currentWaypoint.transform.position;
         }
     }
 }
