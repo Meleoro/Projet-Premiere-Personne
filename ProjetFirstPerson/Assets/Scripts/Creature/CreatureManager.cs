@@ -10,18 +10,38 @@ namespace Creature
 {
     public class CreatureManager : MonoBehaviour
     {
-        [Header("AI Parameters")] 
+        [Header("View / Hear Parameters")] 
         [SerializeField] private float earLoudRadius;
         [SerializeField] private float earNormalRadius;
+        [SerializeField] private float earLowRadius;
         [SerializeField] private float visionRange;
         [SerializeField] [Range(0, 60)] private int visionRadiusX;
         [SerializeField] [Range(0, 60)] private int visionRadiusY;
 
-        [Header("Public Infos")] 
-        public bool heardSomething;
+        [Header("Suspision Parameters")]
+        [SerializeField] private float suspisionLostSpeed;
+        [SerializeField] private float suspisionThresholdSuspicieux = 50;
+        [SerializeField] private float suspisionThresholdAggressif = 100;
+
+        [Header("Valeurs Listen")]      // Pour chacune de ces valeurs, il faut les voir comme 'combien de suspision sont ajoutées par secondes' car elles seront multipliés par le delta time (sauf l'intéraction)
+        [SerializeField] private float suspisionAddedMarche;
+        [SerializeField] private float suspisionAddedCourse;
+        [SerializeField] private float suspisionAddedMarcheSneak;
+        [SerializeField] private float suspisionAddedInteraction;
+        [SerializeField] private float suspisionAddedView;
+
+
+        [Header("Public Infos")]
+        [HideInInspector] public bool heardSomething;
         [HideInInspector] public Vector3 heardLocation;
-        public bool seenSomething;
+        [HideInInspector] public bool seenSomething;
         [HideInInspector] public Vector3 seenLocation;
+
+
+        [Header("Private Infos")]
+        private float currentSuspision;
+        private CreatureState currentState;
+
 
         [Header("References")] 
         [SerializeField] private Transform mainRotationJoint;
@@ -36,9 +56,18 @@ namespace Creature
 
         private void Update()
         {
+            // Do AI Part
+            float saveSuspision = currentSuspision;
+
             DoEarAI();
             DoViewAI();
-            
+            ManageSuspision();
+
+            if (saveSuspision == currentSuspision)
+                currentSuspision -= Time.deltaTime * suspisionLostSpeed;
+
+
+            // Moves the body, rotates it, moves the legs etc...
             for (int i = 0; i < creatureComponents.Count; i++)
             {
                 creatureComponents[i].ComponentUpdate();
@@ -48,7 +77,7 @@ namespace Creature
 
         private void DoEarAI()
         {
-            if (heardSomething)
+            if (currentState == CreatureState.suspicious)
                 return;
             
             
@@ -56,24 +85,33 @@ namespace Creature
             {
                 if (CharacterManager.Instance.currentNoiseType == NoiseType.Loud)
                 {
-                    heardSomething = true;
                     heardLocation = CharacterManager.Instance.transform.position;
+
+                    currentSuspision += Time.deltaTime * suspisionAddedCourse;
                 }
                 
                 else if (Vector3.Distance(mainRotationJoint.position, CharacterManager.Instance.transform.position) < earNormalRadius)
                 {
                     if (CharacterManager.Instance.currentNoiseType == NoiseType.Normal)
                     {
-                        heardSomething = true;
                         heardLocation = CharacterManager.Instance.transform.position;
+
+                        currentSuspision += Time.deltaTime * suspisionAddedMarche;
+                    }
+
+                    else if(Vector3.Distance(mainRotationJoint.position, CharacterManager.Instance.transform.position) < earLowRadius)
+                    {
+                        heardLocation = CharacterManager.Instance.transform.position;
+
+                        currentSuspision += Time.deltaTime * suspisionAddedMarcheSneak;
                     }
                 }
             }
         }
 
+
         private void DoViewAI()
         {
-            bool playerInView = false;
             Vector3 currentDir = -mainRotationJoint.right;
             currentDir = Quaternion.Euler(-visionRadiusX * 0.5f, -visionRadiusY * 0.5f, 0) * currentDir;
             
@@ -91,6 +129,8 @@ namespace Creature
                             seenSomething = true;
                             seenLocation = hit.collider.transform.position;
 
+                            currentSuspision += Time.deltaTime * suspisionAddedView;
+
                             return;
                         }
                     }
@@ -103,6 +143,21 @@ namespace Creature
         }
 
 
+        private void ManageSuspision()
+        {
+            if(currentSuspision > suspisionThresholdSuspicieux && currentState != CreatureState.suspicious)
+            {
+                currentState = CreatureState.suspicious;
+            }
+
+            else if (currentSuspision > suspisionThresholdAggressif && currentState != CreatureState.aggressive)
+            {
+                currentState = CreatureState.aggressive;
+            }
+        }
+
+
+
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
@@ -110,13 +165,21 @@ namespace Creature
             
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(mainRotationJoint.position, earNormalRadius);
-            
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(mainRotationJoint.position, earLowRadius);
+
             Gizmos.color = Color.white;
             Gizmos.matrix = Matrix4x4.TRS(mainRotationJoint.position, mainRotationJoint.rotation * Quaternion.Euler(0, -90, 0), Vector3.one);
             Gizmos.DrawFrustum(Vector3.zero, visionRadiusX, visionRange, 0, (float)-visionRadiusX / visionRadiusY);
         }
     }
-    
-    
-    
 }
+
+public enum CreatureState
+{
+    none,
+    suspicious,
+    aggressive
+}
+

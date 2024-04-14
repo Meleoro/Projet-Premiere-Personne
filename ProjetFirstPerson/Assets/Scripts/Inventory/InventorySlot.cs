@@ -17,7 +17,6 @@ public class InventorySlot : MonoBehaviour
     private Coroutine currentCoroutine;
     private List<float> originalAlphas = new();
     private List<float> selectedAlphas = new();
-    private bool isSelected;
     
     [Header("References")] 
     [SerializeField] private Image itemImage;
@@ -53,8 +52,6 @@ public class InventorySlot : MonoBehaviour
 
     public void SelectSlot()
     {
-        isSelected = true;
-        
         if(currentCoroutine != null)
             StopCoroutine(currentCoroutine);
         
@@ -82,8 +79,6 @@ public class InventorySlot : MonoBehaviour
 
     public void UnselectSlot()
     {
-        isSelected = false;
-        
         if(currentCoroutine != null)
             StopCoroutine(currentCoroutine);
         

@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Data/ItemData")]
 public class ItemData : ScriptableObject
 {
-    [field : SerializeField] public string name { get; private set; }
+    [field : SerializeField] public string _name { get; private set; }
     [field : SerializeField] public string description { get; private set; }
     [field : SerializeField] public ObjectFunction function { get; private set; }
     [field : SerializeField] public Sprite itemSprite { get; private set; }
