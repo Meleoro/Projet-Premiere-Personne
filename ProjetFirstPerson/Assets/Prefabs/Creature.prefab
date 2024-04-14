@@ -2534,18 +2534,21 @@ MonoBehaviour:
   visionRadiusX: 36
   visionRadiusY: 36
   suspisionLostSpeed: 0
+  suspisionLostSpeedAggressive: 0
   suspisionThresholdSuspicieux: 50
   suspisionThresholdAggressif: 100
-  suspisionAddedMarche: 0
-  suspisionAddedCourse: 0
-  suspisionAddedMarcheSneak: 0
-  suspisionAddedInteraction: 0
-  suspisionAddedView: 0
+  suspisionAddedMarche: 15
+  suspisionAddedCourse: 30
+  suspisionAddedMarcheSneak: 15
+  suspisionAddedInteraction: 50
+  suspisionAddedView: 50
   heardSomething: 0
   heardLocation: {x: 0, y: 0, z: 0}
   seenSomething: 0
   seenLocation: {x: 0, y: 0, z: 0}
-  mainRotationJoint: {fileID: 7941660980973429839}
+  currentState: 0
+  currentSuspicion: 0
+  mainRotationJoint: {fileID: 2153052334229681685}
 --- !u!114 &742986682100834661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2561,8 +2564,9 @@ MonoBehaviour:
   maxGroundDist: 2
   wantedGroundDist: 1.55
   rotateSpeed: 10
-  doDebugMovement: 1
+  doDebugMovement: 0
   debugWantedPos: {fileID: 0}
+  wantedPos: {x: 0, y: 0, z: 0}
   bodyIKScript: {fileID: 4909961454236998539}
   targetIKBody: {fileID: 8221315106921239298}
   transformToRotate: {fileID: 7941660980973429839}
