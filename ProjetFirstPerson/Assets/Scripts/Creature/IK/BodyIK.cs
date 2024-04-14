@@ -7,18 +7,20 @@ namespace IK
     public class BodyIK : MonoBehaviour
     {
         [Header("Parameters")]
+        [SerializeField] private float maxRotationFrontToBack;
         [SerializeField] private float rotationSpeed;
 
         [Header("Public Infos")] 
-        public float currentRotationDif;
+        [HideInInspector] public float currentRotationDif;
         
         [Header("Private Infos")]
-        public float currentAtan;
-        public float currentAtanBack;
+        private float currentAtan;
+        private float currentAtanBack;
         private Vector3 saveOffset1;
         private Vector3 saveOffset2;
         
         [Header("References")]
+        [SerializeReference] public Transform[] bodyJoints;
         public Transform bodyJoint;
         public Transform backJoint;
         public Transform backTransform;
@@ -39,9 +41,15 @@ namespace IK
             AdaptJointsRotations();
         }
 
+
+        private void ApplyMainIK2()
+        {
+
+        }
+
         private void ApplyMainIK()
         {
-            Vector3 dif = bodyJoint.position - target.position;
+            Vector3 dif = backJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
             
             // To avoid too much abrupt body roations
@@ -56,9 +64,12 @@ namespace IK
                 currentAtan += 360f;
 
 
-            currentAtan = Mathf.Lerp(atan - currentAtanBack, 0, Time.deltaTime * 1.5f * rotationSpeed);
+            currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * 4f * rotationSpeed);
+            currentAtan = Mathf.Clamp(atan - currentAtanBack, -maxRotationFrontToBack, maxRotationFrontToBack);
+
             currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * 2f * rotationSpeed);
-            
+
+            currentRotationDif = currentAtan / maxRotationFrontToBack;
 
             Vector3 eulerBack = backJoint.localEulerAngles;
             eulerBack.y = saveOffset2.y + currentAtanBack;
@@ -68,6 +79,8 @@ namespace IK
             eulerJointBody.y = backJoint.eulerAngles.y + currentAtan;
             bodyJoint.eulerAngles = eulerJointBody;
         }
+
+
 
 
         private float currentXRotateBodyFront;
