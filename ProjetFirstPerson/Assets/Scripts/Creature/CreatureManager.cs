@@ -10,6 +10,9 @@ namespace Creature
 {
     public class CreatureManager : MonoBehaviour
     {
+        [Header("Debug Parameters")] 
+        [SerializeField] private bool debugIK;
+        
         [Header("View / Hear Parameters")] 
         [SerializeField] private float earLoudRadius;
         [SerializeField] private float earNormalRadius;
@@ -55,6 +58,9 @@ namespace Creature
 
         private void Update()
         {
+            if(debugIK)
+                return;
+            
             // Do AI Part
             float saveSuspision = currentSuspicion;
 
