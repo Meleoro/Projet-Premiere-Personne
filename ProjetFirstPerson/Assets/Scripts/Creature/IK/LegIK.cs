@@ -127,7 +127,7 @@ namespace IK
         {
             Vector3 dif = transformRotTrRef.InverseTransformVector(joint0.position - target.position);
 
-            dif.x = Mathf.Clamp(dif.x, -1f, 1f);
+            dif.x = Mathf.Clamp(dif.x, -0.5f, 0.5f);
             
             float multiplicator = -15f;
 
