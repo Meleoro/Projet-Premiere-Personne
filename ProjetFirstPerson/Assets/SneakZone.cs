@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class SneakZone : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            CharacterManager.Instance.isHidden = true;
+            CharacterManager.Instance.isInSneakZone = true;
         }
     }
 
@@ -17,7 +17,7 @@ public class SneakZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            CharacterManager.Instance.isHidden = false;
+            CharacterManager.Instance.isInSneakZone = false;
         }
     }
 }

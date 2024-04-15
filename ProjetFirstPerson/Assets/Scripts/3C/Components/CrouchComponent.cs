@@ -12,8 +12,10 @@ public class CrouchComponent : MonoBehaviour, ICharacterComponent
 
     [Header("Private Infos")]
     [HideInInspector] public bool isCrouched;
-    
+
     [Header("References")] 
+    [SerializeField] private Collider normalCollider;
+    [SerializeField] private Collider crouchedCollider;
     private Controls controls;
     private MoveComponent moveScript;
     private CameraComponent cameraScript;
@@ -65,6 +67,9 @@ public class CrouchComponent : MonoBehaviour, ICharacterComponent
     {
         isCrouched = true;
 
+        normalCollider.enabled = false;
+        crouchedCollider.enabled = true;
+        
         moveScript.currentSpeedModifier = crouchSpeedModifier;
         StartCoroutine(cameraScript.Crouch(cameraPosYModifier, crouchCameraMoveDuration));
     }
@@ -72,6 +77,9 @@ public class CrouchComponent : MonoBehaviour, ICharacterComponent
     private void GetUp()
     {
         isCrouched = false;
+        
+        normalCollider.enabled = true;
+        crouchedCollider.enabled = false;
         
         moveScript.currentSpeedModifier = 1;
         StartCoroutine(cameraScript.Crouch(0, crouchCameraMoveDuration));
