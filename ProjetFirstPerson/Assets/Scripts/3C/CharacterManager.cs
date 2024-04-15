@@ -12,6 +12,7 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
     [Header("Public Infos")] 
     public IInteractible interactibleAtRange;
     public NoiseType currentNoiseType;
+    public bool isHidden;
 
     [Header("Actions")] 
     public Action<ItemData> UseAdrenaline;

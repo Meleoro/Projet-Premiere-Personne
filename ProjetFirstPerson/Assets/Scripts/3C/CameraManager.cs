@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class CameraManager : GenericSingletonClass<CameraManager>
 {
-    [Header("Private Infos")] 
-    private float originalYSave;
+    [Header("Public Infos")] 
+    [HideInInspector] public bool isCrouching;
 
     [Header("Private Infos")] 
+    private float originalYSave;
     private bool isDoingUpDownEffect;
     private float currentUpDownDuration;
     private float currentUpDownAmplitude;
@@ -40,7 +41,7 @@ public class CameraManager : GenericSingletonClass<CameraManager>
     }
 
 
-    #region UP DOWN FUNCTIONS
+    #region Up-Down Functions
 
     /// <summary>
     /// CALLED TO LAUNCH THE HEAD UP DOWN EFFECT MOVEMENT
@@ -103,7 +104,7 @@ public class CameraManager : GenericSingletonClass<CameraManager>
     #endregion
 
 
-    #region LEFT RIGHT FUNCTIONS
+    #region Left-Right Functions
 
     /// <summary>
     /// CALLED TO LAUNCH THE HEAD LEFT RIGHT EFFECT MOVEMENT 
@@ -170,7 +171,7 @@ public class CameraManager : GenericSingletonClass<CameraManager>
     #endregion
 
 
-    #region FOV FUNCTION
+    #region FOV functions
 
     public void ChangeFOV(float addedFOV, float lerpSpeed)
     {
