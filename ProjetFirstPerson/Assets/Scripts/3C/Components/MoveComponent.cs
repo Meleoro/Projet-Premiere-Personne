@@ -23,9 +23,10 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     [ShowIf("canCrouch")] [SerializeField] private float crouchAcceleration;
 
     [Header("Public Infos")] 
-    public bool isRunning;
-    public float currentSpeedModifier;
-    public Vector3 currentVelocity;
+    [HideInInspector] public bool isRunning;
+    [HideInInspector] public bool disableRun;
+    [HideInInspector] public float currentSpeedModifier;
+    [HideInInspector] public Vector3 currentVelocity;
     
     [Header("Private Infos")]
     private Vector3 inputDirection;
@@ -118,7 +119,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
             }
         }
         
-        if (canRun)
+        if (canRun && !disableRun)
         {
             if (controls.Player.Run.IsPressed())
             {
