@@ -124,7 +124,7 @@ namespace Creature
                     if (Physics.Raycast(mainRotationJoint.position, currentDir, out RaycastHit hit, visionRange,
                             LayerManager.Instance.playerGroundLayer))
                     {
-                        if (hit.collider.CompareTag("Player"))
+                        if (hit.collider.CompareTag("Player") && !CharacterManager.Instance.isHidden)
                         {
                             currentSuspicion += Time.deltaTime * suspisionAddedView;
 

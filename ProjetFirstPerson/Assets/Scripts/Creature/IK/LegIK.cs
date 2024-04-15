@@ -127,12 +127,12 @@ namespace IK
         {
             Vector3 dif = transformRotTrRef.InverseTransformVector(joint0.position - target.position);
 
-            dif.x = Mathf.Clamp(dif.x, -1f, 1f);
+            dif.x = Mathf.Clamp(dif.x, -0.4f, 0.4f);
             
-            float multiplicator = -15f;
+            float multiplicator = -25f;
 
-            joint0.localEulerAngles = new Vector3(offset1.x + -dif.x * multiplicator, joint0.localEulerAngles.y, joint0.localEulerAngles.z);
-            joint1.localEulerAngles = new Vector3(offset2.x + dif.x * multiplicator * 2f, joint1.localEulerAngles.y, joint1.localEulerAngles.z);
+            joint0.localEulerAngles = new Vector3(offset1.x - dif.x * multiplicator, joint0.localEulerAngles.y, joint0.localEulerAngles.z);
+            joint1.localEulerAngles = new Vector3(offset2.x + dif.x * multiplicator, joint1.localEulerAngles.y, joint1.localEulerAngles.z);
         }
 
 

@@ -52,7 +52,7 @@ namespace IK
             Vector3 dif = backJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
             
-            // To avoid too much abrupt body roations
+            // To avoid too much abrupt body rotations
             if (atan < -80f && currentAtanBack > 80f)
                 currentAtanBack -= 360f;
             else if (currentAtanBack < -80f && atan > 80f)
@@ -129,8 +129,8 @@ namespace IK
             currentZRotateBodyBack = Mathf.Lerp(currentZRotateBodyBack, backAveragePos.y, Time.deltaTime * 4);
 
 
-            bodyJoint.localEulerAngles = new Vector3(saveOffset1.x + currentXRotateBodyFront * 5, bodyJoint.localEulerAngles.y, saveOffset1.z + currentZRotateBodyFront);
-            backJoint.localEulerAngles = new Vector3(saveOffset2.x + currentXRotateBodyBack * 5, backJoint.localEulerAngles.y, saveOffset2.z + currentZRotateBodyBack);
+            bodyJoint.localEulerAngles = new Vector3(saveOffset1.x - currentXRotateBodyFront * 4, bodyJoint.localEulerAngles.y, saveOffset1.z + currentZRotateBodyFront);
+            backJoint.localEulerAngles = new Vector3(saveOffset2.x - currentXRotateBodyBack * 4, backJoint.localEulerAngles.y, saveOffset2.z + currentZRotateBodyBack);
         }
     }
 }
