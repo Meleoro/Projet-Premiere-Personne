@@ -20,6 +20,7 @@ namespace Creature
 
         [Header("Public Infos")]
         [HideInInspector] public Vector3 wantedPos;
+        public Vector3 forcedRot;
 
         [Header("Private Infos")] 
         private float addedForceY;
@@ -76,6 +77,8 @@ namespace Creature
         {
             // Y Rotation
             Vector3 dirToRotateTo = navMeshAgent.velocity;
+            if (forcedRot != Vector3.zero) dirToRotateTo = forcedRot;
+            
             Vector3 currentDir = targetIKBody.position - transform.position;
             currentDir = currentDir.normalized * 4;
 

@@ -69,9 +69,12 @@ namespace Creature
         private void ReachedWaypoint()
         {
             waitTimer += Time.deltaTime;
+            creatureMoverScript.forcedRot = Vector3.forward.RotateDirection(currentWaypoint.roationAngleY, Vector3.up);
 
             if(waitTimer > currentWaypoint.waitTimer)
-            {
+            {               
+                creatureMoverScript.forcedRot = Vector3.zero;
+
                 NextWaypoint();
             }
 
@@ -99,6 +102,7 @@ namespace Creature
             if(waitTimer > suspicionWaitDuration)
             {
                 RestartWaypointBehavior();
+                creatureMoverScript.forcedRot = Vector3.zero;
 
                 mainScript.currentState = CreatureState.none;
             }
@@ -152,6 +156,7 @@ namespace Creature
 
             mainScript.currentSuspicion = 0;
 
+            creatureMoverScript.forcedRot = Vector3.zero;
             creatureMoverScript.wantedPos = currentWaypoint.transform.position;
         }
     }
