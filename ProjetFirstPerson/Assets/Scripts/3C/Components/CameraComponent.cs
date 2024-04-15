@@ -33,6 +33,9 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     [Header("Flags")] 
     public bool canRotate;
     public bool canMove;
+
+    [Header("Public infos")] 
+    [HideInInspector] public bool isCrouching;
     
     [Header("Private Infos")] 
     private Vector2 inputDirection;
@@ -41,6 +44,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     private float moveFeelTimer;
     private bool moveFeelGoDown;
     private Coroutine upDownCoroutine;
+    private float crouchModifierY;
     
     [Header("References")] 
     public Transform wantedCameraPos;
@@ -100,7 +104,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     // MOVES THE CAMERA
     private void MoveCamera()
     {
-        characterCamera.position = Vector3.Lerp(characterCamera.position, wantedCameraPos.position, Time.deltaTime * 50);
+        characterCamera.position = Vector3.Lerp(characterCamera.position, wantedCameraPos.position + new Vector3(0, crouchModifierY, 0), Time.deltaTime * 50);
     }
 
     // ROTATES THE CAMERA
@@ -177,4 +181,26 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     
     #endregion
     
+    
+    #region Crouch Functions
+
+    private float crouchTimer;
+    public IEnumerator Crouch(float YModifier, float crouchDuration)
+    {
+        crouchTimer = 0;
+        isCrouching = true;
+        float save = crouchModifierY;
+        
+        while (crouchTimer < crouchDuration)
+        {
+            crouchTimer += Time.deltaTime;
+
+            crouchModifierY = Mathf.Lerp(save, YModifier, crouchTimer / crouchDuration);
+            
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        
+        isCrouching = false;
+    }
+    #endregion
 }

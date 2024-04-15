@@ -24,7 +24,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
 
     [Header("Public Infos")] 
     public bool isRunning;
-    public bool isCrouching;
+    public float currentSpeedModifier;
     public Vector3 currentVelocity;
     
     [Header("Private Infos")]
@@ -61,6 +61,8 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     {
         cameraComponent = GetComponent<CameraComponent>();
         staminaComponent = GetComponent<StaminaComponent>();
+
+        currentSpeedModifier = 1;
         
         GetComponent<CharacterManager>().UseAdrenaline += UseAdrenaline;
         
@@ -70,6 +72,8 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         }
     }
 
+    
+    #region Interface Functions
 
     public void ComponentUpdate()
     {
@@ -89,6 +93,8 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         
     }
 
+    #endregion
+    
 
     // ACTUALISE THE MOVE DIRECTION INPUT AND THE CURRENT SPEED ACCORDING TO IF THE PLAYER WANTS TO RUN OR NOT
     private void ManageInputs()
@@ -125,8 +131,8 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     // MOVES THE THE PLAYER IN THE WORLD SPACE
     private void MoveCharacter()
     {
-        rb.AddForce(inputDirection * (Time.deltaTime * currentAcceleration), ForceMode.Force);
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, currentSpeed + addedSpeed);
+        rb.AddForce(inputDirection * (Time.deltaTime * currentAcceleration * currentSpeedModifier), ForceMode.Force);
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, (currentSpeed + addedSpeed) * currentSpeedModifier);
         
         // We apply the feel to the camera according to our current speed
         cameraComponent.DoMoveFeel(rb.velocity.magnitude / (runSpeed + addedSpeed));

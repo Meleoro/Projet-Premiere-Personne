@@ -10,12 +10,14 @@ public class NoiseComponent : MonoBehaviour, ICharacterComponent
     [Header("References")] 
     private MoveComponent moveScript;
     private CharacterManager mainScript;
+    private CrouchComponent crouchScript;
 
 
     private void Start()
     {
         mainScript = GetComponent<CharacterManager>();
         moveScript = GetComponent<MoveComponent>();
+        crouchScript = GetComponent<CrouchComponent>();
     }
 
 
@@ -31,7 +33,7 @@ public class NoiseComponent : MonoBehaviour, ICharacterComponent
             mainScript.currentNoiseType = NoiseType.Loud;
         }
         
-        else if (moveScript.isCrouching)
+        else if (crouchScript.isCrouched)
         {
             mainScript.currentNoiseType = NoiseType.Quiet;
         }
