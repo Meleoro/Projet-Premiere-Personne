@@ -24,6 +24,7 @@ namespace IK
         [SerializeField] private Transform effector;
         [SerializeField] private Transform target;
         [SerializeField] private Transform[] foot;
+        [SerializeField] private Transform transformRotTrRef;
 
 
         private void Start()
@@ -57,6 +58,8 @@ namespace IK
             {
                 ApplyIK2(joint0, joint1, inverseArticulation);
             }
+
+            ApplySecondaryRot();
         }
 
 
@@ -115,6 +118,17 @@ namespace IK
                 foot[i].localEulerAngles = footOffsetsLocal[i];
                 foot[i].eulerAngles = new Vector3(foot[i].eulerAngles.x, foot[i].eulerAngles.y, footOffsetsWorld[i].z); ;
             }
+        }
+
+
+        private void ApplySecondaryRot()
+        {
+            Vector3 dif = transformRotTrRef.InverseTransformDirection(joint0.position - target.position);
+
+            float multiplicator = 2f;
+
+            joint0.localEulerAngles = new Vector3(dif.x * multiplicator, 0, 0);
+            joint1.localEulerAngles = new Vector3(-dif.x * multiplicator, 0, 0);
         }
 
 
