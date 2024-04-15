@@ -52,7 +52,7 @@ namespace IK
             Vector3 dif = backJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
             
-            // To avoid too much abrupt body roations
+            // To avoid too much abrupt body rotations
             if (atan < -80f && currentAtanBack > 80f)
                 currentAtanBack -= 360f;
             else if (currentAtanBack < -80f && atan > 80f)

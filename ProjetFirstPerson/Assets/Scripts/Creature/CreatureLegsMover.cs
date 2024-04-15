@@ -146,7 +146,7 @@ namespace Creature
         {
             canMoveLeg = false;
             
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.08f);
 
             canMoveLeg = true;
         }
