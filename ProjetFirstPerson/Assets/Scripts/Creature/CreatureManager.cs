@@ -34,12 +34,8 @@ namespace Creature
 
 
         [Header("Public Infos")]
-        [HideInInspector] public bool heardSomething;
-        [HideInInspector] public Vector3 heardLocation;
-        [HideInInspector] public bool seenSomething;
-        [HideInInspector] public Vector3 seenLocation;
         [HideInInspector] public CreatureState currentState;
-         public float currentSuspicion;
+        public float currentSuspicion;
 
         [Header("Private Infos")]
 
@@ -89,8 +85,6 @@ namespace Creature
             {
                 if (CharacterManager.Instance.currentNoiseType == NoiseType.Loud)
                 {
-                    heardLocation = CharacterManager.Instance.transform.position;
-
                     currentSuspicion += Time.deltaTime * suspisionAddedCourse;
                 }
                 
@@ -98,15 +92,11 @@ namespace Creature
                 {
                     if (CharacterManager.Instance.currentNoiseType == NoiseType.Normal)
                     {
-                        heardLocation = CharacterManager.Instance.transform.position;
-
                         currentSuspicion += Time.deltaTime * suspisionAddedMarche;
                     }
 
                     else if(Vector3.Distance(mainRotationJoint.position, CharacterManager.Instance.transform.position) < earLowRadius)
                     {
-                        heardLocation = CharacterManager.Instance.transform.position;
-
                         currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneak;
                     }
                 }
@@ -130,9 +120,6 @@ namespace Creature
                     {
                         if (hit.collider.CompareTag("Player"))
                         {
-                            seenSomething = true;
-                            seenLocation = hit.collider.transform.position;
-                            
                             currentSuspicion += Time.deltaTime * suspisionAddedView;
 
                             return;
@@ -154,7 +141,7 @@ namespace Creature
                 Debug.Log("IsSuspicious");
 
                 currentState = CreatureState.suspicious;
-                waypointsScript.ChangeDestinationSuspicious(heardLocation);
+                waypointsScript.ChangeDestinationSuspicious(CharacterManager.Instance.transform.position);
             }
 
             else if (currentSuspicion > suspisionThresholdAggressif || currentState == CreatureState.aggressive)
