@@ -12,12 +12,15 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
     [Header("Public Infos")] 
     public IInteractible interactibleAtRange;
     public NoiseType currentNoiseType;
+    public bool isHidden;
+    public bool isInSneakZone;
 
     [Header("Actions")] 
     public Action<ItemData> UseAdrenaline;
 
     [Header("References")] 
     private Controls controls;
+    private CrouchComponent crouchComponent;
 
 
     public override void Awake()
@@ -41,6 +44,7 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
     private void Start()
     {
         characterComponents = GetComponents<ICharacterComponent>().ToList();
+        crouchComponent = GetComponent<CrouchComponent>();
     }
     
     
@@ -58,6 +62,9 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
             if(interactibleAtRange != null)
                 interactibleAtRange.Interact();
         }
+        
+        // Hide part
+        SneakCharacterUpdate();
     }
     
     private void FixedUpdate()
@@ -77,4 +84,45 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
             characterComponents[i].ComponentLateUpdate();
         }
     }
+
+
+    #region Hide Character
+
+    private void SneakCharacterUpdate()
+    {
+        if (isInSneakZone)
+        {
+            if (crouchComponent.isCrouched && !isHidden)
+            {
+                Hide();
+            }
+            else if(!crouchComponent.isCrouched && isHidden)
+            {
+                UnHide();
+            }
+        }
+        else
+        {
+            if (isHidden)
+            {
+                UnHide();
+            }
+        }
+    }
+    
+    private void Hide()
+    {
+        isHidden = true;
+        
+        StartCoroutine(CameraEffects.Instance.Hide(1));
+    }
+
+    private void UnHide()
+    {
+        isHidden = false;
+        
+        StartCoroutine(CameraEffects.Instance.Hide(0));
+    }
+
+    #endregion
 }
