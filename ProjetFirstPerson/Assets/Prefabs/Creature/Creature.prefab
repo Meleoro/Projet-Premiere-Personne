@@ -2466,6 +2466,7 @@ GameObject:
   - component: {fileID: 3208277337668680452}
   - component: {fileID: 1907488652674507173}
   - component: {fileID: 8820248073617537668}
+  - component: {fileID: 1640461703665966219}
   m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
@@ -2544,10 +2545,6 @@ MonoBehaviour:
   suspisionAddedMarcheSneak: 15
   suspisionAddedInteraction: 50
   suspisionAddedView: 200
-  heardSomething: 0
-  heardLocation: {x: 0, y: 0, z: 0}
-  seenSomething: 0
-  seenLocation: {x: 0, y: 0, z: 0}
   currentState: 0
   currentSuspicion: 0
   mainRotationJoint: {fileID: 2153052334229681685}
@@ -2569,6 +2566,7 @@ MonoBehaviour:
   doDebugMovement: 0
   debugWantedPos: {fileID: 0}
   wantedPos: {x: 0, y: 0, z: 0}
+  forcedRot: {x: 0, y: 0, z: 0}
   bodyIKScript: {fileID: 4909961454236998539}
   targetIKBody: {fileID: 8221315106921239298}
   transformToRotate: {fileID: 7941660980973429839}
@@ -2683,6 +2681,27 @@ NavMeshAgent:
   m_BaseOffset: 0.85
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!65 &1640461703665966219
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3603329425335978045}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.3586016, y: 0.80389315, z: 0.49920034}
+  m_Center: {x: -0.17930079, y: -0.19990143, z: 0.15492988}
 --- !u!1 &3667481113747865068
 GameObject:
   m_ObjectHideFlags: 0
