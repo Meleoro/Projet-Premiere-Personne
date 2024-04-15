@@ -104,6 +104,18 @@ namespace Creature
             }
         }
 
+
+        public void ChangeCurrentWaypointManager(WaypointsManager newWaypointManager)
+        {
+            waypoints = newWaypointManager.waypoints;
+            transform.position = waypoints[0].transform.position;
+
+            waitTimer = 0;
+            currentIndex = 0;
+
+            NextWaypoint();
+        }
+
         #endregion
 
 
