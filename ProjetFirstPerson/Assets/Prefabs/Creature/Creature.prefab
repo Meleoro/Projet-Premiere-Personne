@@ -1574,6 +1574,7 @@ MonoBehaviour:
   target: {fileID: 2226869657643495394}
   foot:
   - {fileID: 181603399661538522}
+  transformRotTrRef: {fileID: 1309804348894294751}
 --- !u!1 &2602731466063398666
 GameObject:
   m_ObjectHideFlags: 0
@@ -1605,6 +1606,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1309804348894294751}
   - {fileID: 8287600910386240132}
   - {fileID: 7135503675190779750}
   - {fileID: 7903754963432173409}
@@ -2529,6 +2531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce70a2253da447d4687c81ccaaf487b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugIK: 1
   earLoudRadius: 15
   earNormalRadius: 7.5
   earLowRadius: 3
@@ -2786,6 +2789,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3750288763892899988
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1309804348894294751}
+  m_Layer: 0
+  m_Name: TransformRef
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1309804348894294751
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3750288763892899988}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.70437324, y: 0.0621168, z: 0.7043731, w: 0.062116753}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2153052334229681685}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3923603133221326001
 GameObject:
   m_ObjectHideFlags: 0
@@ -3628,6 +3662,7 @@ MonoBehaviour:
   - {fileID: 3159052153085463175}
   - {fileID: 487946716772172389}
   - {fileID: 6200981455837329895}
+  transformRotTrRef: {fileID: 1309804348894294751}
 --- !u!1 &4592929350323022676
 GameObject:
   m_ObjectHideFlags: 0
@@ -4787,6 +4822,7 @@ MonoBehaviour:
   - {fileID: 1603179135279971570}
   - {fileID: 7228657192560260546}
   - {fileID: 5896349859254380938}
+  transformRotTrRef: {fileID: 1309804348894294751}
 --- !u!1 &6106550171142505353
 GameObject:
   m_ObjectHideFlags: 0
@@ -6189,6 +6225,7 @@ MonoBehaviour:
   target: {fileID: 5572496536818502196}
   foot:
   - {fileID: 441021637298717050}
+  transformRotTrRef: {fileID: 1309804348894294751}
 --- !u!1 &7968704937004086064
 GameObject:
   m_ObjectHideFlags: 0

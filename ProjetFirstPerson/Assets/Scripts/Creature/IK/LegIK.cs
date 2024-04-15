@@ -14,6 +14,7 @@ namespace IK
         private float l1;
         private float l2;
         private Vector3 offset1;
+        private Vector3 offset2;
         private Vector3[] footOffsetsLocal;
         private Vector3[] footOffsetsWorld;
         
@@ -33,6 +34,7 @@ namespace IK
             l2 = Vector3.Distance(joint1.position, effector.position);
 
             offset1 = joint0.localEulerAngles;
+            offset2 = joint1.localEulerAngles;
 
             footOffsetsWorld = new Vector3[foot.Length];
             footOffsetsLocal = new Vector3[foot.Length];
@@ -123,12 +125,14 @@ namespace IK
 
         private void ApplySecondaryRot()
         {
-            Vector3 dif = transformRotTrRef.InverseTransformDirection(joint0.position - target.position);
+            Vector3 dif = transformRotTrRef.InverseTransformVector(joint0.position - target.position);
 
-            float multiplicator = 2f;
+            dif.x = Mathf.Clamp(dif.x, -1f, 1f);
+            
+            float multiplicator = -15f;
 
-            joint0.localEulerAngles = new Vector3(dif.x * multiplicator, 0, 0);
-            joint1.localEulerAngles = new Vector3(-dif.x * multiplicator, 0, 0);
+            joint0.localEulerAngles = new Vector3(offset1.x + -dif.x * multiplicator, joint0.localEulerAngles.y, joint0.localEulerAngles.z);
+            joint1.localEulerAngles = new Vector3(offset2.x + dif.x * multiplicator * 2f, joint1.localEulerAngles.y, joint1.localEulerAngles.z);
         }
 
 

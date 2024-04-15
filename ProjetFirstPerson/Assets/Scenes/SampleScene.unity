@@ -814,6 +814,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1090451222
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1090451223}
+  m_Layer: 0
+  m_Name: TransformRef
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1090451223
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090451222}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.70437324, y: 0.0621168, z: 0.7043731, w: 0.062116753}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 65025564545481436}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1198908940
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,11 +1373,21 @@ PrefabInstance:
       propertyPath: debugWantedPos
       value: 
       objectReference: {fileID: 1627731945}
+    - target: {fileID: 1087924954602256971, guid: 95a3e0610d474f242b64811e6b881b8e,
+        type: 3}
+      propertyPath: debugIK
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1907488652674507173, guid: 95a3e0610d474f242b64811e6b881b8e,
         type: 3}
       propertyPath: possiblePaths.Array.data[0]
       value: 
       objectReference: {fileID: 1941099056}
+    - target: {fileID: 2500023090118071278, guid: 95a3e0610d474f242b64811e6b881b8e,
+        type: 3}
+      propertyPath: transformRotTrRef
+      value: 
+      objectReference: {fileID: 1090451223}
     - target: {fileID: 3320488307102110270, guid: 95a3e0610d474f242b64811e6b881b8e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1397,6 +1438,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3765889354804352229, guid: 95a3e0610d474f242b64811e6b881b8e,
+        type: 3}
+      propertyPath: transformRotTrRef
+      value: 
+      objectReference: {fileID: 1090451223}
+    - target: {fileID: 4724837908665979060, guid: 95a3e0610d474f242b64811e6b881b8e,
+        type: 3}
+      propertyPath: transformRotTrRef
+      value: 
+      objectReference: {fileID: 1090451223}
+    - target: {fileID: 7114293606238909422, guid: 95a3e0610d474f242b64811e6b881b8e,
+        type: 3}
+      propertyPath: transformRotTrRef
+      value: 
+      objectReference: {fileID: 1090451223}
     - target: {fileID: 7553222730861526116, guid: 95a3e0610d474f242b64811e6b881b8e,
         type: 3}
       propertyPath: m_Name
@@ -1404,9 +1460,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2153052334229681685, guid: 95a3e0610d474f242b64811e6b881b8e,
+        type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 1090451223}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95a3e0610d474f242b64811e6b881b8e, type: 3}
+--- !u!4 &65025564545481436 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2153052334229681685, guid: 95a3e0610d474f242b64811e6b881b8e,
+    type: 3}
+  m_PrefabInstance: {fileID: 65025564545481435}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &559517100294559151
 PrefabInstance:
   m_ObjectHideFlags: 0
