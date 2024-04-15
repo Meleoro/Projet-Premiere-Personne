@@ -23,6 +23,7 @@ namespace Creature
         [SerializeField] private float suspisionLostSpeedAggressive;
         [SerializeField] private float suspisionThresholdSuspicieux = 50;
         [SerializeField] private float suspisionThresholdAggressif = 100;
+        [SerializeField] private float maxSuspicion = 200;
 
         [Header("Valeurs Listen")]      // Pour chacune de ces valeurs, il faut les voir comme 'combien de suspision sont ajout�es par secondes' car elles seront multipli�s par le delta time (sauf l'int�raction)
         [SerializeField] private float suspisionAddedMarche;
@@ -33,12 +34,8 @@ namespace Creature
 
 
         [Header("Public Infos")]
-        [HideInInspector] public bool heardSomething;
-        [HideInInspector] public Vector3 heardLocation;
-        [HideInInspector] public bool seenSomething;
-        [HideInInspector] public Vector3 seenLocation;
         [HideInInspector] public CreatureState currentState;
-         public float currentSuspicion;
+        public float currentSuspicion;
 
         [Header("Private Infos")]
 
@@ -68,6 +65,7 @@ namespace Creature
             if (saveSuspision == currentSuspicion && currentSuspicion > 0)
                 currentSuspicion -= (currentState == CreatureState.aggressive) ? Time.deltaTime * suspisionLostSpeedAggressive : Time.deltaTime * suspisionLostSpeed;
 
+            currentSuspicion = Mathf.Clamp(currentSuspicion, 0, maxSuspicion);
 
             // Moves the body, rotates it, moves the legs etc...
             for (int i = 0; i < creatureComponents.Count; i++)
@@ -87,8 +85,6 @@ namespace Creature
             {
                 if (CharacterManager.Instance.currentNoiseType == NoiseType.Loud)
                 {
-                    heardLocation = CharacterManager.Instance.transform.position;
-
                     currentSuspicion += Time.deltaTime * suspisionAddedCourse;
                 }
                 
@@ -96,15 +92,11 @@ namespace Creature
                 {
                     if (CharacterManager.Instance.currentNoiseType == NoiseType.Normal)
                     {
-                        heardLocation = CharacterManager.Instance.transform.position;
-
                         currentSuspicion += Time.deltaTime * suspisionAddedMarche;
                     }
 
                     else if(Vector3.Distance(mainRotationJoint.position, CharacterManager.Instance.transform.position) < earLowRadius)
                     {
-                        heardLocation = CharacterManager.Instance.transform.position;
-
                         currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneak;
                     }
                 }
@@ -128,13 +120,7 @@ namespace Creature
                     {
                         if (hit.collider.CompareTag("Player"))
                         {
-                            seenSomething = true;
-                            seenLocation = hit.collider.transform.position;
-
-                            Debug.Log(12);
-
-                            if(currentSuspicion < 200)
-                                currentSuspicion += Time.deltaTime * suspisionAddedView;
+                            currentSuspicion += Time.deltaTime * suspisionAddedView;
 
                             return;
                         }
@@ -155,7 +141,7 @@ namespace Creature
                 Debug.Log("IsSuspicious");
 
                 currentState = CreatureState.suspicious;
-                waypointsScript.ChangeDestinationSuspicious(heardLocation);
+                waypointsScript.ChangeDestinationSuspicious(CharacterManager.Instance.transform.position);
             }
 
             else if (currentSuspicion > suspisionThresholdAggressif || currentState == CreatureState.aggressive)
@@ -163,7 +149,7 @@ namespace Creature
                 Debug.Log("IsAggressive");
 
                 currentState = CreatureState.aggressive;
-                waypointsScript.ChangeDestinationAggressive(seenLocation);
+                waypointsScript.ChangeDestinationAggressive(CharacterManager.Instance.transform.position);
 
                 if(currentSuspicion <= 0)
                 {
@@ -171,6 +157,15 @@ namespace Creature
                     waypointsScript.RestartWaypointBehavior();
                 }
             }
+        }
+
+
+        public void TurnAggressive()
+        {
+            currentState = CreatureState.aggressive;
+            currentSuspicion = 100;
+            
+            waypointsScript.ChangeDestinationAggressive(CharacterManager.Instance.transform.position);
         }
 
 
