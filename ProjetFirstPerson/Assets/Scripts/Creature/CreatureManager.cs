@@ -139,7 +139,7 @@ namespace Creature
             if(currentSuspicion > suspisionThresholdSuspicieux && currentState == CreatureState.none)
             {
                 Debug.Log("IsSuspicious");
-
+                
                 currentState = CreatureState.suspicious;
                 waypointsScript.ChangeDestinationSuspicious(CharacterManager.Instance.transform.position);
             }
@@ -184,6 +184,14 @@ namespace Creature
             Gizmos.color = Color.white;
             Gizmos.matrix = Matrix4x4.TRS(mainRotationJoint.position, mainRotationJoint.rotation * Quaternion.Euler(0, -90, 0), Vector3.one);
             Gizmos.DrawFrustum(Vector3.zero, visionRadiusX, visionRange, 0, (float)-visionRadiusX / visionRadiusY);
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (other.collider.CompareTag("Player"))
+            {
+                TurnAggressive();
+            }
         }
     }
 }

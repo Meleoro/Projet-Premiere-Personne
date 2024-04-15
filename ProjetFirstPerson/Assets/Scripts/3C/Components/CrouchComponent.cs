@@ -9,6 +9,7 @@ public class CrouchComponent : MonoBehaviour, ICharacterComponent
     [SerializeField] private float crouchSpeedModifier = 0.7f;
     [SerializeField] private float cameraPosYModifier = -0.4f;
     [SerializeField] private float crouchCameraMoveDuration = 0.3f;
+    public bool canRunWhileCrouched = true;
 
     [Header("Private Infos")]
     [HideInInspector] public bool isCrouched;
@@ -72,6 +73,9 @@ public class CrouchComponent : MonoBehaviour, ICharacterComponent
         
         moveScript.currentSpeedModifier = crouchSpeedModifier;
         StartCoroutine(cameraScript.Crouch(cameraPosYModifier, crouchCameraMoveDuration));
+
+        if (!canRunWhileCrouched)
+            moveScript.disableRun = true;
     }
 
     private void GetUp()
@@ -83,6 +87,9 @@ public class CrouchComponent : MonoBehaviour, ICharacterComponent
         
         moveScript.currentSpeedModifier = 1;
         StartCoroutine(cameraScript.Crouch(0, crouchCameraMoveDuration));
+        
+        if (!canRunWhileCrouched)
+            moveScript.disableRun = false;
     }
 
     #endregion

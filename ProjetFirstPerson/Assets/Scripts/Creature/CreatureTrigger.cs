@@ -6,6 +6,7 @@ namespace Creature
     {
         [Header("Parameters")] 
         [SerializeField] private CreatureWaypoints creatureToMove;
+        [SerializeField] private Transform placeToTP;
         [SerializeField] private WaypointsManager newWaypointsManager;
         [SerializeField] private bool turnsTheCreatureAggressive;
 
@@ -28,6 +29,11 @@ namespace Creature
             if (newWaypointsManager != null)
             {
                 creatureToMove.ChangeCurrentWaypointManager(newWaypointsManager);
+            }
+
+            if (placeToTP != null)
+            {
+                creatureToMove.transform.position = placeToTP.position;
             }
 
             if (turnsTheCreatureAggressive)
