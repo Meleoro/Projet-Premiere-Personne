@@ -48,13 +48,12 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0) && cameraTestEthan.isIn)
+        if(Input.GetMouseButtonDown(0))
         {
-            if(!viewingPhoto)
+            if(!viewingPhoto && cameraTestEthan.isIn)
             {
                 StartCoroutine(CapturePhoto());
             }
-
             else
             {
                 RemovePhoto();
