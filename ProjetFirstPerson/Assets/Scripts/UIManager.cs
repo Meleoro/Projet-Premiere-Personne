@@ -26,7 +26,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     {
 
         // Test Ouvrir Album
-        if(Input.GetKeyDown(KeyCode.Keypad3))
+        if(Input.GetKeyDown(KeyCode.Tab))
         {
              if (!Album.activeSelf)
             {

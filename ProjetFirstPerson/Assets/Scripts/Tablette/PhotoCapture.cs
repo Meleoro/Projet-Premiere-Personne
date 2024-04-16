@@ -12,6 +12,7 @@ public class PhotoCapture : MonoBehaviour
     [SerializeField] private CameraComponent cameraComponent;
     [SerializeField] private UIManager uiManager;
     [SerializeField] private BoardMenu boardMenu;
+    [SerializeField] private CameraTestEthan cameraTestEthan;
 
     [Header("Photo Taker")]
     [SerializeField] private Image photoDisplayArea;
@@ -47,7 +48,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0) && cameraTestEthan.isIn)
         {
             if(!viewingPhoto)
             {

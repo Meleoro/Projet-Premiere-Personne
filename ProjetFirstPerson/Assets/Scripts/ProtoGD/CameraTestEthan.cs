@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CameraTestEthan : MonoBehaviour
 {
+    [SerializeField] UIManager uIManager; 
     public bool isIn;
     public bool isMenu;
     public bool canInOut;
@@ -16,7 +17,7 @@ public class CameraTestEthan : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && !uIManager.isUIActive)
         {
             if (canInOut)
             {
