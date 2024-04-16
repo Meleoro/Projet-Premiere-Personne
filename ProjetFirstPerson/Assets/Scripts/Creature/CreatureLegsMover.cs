@@ -177,7 +177,7 @@ namespace Creature
                 if(wantedY != 0)
                     currentLeg.target.position = new Vector3(currentLeg.target.position.x, wantedY, currentLeg.target.position.z);
 
-                yield return new WaitForSeconds(Time.deltaTime);
+                yield return null;
             }
 
             currentLeg.timerCooldownMove = 0.05f;

@@ -8,7 +8,8 @@ public class Waypoint : MonoBehaviour
     public float waitTimer;
     public float roationAngleY;
     public WaypointAction waypointAction;
-
+    public float timeBeforeWaypointAction;
+    public float timeWaypointAction;
     
     
     private void OnDrawGizmos()
@@ -22,5 +23,6 @@ public class Waypoint : MonoBehaviour
 
 public enum WaypointAction
 {
-    PourLeMomentYenAPas
+    None,
+    LookLeftThenRight
 }

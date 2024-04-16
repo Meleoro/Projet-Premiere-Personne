@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using IK;
 using UnityEngine;
 
 namespace Creature
@@ -18,13 +19,15 @@ namespace Creature
 
         [Header("Private Infos")]
         private bool stoppedNormalBehavior;
+        private bool didWaypointAction;
         private float currentAnger;
         private Waypoint currentWaypoint;
         private int currentIndex;
         private float waitTimer;
         private Vector3 placeToGo;
 
-        [Header("References")]
+        [Header("References")] 
+        [SerializeField] private HeadIK headIKScript;
         private CreatureMover creatureMoverScript;
         private CreatureManager mainScript;
 
@@ -71,9 +74,22 @@ namespace Creature
             waitTimer += Time.deltaTime;
             creatureMoverScript.forcedRot = Vector3.forward.RotateDirection(currentWaypoint.roationAngleY, Vector3.up);
 
+            if (waitTimer > currentWaypoint.timeBeforeWaypointAction && !didWaypointAction)
+            {
+                didWaypointAction = true;
+
+                switch (currentWaypoint.waypointAction)
+                {
+                    case WaypointAction.LookLeftThenRight :
+                        StartCoroutine(headIKScript.LookLeftThenRight(currentWaypoint.timeWaypointAction));
+                        break;
+                }
+            }
+            
             if(waitTimer > currentWaypoint.waitTimer)
             {               
                 creatureMoverScript.forcedRot = Vector3.zero;
+                didWaypointAction = false;
 
                 NextWaypoint();
             }
@@ -97,11 +113,13 @@ namespace Creature
         private void ReachedPlaceToGo()
         {
             waitTimer += Time.deltaTime;
-
+            
             if(waitTimer > suspicionWaitDuration)
             {
                 RestartWaypointBehavior();
                 creatureMoverScript.forcedRot = Vector3.zero;
+
+                didWaypointAction = false;
 
                 mainScript.currentState = CreatureState.none;
             }
