@@ -9,6 +9,7 @@ namespace IK
     {
         [Header("Parameters")] 
         [SerializeField] private bool inverseArticulation;
+        [SerializeField] private float articulationXRotMultiplicator;
     
         [Header("Private Infos")]
         private float l1;
@@ -65,15 +66,25 @@ namespace IK
         }
 
 
-        private void ApplyIK2(Transform jointA, Transform jointB, bool inverse)
+        private void ApplyIK2(Transform jointA, Transform jointB, bool inverse, bool getLocalTarget = true)
         {
+            // We get the difference in the local space 
+            Vector3 localTargetPos = target.position;
+            if (getLocalTarget)
+            {
+                Vector3 targetTranslatedPos = transformRotTrRef.InverseTransformVector(jointA.position - target.position);
+                localTargetPos = transformRotTrRef.InverseTransformPoint(target.position);
+                localTargetPos = localTargetPos + new Vector3(targetTranslatedPos.x, 0, 0);
+                localTargetPos = transformRotTrRef.TransformPoint(localTargetPos);
+            }
+            
             // We calculate the lengthes of the sides of the triangle
             float lA = Vector3.Distance(jointA.position, jointB.position);
             float lB = Vector3.Distance(jointB.position, effector.position);
-            float lC = Vector3.Distance(jointA.position, target.position);
+            float lC = Vector3.Distance(jointA.position, localTargetPos);
 
             // We get the direction from the origin joint to the target in world space and local space
-            Vector3 dif = (jointA.position - target.position);
+            Vector3 dif = (jointA.position - localTargetPos);
             Vector3 localDif = joint0.InverseTransformDirection(dif).normalized;
 
 
@@ -128,11 +139,9 @@ namespace IK
             Vector3 dif = transformRotTrRef.InverseTransformVector(joint0.position - target.position);
 
             dif.x = Mathf.Clamp(dif.x, -0.4f, 0.4f);
-            
-            float multiplicator = -25f;
 
-            joint0.localEulerAngles = new Vector3(offset1.x - dif.x * multiplicator, joint0.localEulerAngles.y, joint0.localEulerAngles.z);
-            joint1.localEulerAngles = new Vector3(offset2.x + dif.x * multiplicator, joint1.localEulerAngles.y, joint1.localEulerAngles.z);
+            joint0.localEulerAngles = new Vector3(offset1.x - dif.x * articulationXRotMultiplicator, joint0.localEulerAngles.y, joint0.localEulerAngles.z);
+            joint1.localEulerAngles = new Vector3(offset2.x + dif.x * articulationXRotMultiplicator, joint1.localEulerAngles.y, joint1.localEulerAngles.z);
         }
 
 

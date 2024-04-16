@@ -129,8 +129,8 @@ namespace IK
             currentZRotateBodyBack = Mathf.Lerp(currentZRotateBodyBack, backAveragePos.y, Time.deltaTime * 4);
 
 
-            bodyJoint.localEulerAngles = new Vector3(saveOffset1.x - currentXRotateBodyFront * 4, bodyJoint.localEulerAngles.y, saveOffset1.z + currentZRotateBodyFront);
-            backJoint.localEulerAngles = new Vector3(saveOffset2.x - currentXRotateBodyBack * 4, backJoint.localEulerAngles.y, saveOffset2.z + currentZRotateBodyBack);
+            bodyJoint.localEulerAngles = new Vector3(saveOffset1.x - currentXRotateBodyFront * 0, bodyJoint.localEulerAngles.y, saveOffset1.z + currentZRotateBodyFront);
+            backJoint.localEulerAngles = new Vector3(saveOffset2.x - currentXRotateBodyBack * 0, backJoint.localEulerAngles.y, saveOffset2.z + currentZRotateBodyBack);
         }
     }
 }
