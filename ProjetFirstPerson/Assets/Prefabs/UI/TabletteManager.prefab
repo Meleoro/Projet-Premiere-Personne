@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1307635272712519742
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1801806392490501843}
+  - component: {fileID: 2687749248343995860}
+  - component: {fileID: 7756654501049681333}
+  m_Layer: 0
+  m_Name: TabletteManager
+  m_TagString: Board
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1801806392490501843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307635272712519742}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2687749248343995860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307635272712519742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa0122a16b04da439993985fe6cd747, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraComponent: {fileID: 0}
+  uiManager: {fileID: 0}
+  boardMenu: {fileID: 7756654501049681333}
+  photoDisplayArea: {fileID: 0}
+  photoFrame: {fileID: 0}
+  cameraUI: {fileID: 0}
+  player: {fileID: 0}
+  MyPhotos: []
+  Album: {fileID: 0}
+  SlotAlbum: {fileID: 2998959286247045241, guid: 2b6e007b70224a14483c430550f876b3,
+    type: 3}
+--- !u!114 &7756654501049681333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307635272712519742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54ef50f575a4e8d429b2988155a5ae70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listBoardElement:
+  - {fileID: 0}
+  MyBoard: {fileID: 0}
+  currentSelect: {fileID: 0}
+  isRotating: 0
+  mousePos: {x: 0, y: 0, z: 0}
+  Arrow: {fileID: 5802686827026973106, guid: 0e509062e4cfde24583c318970885598, type: 3}
+  isCreateArrow: 0
