@@ -199,7 +199,6 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
 
     private void HelpInSlope()
     {
-        Debug.Log(12);
         rb.AddForce(Vector3.up * (slopHelpStrength * Time.fixedDeltaTime), ForceMode.Acceleration);
     }
 
