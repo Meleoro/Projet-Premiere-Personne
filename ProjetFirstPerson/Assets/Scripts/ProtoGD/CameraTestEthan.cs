@@ -17,23 +17,25 @@ public class CameraTestEthan : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && !uIManager.isUIActive)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && !uIManager.isUIActive)
         {
             if (canInOut)
             {
-                if (!isIn)
-                {
-                    isIn = !isIn;
-                    anim.SetBool("in",true);
-                    StartCoroutine(WaitForUI());
-                }
-                else
-                {
-                    isIn = !isIn;
-                    anim.SetBool("in",false);
-                    StartCoroutine(WaitForUI());
-                }
-
+                isIn = !isIn;
+                anim.SetBool("in",true);
+                StartCoroutine(WaitForUI());
+            }
+        }
+        
+        if (Input.GetKeyUp(KeyCode.Mouse1) && !uIManager.isUIActive)
+        {
+            if (canInOut)
+            {
+                isIn = !isIn;
+                anim.SetBool("in",false);
+                UI.SetActive(false);
+                StopCoroutine(WaitForUI());
+                UI.SetActive(false);
             }
         }
 
@@ -69,7 +71,7 @@ public class CameraTestEthan : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(0.1f);
+            StopCoroutine(WaitForUI());
             UI.SetActive(false);
         }
     }
