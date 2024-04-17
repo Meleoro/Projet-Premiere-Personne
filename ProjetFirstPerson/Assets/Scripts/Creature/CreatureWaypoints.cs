@@ -20,6 +20,7 @@ namespace Creature
         [Header("Private Infos")]
         private bool stoppedNormalBehavior;
         private bool didWaypointAction;
+        private bool isDoingSpecialAction;
         private float currentAnger;
         private Waypoint currentWaypoint;
         private int currentIndex;
@@ -116,11 +117,10 @@ namespace Creature
             
             if(waitTimer > suspicionWaitDuration)
             {
-                RestartWaypointBehavior();
+                StartCoroutine(StopLookLeftRight(2.5f));
+                
                 creatureMoverScript.forcedRot = Vector3.zero;
-
                 didWaypointAction = false;
-
                 mainScript.currentState = CreatureState.none;
             }
         }
@@ -167,6 +167,26 @@ namespace Creature
 
             placeToGo = suspicousPlace;
             creatureMoverScript.wantedPos = suspicousPlace;
+        }
+        
+        
+        public IEnumerator StopLookLeftRight(float lookDuration)
+        {
+            if(isDoingSpecialAction)
+                yield break;
+            
+            isDoingSpecialAction = true;
+            
+            placeToGo = transform.position;
+            creatureMoverScript.wantedPos = transform.position;
+
+            StartCoroutine(headIKScript.LookLeftThenRight(lookDuration));
+            
+            yield return new WaitForSeconds(lookDuration * 1.2f);
+            
+            isDoingSpecialAction = false;
+            
+            RestartWaypointBehavior();
         }
 
 
