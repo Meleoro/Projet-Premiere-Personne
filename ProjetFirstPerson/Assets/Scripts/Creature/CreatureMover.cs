@@ -20,7 +20,7 @@ namespace Creature
 
         [Header("Public Infos")]
         [HideInInspector] public Vector3 wantedPos;
-        public Vector3 forcedRot;
+        [HideInInspector] public Vector3 forcedRot;
 
         [Header("Private Infos")] 
         private float addedForceY;
@@ -30,6 +30,7 @@ namespace Creature
         private Vector3 originalLegsPos;
         private Vector3 currentLegsAverageLerp;
         private bool goDown;
+        private bool stopMoving;
 
         [Header("References")] 
         [SerializeField] private BodyIK bodyIKScript;
@@ -50,6 +51,8 @@ namespace Creature
 
         public void ComponentUpdate()
         {
+            if (stopMoving) return;
+            
             SetNextPos();
             ManageRotation();
 
@@ -157,5 +160,18 @@ namespace Creature
         }
 
         #endregion
+
+
+        public void StopMoving()
+        {
+            navMeshAgent.SetDestination(transform.position);
+            stopMoving = true;
+        }
+
+        public void RestartMoving()
+        {
+            SetNextPos();
+            stopMoving = false;
+        }
     }
 }
