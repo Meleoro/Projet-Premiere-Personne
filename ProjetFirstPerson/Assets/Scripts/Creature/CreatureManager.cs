@@ -114,6 +114,7 @@ namespace Creature
         {
             Vector3 currentDir = -mainRotationJoint.right;
             currentDir = Quaternion.Euler(-visionRadiusX * 0.5f, -visionRadiusY * 0.5f, 0) * currentDir;
+            UIManager.Instance.isInCreatureView = false;
             
             for (int x = 0; x < visionRadiusX; x+=4)
             {
@@ -127,6 +128,7 @@ namespace Creature
                         if (hit.collider.CompareTag("Player") && !CharacterManager.Instance.isHidden)
                         {
                             currentSuspicion += Time.deltaTime * suspisionAddedView;
+                            UIManager.Instance.isInCreatureView = true;
 
                             return;
                         }
