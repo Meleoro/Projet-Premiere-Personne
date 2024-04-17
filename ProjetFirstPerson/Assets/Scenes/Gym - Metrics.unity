@@ -14105,6 +14105,11 @@ PrefabInstance:
       objectReference: {fileID: 2030511054}
     - target: {fileID: 2687749248343995860, guid: 79f587480a16a114881d28c943369895,
         type: 3}
+      propertyPath: tabletteFrame
+      value: 
+      objectReference: {fileID: 2125568845}
+    - target: {fileID: 2687749248343995860, guid: 79f587480a16a114881d28c943369895,
+        type: 3}
       propertyPath: cameraComponent
       value: 
       objectReference: {fileID: 866605676}
@@ -35173,6 +35178,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1263390989143193234, guid: f8d56d4418536e94d8359b5d330e77ee,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1827609242}
+    - target: {fileID: 1263390989143193234, guid: f8d56d4418536e94d8359b5d330e77ee,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AddElementOnBoard
+      objectReference: {fileID: 0}
     - target: {fileID: 4061049558806259412, guid: f8d56d4418536e94d8359b5d330e77ee,
         type: 3}
       propertyPath: m_Name
@@ -35182,6 +35197,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7149768637429895615, guid: f8d56d4418536e94d8359b5d330e77ee,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1827609242}
+    - target: {fileID: 7149768637429895615, guid: f8d56d4418536e94d8359b5d330e77ee,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AddBackgroundOnBoard
+      objectReference: {fileID: 0}
+    - target: {fileID: 7411461753902399124, guid: f8d56d4418536e94d8359b5d330e77ee,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1827609242}
+    - target: {fileID: 7411461753902399124, guid: f8d56d4418536e94d8359b5d330e77ee,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AddArrowOnBoardMode
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -55676,6 +55711,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8729aaa48bb3eec4d8e159297a448f98, type: 3}
+--- !u!114 &1827609242 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7756654501049681333, guid: 79f587480a16a114881d28c943369895,
+    type: 3}
+  m_PrefabInstance: {fileID: 488595365}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54ef50f575a4e8d429b2988155a5ae70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1830407463
 GameObject:
   m_ObjectHideFlags: 0
@@ -65084,6 +65131,12 @@ Transform:
   - {fileID: 1366013663}
   m_Father: {fileID: 402609663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2125568845 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8740965811557159211, guid: c95f2f9fcecbba643a30eaf70d80938b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1661102130}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2130425794
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -122,4 +122,8 @@ public class BoardMenu : MonoBehaviour
     {
         isCreateArrow = true;
     }
+    public void DeleteElement(GameObject parent)
+    {
+        Destroy(parent);
+    }
 }

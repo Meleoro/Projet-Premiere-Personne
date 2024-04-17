@@ -3363,6 +3363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38589c97caed97044a07df885d3c864c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isCrouching: 0
   parentTransform: {fileID: 0}
 --- !u!1 &331149579
 GameObject:
@@ -4345,9 +4346,11 @@ MonoBehaviour:
   cameraComponent: {fileID: 1618496321}
   uiManager: {fileID: 1081356909}
   boardMenu: {fileID: 497032878}
+  cameraTestEthan: {fileID: 1618496323}
   photoDisplayArea: {fileID: 261804214}
   photoFrame: {fileID: 1725391333}
   cameraUI: {fileID: 1081356907}
+  tabletteFrame: {fileID: 946820296}
   player: {fileID: 790010701}
   MyPhotos: []
   Album: {fileID: 1628886509}
@@ -7536,6 +7539,12 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &946820296 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8740965811557159211, guid: c95f2f9fcecbba643a30eaf70d80938b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1791582374}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &948205176
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9938,6 +9947,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentNoiseType: 0
+  isHidden: 0
+  isInSneakZone: 0
 --- !u!114 &1372626072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9965,6 +9976,9 @@ MonoBehaviour:
   doFOVEffect: 1
   addedFOVMax: 10
   FOVLerpSpeed: 9
+  canRotate: 0
+  canMove: 0
+  isCrouching: 0
   wantedCameraPos: {fileID: 1176570732}
   characterCamera: {fileID: 1128338940}
 --- !u!114 &1372626073
@@ -9981,6 +9995,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 3
   walkAcceleration: 1000
+  canMove: 0
   canRun: 1
   runSpeed: 6.5
   runAcceleration: 1500
@@ -9988,7 +10003,8 @@ MonoBehaviour:
   crouchSpeed: 0
   crouchAcceleration: 0
   isRunning: 0
-  isCrouching: 0
+  disableRun: 0
+  currentSpeedModifier: 0
   currentVelocity: {x: 0, y: 0, z: 0}
   rb: {fileID: 1372626074}
   wantedCamPos: {fileID: 1176570732}
@@ -12055,6 +12071,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 444201ff6defe0f4884d0612b00929ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1618496323 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4900164842620828014, guid: c95f2f9fcecbba643a30eaf70d80938b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1791582374}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e661c698033e4de45afd8aef28e6c632, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1628886509 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3028113808656863449, guid: 2ba2afa95ac962b43845d059d8c9fc0f,
@@ -13040,6 +13068,11 @@ PrefabInstance:
       propertyPath: cameraComponent
       value: 
       objectReference: {fileID: 1618496321}
+    - target: {fileID: 4900164842620828014, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: uIManager
+      value: 
+      objectReference: {fileID: 1081356909}
     - target: {fileID: 5914368939120287252, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_Name
