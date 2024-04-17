@@ -54,7 +54,6 @@ namespace Creature
             ManageRotation();
 
             AdaptHeightBody();
-            //AdaptJointsRotations();
             AdaptSpeedWhenRotation();
         }
 
@@ -117,7 +116,7 @@ namespace Creature
 
 
         #region NATURAL MOVEMENT
-
+        
         private void AdaptHeightBody()
         {
             float legModificatorY = 0;
@@ -149,58 +148,7 @@ namespace Creature
                 transformToRotate.position += transformToRotate.up * (addedForceY * Time.deltaTime);
             }
         }
-
-
-        private float currentXRotateBodyFront;
-        private float currentZRotateBodyFront;
-        private float currentXRotateBodyBack;
-        private float currentZRotateBodyBack;
-        private void AdaptJointsRotations()
-        {
-            Vector3 frontAveragePos = Vector3.zero;
-            Vector3 backAveragePos = Vector3.zero;
-            
-            for (int i = 0; i < legsScript.legs.Count; i++)
-            {
-                if (legsScript.legs[i].isMoving)
-                {
-                    if (legsScript.legs[i].isFrontLeg)
-                    {
-                        Vector3 dif = legsScript.legs[i].originalPos - bodyIKScript.bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position);
-
-                        if (bodyIKScript.bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position).z < 0)
-                        {
-                            frontAveragePos += new Vector3(-dif.y, dif.y, dif.z);
-                        }
-                        
-                        else
-                            frontAveragePos += new Vector3(dif.y, dif.y, dif.z);
-                    }
-                    else
-                    {
-                        Vector3 dif = legsScript.legs[i].originalPos - bodyIKScript.bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position);
-                        
-                        if(bodyIKScript.bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position).z < 0)
-                            backAveragePos += new Vector3(-dif.y, dif.y, dif.z);
-                        
-                        else
-                            backAveragePos += new Vector3(dif.y, dif.y, dif.z);
-                    }
-                }
-            }
-
-            currentXRotateBodyFront = Mathf.Lerp(currentXRotateBodyFront, frontAveragePos.x, Time.deltaTime * 8);
-            currentZRotateBodyFront = Mathf.Lerp(currentZRotateBodyFront, frontAveragePos.y, Time.deltaTime * 8);
-            
-            currentXRotateBodyBack = Mathf.Lerp(currentXRotateBodyBack, backAveragePos.x, Time.deltaTime * 8);
-            currentZRotateBodyBack = Mathf.Lerp(currentZRotateBodyBack, backAveragePos.y, Time.deltaTime * 8);
-            
-            
-            bodyIKScript.bodyJoint.localRotation = Quaternion.Euler(currentXRotateBodyFront * 5, bodyIKScript.bodyJoint.localEulerAngles.y, currentZRotateBodyFront + 10);
-            bodyIKScript.backTransform.localRotation = Quaternion.Euler(currentXRotateBodyBack * 5, bodyIKScript.backTransform.localEulerAngles.y, currentZRotateBodyBack);
-        }
-
-
+        
         private void AdaptSpeedWhenRotation()
         {
             float currentRotationDif = bodyIKScript.currentRotationDif;
