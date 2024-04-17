@@ -35,7 +35,8 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     public bool canMove;
 
     [Header("Public infos")] 
-    [HideInInspector] public bool isCrouching;
+    [HideInInspector] public Vector3 tiltPosAddedPos;
+    [HideInInspector] public Vector3 tiltRotAddedPos;
     
     [Header("Private Infos")] 
     private Vector2 inputDirection;
@@ -45,10 +46,11 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     private bool moveFeelGoDown;
     private Coroutine upDownCoroutine;
     private float crouchModifierY;
+    private bool lockCamera;
     
     [Header("References")] 
     public Transform wantedCameraPos;
-    [SerializeField] private Transform characterCamera;
+    public Transform characterCamera;
     
     
 
@@ -89,7 +91,8 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
 
     public void ComponentLateUpdate()
     {
-        ActualiseInputs();
+        if(!lockCamera)
+            ActualiseInputs();
         
         if(canMove)
             MoveCamera();
@@ -104,7 +107,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     // MOVES THE CAMERA
     private void MoveCamera()
     {
-        characterCamera.position = Vector3.Lerp(characterCamera.position, wantedCameraPos.position + new Vector3(0, crouchModifierY, 0), Time.deltaTime * 50);
+        characterCamera.position = Vector3.Lerp(characterCamera.position, wantedCameraPos.position + new Vector3(0, crouchModifierY, 0) + tiltPosAddedPos, Time.deltaTime * 50);
     }
 
     // ROTATES THE CAMERA
@@ -114,12 +117,12 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
         {
             lerpedRotation = Vector2.Lerp(lerpedRotation, currentRotation, lerpSpeed * Time.deltaTime);
             
-            characterCamera.rotation = Quaternion.Euler(lerpedRotation.x, lerpedRotation.y, 0);
+            characterCamera.rotation = Quaternion.Euler(lerpedRotation.x, lerpedRotation.y, tiltRotAddedPos.z);
             wantedCameraPos.rotation = Quaternion.Euler(0, lerpedRotation.y, 0);
         }
         else
         {
-            characterCamera.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, 0);
+            characterCamera.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, tiltRotAddedPos.z);
             wantedCameraPos.rotation = Quaternion.Euler(0, lerpedRotation.y, 0);
         }
     }
@@ -188,7 +191,6 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     public IEnumerator Crouch(float YModifier, float crouchDuration)
     {
         crouchTimer = 0;
-        isCrouching = true;
         float save = crouchModifierY;
         
         while (crouchTimer < crouchDuration)
@@ -199,8 +201,17 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
             
             yield return new WaitForSeconds(Time.deltaTime);
         }
-        
-        isCrouching = false;
     }
     #endregion
+
+
+    public void StartTilting()
+    {
+        lockCamera = true;
+    }
+
+    public void StopTilting()
+    {
+        lockCamera = false;
+    }
 }
