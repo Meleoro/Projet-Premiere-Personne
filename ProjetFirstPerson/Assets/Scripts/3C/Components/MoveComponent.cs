@@ -17,10 +17,10 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     [ShowIf("canRun")] [SerializeField] private float runSpeed;
     [ShowIf("canRun")] [SerializeField] private float runAcceleration;
 
-    [Header("Crouch Parameters")] 
-    [SerializeField] private bool canCrouch;
-    [ShowIf("canCrouch")] [SerializeField] private float crouchSpeed;
-    [ShowIf("canCrouch")] [SerializeField] private float crouchAcceleration;
+    [Header("Gravity Parameters")] 
+    [SerializeField] private float gravityStrength;
+    [SerializeField] private float slopHelpStrength;
+    [SerializeField] private float groundRaycastDist;
 
     [Header("Public Infos")] 
     [HideInInspector] public bool isRunning;
@@ -33,6 +33,8 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     private float currentSpeed;
     private float currentAcceleration;
     private float addedSpeed;
+    private bool isOnGround;
+    private bool isInSlope;
 
     [Header("References")] 
     [SerializeField] private Rigidbody rb;
@@ -86,7 +88,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
 
     public void ComponentFixedUpdate()
     {
-        
+        GravityUpdate();
     }
 
     public void ComponentLateUpdate()
@@ -95,7 +97,9 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     }
 
     #endregion
+
     
+    #region Base Movement Functions
 
     // ACTUALISE THE MOVE DIRECTION INPUT AND THE CURRENT SPEED ACCORDING TO IF THE PLAYER WANTS TO RUN OR NOT
     private void ManageInputs()
@@ -162,4 +166,42 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
 
         addedSpeed = 0;
     }
+
+    #endregion
+
+
+    #region Gravity Functions
+
+    private void GravityUpdate()
+    {
+        VerifyCurrentState();
+        
+        if(!isOnGround) ApplyGravity();
+        if(isInSlope) HelpInSlope();
+    }
+    
+    private void VerifyCurrentState()
+    {
+        RaycastHit hitInfo;
+        isOnGround = Physics.Raycast(transform.position, Vector3.down, out hitInfo, groundRaycastDist,
+            LayerManager.Instance.groundLayer);
+
+        if (isOnGround)
+        {
+            isInSlope = Vector3.Angle(hitInfo.normal, Vector3.up) > 20;
+        }
+    }
+
+    private void ApplyGravity()
+    {
+        rb.AddForce(Vector3.down * (gravityStrength * Time.fixedDeltaTime), ForceMode.Acceleration);
+    }
+
+    private void HelpInSlope()
+    {
+        Debug.Log(12);
+        rb.AddForce(Vector3.up * (slopHelpStrength * Time.fixedDeltaTime), ForceMode.Acceleration);
+    }
+
+    #endregion
 }
