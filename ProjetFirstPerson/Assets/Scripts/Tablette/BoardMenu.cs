@@ -21,12 +21,7 @@ public class BoardMenu : MonoBehaviour
     [Header("Arrow Variable")]
     [SerializeField] private GameObject Arrow;
     public bool isCreateArrow;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -68,7 +63,7 @@ public class BoardMenu : MonoBehaviour
         {
             mousePos = Input.mousePosition;
         }
-        if(Input.GetKey(KeyCode.Mouse1))
+        if(Input.GetKey(KeyCode.Mouse1) && UIManager.Instance.isUIActive)
         {
             if(currentSelect != null)
             {
@@ -78,7 +73,7 @@ public class BoardMenu : MonoBehaviour
                 Cursor.visible = false;
             }
         }
-        if(Input.GetKeyUp(KeyCode.Mouse1))
+        if(Input.GetKeyUp(KeyCode.Mouse1) && UIManager.Instance.isUIActive)
         {
                 isRotating = false;
                 Cursor.visible = true;
@@ -121,5 +116,9 @@ public class BoardMenu : MonoBehaviour
     public void AddArrowOnBoardMode()
     {
         isCreateArrow = true;
+    }
+    public void DeleteElement(GameObject parent)
+    {
+        Destroy(parent);
     }
 }

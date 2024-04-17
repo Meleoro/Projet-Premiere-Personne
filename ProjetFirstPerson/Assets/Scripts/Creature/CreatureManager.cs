@@ -160,7 +160,8 @@ namespace Creature
                 if(currentSuspicion <= 0)
                 {
                     currentState = CreatureState.none;
-                    waypointsScript.RestartWaypointBehavior();
+
+                    StartCoroutine(waypointsScript.StopLookLeftRight(2.5f));
                 }
             }
         }

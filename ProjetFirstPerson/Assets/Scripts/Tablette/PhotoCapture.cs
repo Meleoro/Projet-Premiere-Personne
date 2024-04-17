@@ -18,6 +18,7 @@ public class PhotoCapture : MonoBehaviour
     [SerializeField] private Image photoDisplayArea;
     [SerializeField] private GameObject photoFrame;
     [SerializeField] private GameObject cameraUI;
+    [SerializeField] private GameObject tabletteFrame;
     private Texture2D screenCapture;
     private bool viewingPhoto;
 
@@ -66,6 +67,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         if(!uiManager.isUIActive)
         {
             cameraUI.SetActive(false);
+            tabletteFrame.SetActive(false);
             viewingPhoto = true;
 
             yield return new WaitForEndOfFrame();
@@ -93,6 +95,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         viewingPhoto = false;
         photoFrame.SetActive(false);
         cameraUI.SetActive(true);
+        tabletteFrame.SetActive(true);
     }
 
     void SaveScreenShot()
