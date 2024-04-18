@@ -117,9 +117,9 @@ namespace Creature
             
             Vector3 targetTranslatedPos = transformRef.InverseTransformVector(currentLeg.origin.position - currentLeg.target.position);
             Vector3 saveOriginalRot = transformRef.localEulerAngles;
-            transformRef.localEulerAngles = new Vector3(0, Mathf.Atan2(targetTranslatedPos.z, -targetTranslatedPos.x) * Mathf.Rad2Deg, 0);
-                
-                
+            transformRef.localEulerAngles = new Vector3(0, Mathf.Atan2(targetTranslatedPos.z, targetTranslatedPos.x) * Mathf.Rad2Deg, 0);
+            
+            
             Vector3 raycastDir = transformRef.InverseTransformDirection(Vector3.down).RotateDirection(45, Vector3.right);
 
             float currentMax = 0;

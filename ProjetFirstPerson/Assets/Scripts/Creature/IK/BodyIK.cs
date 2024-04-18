@@ -46,6 +46,17 @@ namespace IK
             Vector3 dif = backJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
             
+            // To avoid too much abrupt body rotations
+            if (atan < -80f && currentAtanBack > 80f)
+                currentAtanBack -= 360f;
+            else if (currentAtanBack < -80f && atan > 80f)
+                currentAtanBack += 360f;
+            
+            if (atan < -80f && currentAtan > 80f)
+                currentAtan -= 360f;
+            else if (currentAtan < -80f && atan > 80f)
+                currentAtan += 360f;
+            
             // Back Part
             currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * 2f * rotationSpeed);
 
