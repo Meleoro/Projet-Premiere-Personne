@@ -120,7 +120,7 @@ namespace Creature
             {
                 for (int y = 0; y < visionRadiusX; y+=4)
                 {
-                    Debug.DrawLine(mainRotationJoint.position, mainRotationJoint.position + currentDir * visionRange, Color.cyan, 0.1f);
+                    //Debug.DrawLine(mainRotationJoint.position, mainRotationJoint.position + currentDir * visionRange, Color.cyan, 0.1f);
 
                     if (Physics.Raycast(mainRotationJoint.position, currentDir, out RaycastHit hit, visionRange,
                             LayerManager.Instance.playerGroundLayer))
