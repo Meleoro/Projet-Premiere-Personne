@@ -37,7 +37,8 @@ namespace Creature
             
             for (int i = 0; i < legsTargets.Count; i++)
             {
-                legs.Add(new Leg(legsTargets[i], legsOrigins[i], Vector3.Distance(legsOrigins[i].position, transform.position) > 1, 
+                legs.Add(new Leg(legsTargets[i], legsOrigins[i], 
+                    Vector3.Distance(legsOrigins[i].position, mainTrRotRefBack.position) > Vector3.Distance(legsOrigins[i].position, mainTrRotRefFront.position), 
                     transform.InverseTransformPoint(legsTargets[i].position)));
             }
 
