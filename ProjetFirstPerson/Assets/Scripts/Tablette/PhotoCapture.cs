@@ -55,7 +55,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
     {
         if(Input.GetMouseButtonDown(0))
         {
-            if(!viewingPhoto && cameraTestEthan.isIn)
+            if(!viewingPhoto && cameraTestEthan.isAiming)
             {
                 StartCoroutine(CapturePhoto());
             }

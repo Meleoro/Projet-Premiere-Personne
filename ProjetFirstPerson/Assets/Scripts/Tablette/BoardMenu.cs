@@ -20,6 +20,7 @@ public class BoardMenu : MonoBehaviour
 
     [Header("Arrow Variable")]
     [SerializeField] private GameObject Arrow;
+    [SerializeField] private int OffsetX, OffsetY;
     public bool isCreateArrow;
     
     // Update is called once per frame
@@ -109,8 +110,15 @@ public class BoardMenu : MonoBehaviour
 
     public void AddElementOnBoard(GameObject element)
     {
-        GameObject newElement = Instantiate(element,new Vector3(Screen.width / 2, Screen.height / 2, 0),Quaternion.identity, MyBoard.transform);
+        GameObject newElement = Instantiate(element,new Vector3(Screen.width / 2 + OffsetX, Screen.height / 2 + OffsetY, 0),Quaternion.identity, MyBoard.transform);
         listBoardElement.Add(newElement);
+        OffsetX = 0;
+        OffsetY = 0;
+        for(int i = 0 ; i <= listBoardElement.Count; i++)
+        {
+            OffsetX += 20;
+            OffsetY += 20;
+        }
     }
     public void AddBackgroundOnBoard(GameObject background)
     {
