@@ -57,6 +57,11 @@ public class BoardMenu : MonoBehaviour
 
             
         }
+        if(Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            currentSelect = null;
+            EventSystem.current.SetSelectedGameObject(null);
+        }
 
         // La rotation des objets
         if(Input.GetKeyDown(KeyCode.Mouse1))

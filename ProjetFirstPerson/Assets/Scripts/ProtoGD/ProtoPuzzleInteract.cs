@@ -17,14 +17,14 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
 
     [Header("Private Infos")] 
     public bool isInRange;
-    private MeshRenderer playerCapsule;
+    private GameObject playerCapsule;
     
     private BoxCollider _collider;
 
     private void Start()
     {
         _collider = GetComponent<BoxCollider>();
-        playerCapsule = move.transform.GetChild(0).GetComponent<MeshRenderer>();
+        playerCapsule = move.transform.GetChild(0).gameObject;
     }
 
     private void Update()
@@ -57,7 +57,8 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
         cam.LockedCursor(0);
 
         move.canMove = false;
-        playerCapsule.enabled = false;
+        playerCapsule.SetActive(false);
+        move.GetComponent<Rigidbody>().isKinematic = true;
         
         cam.doMoveFeel = false;
         cam.doFOVEffect = false;
@@ -72,9 +73,11 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
         hud.SetActive(true);
         cam.LockedCursor(2);
         _collider.enabled = true;
+        move.GetComponent<Rigidbody>().isKinematic = false;
+
 
         move.canMove = true;
-        playerCapsule.enabled = true;
+        playerCapsule.SetActive(true);
 
         
         cam.doMoveFeel = true;
