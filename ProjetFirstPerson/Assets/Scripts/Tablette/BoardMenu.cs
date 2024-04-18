@@ -45,21 +45,30 @@ public class BoardMenu : MonoBehaviour
             
             else if(EventSystem.current.currentSelectedGameObject == null)
             {
+                listBoardElement.RemoveAll(item => item == null);
                 for(int i = 0; i < listBoardElement.Count ; i++)
                  {
-                    listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().OptionPanel.SetActive(false);
+                        listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().OptionPanel.SetActive(false);
                  }
             }
 
             else
             {
                 currentSelect = EventSystem.current.currentSelectedGameObject;
+                if(currentSelect.CompareTag("MovingUI"))
+                {
+                    currentSelect.GetComponentInChildren<ElementsOfBoard>().isSelectedOneTime = true;
+                }
             }
 
             
         }
-        if(Input.GetKeyUp(KeyCode.Mouse0))
+        if(Input.GetKeyUp(KeyCode.Mouse0) && currentSelect != null)
         {
+            if(currentSelect.CompareTag("MovingUI"))
+                {
+                    currentSelect.GetComponent<ElementsOfBoard>().OptionPanel.SetActive(true);
+                }
             currentSelect = null;
             EventSystem.current.SetSelectedGameObject(null);
         }
@@ -110,15 +119,19 @@ public class BoardMenu : MonoBehaviour
 
     public void AddElementOnBoard(GameObject element)
     {
-        GameObject newElement = Instantiate(element,new Vector3(Screen.width / 2 + OffsetX, Screen.height / 2 + OffsetY, 0),Quaternion.identity, MyBoard.transform);
+        GameObject newElement = Instantiate(element,new Vector3(Screen.width / 2, Screen.height / 2, 0),Quaternion.identity, MyBoard.transform);
         listBoardElement.Add(newElement);
+        for(int i = 0 ; i < listBoardElement.Count; i++)
+        {
+            if(!listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().isSelectedOneTime)
+            {
+                OffsetX += 20;
+                OffsetY += 20;
+                listBoardElement[i].transform.position = new Vector3(Screen.width / 2 + OffsetX, Screen.height / 2 + OffsetY, 0);
+            }
+        }
         OffsetX = 0;
         OffsetY = 0;
-        for(int i = 0 ; i <= listBoardElement.Count; i++)
-        {
-            OffsetX += 20;
-            OffsetY += 20;
-        }
     }
     public void AddBackgroundOnBoard(GameObject background)
     {
