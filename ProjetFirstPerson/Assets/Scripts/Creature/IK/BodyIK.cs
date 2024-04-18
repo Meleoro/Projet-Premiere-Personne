@@ -75,6 +75,7 @@ namespace IK
             for (int i = 0; i < bodyJoints.Length; i++)
             {
                 Vector3 eulerJointBody = bodyJoints[i].eulerAngles;
+                eulerJointBody.x = 0;
                 eulerJointBody.y = backJoint.eulerAngles.y + angleAddedPerJoint * (i + 1);
                 bodyJoints[i].eulerAngles = eulerJointBody;
             }
@@ -109,6 +110,7 @@ namespace IK
             backJoint.localEulerAngles = eulerBack;
         
             Vector3 eulerJointBody = bodyJoint.eulerAngles;
+            eulerJointBody.x = 0;
             eulerJointBody.y = backJoint.eulerAngles.y + currentAtan;
             bodyJoint.eulerAngles = eulerJointBody;
         }
