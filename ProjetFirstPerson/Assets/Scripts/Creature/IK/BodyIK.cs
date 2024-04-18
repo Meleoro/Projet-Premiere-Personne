@@ -23,7 +23,6 @@ namespace IK
         [SerializeReference] public Transform[] bodyJoints;
         public Transform bodyJoint;
         public Transform backJoint;
-        public Transform backTransform;
         [SerializeField] private Transform target;
         [SerializeField] private CreatureLegsMover legsScript;
 
@@ -37,14 +36,37 @@ namespace IK
 
         private void Update()
         {
-            ApplyMainIK();
+            ApplyMainIK2();
             AdaptJointsRotations();
         }
 
 
         private void ApplyMainIK2()
         {
+            Vector3 dif = backJoint.position - target.position;
+            float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
+            
+            // Back Part
+            currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * 2f * rotationSpeed);
 
+            Vector3 eulerBack = backJoint.localEulerAngles;
+            eulerBack.y = saveOffset2.y + currentAtanBack;
+            backJoint.localEulerAngles = eulerBack;
+            
+            // Spine Part
+            currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * 6f * rotationSpeed);
+            currentAtan = Mathf.Clamp(atan - currentAtanBack, -maxRotationFrontToBack, maxRotationFrontToBack);
+            
+            currentRotationDif = currentAtan / maxRotationFrontToBack;
+
+            float angleAddedPerJoint = currentAtan / bodyJoints.Length;
+
+            for (int i = 0; i < bodyJoints.Length; i++)
+            {
+                Vector3 eulerJointBody = bodyJoints[i].eulerAngles;
+                eulerJointBody.y = backJoint.eulerAngles.y + angleAddedPerJoint * (i + 1);
+                bodyJoints[i].eulerAngles = eulerJointBody;
+            }
         }
 
         private void ApplyMainIK()
