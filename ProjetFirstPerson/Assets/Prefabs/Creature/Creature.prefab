@@ -309,8 +309,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 445799518187916645}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.04, y: -0.176, z: 0.008}
+  m_LocalRotation: {x: 0.00000002097049, y: -0.0000000020801958, z: 0.00000023841841,
+    w: 1}
+  m_LocalPosition: {x: -0.811, y: 0.013, z: -0.069}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1568,8 +1569,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inverseArticulation: 0
+  debug: 0
   articulationXRotMultiplicator: -10
   articulationXRotMax: 0
+  yEffectorOffset: 0.2
   joint0: {fileID: 1318804004532732100}
   joint1: {fileID: 5851450281433870352}
   joint2: {fileID: 0}
@@ -3573,14 +3576,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4390450397613044475}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.23200186, y: -0.23200186, z: 0.66796345, w: 0.66796345}
+  m_LocalRotation: {x: -0.20660235, y: -0.25707015, z: 0.67625105, w: 0.65872216}
   m_LocalPosition: {x: -0.50355506, y: -0.0000005340576, z: -0.00000061035155}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1611396743926906801}
   m_Father: {fileID: 5457736527957606437}
-  m_LocalEulerAnglesHint: {x: 0, y: -38.307, z: 90}
+  m_LocalEulerAnglesHint: {x: 4.33, y: -38.307, z: 90}
 --- !u!33 &8231294898834915023
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3677,8 +3680,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inverseArticulation: 1
+  debug: 0
   articulationXRotMultiplicator: 15
   articulationXRotMax: 0
+  yEffectorOffset: 0
   joint0: {fileID: 8287600910386240132}
   joint1: {fileID: 835283100877204631}
   joint2: {fileID: 5740538530349526084}
@@ -4989,8 +4994,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inverseArticulation: 1
+  debug: 0
   articulationXRotMultiplicator: 15
   articulationXRotMax: 0
+  yEffectorOffset: 0
   joint0: {fileID: 7135503675190779750}
   joint1: {fileID: 4948167984458659776}
   joint2: {fileID: 6392672709711153518}
@@ -5033,8 +5040,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1.000001, z: 0.999999}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 181603399661538522}
   - {fileID: 8758860532571883213}
+  - {fileID: 181603399661538522}
   m_Father: {fileID: 1318804004532732100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -78.67}
 --- !u!33 &8628192385963256503
@@ -5793,15 +5800,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7278824207696831012}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.056169655, y: 0.061847724, z: -0.6699582, w: 0.7376828}
+  m_LocalRotation: {x: -0.027745698, y: 0.08757859, z: -0.6718417, w: 0.7349755}
   m_LocalPosition: {x: -0.939548, y: -0.0000059509275, z: 0.0000029373168}
   m_LocalScale: {x: 1.000001, y: 0.999998, z: 1.000001}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 441021637298717050}
   - {fileID: 691786766184419222}
+  - {fileID: 441021637298717050}
   m_Father: {fileID: 5096052581927653034}
-  m_LocalEulerAnglesHint: {x: 0, y: 9.585, z: -84.491}
+  m_LocalEulerAnglesHint: {x: 4.41, y: 9.585, z: -84.491}
 --- !u!33 &7503457122658514141
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6397,8 +6404,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inverseArticulation: 0
+  debug: 1
   articulationXRotMultiplicator: -10
   articulationXRotMax: 0
+  yEffectorOffset: 0.2
   joint0: {fileID: 5096052581927653034}
   joint1: {fileID: 1611396743926906801}
   joint2: {fileID: 0}
@@ -6742,8 +6751,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8216336780498688412}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.005, y: -0.141, z: -0.054}
+  m_LocalRotation: {x: 0.000000040978154, y: 0.00000007078045, z: -0.00000017695112,
+    w: 1}
+  m_LocalPosition: {x: -0.807, y: -0.025, z: -0.034}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

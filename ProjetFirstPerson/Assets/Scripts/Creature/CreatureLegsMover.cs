@@ -165,6 +165,7 @@ namespace Creature
             Vector3 startPos = transform.InverseTransformPoint(currentLeg.target.position);
             Vector3 localEnd = transform.InverseTransformPoint(endPos);
             float timer = 0;
+            RaycastHit hit;
 
             while (timer < legMoveDuration)
             {
@@ -172,7 +173,7 @@ namespace Creature
                 
                 float wantedY = 0;
                 float addedY = movementY.Evaluate(timer / legMoveDuration);
-                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out RaycastHit hit, 2f,
+                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 2f,
                         LayerManager.Instance.groundLayer))
                 {
                     wantedY = hit.point.y + addedY;
@@ -187,6 +188,13 @@ namespace Creature
 
                 yield return null;
             }
+            
+            if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 2f,
+                    LayerManager.Instance.groundLayer))
+            {
+                currentLeg.target.position = hit.point;
+            }
+            //currentLeg.target.position = transform.TransformPoint(localEnd);
 
             currentLeg.timerCooldownMove = 0.05f;
             currentLeg.isMoving = false;

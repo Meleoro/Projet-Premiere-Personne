@@ -9,8 +9,10 @@ namespace IK
     {
         [Header("Parameters")] 
         [SerializeField] private bool inverseArticulation;
+        [SerializeField] private bool debug;
         [SerializeField] private float articulationXRotMultiplicator;
         [SerializeField] private float articulationXRotMax;
+        [SerializeField] private float yEffectorOffset;
     
         [Header("Private Infos")]
         private float l1;
@@ -19,6 +21,7 @@ namespace IK
         private Vector3 offset2;
         private Vector3[] footOffsetsLocal;
         private Vector3[] footOffsetsWorld;
+        private Vector3 effectorSaveLocalPos;
         
         [Header("References")]
         [SerializeField] private Transform joint0;
@@ -82,10 +85,13 @@ namespace IK
             // We calculate the lengthes of the sides of the triangle
             float lA = Vector3.Distance(jointA.position, jointB.position);
             float lB = Vector3.Distance(jointB.position, effector.position);
-            float lC = Vector3.Distance(jointA.position, localTargetPos);
+            float lC = Vector3.Distance(jointA.position, localTargetPos + new Vector3(0, yEffectorOffset, 0));
+            
+            if(debug)
+                Debug.DrawLine(localTargetPos, localTargetPos + new Vector3(0, yEffectorOffset, 0));
 
             // We get the direction from the origin joint to the target in world space and local space
-            Vector3 dif = (jointA.position - localTargetPos);
+            Vector3 dif = (jointA.position - (localTargetPos + new Vector3(0, yEffectorOffset, 0)));
             Vector3 localDif = joint0.InverseTransformDirection(dif).normalized;
 
 
