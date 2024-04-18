@@ -21,6 +21,8 @@ public class PhotoCapture : MonoBehaviour
     [SerializeField] private GameObject tabletteFrame;
     private Texture2D screenCapture;
     private bool viewingPhoto;
+    public GameObject ScreenPhotoImage;
+    private Rect ScreenRectTransform;
 
     [Header("Other Variables")]
     [SerializeField] private Transform player;
@@ -45,6 +47,8 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         // Suppression et création du dossier data
         Directory.Delete(Application.dataPath + "/Scripts/Tablette/Data", true);
         Directory.CreateDirectory(Application.dataPath + "/Scripts/Tablette/Data");
+
+        ScreenRectTransform = ScreenPhotoImage.GetComponent<RectTransform>().rect;
     }
 
     private void Update()
@@ -72,7 +76,8 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
             yield return new WaitForEndOfFrame();
 
-            Rect regionToRead = new Rect(0, 0, Screen.width, Screen.height);
+            Rect regionToRead = new Rect(0f, 0f, ScreenRectTransform.width, ScreenRectTransform.height);
+            regionToRead.center = new Vector2(1920 / 2 , 1080 / 2);
 
             screenCapture.ReadPixels(regionToRead,0,0,false);
             screenCapture.Apply();
@@ -85,7 +90,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
     void ShowPhoto()
     {
-        Sprite photoSprite = Sprite.Create(screenCapture, new Rect(0.0f,0.0f, screenCapture.width, screenCapture.height), new Vector2(0.5f,0.5f), 100.0f);
+        Sprite photoSprite = Sprite.Create(screenCapture, new Rect(0.0f,0.0f, ScreenRectTransform.width, ScreenRectTransform.height), new Vector2(0.5f,0.5f), 100.0f);
         photoDisplayArea.sprite = photoSprite;
         photoFrame.SetActive(true);
 
@@ -121,7 +126,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
     void AddPhotoInScritableObject(Texture2D tex)
     {
         // Transformation de la texture en sprite
-        Sprite Mytex = Sprite.Create(tex, new Rect(0.0f,0.0f, 1920, 1080), new Vector2(0.5f,0.5f), 100.0f);
+        Sprite Mytex = Sprite.Create(tex, new Rect(0.0f,0.0f, ScreenRectTransform.width, ScreenRectTransform.height), new Vector2(0.5f,0.5f), 100.0f);
 
         // Add photo in scriptable object
         AddPhotos(MyPhotos.Count,player.position,Mytex);
@@ -133,12 +138,18 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             tmp.Myindex = index;
             tmp.MyposPhoto = pos;
             tmp.MyscreenPhoto = sprite;
+            Debug.Log(pos);
+            
 
             MyPhotos.Add(tmp);
 
             // Add Photo to album
             GameObject AlbumSlot = SlotAlbum;
-            AlbumSlot.transform.GetChild(0).GetComponent<Image>().sprite = sprite;
+            AlbumSlot.GetComponent<SlotAlbum>().SlotImage.sprite = sprite;
+            AlbumSlot.GetComponent<SlotAlbum>().ValueX.text = "x : " + string.Format("{0:0.00}", pos.x);
+            AlbumSlot.GetComponent<SlotAlbum>().ValueY.text = "y : " + string.Format("{0:0.00}", pos.z);
+          //  AlbumSlot.GetComponent<SlotAlbum>().ValueX.text = "x :" + pos.x;
+          //  AlbumSlot.GetComponent<SlotAlbum>().ValueY.text = "y :" + pos.y;
             boardMenu.AddElementOnBoard(AlbumSlot);
           }
 }

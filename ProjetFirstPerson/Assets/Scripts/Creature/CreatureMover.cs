@@ -154,7 +154,7 @@ namespace Creature
         
         private void AdaptSpeedWhenRotation()
         {
-            float currentRotationDif = bodyIKScript.currentRotationDif;
+            float currentRotationDif = Mathf.Abs(bodyIKScript.currentRotationDif);
 
             navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.1f, currentRotationDif);
         }

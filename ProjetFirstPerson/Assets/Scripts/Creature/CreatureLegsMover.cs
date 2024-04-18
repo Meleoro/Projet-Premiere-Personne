@@ -114,6 +114,12 @@ namespace Creature
             Vector3 origin = currentLeg.origin.position;
             Vector3 currentTargetPos = currentLeg.target.position;
             Transform transformRef = currentLeg.isFrontLeg ? mainTrRotRefFront : mainTrRotRefBack;
+            
+            Vector3 targetTranslatedPos = transformRef.InverseTransformVector(currentLeg.origin.position - currentLeg.target.position);
+            Vector3 saveOriginalRot = transformRef.localEulerAngles;
+            transformRef.localEulerAngles = new Vector3(0, Mathf.Atan2(targetTranslatedPos.z, targetTranslatedPos.x) * Mathf.Rad2Deg, 0);
+            
+            
             Vector3 raycastDir = transformRef.InverseTransformDirection(Vector3.down).RotateDirection(45, Vector3.right);
 
             float currentMax = 0;
@@ -122,13 +128,13 @@ namespace Creature
 
             for (int i = 0; i < 45; i++)
             {
-                Debug.DrawRay(origin - currentLeg.origin.right * 0.5f, transformRef.TransformDirection(raycastDir * (legMaxDist * 1.5f)), Color.blue, 1);
+                Debug.DrawRay(origin, transformRef.TransformDirection(raycastDir * (legMaxDist * 1.5f)), Color.blue, 1);
                 
-                if (Physics.Raycast(origin - currentLeg.origin.right * 0.5f, transformRef.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist * 1.2f, groundLayer))
+                if (Physics.Raycast(origin, transformRef.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist * 1.2f, groundLayer))
                 {
                     float dist = Vector3.Distance(hit.point, currentTargetPos);
 
-                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 0.95f)
+                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 0.9f)
                     {
                         currentMax = dist;
                         chosenPos = hit.point;
@@ -137,6 +143,8 @@ namespace Creature
 
                 raycastDir = raycastDir.RotateDirection(-2, Vector3.right);
             }
+            
+            transformRef.localEulerAngles = saveOriginalRot;
 
             return chosenPos;
         }

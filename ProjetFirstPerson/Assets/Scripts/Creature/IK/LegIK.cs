@@ -10,6 +10,7 @@ namespace IK
         [Header("Parameters")] 
         [SerializeField] private bool inverseArticulation;
         [SerializeField] private float articulationXRotMultiplicator;
+        [SerializeField] private float articulationXRotMax;
     
         [Header("Private Infos")]
         private float l1;
@@ -129,7 +130,7 @@ namespace IK
             for (int i = 0; i < foot.Length; i++)
             {
                 foot[i].localEulerAngles = footOffsetsLocal[i];
-                foot[i].eulerAngles = new Vector3(foot[i].eulerAngles.x, foot[i].eulerAngles.y, footOffsetsWorld[i].z); ;
+                foot[i].eulerAngles = new Vector3(footOffsetsWorld[i].x, foot[i].eulerAngles.y, footOffsetsWorld[i].z); ;
             }
         }
 
@@ -138,10 +139,10 @@ namespace IK
         {
             Vector3 dif = transformRotTrRef.InverseTransformVector(joint0.position - target.position);
 
-            dif.x = Mathf.Clamp(dif.x, -0.4f, 0.4f);
+            dif.x = Mathf.Clamp(dif.x, -articulationXRotMax, articulationXRotMax);
 
             joint0.localEulerAngles = new Vector3(offset1.x - dif.x * articulationXRotMultiplicator, joint0.localEulerAngles.y, joint0.localEulerAngles.z);
-            joint1.localEulerAngles = new Vector3(offset2.x + dif.x * articulationXRotMultiplicator, joint1.localEulerAngles.y, joint1.localEulerAngles.z);
+            joint1.localEulerAngles = new Vector3(offset2.x + dif.x * 1.5f * articulationXRotMultiplicator, joint1.localEulerAngles.y, joint1.localEulerAngles.z);
         }
 
 
