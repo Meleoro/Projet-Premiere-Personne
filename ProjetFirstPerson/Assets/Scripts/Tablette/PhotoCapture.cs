@@ -59,10 +59,10 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             {
                 StartCoroutine(CapturePhoto());
             }
-            /*else
+            else
             {
                 RemovePhoto();
-            }*/
+            }
         }
     }
 
@@ -71,7 +71,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         if(!uiManager.isUIActive)
         {
             cameraUI.SetActive(false);
-            //tabletteFrame.SetActive(false);
+            tabletteFrame.SetActive(false);
             viewingPhoto = true;
 
             yield return new WaitForEndOfFrame();
@@ -82,9 +82,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             screenCapture.ReadPixels(regionToRead,0,0,false);
             screenCapture.Apply();
 
-            ShowPhoto();
-            yield return new WaitForSeconds(2f);
-            RemovePhoto();
+        ShowPhoto();
         }
     }
 
