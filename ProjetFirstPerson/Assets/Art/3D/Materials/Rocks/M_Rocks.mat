@@ -45,8 +45,16 @@ Material:
         m_Texture: {fileID: 2800000, guid: faeca808429104d47bb940d74f4e8d2a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BlendNoise:
+        m_Texture: {fileID: 2800000, guid: 4896445ebbd14af4385f1a709d4016bd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BlendTexture:
         m_Texture: {fileID: 2800000, guid: 871ed4ad8ddac4f48997b85a95095186, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BlendTextureNormals:
+        m_Texture: {fileID: 2800000, guid: e42bc7aa02b75454382116a05909c1d5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
@@ -89,6 +97,8 @@ Material:
     m_Floats:
     - _BightnessModif: 1
     - _BlendHeight: 0.79
+    - _BlendNoiseStrength: 1
+    - _BlendNoiseTiling: 0.1
     - _BlendTiling: 1
     - _Gradient_Height: 1
     - _GroundBlendHeight: 0
@@ -105,6 +115,8 @@ Material:
     - _tempo: 20
     - _tempo2: 0
     m_Colors:
+    - _BlendNoiseTiling: {r: 1, g: 6, b: 0, a: 0}
+    - _BlendTextureTiling: {r: 1, g: 1, b: 0, a: 0}
     - _ColorModif: {r: 1, g: 1, b: 1, a: 0}
     - _Color_Modif: {r: 1, g: 1, b: 1, a: 0}
     - _Gradient_Color: {r: 0, g: 0, b: 0, a: 0}
