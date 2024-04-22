@@ -9,11 +9,18 @@ public class TriangleManager : MonoBehaviour
     public ProtoPuzzleInteract interactManager;
     public dalleTriangleProto[] dalleOrder = new dalleTriangleProto[5];
     public float moveSpeed;
+    public Animation anim;
   
     private bool canMove;
     private int currentIndex;
     private Vector3 wantedDallePosition;
     private Vector3 wantedDallePosition2;
+
+    private void Start()
+    {
+        anim = GetComponent<Animation>();
+    }
+
     private void Update()
     {
         if (canMove)
@@ -97,6 +104,8 @@ public class TriangleManager : MonoBehaviour
         {
             interactManager.GetOutInteraction();
             interactManager.OpenDoor();
+            anim.clip = anim["Open"].clip;
+            anim.Play();
         }
        /* else
         {
