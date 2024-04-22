@@ -13,6 +13,8 @@ namespace Creature
         [SerializeField] private float maxGroundDist;
         [SerializeField] private float wantedGroundDist;
         [SerializeField] private float rotateSpeed;
+        [SerializeField] private float walkSpeed;
+        [SerializeField] private float agressiveSpeed;
         
         [Header("Debug Parameters")] 
         [SerializeField] private bool doDebugMovement;
@@ -23,13 +25,7 @@ namespace Creature
         [HideInInspector] public Vector3 forcedRot;
 
         [Header("Private Infos")] 
-        private float addedForceY;
-        private float timerNoiseY;
-        private float zRotationLerp;
         private float saveSpeed;
-        private Vector3 originalLegsPos;
-        private Vector3 currentLegsAverageLerp;
-        private bool goDown;
         private bool stopMoving;
 
         [Header("References")] 
@@ -46,6 +42,8 @@ namespace Creature
             legsScript = GetComponent<CreatureLegsMover>();
 
             saveSpeed = navMeshAgent.speed;
+
+            StartWalkSpeed();
         }
 
 
@@ -87,32 +85,6 @@ namespace Creature
             currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo, Time.deltaTime * rotateSpeed, Time.deltaTime * rotateSpeed);
             
             targetIKBody.position = transform.position + currentDir;
-            
-            // Z Rotation
-            /*Vector3 legsAveragePos = Vector3.zero;
-            for (int i = 0; i < legsScript.legs.Count; i++)
-            {
-                legsAveragePos += legsScript.legs[i].target.position;
-            }
-            legsAveragePos /= legsScript.legs.Count;
-            legsAveragePos = transform.InverseTransformPoint(legsAveragePos);
-
-            if (originalLegsPos == Vector3.zero)
-            {
-                currentLegsAverageLerp = legsAveragePos;
-                originalLegsPos = legsAveragePos;
-            }
-
-            else
-            {
-                legsAveragePos = originalLegsPos - legsAveragePos;
-                currentLegsAverageLerp = Vector3.Lerp(currentLegsAverageLerp, legsAveragePos, Time.deltaTime * 10);
-            }
-
-            zRotationLerp = Mathf.Lerp(zRotationLerp, -dirToRotateTo.y, Time.deltaTime * 5);
-            zRotationLerp = Mathf.Clamp(zRotationLerp, -0.5f, 0.5f);
-            
-            transformToRotate.localRotation = Quaternion.Euler( transformToRotate.localEulerAngles.x,  transformToRotate.localEulerAngles.y, zRotationLerp * 20 + currentLegsAverageLerp.y * 65);*/
         }
 
         #endregion
@@ -172,6 +144,16 @@ namespace Creature
         {
             SetNextPos();
             stopMoving = false;
+        }
+
+        public void StartAggressiveSpeed()
+        {
+            saveSpeed = agressiveSpeed;
+        }
+
+        public void StartWalkSpeed()
+        {
+            saveSpeed = walkSpeed;
         }
     }
 }

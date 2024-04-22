@@ -47,12 +47,14 @@ namespace Creature
         [SerializeField] private Transform mainRotationJoint;
         private List<ICreatureComponent> creatureComponents = new List<ICreatureComponent>();
         private CreatureWaypoints waypointsScript;
+        private CreatureMover moveScript;
 
         
         private void Start()
         {
             creatureComponents = GetComponents<ICreatureComponent>().ToList();
             waypointsScript = GetComponent<CreatureWaypoints>();
+            moveScript = GetComponent<CreatureMover>();
         }
 
 
@@ -158,10 +160,13 @@ namespace Creature
 
                 currentState = CreatureState.aggressive;
                 waypointsScript.ChangeDestinationAggressive(CharacterManager.Instance.transform.position);
+                moveScript.StartAggressiveSpeed();
 
-                if(currentSuspicion <= 0)
+                if (currentSuspicion <= 0)
                 {
                     currentState = CreatureState.none;
+
+                    moveScript.StartWalkSpeed();
 
                     StartCoroutine(waypointsScript.StopLookLeftRight(2.5f));
                 }
@@ -173,7 +178,8 @@ namespace Creature
         {
             currentState = CreatureState.aggressive;
             currentSuspicion = 100;
-            
+
+            moveScript.StartAggressiveSpeed();
             waypointsScript.ChangeDestinationAggressive(CharacterManager.Instance.transform.position);
         }
 
