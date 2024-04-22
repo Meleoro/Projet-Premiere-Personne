@@ -56,7 +56,7 @@ namespace Creature
             SetNextPos();
             ManageRotation();
 
-            AdaptHeightBody();
+            //AdaptHeightBody();
             AdaptSpeedWhenRotation();
         }
 
@@ -89,7 +89,7 @@ namespace Creature
             targetIKBody.position = transform.position + currentDir;
             
             // Z Rotation
-            Vector3 legsAveragePos = Vector3.zero;
+            /*Vector3 legsAveragePos = Vector3.zero;
             for (int i = 0; i < legsScript.legs.Count; i++)
             {
                 legsAveragePos += legsScript.legs[i].target.position;
@@ -112,7 +112,7 @@ namespace Creature
             zRotationLerp = Mathf.Lerp(zRotationLerp, -dirToRotateTo.y, Time.deltaTime * 5);
             zRotationLerp = Mathf.Clamp(zRotationLerp, -0.5f, 0.5f);
             
-            transformToRotate.localRotation = Quaternion.Euler( transformToRotate.localEulerAngles.x,  transformToRotate.localEulerAngles.y, zRotationLerp * 20 + currentLegsAverageLerp.y * 65);
+            transformToRotate.localRotation = Quaternion.Euler( transformToRotate.localEulerAngles.x,  transformToRotate.localEulerAngles.y, zRotationLerp * 20 + currentLegsAverageLerp.y * 65);*/
         }
 
         #endregion
@@ -120,7 +120,7 @@ namespace Creature
 
         #region NATURAL MOVEMENT
         
-        private void AdaptHeightBody()
+        /*private void AdaptHeightBody()
         {
             float legModificatorY = 0;
             for (int i = 0; i < legsScript.legs.Count; i++)
@@ -150,7 +150,7 @@ namespace Creature
                 
                 transformToRotate.position += transformToRotate.up * (addedForceY * Time.deltaTime);
             }
-        }
+        }*/
         
         private void AdaptSpeedWhenRotation()
         {
