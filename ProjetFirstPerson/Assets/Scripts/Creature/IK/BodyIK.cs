@@ -9,6 +9,7 @@ namespace IK
         [Header("Parameters")]
         [SerializeField] private float maxRotationFrontToBack;
         [SerializeField] private float rotationSpeed;
+        [SerializeField] private AnimationCurve heightLegModificator;
 
         [Header("Public Infos")] 
         [HideInInspector] public float currentRotationDif;
@@ -26,6 +27,8 @@ namespace IK
         public Transform backJoint;
         [SerializeField] private Transform target;
         [SerializeField] private CreatureLegsMover legsScript;
+        [SerializeField] private CreatureMover moveScript;
+
 
 
         private void Start()
@@ -83,10 +86,10 @@ namespace IK
 
             for (int i = 0; i < bodyJoints.Length; i++)
             {
-                Vector3 eulerJointBody = bodyJoints[i].localEulerAngles;
+                Vector3 eulerJointBody = bodyJoints[i].eulerAngles;
                 eulerJointBody.x = 0;
-                eulerJointBody.y = angleAddedPerJoint;
-                bodyJoints[i].localEulerAngles = eulerJointBody;
+                eulerJointBody.y = backJoint.eulerAngles.y + angleAddedPerJoint * (i + 1);
+                bodyJoints[i].eulerAngles = eulerJointBody;
             }
         }
 
@@ -101,7 +104,8 @@ namespace IK
             for (int i = 0; i < bodyJoints.Length; i++)
             {
                 Vector3 eulerJointBody = bodyJoints[i].localEulerAngles;
-                eulerJointBody.z = savesLocalEulers[i].z + difY * 2.2f;
+                eulerJointBody.z = savesLocalEulers[i].z + difY * 
+                    heightLegModificator.Evaluate(moveScript.navMeshAgent.velocity.magnitude / moveScript.agressiveSpeed);
                 //eulerJointBody.y = backJoint.eulerAngles.y + angleAddedPerJoint * (i + 1);
                 bodyJoints[i].localEulerAngles = eulerJointBody;
             }

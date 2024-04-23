@@ -14,7 +14,7 @@ namespace Creature
         [SerializeField] private float wantedGroundDist;
         [SerializeField] private float rotateSpeed;
         [SerializeField] private float walkSpeed;
-        [SerializeField] private float agressiveSpeed;
+        public float agressiveSpeed;
         
         [Header("Debug Parameters")] 
         [SerializeField] private bool doDebugMovement;
@@ -32,7 +32,7 @@ namespace Creature
         [SerializeField] private BodyIK bodyIKScript;
         [SerializeField] private Transform targetIKBody;
         [SerializeField] private Transform transformToRotate;
-        private NavMeshAgent navMeshAgent;
+        [HideInInspector] public NavMeshAgent navMeshAgent;
         private CreatureLegsMover legsScript;
 
 
