@@ -28,7 +28,7 @@ namespace IK
         [Header("References")] 
         [SerializeField] private Transform[] tailJoints;
         [SerializeField] private Transform tailStart;
-        [SerializeField] private Transform trRef;
+        [SerializeField] private BodyIK bodyIK;
 
 
         private void Start()
@@ -70,12 +70,15 @@ namespace IK
             ApplyHeightIK();
         }
 
+
         private float timer = 0;
         private void DoMoveTail1()
         {
             timer += Time.deltaTime * tailWiggleSpeed;
+
+
             
-            ChangeAimedDir(Mathf.Sin(timer) * tailWiggleAmplitude);
+            ChangeAimedDir(Mathf.Sin(timer) * tailWiggleAmplitude - bodyIK.currentRotationDif * tailWiggleAmplitude * 2);
         }
         
 

@@ -74,7 +74,7 @@ namespace Creature
                         if (endPos != Vector3.zero)
                         {
                             StartCoroutine(CooldownMoveLeg());
-                            StartCoroutine(MoveLeg(legs[i], endPos, legMoveDuration * legMoveDurationRotModifier.Evaluate(bodyIK.currentRotationDif)));
+                            StartCoroutine(MoveLeg(legs[i], endPos, legMoveDuration * legMoveDurationRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif))));
                         }
                     }
                 }
@@ -182,7 +182,7 @@ namespace Creature
                 if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 2f,
                         LayerManager.Instance.groundLayer))
                 {
-                    wantedY = hit.point.y + addedY * mouvementYRotModifier.Evaluate(bodyIK.currentRotationDif);
+                    wantedY = hit.point.y + addedY * mouvementYRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif));
                 }
                 
                 Vector3 wantedPos = Vector3.Lerp(startPos, localEnd, timer / moveDuration) + new Vector3(0, addedY, 0);
