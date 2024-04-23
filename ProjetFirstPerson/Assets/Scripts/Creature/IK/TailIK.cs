@@ -75,8 +75,6 @@ namespace IK
         private void DoMoveTail1()
         {
             timer += Time.deltaTime * tailWiggleSpeed;
-
-
             
             ChangeAimedDir(Mathf.Sin(timer) * tailWiggleAmplitude - bodyIK.currentRotationDif * tailWiggleAmplitude * 2);
         }

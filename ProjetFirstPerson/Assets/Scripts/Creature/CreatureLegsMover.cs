@@ -160,7 +160,7 @@ namespace Creature
         {
             canMoveLeg = false;
             
-            yield return new WaitForSeconds(0.08f);
+            yield return new WaitForSeconds(0.05f);
 
             canMoveLeg = true;
         }
@@ -202,7 +202,7 @@ namespace Creature
             }
             //currentLeg.target.position = transform.TransformPoint(localEnd);
 
-            currentLeg.timerCooldownMove = 0.05f;
+            currentLeg.timerCooldownMove = 0.15f;
             currentLeg.isMoving = false;
         }
     }
