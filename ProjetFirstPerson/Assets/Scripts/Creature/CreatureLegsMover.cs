@@ -1,6 +1,8 @@
+using IK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Creature
@@ -15,6 +17,8 @@ namespace Creature
         
         [Header("Parameters Leg Movement")]
         [SerializeField] private float legMoveDuration;
+        [SerializeField] private AnimationCurve legMoveDurationRotModifier;
+        [SerializeField] private AnimationCurve mouvementYRotModifier;
         [SerializeField] private AnimationCurve movementY;
         
         [Header("Public Infos")] 
@@ -29,6 +33,7 @@ namespace Creature
         [SerializeField] private List<Transform> legsOrigins;
         [SerializeField] private Transform mainTrRotRefFront;
         [SerializeField] private Transform mainTrRotRefBack;
+        [SerializeField] private BodyIK bodyIK;
 
 
         private void Awake()
@@ -69,7 +74,7 @@ namespace Creature
                         if (endPos != Vector3.zero)
                         {
                             StartCoroutine(CooldownMoveLeg());
-                            StartCoroutine(MoveLeg(legs[i], endPos));
+                            StartCoroutine(MoveLeg(legs[i], endPos, legMoveDuration * legMoveDurationRotModifier.Evaluate(bodyIK.currentRotationDif)));
                         }
                     }
                 }
@@ -160,7 +165,7 @@ namespace Creature
             canMoveLeg = true;
         }
         
-        private IEnumerator MoveLeg(Leg currentLeg, Vector3 endPos)
+        private IEnumerator MoveLeg(Leg currentLeg, Vector3 endPos, float moveDuration)
         {
             currentLeg.isMoving = true;
             Vector3 startPos = transform.InverseTransformPoint(currentLeg.target.position);
@@ -168,19 +173,19 @@ namespace Creature
             float timer = 0;
             RaycastHit hit;
 
-            while (timer < legMoveDuration)
+            while (timer < moveDuration)
             {
                 timer += Time.deltaTime;
                 
                 float wantedY = 0;
-                float addedY = movementY.Evaluate(timer / legMoveDuration);
+                float addedY = movementY.Evaluate(timer / moveDuration);
                 if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 2f,
                         LayerManager.Instance.groundLayer))
                 {
-                    wantedY = hit.point.y + addedY;
+                    wantedY = hit.point.y + addedY * mouvementYRotModifier.Evaluate(bodyIK.currentRotationDif);
                 }
                 
-                Vector3 wantedPos = Vector3.Lerp(startPos, localEnd, timer / legMoveDuration) + new Vector3(0, addedY, 0);
+                Vector3 wantedPos = Vector3.Lerp(startPos, localEnd, timer / moveDuration) + new Vector3(0, addedY, 0);
                 
                 currentLeg.target.position = transform.TransformPoint(wantedPos);
                 

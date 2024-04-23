@@ -9,6 +9,7 @@ namespace IK
         [SerializeField] private float tailWiggleSpeed;
         [SerializeField] private float tailWiggleAmplitude;
         [SerializeField] private int groundedTailJointIndex;       // From which index the tail is stuck to the ground
+        [SerializeField] private int tailAngleModificatorZ;       
         [SerializeField] private AnimationCurve groundYHeight;       
         
         [Header("Private Infos")]
@@ -21,11 +22,13 @@ namespace IK
         private float atanToRemove;
         private float wantedAtan;
         public float[] tailHeightsSave;
+        public Vector3[] tailPositionsSave;
         private Vector3[] tailTargets;
 
         [Header("References")] 
         [SerializeField] private Transform[] tailJoints;
         [SerializeField] private Transform tailStart;
+        [SerializeField] private Transform trRef;
 
 
         private void Start()
@@ -40,10 +43,13 @@ namespace IK
 
         private void ActualiseSaveHeights()
         {
+            tailPositionsSave = new Vector3[tailJoints.Length];
             tailHeightsSave = new float[tailJoints.Length];
 
             for (int i = 0; i < tailJoints.Length; i++)
             {
+                tailPositionsSave[i] = tailStart.InverseTransformPoint(tailJoints[i].position);
+
                 RaycastHit hit;
                 if (Physics.Raycast(tailJoints[i].position + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
                 {
@@ -55,9 +61,9 @@ namespace IK
 
         private void Update()
         {
-            KeepTailStraight();
+            //KeepTailStraight();
             DoMoveTail1();
-            
+
             ApplyOscillationIK();
 
             ActualiseGroundTarget();
@@ -118,71 +124,54 @@ namespace IK
         private void ActualiseGroundTarget()
         {
             tailTargets = new Vector3[tailJoints.Length];
-            RaycastHit hit;
-            for(int i = 0; i < tailJoints.Length; i++)
+
+            Vector3 saveTailStartAngles = tailStart.eulerAngles;
+
+            for (int i = 0; i < tailJoints.Length; i++)
             {
+                tailStart.eulerAngles = saveTailStartAngles;
+                if (i != 0)
+                    tailStart.eulerAngles = new Vector3(tailStart.eulerAngles.x, tailJoints[i - 1].eulerAngles.y, tailStart.eulerAngles.z);
+
+                tailTargets[i] = tailStart.TransformPoint(tailPositionsSave[i]);
+
+                RaycastHit hit;
                 if (Physics.Raycast(tailJoints[i].position + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
                 {
-                    tailTargets[i] = hit.point + Vector3.up * tailHeightsSave[i];
+                    //tailTargets[i] = tailJoints[i - 1].TransformPoint(tailPositionsSave[i]);
+                    tailTargets[i].y = tailJoints[i].position.y + (-tailJoints[i].position.y + hit.point.y + tailHeightsSave[i]);
                 }
 
-                if(i != 0)
-                    Debug.DrawLine(tailTargets[i], tailTargets[i - 1]);
+                if (i != 0)
+                    Debug.DrawLine(tailTargets[i], tailTargets[i - 1], Color.red);
             }
+
+            tailStart.eulerAngles = saveTailStartAngles;
         }
 
         private void ApplyHeightIK()
         {
-            tailJoints[0].localEulerAngles = new Vector3(joint0Offset.x, joint0Offset.y, 0);
-            for (int i = 0; i < tailJoints.Length - 2; i++)
+            for (int i = 1; i < tailJoints.Length - 1; i++)
             {
-                ApplyIKOnOneJoint(tailJoints[i], tailJoints[i + 1], tailTargets[i + 2], tailJoints[i + 2].position, true);
+                ApplyIKOnOneJoint(tailJoints[i], tailTargets[i + 1], tailJoints[i - 1]);
+                Debug.DrawLine(tailJoints[i].position, tailTargets[i + 1]);
             }
         }
 
-        private void ApplyIKOnOneJoint(Transform jointA, Transform jointB, Vector3 target, Vector3 effector, bool inverse)
+        private void ApplyIKOnOneJoint(Transform jointA, Vector3 target, Transform previous)
         {
-            float lA = Vector3.Distance(jointA.position, jointB.position);
-            float lB = Vector3.Distance(jointB.position, effector);
-            float lC = Vector3.Distance(jointA.position, target);
-
             Vector3 dif = jointA.position - target;
-            Vector3 localDif = jointA.InverseTransformDirection(dif).normalized;
+            Vector3 localDif = previous.InverseTransformDirection(dif).normalized;
 
             float angleAtan = Mathf.Atan2(localDif.y, localDif.x) * Mathf.Rad2Deg;
             float angleJointA;
-            float angleJointB;
 
-            // If the target is out of range
-            if (lA + lB < lC + 1f)
-            {
-                angleJointA = angleAtan;
-                angleJointB = 0;
-            }
-
-            // If the target is in the range of the leg
-            else
-            {
-                // Angle alpha
-                float cosAngleAlpha = (lC * lC + lA * lA - lB * lB) / (2 * lC * lA);
-                float angleAlpha = Mathf.Acos(cosAngleAlpha) * Mathf.Rad2Deg;
-
-                // Angle beta
-                float cosAngleBeta = (lB * lB + lA * lA - lC * lC) / (2 * lB * lA);
-                float angleBeta = Mathf.Acos(cosAngleBeta) * Mathf.Rad2Deg;
-
-                angleJointA = inverse ? angleAtan - angleAlpha : angleAtan + angleAlpha;
-                angleJointB = inverse ? 180f - angleBeta : 180f + angleBeta;
-            }
+            angleJointA = angleAtan + tailAngleModificatorZ;
 
             // We apply the angles to the joints
             Vector3 eulerJoint1 = jointA.localEulerAngles;
             eulerJoint1.z = angleJointA;
             jointA.localEulerAngles = eulerJoint1;
-
-            Vector3 eulerJoint2 = jointB.localEulerAngles;
-            eulerJoint2.z = angleJointB;
-            jointB.localEulerAngles = eulerJoint2;
         }
 
         #endregion
