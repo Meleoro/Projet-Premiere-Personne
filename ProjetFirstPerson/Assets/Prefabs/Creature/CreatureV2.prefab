@@ -1426,6 +1426,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRotationFrontToBack: 80
   rotationSpeed: 1.2
+  heightLegModificator:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2.2
+      outSlope: 2.2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 2.2
+      inSlope: 2.2
+      outSlope: 2.2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   currentRotationDif: 0
   bodyJoints:
   - {fileID: 6420708721550655078}
@@ -1438,6 +1462,7 @@ MonoBehaviour:
   backJoint: {fileID: 1543558890807978236}
   target: {fileID: 2178884260342376672}
   legsScript: {fileID: 5644791850940615855}
+  moveScript: {fileID: 1651368779928696747}
 --- !u!1 &2959603995533167904
 GameObject:
   m_ObjectHideFlags: 0
@@ -3537,6 +3562,7 @@ MonoBehaviour:
   tailWiggleSpeed: 3
   tailWiggleAmplitude: 13
   groundedTailJointIndex: 4
+  tailAngleModificatorZ: 0
   groundYHeight:
     serializedVersion: 2
     m_Curve: []
@@ -3544,6 +3570,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   tailHeightsSave: []
+  tailPositionsSave: []
   tailJoints:
   - {fileID: 1436896218515917494}
   - {fileID: 5260230142660659244}
@@ -3552,6 +3579,7 @@ MonoBehaviour:
   - {fileID: 2100667203349397642}
   - {fileID: 3071108617859044695}
   tailStart: {fileID: 3769525300655219568}
+  trRef: {fileID: 1545501782580904679}
 --- !u!1 &6125080310523610980
 GameObject:
   m_ObjectHideFlags: 0
@@ -5913,6 +5941,7 @@ MonoBehaviour:
   bodyIKScript: {fileID: 46274044088407872}
   targetIKBody: {fileID: 2178884260342376672}
   transformToRotate: {fileID: 8358533203416158855}
+  navMeshAgent: {fileID: 0}
 --- !u!114 &5644791850940615855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5927,11 +5956,59 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxMovingLegsAmount: 4
   frontLegMaxDist: 2.4
-  backLegMaxDist: 2.1
+  backLegMaxDist: 2.3
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   legMoveDuration: 0.4
+  legMoveDurationRotModifier:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 2
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  mouvementYRotModifier:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 1.5
+      outSlope: 1.5
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 2.5
+      inSlope: 1.5
+      outSlope: 1.5
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   movementY:
     serializedVersion: 2
     m_Curve:
@@ -5987,6 +6064,7 @@ MonoBehaviour:
   - {fileID: 3166309109014229560}
   mainTrRotRefFront: {fileID: 2878724045546751080}
   mainTrRotRefBack: {fileID: 1545501782580904679}
+  bodyIK: {fileID: 46274044088407872}
 --- !u!114 &3658732888143539057
 MonoBehaviour:
   m_ObjectHideFlags: 0
