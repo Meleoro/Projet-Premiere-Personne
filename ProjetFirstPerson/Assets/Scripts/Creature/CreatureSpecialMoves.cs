@@ -58,8 +58,10 @@ namespace Creature
             {
                 if (legsScript.legs[i].isFrontLeg)
                 {
-                    StartCoroutine(legsScript.MoveLeg(legsScript.legs[i], CalculateHugeTurnLegFinalPos(legsScript.legs[i]), turnDuration, 2.5f));
+                    StartCoroutine(legsScript.MoveLegStatic(legsScript.legs[i], turnDuration, 2.5f));
                 }
+
+                yield return new WaitForSeconds(0.05f);
             }
 
             yield return new WaitForSeconds(turnDuration);

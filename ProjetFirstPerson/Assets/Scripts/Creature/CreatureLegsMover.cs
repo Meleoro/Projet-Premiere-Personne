@@ -205,6 +205,44 @@ namespace Creature
             currentLeg.timerCooldownMove = 0.15f;
             currentLeg.isMoving = false;
         }
+
+        public IEnumerator MoveLegStatic(Leg currentLeg, float moveDuration, float yMultiplier)
+        {
+            currentLeg.isMoving = true;
+            Vector3 posToKeep = mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position);
+            float timer = 0;
+            RaycastHit hit;
+
+            while (timer < moveDuration)
+            {
+                timer += Time.deltaTime;
+
+                float wantedY = 0;
+                float addedY = movementY.Evaluate(timer / moveDuration);
+                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
+                        LayerManager.Instance.groundLayer))
+                {
+                    wantedY = hit.point.y + addedY * yMultiplier;
+                }
+
+                
+                currentLeg.target.position = mainTrRotRefFront.TransformPoint(posToKeep);
+
+                if (wantedY != 0)
+                    currentLeg.target.position = new Vector3(currentLeg.target.position.x, wantedY, currentLeg.target.position.z);
+
+                yield return null;
+            }
+
+            if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
+                    LayerManager.Instance.groundLayer))
+            {
+                currentLeg.target.position = hit.point;
+            }
+
+            currentLeg.timerCooldownMove = 0.15f;
+            currentLeg.isMoving = false;
+        }
     }
 }
 
