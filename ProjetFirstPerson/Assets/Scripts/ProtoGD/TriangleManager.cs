@@ -9,7 +9,7 @@ public class TriangleManager : MonoBehaviour
     public ProtoPuzzleInteract interactManager;
     public dalleTriangleProto[] dalleOrder = new dalleTriangleProto[5];
     public float moveSpeed;
-    public Animation anim;
+    private Animation anim;
   
     private bool canMove;
     private int currentIndex;
