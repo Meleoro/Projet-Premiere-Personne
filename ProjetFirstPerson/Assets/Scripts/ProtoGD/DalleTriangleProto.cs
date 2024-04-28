@@ -8,6 +8,7 @@ public class dalleTriangleProto : MonoBehaviour
     private TriangleManager manager;
     public string myName;
     public int myIndex;
+    public bool canMove;
     private MeshRenderer mesh;
     public Material MaterialOn;
     public Material MaterialOff;
@@ -21,7 +22,8 @@ public class dalleTriangleProto : MonoBehaviour
     
     private void OnMouseDown()
     {
-        manager.ChangeDalleOrder(myIndex);
+        if(canMove)
+            manager.ChangeDalleOrder(myIndex);
     }
     
 
