@@ -48,7 +48,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1543558890807978236
 Transform:
   m_ObjectHideFlags: 0
@@ -1451,6 +1451,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   currentRotationDif: 0
+  hasToDoHugeTurn: 0
+  currentAtanDif: 0
+  saveOffset2: {x: 0, y: 0, z: 0}
   bodyJoints:
   - {fileID: 6420708721550655078}
   - {fileID: 8624251446235408324}
@@ -4039,6 +4042,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6606672358846581991}
+  - component: {fileID: 2393003230174341494}
   m_Layer: 7
   m_Name: IK
   m_TagString: Untagged
@@ -4065,6 +4069,20 @@ Transform:
   - {fileID: 8049435734050589730}
   m_Father: {fileID: 2242012312233962517}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2393003230174341494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6714302862006860170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3dc4e5d54cc93744ac467d6030c485a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hugeTurnDurationMultiplicator: 0.125
+  legsScript: {fileID: 5644791850940615855}
 --- !u!1 &6746832096251008579
 GameObject:
   m_ObjectHideFlags: 0
