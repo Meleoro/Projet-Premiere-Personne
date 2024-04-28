@@ -74,7 +74,7 @@ namespace Creature
                         if (endPos != Vector3.zero)
                         {
                             StartCoroutine(CooldownMoveLeg());
-                            StartCoroutine(MoveLeg(legs[i], endPos, legMoveDuration * legMoveDurationRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif))));
+                            StartCoroutine(MoveLeg(legs[i], endPos, legMoveDuration * legMoveDurationRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif)), mouvementYRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif))));
                         }
                     }
                 }
@@ -165,7 +165,7 @@ namespace Creature
             canMoveLeg = true;
         }
         
-        private IEnumerator MoveLeg(Leg currentLeg, Vector3 endPos, float moveDuration)
+        public IEnumerator MoveLeg(Leg currentLeg, Vector3 endPos, float moveDuration, float yMultiplier)
         {
             currentLeg.isMoving = true;
             Vector3 startPos = transform.InverseTransformPoint(currentLeg.target.position);
@@ -179,10 +179,10 @@ namespace Creature
                 
                 float wantedY = 0;
                 float addedY = movementY.Evaluate(timer / moveDuration);
-                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 2f,
+                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
                         LayerManager.Instance.groundLayer))
                 {
-                    wantedY = hit.point.y + addedY * mouvementYRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif));
+                    wantedY = hit.point.y + addedY * yMultiplier;
                 }
                 
                 Vector3 wantedPos = Vector3.Lerp(startPos, localEnd, timer / moveDuration) + new Vector3(0, addedY, 0);
