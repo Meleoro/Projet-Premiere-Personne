@@ -177,7 +177,7 @@ namespace Creature
         public void TurnAggressive()
         {
             currentState = CreatureState.aggressive;
-            currentSuspicion = 100;
+            currentSuspicion = 200;
 
             moveScript.StartAggressiveSpeed();
             waypointsScript.ChangeDestinationAggressive(CharacterManager.Instance.transform.position);
