@@ -52,6 +52,8 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         Directory.CreateDirectory(Application.dataPath + "/Scripts/Tablette/Data");
 
         ScreenRectTransform = ScreenPhotoImage.GetComponent<RectTransform>().rect;
+
+        ScreenDetectionLogs = GameObject.Find("DetectPhotoScreen");
     }
     void OnDrawGizmos()
     {
