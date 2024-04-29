@@ -27,6 +27,7 @@ public class UIManager : GenericSingletonClass<UIManager>
 
     [Header("UI Variables")]
     [SerializeField] private GameObject Album;
+    [SerializeField] private GameObject LogPanel;
     public bool isUIActive;
     
     
@@ -35,6 +36,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     {
         HideInteractIcon();
         Album.SetActive(false);
+        LogPanel.SetActive(false);
     }
 
     void Update()
@@ -57,6 +59,22 @@ public class UIManager : GenericSingletonClass<UIManager>
                 isUIActive = false;
             }
         } 
+
+        if(Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            if (!LogPanel.activeSelf)
+            {
+                cameraComponent.LockedCursor(1);
+                LogPanel.SetActive(true);
+                isUIActive = true;
+            }
+            else
+            {
+                cameraComponent.LockedCursor(2);
+                LogPanel.SetActive(false);
+                isUIActive = false;
+            }
+        }
     }
     
     
