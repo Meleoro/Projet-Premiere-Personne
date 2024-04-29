@@ -3060,6 +3060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myName: Bleu
   myIndex: 4
+  canMove: 0
   MaterialOn: {fileID: 2100000, guid: f1e38594f14520c48bc546f3a41f4f56, type: 2}
   MaterialOff: {fileID: 2100000, guid: 6af20d21fdb3e9846be9fcc5368045e6, type: 2}
 --- !u!4 &375268322 stripped
@@ -4099,6 +4100,11 @@ PrefabInstance:
       objectReference: {fileID: 876833725}
     - target: {fileID: 2687749248343995860, guid: 79f587480a16a114881d28c943369895,
         type: 3}
+      propertyPath: maxDistance
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2687749248343995860, guid: 79f587480a16a114881d28c943369895,
+        type: 3}
       propertyPath: tabletteFrame
       value: 
       objectReference: {fileID: 2125568845}
@@ -4119,9 +4125,19 @@ PrefabInstance:
       objectReference: {fileID: 360285847}
     - target: {fileID: 2687749248343995860, guid: 79f587480a16a114881d28c943369895,
         type: 3}
+      propertyPath: layerMask.m_Bits
+      value: 4096
+      objectReference: {fileID: 0}
+    - target: {fileID: 2687749248343995860, guid: 79f587480a16a114881d28c943369895,
+        type: 3}
       propertyPath: photoDisplayArea
       value: 
       objectReference: {fileID: 908083951}
+    - target: {fileID: 4412757341492605238, guid: 79f587480a16a114881d28c943369895,
+        type: 3}
+      propertyPath: ContentLog
+      value: 
+      objectReference: {fileID: 751503747}
     - target: {fileID: 7756654501049681333, guid: 79f587480a16a114881d28c943369895,
         type: 3}
       propertyPath: MyBoard
@@ -4137,6 +4153,11 @@ PrefabInstance:
       propertyPath: listBoardElement.Array.data[0]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7762516462128654230, guid: 79f587480a16a114881d28c943369895,
+        type: 3}
+      propertyPath: ContentLog
+      value: 
+      objectReference: {fileID: 751503747}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5707,6 +5728,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myName: Vert
   myIndex: 3
+  canMove: 0
   MaterialOn: {fileID: 2100000, guid: f1e38594f14520c48bc546f3a41f4f56, type: 2}
   MaterialOff: {fileID: 2100000, guid: 6af20d21fdb3e9846be9fcc5368045e6, type: 2}
 --- !u!1 &702268661
@@ -6382,6 +6404,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 744148722}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &751503747 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 754181005014723833, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
+    type: 3}
+  m_PrefabInstance: {fileID: 832540278}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &753696468
 GameObject:
   m_ObjectHideFlags: 0
@@ -6686,6 +6714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myName: Orange
   myIndex: 0
+  canMove: 0
   MaterialOn: {fileID: 2100000, guid: f1e38594f14520c48bc546f3a41f4f56, type: 2}
   MaterialOff: {fileID: 2100000, guid: 6af20d21fdb3e9846be9fcc5368045e6, type: 2}
 --- !u!1 &806462671
@@ -7132,6 +7161,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5915276270767055238, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6916966210234365573, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
         type: 3}
       propertyPath: m_Pivot.x
@@ -7256,6 +7290,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: AddArrowOnBoardMode
+      objectReference: {fileID: 0}
+    - target: {fileID: 9009462604514173007, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -9249,6 +9288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myName: Blanc
   myIndex: 1
+  canMove: 0
   MaterialOn: {fileID: 2100000, guid: f1e38594f14520c48bc546f3a41f4f56, type: 2}
   MaterialOff: {fileID: 2100000, guid: 6af20d21fdb3e9846be9fcc5368045e6, type: 2}
 --- !u!1 &1025374987
@@ -9485,6 +9525,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myName: Violet
   myIndex: 2
+  canMove: 0
   MaterialOn: {fileID: 2100000, guid: f1e38594f14520c48bc546f3a41f4f56, type: 2}
   MaterialOff: {fileID: 2100000, guid: 6af20d21fdb3e9846be9fcc5368045e6, type: 2}
 --- !u!1 &1030117073
@@ -15163,6 +15204,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1.6
       objectReference: {fileID: 0}
+    - target: {fileID: 5732005201818963560, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: m_Name
+      value: DetectPhotoScreen
+      objectReference: {fileID: 0}
     - target: {fileID: 5914368939120287252, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_Name
@@ -15261,7 +15307,7 @@ PrefabInstance:
     - target: {fileID: 8423375317432602612, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 3575
+      value: 7671
       objectReference: {fileID: 0}
     - target: {fileID: 8568480147769452327, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
