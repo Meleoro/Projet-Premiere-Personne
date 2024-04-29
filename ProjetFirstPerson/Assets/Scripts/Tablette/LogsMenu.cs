@@ -9,17 +9,15 @@ public class LogsMenu : MonoBehaviour
     [SerializeField] private GameObject ContentLog;
     [SerializeField] private GameObject LogPrefab;
 
-    public void AddLogsToContent(string info)
+    public void AddLogsToContent(string info, string title)
     {
         GameObject NewLog = Instantiate(LogPrefab,Vector3.zero,Quaternion.Euler(0,0,0),ContentLog.transform);
         NewLog.GetComponent<LogsScripts>().MyInformation = info;
+        NewLog.GetComponent<LogsScripts>().TitleArea.text = title;
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            AddLogsToContent("Bonjour, ceci n'est pas un texte");
-        }
+        
     }
 }
