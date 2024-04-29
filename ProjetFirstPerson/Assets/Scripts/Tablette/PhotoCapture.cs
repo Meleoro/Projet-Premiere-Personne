@@ -55,11 +55,11 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
         ScreenDetectionLogs = GameObject.Find("DetectPhotoScreen");
     }
-    void OnDrawGizmos()
+   /* void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(ScreenDetectionLogs.transform.position, ScreenDetectionLogs.transform.forward * maxDistance);
-    }
+    } */
 
     private void Update()
     {
