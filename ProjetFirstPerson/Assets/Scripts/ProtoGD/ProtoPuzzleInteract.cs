@@ -88,7 +88,7 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
 
     public void OpenDoor()
     {
-        associatedDoor.SetActive(false);
+        associatedDoor.GetComponent<Animation>().Play();
     }
     
     #region Interaction Functions

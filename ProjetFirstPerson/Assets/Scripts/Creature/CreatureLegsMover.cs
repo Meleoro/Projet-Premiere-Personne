@@ -1,6 +1,8 @@
+using IK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Creature
@@ -15,6 +17,8 @@ namespace Creature
         
         [Header("Parameters Leg Movement")]
         [SerializeField] private float legMoveDuration;
+        [SerializeField] private AnimationCurve legMoveDurationRotModifier;
+        [SerializeField] private AnimationCurve mouvementYRotModifier;
         [SerializeField] private AnimationCurve movementY;
         
         [Header("Public Infos")] 
@@ -29,6 +33,7 @@ namespace Creature
         [SerializeField] private List<Transform> legsOrigins;
         [SerializeField] private Transform mainTrRotRefFront;
         [SerializeField] private Transform mainTrRotRefBack;
+        [SerializeField] private BodyIK bodyIK;
 
 
         private void Awake()
@@ -69,7 +74,7 @@ namespace Creature
                         if (endPos != Vector3.zero)
                         {
                             StartCoroutine(CooldownMoveLeg());
-                            StartCoroutine(MoveLeg(legs[i], endPos));
+                            StartCoroutine(MoveLeg(legs[i], endPos, legMoveDuration * legMoveDurationRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif)), mouvementYRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif))));
                         }
                     }
                 }
@@ -155,12 +160,12 @@ namespace Creature
         {
             canMoveLeg = false;
             
-            yield return new WaitForSeconds(0.08f);
+            yield return new WaitForSeconds(0.05f);
 
             canMoveLeg = true;
         }
         
-        private IEnumerator MoveLeg(Leg currentLeg, Vector3 endPos)
+        public IEnumerator MoveLeg(Leg currentLeg, Vector3 endPos, float moveDuration, float yMultiplier)
         {
             currentLeg.isMoving = true;
             Vector3 startPos = transform.InverseTransformPoint(currentLeg.target.position);
@@ -168,19 +173,19 @@ namespace Creature
             float timer = 0;
             RaycastHit hit;
 
-            while (timer < legMoveDuration)
+            while (timer < moveDuration)
             {
                 timer += Time.deltaTime;
                 
                 float wantedY = 0;
-                float addedY = movementY.Evaluate(timer / legMoveDuration);
-                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 2f,
+                float addedY = movementY.Evaluate(timer / moveDuration);
+                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
                         LayerManager.Instance.groundLayer))
                 {
-                    wantedY = hit.point.y + addedY;
+                    wantedY = hit.point.y + addedY * yMultiplier;
                 }
                 
-                Vector3 wantedPos = Vector3.Lerp(startPos, localEnd, timer / legMoveDuration) + new Vector3(0, addedY, 0);
+                Vector3 wantedPos = Vector3.Lerp(startPos, localEnd, timer / moveDuration) + new Vector3(0, addedY, 0);
                 
                 currentLeg.target.position = transform.TransformPoint(wantedPos);
                 
@@ -197,7 +202,45 @@ namespace Creature
             }
             //currentLeg.target.position = transform.TransformPoint(localEnd);
 
-            currentLeg.timerCooldownMove = 0.05f;
+            currentLeg.timerCooldownMove = 0.15f;
+            currentLeg.isMoving = false;
+        }
+
+        public IEnumerator MoveLegStatic(Leg currentLeg, float moveDuration, float yMultiplier)
+        {
+            currentLeg.isMoving = true;
+            Vector3 posToKeep = mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position);
+            float timer = 0;
+            RaycastHit hit;
+
+            while (timer < moveDuration)
+            {
+                timer += Time.deltaTime;
+
+                float wantedY = 0;
+                float addedY = movementY.Evaluate(timer / moveDuration);
+                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
+                        LayerManager.Instance.groundLayer))
+                {
+                    wantedY = hit.point.y + addedY * yMultiplier;
+                }
+
+                
+                currentLeg.target.position = mainTrRotRefFront.TransformPoint(posToKeep);
+
+                if (wantedY != 0)
+                    currentLeg.target.position = new Vector3(currentLeg.target.position.x, wantedY, currentLeg.target.position.z);
+
+                yield return null;
+            }
+
+            if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
+                    LayerManager.Instance.groundLayer))
+            {
+                currentLeg.target.position = hit.point;
+            }
+
+            currentLeg.timerCooldownMove = 0.15f;
             currentLeg.isMoving = false;
         }
     }
