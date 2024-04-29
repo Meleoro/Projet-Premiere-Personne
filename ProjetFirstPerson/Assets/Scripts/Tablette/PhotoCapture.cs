@@ -26,6 +26,9 @@ public class PhotoCapture : MonoBehaviour
 
     [Header("Other Variables")]
     [SerializeField] private Transform player;
+    [SerializeField] private GameObject ScreenDetectionLogs;
+    [SerializeField] private LayerMask layerMask;
+    public float maxDistance;
 
 [Serializable]
     public class MyPhoto
@@ -49,7 +52,14 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         Directory.CreateDirectory(Application.dataPath + "/Scripts/Tablette/Data");
 
         ScreenRectTransform = ScreenPhotoImage.GetComponent<RectTransform>().rect;
+
+        ScreenDetectionLogs = GameObject.Find("DetectPhotoScreen");
     }
+   /* void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(ScreenDetectionLogs.transform.position, ScreenDetectionLogs.transform.forward * maxDistance);
+    } */
 
     private void Update()
     {
@@ -68,6 +78,22 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
     IEnumerator CapturePhoto()
     {
+         // Raycast
+        RaycastHit hit;
+        if (Physics.BoxCast(ScreenDetectionLogs.transform.position, ScreenDetectionLogs.transform.localScale, ScreenDetectionLogs.transform.forward, out hit, ScreenDetectionLogs.transform.localRotation, maxDistance, layerMask))
+        {
+            Debug.Log("Detection");
+            var hitScript = hit.transform.GetComponent<SteleScript>();
+            if(!hitScript.isAlreadyInLogs)
+            {
+                hitScript.isAlreadyInLogs = true;
+                string theInfo = hitScript.myInfo;
+                string theTitle = hitScript.titleLogs;
+                GetComponent<LogsMenu>().AddLogsToContent(theInfo,theTitle);
+            }
+        }
+
+        // Take Photos
         if(!uiManager.isUIActive)
         {
             cameraUI.SetActive(false);
