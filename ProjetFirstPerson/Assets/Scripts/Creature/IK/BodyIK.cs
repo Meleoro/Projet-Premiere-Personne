@@ -9,15 +9,19 @@ namespace IK
         [Header("Parameters")]
         [SerializeField] private float maxRotationFrontToBack;
         [SerializeField] private float rotationSpeed;
+        [SerializeField] private AnimationCurve heightLegModificator;
 
         [Header("Public Infos")] 
         [HideInInspector] public float currentRotationDif;
-        
+        [HideInInspector] public bool hasToDoHugeTurn;
+        [HideInInspector] public float currentAtanDif;
+        [HideInInspector] public Vector3 saveOffset2;
+
         [Header("Private Infos")]
         private float currentAtan;
         private float currentAtanBack;
         private Vector3 saveOffset1;
-        private Vector3 saveOffset2;
+        private Vector3[] savesLocalEulers;
         
         [Header("References")]
         [SerializeReference] public Transform[] bodyJoints;
@@ -25,19 +29,29 @@ namespace IK
         public Transform backJoint;
         [SerializeField] private Transform target;
         [SerializeField] private CreatureLegsMover legsScript;
+        [SerializeField] private CreatureMover moveScript;
+
 
 
         private void Start()
         {
             saveOffset1 = bodyJoint.localEulerAngles;
             saveOffset2 = backJoint.localEulerAngles;
+
+            savesLocalEulers = new Vector3[bodyJoints.Length];
+            for(int i = 0; i < bodyJoints.Length; i++)
+            {
+                savesLocalEulers[i] = bodyJoints[i].localEulerAngles;
+            }
         }
 
 
         private void Update()
         {
             ApplyMainIK2();
-            AdaptJointsRotations();
+            //AdaptJointsRotations();
+
+            ApplyZIK();
         }
 
 
@@ -45,7 +59,8 @@ namespace IK
         {
             Vector3 dif = backJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
-            
+            float difAtan = Mathf.Atan2(-backJoint.right.z, backJoint.right.x) * Mathf.Rad2Deg;
+
             // To avoid too much abrupt body rotations
             if (atan < -80f && currentAtanBack > 80f)
                 currentAtanBack -= 360f;
@@ -69,6 +84,7 @@ namespace IK
             currentAtan = Mathf.Clamp(currentAtan, -maxRotationFrontToBack, maxRotationFrontToBack);
             
             currentRotationDif = currentAtan / maxRotationFrontToBack;
+            currentAtanDif = atan - currentAtanBack;
 
             float angleAddedPerJoint = currentAtan / bodyJoints.Length;
 
@@ -81,91 +97,42 @@ namespace IK
             }
         }
 
-        private void ApplyMainIK()
+        private void ApplyZIK()
         {
-            Vector3 dif = backJoint.position - target.position;
-            float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
-            
-            // To avoid too much abrupt body rotations
-            if (atan < -80f && currentAtanBack > 80f)
-                currentAtanBack -= 360f;
-            else if (currentAtanBack < -80f && atan > 80f)
-                currentAtanBack += 360f;
-            
-            if (atan < -80f && currentAtan > 80f)
-                currentAtan -= 360f;
-            else if (currentAtan < -80f && atan > 80f)
-                currentAtan += 360f;
+            Vector3 frontAveragePos = Vector3.zero;
+            Vector3 backAveragePos = Vector3.zero;
 
+            (frontAveragePos, backAveragePos) = GetLegsAveragePositions();
+            float difY = frontAveragePos.y - backAveragePos.y;     // Is > 0 if the front is upside the back
 
-            currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * 4f * rotationSpeed);
-            currentAtan = Mathf.Clamp(atan - currentAtanBack, -maxRotationFrontToBack, maxRotationFrontToBack);
-
-            currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * 2f * rotationSpeed);
-
-            currentRotationDif = currentAtan / maxRotationFrontToBack;
-
-            Vector3 eulerBack = backJoint.localEulerAngles;
-            eulerBack.y = saveOffset2.y + currentAtanBack;
-            backJoint.localEulerAngles = eulerBack;
-        
-            Vector3 eulerJointBody = bodyJoint.eulerAngles;
-            eulerJointBody.x = 0;
-            eulerJointBody.y = backJoint.eulerAngles.y + currentAtan;
-            bodyJoint.eulerAngles = eulerJointBody;
+            for (int i = 0; i < bodyJoints.Length; i++)
+            {
+                Vector3 eulerJointBody = bodyJoints[i].localEulerAngles;
+                eulerJointBody.z = savesLocalEulers[i].z + difY * 
+                    heightLegModificator.Evaluate(moveScript.navMeshAgent.velocity.magnitude / moveScript.agressiveSpeed);
+                //eulerJointBody.y = backJoint.eulerAngles.y + angleAddedPerJoint * (i + 1);
+                bodyJoints[i].localEulerAngles = eulerJointBody;
+            }
         }
 
-
-
-
-        private float currentXRotateBodyFront;
-        private float currentZRotateBodyFront;
-        private float currentXRotateBodyBack;
-        private float currentZRotateBodyBack;
-        // Changes the ropation of the body joints according to the current positions of the legs
-        private void AdaptJointsRotations()
+        private (Vector3, Vector3) GetLegsAveragePositions()
         {
             Vector3 frontAveragePos = Vector3.zero;
             Vector3 backAveragePos = Vector3.zero;
 
             for (int i = 0; i < legsScript.legs.Count; i++)
             {
-                if (legsScript.legs[i].isMoving)
+                if (legsScript.legs[i].isFrontLeg)
                 {
-                    if (legsScript.legs[i].isFrontLeg)
-                    {
-                        Vector3 dif = legsScript.legs[i].originalPos - bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position);
-
-                        if (bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position).z < 0)
-                        {
-                            frontAveragePos += new Vector3(-dif.y, dif.y, dif.z);
-                        }
-
-                        else
-                            frontAveragePos += new Vector3(dif.y, dif.y, dif.z);
-                    }
-                    else
-                    {
-                        Vector3 dif = legsScript.legs[i].originalPos - bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position);
-
-                        if (bodyJoint.InverseTransformPoint(legsScript.legs[i].target.position).z < 0)
-                            backAveragePos += new Vector3(-dif.y, dif.y, dif.z);
-
-                        else
-                            backAveragePos += new Vector3(dif.y, dif.y, dif.z);
-                    }
+                    frontAveragePos += legsScript.legs[i].target.position;
+                }
+                else
+                {
+                    backAveragePos += legsScript.legs[i].target.position;
                 }
             }
 
-            currentXRotateBodyFront = Mathf.Lerp(currentXRotateBodyFront, frontAveragePos.x, Time.deltaTime * 4);
-            currentZRotateBodyFront = Mathf.Lerp(currentZRotateBodyFront, frontAveragePos.y, Time.deltaTime * 4);
-
-            currentXRotateBodyBack = Mathf.Lerp(currentXRotateBodyBack, backAveragePos.x, Time.deltaTime * 4);
-            currentZRotateBodyBack = Mathf.Lerp(currentZRotateBodyBack, backAveragePos.y, Time.deltaTime * 4);
-
-
-            bodyJoint.localEulerAngles = new Vector3(saveOffset1.x - currentXRotateBodyFront * 0, bodyJoint.localEulerAngles.y, saveOffset1.z + currentZRotateBodyFront);
-            backJoint.localEulerAngles = new Vector3(saveOffset2.x - currentXRotateBodyBack * 0, backJoint.localEulerAngles.y, saveOffset2.z + currentZRotateBodyBack);
+            return (frontAveragePos, backAveragePos);
         }
     }
 }

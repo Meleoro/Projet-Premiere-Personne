@@ -58,8 +58,8 @@ namespace IK
 
             if(joint2 != null)
             {
-                ApplyIK2(joint0, joint1, inverseArticulation);
                 ApplyIK2(joint1, joint2, !inverseArticulation);
+                ApplyIK2(joint0, joint1, inverseArticulation);
             }
             else
             {
@@ -86,6 +86,9 @@ namespace IK
             float lA = Vector3.Distance(jointA.position, jointB.position);
             float lB = Vector3.Distance(jointB.position, effector.position);
             float lC = Vector3.Distance(jointA.position, localTargetPos + new Vector3(0, yEffectorOffset, 0));
+
+            if (lC < 0.2f)
+                return;
             
             if(debug)
                 Debug.DrawLine(localTargetPos, localTargetPos + new Vector3(0, yEffectorOffset, 0));
