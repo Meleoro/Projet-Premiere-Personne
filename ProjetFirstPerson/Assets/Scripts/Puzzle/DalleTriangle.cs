@@ -30,7 +30,7 @@ public class DalleTriangle : MonoBehaviour
 
     private void OnMouseDown()
     {
-        triangleManager.ChangeDalleOrder(myIndex);
+        triangleManager.SelectDalle(this);
     }
 
 
