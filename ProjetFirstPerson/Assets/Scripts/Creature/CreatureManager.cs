@@ -107,7 +107,11 @@ namespace Creature
 
                     else if(Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position) < earLowRadius)
                     {
-                        currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneak;
+
+                        if (CharacterManager.Instance.currentNoiseType == NoiseType.Quiet)
+                        {
+                            currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneak;
+                        }
                     }
                 }
             }
