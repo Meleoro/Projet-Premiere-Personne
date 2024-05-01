@@ -49,8 +49,6 @@ namespace Creature
 
             yield return new WaitForSeconds(0.05f);
 
-            Debug.Log(Mathf.Abs(bodyIKScript.currentAtanDif));
-
             float turnAmplitude = Mathf.Abs(bodyIKScript.currentAtanDif);
             float turnDuration = hugeTurnDurationMultiplicator * turnAmplitude * 0.1f;
 
