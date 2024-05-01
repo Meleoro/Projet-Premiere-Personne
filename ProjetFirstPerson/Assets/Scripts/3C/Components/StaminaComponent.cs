@@ -12,6 +12,7 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
     [SerializeField] private float staminaRegainSpeed;
     [SerializeField] private float timeBeforeRegain;
     [Range(0f, 1f)] [SerializeField] private float tiredVolumeRatioAppear;      // From what percentage of the stamina amount the tired volume starts to appear
+    [Range(0f, 1f)] [SerializeField] private float canRunAgainRatio;     
 
     [Header("Public Infos")]
     public bool hasStamina;
@@ -21,6 +22,7 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
     private float regainTimer;
     private float loseSpeedModifier;
     private bool wasRunning;
+    private bool isRegaining;
 
     [Header("References")] 
     private MoveComponent moveScript;
@@ -41,6 +43,7 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
         if (moveScript.isRunning)
         {
             wasRunning = true;
+            isRegaining = false;
             currentStamina -= Time.deltaTime * (staminaLoseSpeed / loseSpeedModifier);
         }
         else
@@ -54,16 +57,24 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
             if (regainTimer <= 0)
             {
                 if (currentStamina < staminaAmount)
+                {
                     currentStamina += Time.deltaTime * staminaRegainSpeed;
+
+                    if (currentStamina / staminaAmount > canRunAgainRatio)
+                        isRegaining = false;
+                }
             }
             else
             {
                 regainTimer -= Time.deltaTime;
             }
         }
-        
-        if (currentStamina > 0) hasStamina = true;
-        else hasStamina = false;
+
+        if (currentStamina > 0 && !isRegaining) hasStamina = true;
+        else {
+            hasStamina = false;
+            isRegaining = true;
+        }
         
         ApplyVolume();
     }

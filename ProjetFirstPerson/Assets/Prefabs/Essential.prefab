@@ -194,7 +194,7 @@ Transform:
   m_GameObject: {fileID: 806445747457324766}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.6, y: 6.78, z: 11.4}
+  m_LocalPosition: {x: 4.09, y: 1.42, z: 4.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -218,6 +218,7 @@ MonoBehaviour:
   currentNoiseType: 0
   isHidden: 0
   isInSneakZone: 0
+  capsule: {fileID: 139744874286770523}
 --- !u!114 &2424812859929637196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +285,7 @@ MonoBehaviour:
   runAcceleration: 1500
   gravityStrength: 2000
   slopHelpStrength: 300
-  groundRaycastDist: 1.16
+  groundRaycastDist: 1.18
   isRunning: 0
   disableRun: 0
   currentSpeedModifier: 0
@@ -308,6 +309,7 @@ MonoBehaviour:
   staminaRegainSpeed: 8
   timeBeforeRegain: 3
   tiredVolumeRatioAppear: 0.4
+  canRunAgainRatio: 0.5
   hasStamina: 0
   currentStamina: 0
 --- !u!114 &449452331996375937
@@ -396,7 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e661c698033e4de45afd8aef28e6c632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIManager: {fileID: 0}
+  uIManager: {fileID: 4233669605135011329}
   isAiming: 0
   isMenu: 0
   canInOut: 1
@@ -569,9 +571,10 @@ MonoBehaviour:
   maxYEyeIcon: 20
   minYEyeIcon: 1
   isInCreatureView: 0
+  HUDParent: {fileID: 9026982242605454186}
   interactImage: {fileID: 4805730698326663748}
   eyeIconImage: {fileID: 4275435456226829835}
-  cameraComponent: {fileID: 0}
+  cameraComponent: {fileID: 3956260122818378176}
   Album: {fileID: 0}
   LogPanel: {fileID: 0}
   isUIActive: 0
@@ -2636,7 +2639,7 @@ MonoBehaviour:
     m_Bits: 64
   playerGroundLayer:
     serializedVersion: 2
-    m_Bits: 320
+    m_Bits: 321
 --- !u!114 &4911115448545376101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3114,7 +3117,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1527
+    m_Bits: 3575
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

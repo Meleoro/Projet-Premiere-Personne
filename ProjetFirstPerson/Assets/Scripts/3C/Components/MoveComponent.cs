@@ -37,7 +37,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     private bool isInSlope;
 
     [Header("References")] 
-    [SerializeField] private Rigidbody rb;
+    public Rigidbody rb;
     [SerializeField] private Transform wantedCamPos;
     private Controls controls;
     private CameraComponent cameraComponent;
@@ -183,8 +183,24 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     private void VerifyCurrentState()
     {
         RaycastHit hitInfo;
-        isOnGround = Physics.Raycast(transform.position, Vector3.down, out hitInfo, groundRaycastDist,
-            LayerManager.Instance.groundLayer);
+
+        isOnGround = Physics.Raycast(transform.position, Vector3.down, out hitInfo, groundRaycastDist,LayerManager.Instance.groundLayer);
+
+        float dist = 0.25f;
+        if(!isOnGround)
+            isOnGround = Physics.Raycast(transform.position + new Vector3(dist, 0, 0), Vector3.down, out hitInfo, groundRaycastDist, LayerManager.Instance.groundLayer);
+
+        if (!isOnGround)
+            isOnGround = Physics.Raycast(transform.position + new Vector3(-dist, 0, 0), Vector3.down, out hitInfo, groundRaycastDist, LayerManager.Instance.groundLayer);
+
+        if (!isOnGround)
+            isOnGround = Physics.Raycast(transform.position + new Vector3(0, 0, dist), Vector3.down, out hitInfo, groundRaycastDist, LayerManager.Instance.groundLayer);
+
+        if (!isOnGround)
+            isOnGround = Physics.Raycast(transform.position + new Vector3(0, 0, -dist), Vector3.down, out hitInfo, groundRaycastDist, LayerManager.Instance.groundLayer);
+
+
+        //isOnGround = Physics.BoxCast(transform.position, gf, );
 
         if (isOnGround)
         {

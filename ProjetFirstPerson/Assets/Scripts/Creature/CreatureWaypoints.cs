@@ -28,7 +28,6 @@ namespace Creature
         private Vector3 placeToGo;
 
         [Header("References")] 
-        [SerializeField] private HeadIK headIKScript;
         private CreatureMover creatureMoverScript;
         private CreatureManager mainScript;
 
@@ -82,7 +81,7 @@ namespace Creature
                 switch (currentWaypoint.waypointAction)
                 {
                     case WaypointAction.LookLeftThenRight :
-                        StartCoroutine(headIKScript.LookLeftThenRight(currentWaypoint.timeWaypointAction));
+                        mainScript.specialMovesScript.LookLeftRight(currentWaypoint.timeWaypointAction);
                         break;
                 }
             }
@@ -180,7 +179,7 @@ namespace Creature
             placeToGo = transform.position;
             creatureMoverScript.wantedPos = transform.position;
 
-            StartCoroutine(headIKScript.LookLeftThenRight(lookDuration));
+            mainScript.specialMovesScript.LookLeftRight(lookDuration);
             
             yield return new WaitForSeconds(lookDuration * 1.2f);
             
@@ -196,6 +195,7 @@ namespace Creature
             waitTimer = 0;
 
             mainScript.currentSuspicion = 0;
+            mainScript.currentState = CreatureState.none;
 
             creatureMoverScript.forcedRot = Vector3.zero;
             creatureMoverScript.wantedPos = currentWaypoint.transform.position;
