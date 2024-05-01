@@ -13,22 +13,23 @@ namespace Puzzle
         [SerializeField] private float moveDuration;
 
         [Header("Private Infos")]
-        //private DalleTriangle[] currentDalles = new DalleTriangle[5];
         private bool isMovingDalles;
+        private bool won;
         private DalleTriangle selectedDalle1;
         private DalleTriangle selectedDalle2;
-
 
         [Header("References")]
         [SerializeField] private DalleTriangle[] dalles = new DalleTriangle[5];     // En index 1 doit se trouver la dalle tout en haut du triangle et en dernier index celle tout en bas
         [SerializeField] private Door doorToOpen;
         private Animation anim;
+        private PuzzleInteract interactScript;
 
 
 
         private void Start()
         {
             anim = GetComponent<Animation>();
+            interactScript = GetComponentInChildren<PuzzleInteract>();
 
             selectedDalle1 = null;
             selectedDalle2 = null;
@@ -38,7 +39,7 @@ namespace Puzzle
 
         private void InitialiseDalles()
         {
-            for(int i = dalles.Length - 1; i >= 0; i--)
+            for (int i = dalles.Length - 1; i >= 0; i--)
             {
                 dalles[i].currentIndex = i;
             }
@@ -48,7 +49,7 @@ namespace Puzzle
 
         private void Update()
         {
-            VerifyWin();
+            if(!won) VerifyWin();
         }
 
 
@@ -59,7 +60,7 @@ namespace Puzzle
             if (selectedDalle1 is null)
                 selectedDalle1 = selectedDalle;
 
-            else 
+            else
             {
                 selectedDalle2 = selectedDalle;
                 StartCoroutine(ExchangeTwoDalles(selectedDalle1, selectedDalle2));
@@ -71,18 +72,17 @@ namespace Puzzle
         // Coroutine which exchanges two dalles positions
         public IEnumerator ExchangeTwoDalles(DalleTriangle dalle1, DalleTriangle dalle2)
         {
-            if(isMovingDalles) yield break;
+            if (isMovingDalles) yield break;
             isMovingDalles = true;
 
             float timer = 0;
-            dalle1.currentIndex = dalle2.currentIndex;
-            dalle2.currentIndex = dalle1.currentIndex;
+            (dalle1.currentIndex, dalle2.currentIndex) = (dalle2.currentIndex, dalle1.currentIndex);
 
             Vector3 originalPosDalle1 = dalle1.transform.position;
-            Vector3 originalPosDalle2 = dalle2.transform.position;  
+            Vector3 originalPosDalle2 = dalle2.transform.position;
 
 
-            while(timer < moveDuration)
+            while (timer < moveDuration)
             {
                 timer += Time.deltaTime;
 
@@ -102,13 +102,13 @@ namespace Puzzle
         }
 
 
-        private List<DalleSymbols> currentOrder;
+        private DalleSymbols[] currentOrder = new DalleSymbols[5];
         private void VerifyWin()
         {
             bool win = true;
 
-            currentOrder = new List<DalleSymbols>();
-            for(int i = 0; i < dalles.Length; i++) 
+            currentOrder = new DalleSymbols[5];
+            for (int i = 0; i < dalles.Length; i++) 
             {
                 currentOrder[dalles[i].currentIndex] = dalles[i].dalleSymbol;
             }
@@ -125,8 +125,13 @@ namespace Puzzle
             if (win) Win();
         }
 
+
         private void Win()
         {
+            won = true;
+
+            interactScript.GetOutInteraction();
+
             anim.clip = anim["Open"].clip;
             anim.Play();
         }

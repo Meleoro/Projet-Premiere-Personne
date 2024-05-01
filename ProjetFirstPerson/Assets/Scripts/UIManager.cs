@@ -19,8 +19,9 @@ public class UIManager : GenericSingletonClass<UIManager>
 
     [Header("Private Infos")]
     private float currentTimer;
-    
+
     [Header("References")]
+    [SerializeField] private RectTransform HUDParent;
     [SerializeField] private Image interactImage;
     [SerializeField] private Image eyeIconImage;
     [SerializeField] private CameraComponent cameraComponent;
@@ -77,6 +78,17 @@ public class UIManager : GenericSingletonClass<UIManager>
                 isUIActive = false;
             }
         }
+    }
+
+
+    public void HideHUD()
+    {
+        HUDParent.gameObject.SetActive(false);
+    }
+
+    public void ShowHUD()
+    {
+        HUDParent.gameObject.SetActive(true);
     }
     
     

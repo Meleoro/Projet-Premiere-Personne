@@ -18,8 +18,9 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
     [Header("Private Infos")] 
     public bool isInRange;
     private GameObject playerCapsule;
-    
     private BoxCollider _collider;
+
+
 
     private void Start()
     {

@@ -37,7 +37,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     private bool isInSlope;
 
     [Header("References")] 
-    [SerializeField] private Rigidbody rb;
+    public Rigidbody rb;
     [SerializeField] private Transform wantedCamPos;
     private Controls controls;
     private CameraComponent cameraComponent;
