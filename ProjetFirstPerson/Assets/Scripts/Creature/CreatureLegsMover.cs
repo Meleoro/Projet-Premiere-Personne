@@ -9,7 +9,8 @@ namespace Creature
 {
     public class CreatureLegsMover : MonoBehaviour, ICreatureComponent
     {
-        [Header("Parameters Move Trigger")] 
+        [Header("Parameters Move Trigger")]
+        [SerializeField] private float backLegsOffset;
         [SerializeField] private int maxMovingLegsAmount;
         [SerializeField] private float frontLegMaxDist;
         [SerializeField] private float backLegMaxDist;
@@ -96,7 +97,7 @@ namespace Creature
         
         private bool VerifyLegNeedsToMove(Leg currentLeg)
         {
-            float distOriginTarget = Vector3.Distance(currentLeg.origin.position, currentLeg.target.position);
+            float distOriginTarget = Vector3.Distance(currentLeg.isFrontLeg ? currentLeg.origin.position : currentLeg.origin.position + transform.right * backLegsOffset, currentLeg.target.position);
 
             if (currentLeg.timerCooldownMove <= 0)
             {
@@ -117,7 +118,7 @@ namespace Creature
 
         private Vector3 GetNextPos(Leg currentLeg)
         {
-            Vector3 origin = currentLeg.origin.position;
+            Vector3 origin = currentLeg.isFrontLeg ? currentLeg.origin.position : currentLeg.origin.position + transform.right * backLegsOffset;
             Vector3 currentTargetPos = currentLeg.target.position;
             Transform transformRef = currentLeg.isFrontLeg ? mainTrRotRefFront : mainTrRotRefBack;
             

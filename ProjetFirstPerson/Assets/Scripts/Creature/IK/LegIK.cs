@@ -15,10 +15,9 @@ namespace IK
         [SerializeField] private float yEffectorOffset;
     
         [Header("Private Infos")]
-        private float l1;
-        private float l2;
         private Vector3 offset1;
         private Vector3 offset2;
+        private Vector3 offset3;
         private Vector3[] footOffsetsLocal;
         private Vector3[] footOffsetsWorld;
         private Vector3 effectorSaveLocalPos;
@@ -35,11 +34,11 @@ namespace IK
 
         private void Start()
         {
-            l1 = Vector3.Distance(joint0.position, joint1.position);
-            l2 = Vector3.Distance(joint1.position, effector.position);
-
             offset1 = joint0.localEulerAngles;
             offset2 = joint1.localEulerAngles;
+
+            if(joint2)
+                offset3 = joint2.localEulerAngles;
 
             footOffsetsWorld = new Vector3[foot.Length];
             footOffsetsLocal = new Vector3[foot.Length];
@@ -55,11 +54,14 @@ namespace IK
         {
             // Keeps the leg aligned with the body
             joint0.localEulerAngles = new Vector3(offset1.x, offset1.y, 0);
+            joint1.localEulerAngles = new Vector3(offset2.x, offset2.y, offset2.z);
 
             if(joint2 != null)
             {
-                ApplyIK2(joint1, joint2, !inverseArticulation);
+                joint2.localEulerAngles = new Vector3(offset3.x, offset3.y, offset3.z);
+
                 ApplyIK2(joint0, joint1, inverseArticulation);
+                ApplyIK2(joint1, joint2, !inverseArticulation);
             }
             else
             {
@@ -156,7 +158,7 @@ namespace IK
 
 
 
-        private void ApplyIK()
+        /*private void ApplyIK()
         {
             // First we rotate on the y axis
             Vector3 dif = (joint0.position - target.position);
@@ -218,6 +220,6 @@ namespace IK
                 foot[i].localEulerAngles = footOffsetsLocal[i];
                 foot[i].eulerAngles = new Vector3(foot[i].eulerAngles.x, foot[i].eulerAngles.y, footOffsetsWorld[i].z); ;
             }
-        }
+        }*/
     }
 }
