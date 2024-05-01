@@ -12,21 +12,34 @@ namespace Creature
 
         [Header("Private Infos")]
         private bool isDoingHugeTurn;
+        private Coroutine lookLeftRightCoroutine;
 
         [Header("References")]
         [SerializeField] private CreatureLegsMover legsScript;
         private BodyIK bodyIKScript;
+        private HeadIK headIKScript;
 
 
 
         private void Start()
         {
             bodyIKScript = GetComponentInChildren<BodyIK>();
+            headIKScript = GetComponentInChildren<HeadIK>();
         }
 
         private void Update()
         {
             VerifyHugeTurn();
+        }
+
+
+        public void CancelSpecialMoves()
+        {
+            if(lookLeftRightCoroutine != null)
+            {
+                StopCoroutine(lookLeftRightCoroutine);
+                headIKScript.isLookingLeftRight = false;
+            }
         }
 
 
@@ -82,6 +95,16 @@ namespace Creature
             bodyIKScript.backJoint.rotation = saveBackJointRot;
 
             return calculatedPos;
+        }
+
+        #endregion
+
+
+        #region Look Left Right
+
+        public void LookLeftRight(float duration)
+        {
+            lookLeftRightCoroutine = StartCoroutine(headIKScript.LookLeftThenRight(duration));
         }
 
         #endregion

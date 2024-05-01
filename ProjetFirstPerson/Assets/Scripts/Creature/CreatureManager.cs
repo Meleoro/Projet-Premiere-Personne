@@ -46,6 +46,7 @@ namespace Creature
 
         [Header("References")] 
         [SerializeField] private Transform headJoint;
+        public CreatureSpecialMoves specialMovesScript;
         private List<ICreatureComponent> creatureComponents = new List<ICreatureComponent>();
         private CreatureWaypoints waypointsScript;
         private CreatureMover moveScript;
@@ -182,6 +183,8 @@ namespace Creature
 
             moveScript.StartAggressiveSpeed();
             waypointsScript.ChangeDestinationAggressive(CharacterManager.Instance.transform.position);
+
+            specialMovesScript.CancelSpecialMoves();
         }
 
 
