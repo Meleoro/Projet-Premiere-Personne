@@ -17,6 +17,7 @@ namespace Puzzle
 
         [Header("Public Infos")]
         public int currentIndex;
+        public bool canMove;
 
         [Header("References")]
         private MeshRenderer meshRenderer;
@@ -34,13 +35,15 @@ namespace Puzzle
 
         private void OnMouseDown()
         {
-            triangleManager.SelectDalle(this);
+            if(canMove)
+             triangleManager.SelectDalle(this);
         }
 
 
         private void OnMouseEnter()
         {
-            meshRenderer.material = MaterialOn;
+            if(canMove)
+                meshRenderer.material = MaterialOn;
         }
 
         private void OnMouseExit()
