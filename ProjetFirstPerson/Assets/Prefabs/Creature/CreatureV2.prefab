@@ -4081,7 +4081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3dc4e5d54cc93744ac467d6030c485a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hugeTurnDurationMultiplicator: 0.125
+  hugeTurnDurationMultiplicator: 0.1
   legsScript: {fileID: 5644791850940615855}
 --- !u!1 &6746832096251008579
 GameObject:
@@ -5920,8 +5920,9 @@ MonoBehaviour:
   earNormalRadius: 7.5
   earLowRadius: 3
   visionRange: 15.47
-  visionRadiusX: 36
-  visionRadiusY: 36
+  visionRadiusX: 80
+  visionRadiusY: 80
+  raycastDensity: 6
   suspisionLostSpeed: 20
   suspisionLostSpeedAggressive: 40
   suspisionThresholdSuspicieux: 50
@@ -5934,7 +5935,7 @@ MonoBehaviour:
   suspisionAddedView: 200
   currentState: 0
   currentSuspicion: 0
-  mainRotationJoint: {fileID: 1543558890807978236}
+  headJoint: {fileID: 6950556432636007829}
 --- !u!114 &1651368779928696747
 MonoBehaviour:
   m_ObjectHideFlags: 0
