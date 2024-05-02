@@ -22,6 +22,7 @@ namespace Creature
         [SerializeField] private AnimationCurve legMoveDurationRotModifier;
         [SerializeField] private AnimationCurve mouvementYRotModifier;
         [SerializeField] private AnimationCurve movementY;
+        [SerializeField] private AnimationCurve legMoveDurationSpeedModifier;
         
         [Header("Public Infos")] 
         public List<Leg> legs = new List<Leg>();
@@ -74,11 +75,11 @@ namespace Creature
 
                 if (legs[i].isFrontLeg)
                 {
-                    if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning) return;
+                    if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning) continue;
                 }
                 else
                 {
-                    if (currentMovingLegsBack >= maxMovingLegsAmountWalk && !creatureMover.isRunning) return;
+                    if (currentMovingLegsBack >= maxMovingLegsAmountWalk && !creatureMover.isRunning) continue;
                 }
 
                 if (!legs[i].isMoving)
@@ -90,7 +91,9 @@ namespace Creature
                         if (endPos != Vector3.zero)
                         {
                             StartCoroutine(CooldownMoveLeg());
-                            StartCoroutine(MoveLeg(legs[i], endPos, legMoveDuration * legMoveDurationRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif)), mouvementYRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif))));
+                            StartCoroutine(MoveLeg(legs[i], endPos, 
+                                legMoveDuration * legMoveDurationRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif)) * legMoveDurationSpeedModifier.Evaluate(creatureMover.navMeshAgent.speed / creatureMover.agressiveSpeed)
+                                , mouvementYRotModifier.Evaluate(Mathf.Abs(bodyIK.currentRotationDif))));
                         }
                     }
                 }
@@ -271,7 +274,7 @@ namespace Creature
                 currentLeg.target.position = hit.point;
             }
 
-            currentLeg.timerCooldownMove = 0.15f;
+            currentLeg.timerCooldownMove = 0.1f;
             currentLeg.isMoving = false;
         }
     }

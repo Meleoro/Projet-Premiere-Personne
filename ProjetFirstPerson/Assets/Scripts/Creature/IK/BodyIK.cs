@@ -159,7 +159,7 @@ namespace IK
                 }
             }
 
-            float followSpeed = 5;
+            float followSpeed = 3;
 
             backJoint.transform.localPosition = Vector3.Lerp(backJoint.transform.localPosition, backLocalPosSave + Vector3.up * backAddedY, Time.deltaTime * followSpeed);
         }
