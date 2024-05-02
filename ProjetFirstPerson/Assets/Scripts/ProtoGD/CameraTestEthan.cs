@@ -32,10 +32,12 @@ public class CameraTestEthan : MonoBehaviour
         {
             if (canInOut)
             {
-                isAiming = !isAiming;
-                anim.SetBool("in",false);
                 UI.SetActive(false);
                 StopCoroutine(WaitForUI());
+                //tablette.SetActive(true);
+                isAiming = !isAiming;
+                anim.SetBool("in",false);
+               // tablette.SetActive(true);
                 UI.SetActive(false);
             }
         }
@@ -45,7 +47,7 @@ public class CameraTestEthan : MonoBehaviour
             if (isMenu)
             {
                 canInOut = true;
-                tabletteScreen.SetActive(false);
+                //tabletteScreen.SetActive(false);
                 isMenu = !isMenu;
                 anim.SetBool("Menu",false);
                 isAiming = false;
@@ -57,6 +59,7 @@ public class CameraTestEthan : MonoBehaviour
                 isMenu = !isMenu;
                 anim.SetBool("Menu",true);
                 anim.SetBool("in",false);
+                //tablette.SetActive(true);
                 UI.SetActive(false);
                 isAiming = false;
             }
@@ -67,13 +70,17 @@ public class CameraTestEthan : MonoBehaviour
     {
         if (isAiming)
         {
-           yield return new WaitForSeconds(0.45f);
-           if(isAiming)
+           yield return new WaitForSeconds(0.5f);
+           if (isAiming)
+           {
             UI.SetActive(true);
+            //tablette.SetActive(false);
+           }
         }
         else
         {
             StopCoroutine(WaitForUI());
+            //tablette.SetActive(true);
             UI.SetActive(false);
         }
     }
