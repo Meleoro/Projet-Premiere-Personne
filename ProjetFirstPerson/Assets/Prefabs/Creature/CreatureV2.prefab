@@ -1682,7 +1682,7 @@ MonoBehaviour:
   debug: 0
   articulationXRotMultiplicator: 15
   articulationXRotMax: 0
-  yEffectorOffset: 0.15
+  yEffectorOffset: 0.1
   joint0: {fileID: 1612365238677210492}
   joint1: {fileID: 3877372504893513008}
   joint2: {fileID: 6834172046101704131}
@@ -1909,7 +1909,7 @@ MonoBehaviour:
   debug: 0
   articulationXRotMultiplicator: 15
   articulationXRotMax: 0
-  yEffectorOffset: 0.15
+  yEffectorOffset: 0.1
   joint0: {fileID: 3166309109014229560}
   joint1: {fileID: 5056852004941356724}
   joint2: {fileID: 8781670210240105509}
@@ -4225,7 +4225,7 @@ Transform:
   m_GameObject: {fileID: 6943881586023666251}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -1.237, y: -0.841, z: 0.164}
+  m_LocalPosition: {x: -1.237, y: -0.841, z: 0.052}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5952,12 +5952,13 @@ MonoBehaviour:
   maxGroundDist: 5.5
   wantedGroundDist: 5
   rotateSpeed: 10
-  walkSpeed: 3
-  agressiveSpeed: 5
+  walkSpeed: 2.5
+  agressiveSpeed: 4.5
   doDebugMovement: 0
   debugWantedPos: {fileID: 0}
   wantedPos: {x: 0, y: 0, z: 0}
   forcedRot: {x: 0, y: 0, z: 0}
+  isRunning: 0
   bodyIKScript: {fileID: 46274044088407872}
   targetIKBody: {fileID: 2178884260342376672}
   transformToRotate: {fileID: 8358533203416158855}
@@ -5974,13 +5975,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b49174d4b1097724da173bd426f12533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMovingLegsAmount: 4
+  backLegsOffset: -0.2
+  maxMovingLegsAmountWalk: 1
+  maxMovingLegsAmountRun: 2
   frontLegMaxDist: 2.4
-  backLegMaxDist: 2.3
+  backLegMaxDist: 2.2
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  legMoveDuration: 0.4
+  legMoveDuration: 0.45
   legMoveDurationRotModifier:
     serializedVersion: 2
     m_Curve:
@@ -6071,7 +6074,32 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  legMoveDurationSpeedModifier:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.2
+      inSlope: -0.40000004
+      outSlope: -0.40000004
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.8
+      inSlope: -0.40000004
+      outSlope: -0.40000004
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   legs: []
+  currentMovingLegsBack: 0
   legsTargets:
   - {fileID: 939104356711856664}
   - {fileID: 4063428327659577315}
