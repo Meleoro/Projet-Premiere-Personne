@@ -11,7 +11,8 @@ namespace Creature
     {
         [Header("Parameters Move Trigger")]
         [SerializeField] private float backLegsOffset;
-        [SerializeField] private int maxMovingLegsAmount;
+        [SerializeField] private int maxMovingLegsAmountWalk;
+        [SerializeField] private int maxMovingLegsAmountRun;
         [SerializeField] private float frontLegMaxDist;
         [SerializeField] private float backLegMaxDist;
         [SerializeField] private LayerMask groundLayer;
@@ -27,6 +28,8 @@ namespace Creature
         
         [Header("Private Infos")] 
         private int currentMovingLegsAmount;
+        private int currentMovingLegsFront;
+        public int currentMovingLegsBack;
         private bool canMoveLeg;
         
         [Header("References")] 
@@ -35,10 +38,13 @@ namespace Creature
         [SerializeField] private Transform mainTrRotRefFront;
         [SerializeField] private Transform mainTrRotRefBack;
         [SerializeField] private BodyIK bodyIK;
+        private CreatureMover creatureMover;
 
 
         private void Awake()
         {
+            creatureMover = GetComponent<CreatureMover>();
+
             legs = new List<Leg>();
             
             for (int i = 0; i < legsTargets.Count; i++)
@@ -60,12 +66,21 @@ namespace Creature
          
         private void VerifyLegs()
         {
-            if (currentMovingLegsAmount >= maxMovingLegsAmount) return;
-
             if (!canMoveLeg) return;
             
             for (int i = 0; i < legs.Count; i++)
             {
+                ActualiseMovingLegsCounter();
+
+                if (legs[i].isFrontLeg)
+                {
+                    if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning) return;
+                }
+                else
+                {
+                    if (currentMovingLegsBack >= maxMovingLegsAmountWalk && !creatureMover.isRunning) return;
+                }
+
                 if (!legs[i].isMoving)
                 {
                     if (VerifyLegNeedsToMove(legs[i]))
@@ -86,11 +101,22 @@ namespace Creature
         private void ActualiseMovingLegsCounter()
         {
             currentMovingLegsAmount = 0;
-            
+            currentMovingLegsBack = 0;
+            currentMovingLegsFront = 0;
+
             for (int i = 0; i < legs.Count; i++)
             {
-                if (legs[i].isMoving)
+                if (legs[i].isMoving && legs[i].isFrontLeg)
+                {
+                    currentMovingLegsFront += 1;
                     currentMovingLegsAmount += 1;
+                }
+
+                else if (legs[i].isMoving && !legs[i].isFrontLeg)
+                {
+                    currentMovingLegsBack += 1;
+                    currentMovingLegsAmount += 1;
+                }
             }
         }
 
@@ -180,6 +206,8 @@ namespace Creature
                 
                 float wantedY = 0;
                 float addedY = movementY.Evaluate(timer / moveDuration);
+                currentLeg.currentAddedY = addedY;
+
                 if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
                         LayerManager.Instance.groundLayer))
                 {
@@ -220,6 +248,8 @@ namespace Creature
 
                 float wantedY = 0;
                 float addedY = movementY.Evaluate(timer / moveDuration);
+                currentLeg.currentAddedY = addedY;
+
                 if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
                         LayerManager.Instance.groundLayer))
                 {
@@ -255,6 +285,7 @@ public class Leg
     public Transform target;
     public Transform origin;
     public float timerCooldownMove;
+    public float currentAddedY;
 
     public Vector3 originalPos;
 

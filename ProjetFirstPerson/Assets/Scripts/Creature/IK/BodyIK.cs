@@ -20,8 +20,11 @@ namespace IK
         [Header("Private Infos")]
         private float currentAtan;
         private float currentAtanBack;
-        private Vector3 saveOffset1;
+        private Vector3 backLocalPosSave;
         private Vector3[] savesLocalEulers;
+        private float frontWantedY;
+        private float backWantedY;
+
         
         [Header("References")]
         [SerializeReference] public Transform[] bodyJoints;
@@ -35,7 +38,7 @@ namespace IK
 
         private void Start()
         {
-            saveOffset1 = bodyJoint.localEulerAngles;
+            backLocalPosSave = backJoint.localPosition;
             saveOffset2 = backJoint.localEulerAngles;
 
             savesLocalEulers = new Vector3[bodyJoints.Length];
@@ -52,6 +55,7 @@ namespace IK
             //AdaptJointsRotations();
 
             ApplyZIK();
+            ApplyLegsEffects();
         }
 
 
@@ -133,6 +137,31 @@ namespace IK
             }
 
             return (frontAveragePos, backAveragePos);
+        }
+
+
+        private void ApplyLegsEffects()
+        {
+            float frontAddedY = 0;
+            float backAddedY = 0;
+            float reductiveFactor = 0.5f;
+
+            for(int i = 0; i < legsScript.legs.Count; i++)
+            {
+                if (legsScript.legs[i].isFrontLeg)
+                {
+                    frontAddedY += legsScript.legs[i].currentAddedY * reductiveFactor;
+                }
+
+                else
+                {
+                    backAddedY += legsScript.legs[i].currentAddedY * reductiveFactor;
+                }
+            }
+
+            float followSpeed = 5;
+
+            backJoint.transform.localPosition = Vector3.Lerp(backJoint.transform.localPosition, backLocalPosSave + Vector3.up * backAddedY, Time.deltaTime * followSpeed);
         }
     }
 }

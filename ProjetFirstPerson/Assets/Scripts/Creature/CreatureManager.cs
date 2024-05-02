@@ -154,16 +154,12 @@ namespace Creature
         {
             if(currentSuspicion > suspisionThresholdSuspicieux && currentState == CreatureState.none)
             {
-                Debug.Log("IsSuspicious");
-                
                 currentState = CreatureState.suspicious;
                 waypointsScript.ChangeDestinationSuspicious(CharacterManager.Instance.transform.position);
             }
 
             else if (currentSuspicion > suspisionThresholdAggressif || currentState == CreatureState.aggressive)
             {
-                Debug.Log("IsAggressive");
-
                 currentState = CreatureState.aggressive;
                 waypointsScript.ChangeDestinationAggressive(CharacterManager.Instance.transform.position);
                 moveScript.StartAggressiveSpeed();

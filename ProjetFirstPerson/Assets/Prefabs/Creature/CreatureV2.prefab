@@ -4225,7 +4225,7 @@ Transform:
   m_GameObject: {fileID: 6943881586023666251}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -1.237, y: -0.841, z: 0.164}
+  m_LocalPosition: {x: -1.237, y: -0.841, z: 0.052}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5958,6 +5958,7 @@ MonoBehaviour:
   debugWantedPos: {fileID: 0}
   wantedPos: {x: 0, y: 0, z: 0}
   forcedRot: {x: 0, y: 0, z: 0}
+  isRunning: 0
   bodyIKScript: {fileID: 46274044088407872}
   targetIKBody: {fileID: 2178884260342376672}
   transformToRotate: {fileID: 8358533203416158855}
@@ -5974,10 +5975,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b49174d4b1097724da173bd426f12533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backLegsOffset: 0.25
-  maxMovingLegsAmount: 4
+  backLegsOffset: -0.1
+  maxMovingLegsAmountWalk: 1
+  maxMovingLegsAmountRun: 2
   frontLegMaxDist: 2.4
-  backLegMaxDist: 2.2
+  backLegMaxDist: 2.3
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -6073,6 +6075,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   legs: []
+  currentMovingLegsBack: 0
   legsTargets:
   - {fileID: 939104356711856664}
   - {fileID: 4063428327659577315}
