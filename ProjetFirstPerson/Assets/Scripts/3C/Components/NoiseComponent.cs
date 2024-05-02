@@ -25,7 +25,7 @@ public class NoiseComponent : MonoBehaviour, ICharacterComponent
     {
         if (moveScript.currentVelocity.magnitude < 1)
         {
-            mainScript.currentNoiseType = NoiseType.Quiet;
+            mainScript.currentNoiseType = NoiseType.None;
         }
         
         else if (moveScript.isRunning)
@@ -58,5 +58,6 @@ public enum NoiseType
 {
     Loud,
     Normal,
-    Quiet
+    Quiet,
+    None
 }

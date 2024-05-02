@@ -23,6 +23,7 @@ namespace Creature
         [Header("Public Infos")]
         [HideInInspector] public Vector3 wantedPos;
         [HideInInspector] public Vector3 forcedRot;
+        [HideInInspector] public bool isRunning;
 
         [Header("Private Infos")] 
         private float saveSpeed;
@@ -149,11 +150,13 @@ namespace Creature
         public void StartAggressiveSpeed()
         {
             saveSpeed = agressiveSpeed;
+            isRunning = true;
         }
 
         public void StartWalkSpeed()
         {
             saveSpeed = walkSpeed;
+            isRunning = false;
         }
     }
 }

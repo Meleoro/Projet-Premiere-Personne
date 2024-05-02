@@ -18,7 +18,8 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
     [Header("Actions")] 
     public Action<ItemData> UseAdrenaline;
 
-    [Header("References")] 
+    [Header("References")]
+    public MeshRenderer capsule;
     private Controls controls;
     private CrouchComponent crouchComponent;
 

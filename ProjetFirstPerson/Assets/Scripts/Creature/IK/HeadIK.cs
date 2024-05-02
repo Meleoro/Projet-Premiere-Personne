@@ -19,6 +19,7 @@ namespace IK
         [Header("Private Infos")] 
         private Vector3 saveBaseNeck;
         private Vector3 saveHeadJoint;
+        private float currentRatio;
 
         [Header("References")] 
         [SerializeField] private NavMeshAgent rb;
@@ -35,6 +36,11 @@ namespace IK
         private void Update()
         {
             ModifyInclinationBaseNeck(rb.velocity.magnitude / speedMaxInclination);
+
+            if (!isLookingLeftRight)
+            {
+                ModifyRotationHead(0.5f);
+            }
         }
 
 
@@ -53,7 +59,7 @@ namespace IK
             baseNeckTr.localEulerAngles = new Vector3(baseNeckTr.localEulerAngles.x, 
                 Mathf.Lerp(saveBaseNeck.y + rotationMax, saveBaseNeck.y - rotationMax, rotationRatio),
                 baseNeckTr.localEulerAngles.z);
-            
+
             headJointTr.localEulerAngles = new Vector3(Mathf.Lerp(saveHeadJoint.x + rotationMax, saveHeadJoint.x - rotationMax, rotationRatio),
                 saveHeadJoint.y, saveHeadJoint.z);
         }
