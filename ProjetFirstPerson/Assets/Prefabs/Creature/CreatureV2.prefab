@@ -48,7 +48,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1543558890807978236
 Transform:
   m_ObjectHideFlags: 0
@@ -3144,6 +3144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6495333d8d6db0548a291c255fcf67b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creatureTrRef: {fileID: 2878724045546751080}
 --- !u!1 &5412188927084113967
 GameObject:
   m_ObjectHideFlags: 0
@@ -5953,6 +5954,7 @@ MonoBehaviour:
   wantedGroundDist: 5
   rotateSpeed: 10
   walkSpeed: 2.5
+  suspicionSpeed: 2
   agressiveSpeed: 4.5
   doDebugMovement: 0
   debugWantedPos: {fileID: 0}
@@ -6143,7 +6145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93895c0141514e0428ed184e5ad6335a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 3
+  attackRange: 5
   attackDuration: 0.1
   attackCooldown: 2.5
   attackCollider: {fileID: 5041729056765584898}

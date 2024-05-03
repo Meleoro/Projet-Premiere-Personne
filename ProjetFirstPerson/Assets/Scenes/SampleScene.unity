@@ -1024,12 +1024,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1881606537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1407130295 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2878724045546751080, guid: c49cd1367a90c5a479e807e959a1b5ad,
-    type: 3}
-  m_PrefabInstance: {fileID: 2565749431067202205}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1627731944
 GameObject:
   m_ObjectHideFlags: 0
@@ -1530,10 +1524,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4767111273343339663, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: priority
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5914368939120287252, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_Name
       value: Essential
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338404949715200352, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: priority
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7813203946165383007, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
@@ -1696,11 +1700,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 212824240106136893, guid: c49cd1367a90c5a479e807e959a1b5ad,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1651368779928696747, guid: c49cd1367a90c5a479e807e959a1b5ad,
         type: 3}
       propertyPath: debugWantedPos
@@ -1761,21 +1760,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3557064016271620304, guid: c49cd1367a90c5a479e807e959a1b5ad,
-        type: 3}
-      propertyPath: attackRange
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 3658732888143539057, guid: c49cd1367a90c5a479e807e959a1b5ad,
         type: 3}
       propertyPath: possiblePaths.Array.data[0]
       value: 
       objectReference: {fileID: 1941099056}
-    - target: {fileID: 7110844516870939675, guid: c49cd1367a90c5a479e807e959a1b5ad,
-        type: 3}
-      propertyPath: creatureTrRef
-      value: 
-      objectReference: {fileID: 1407130295}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

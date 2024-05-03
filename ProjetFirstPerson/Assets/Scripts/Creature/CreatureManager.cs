@@ -156,6 +156,8 @@ namespace Creature
             {
                 currentState = CreatureState.suspicious;
                 waypointsScript.ChangeDestinationSuspicious(CharacterManager.Instance.transform.position);
+
+                moveScript.StartSuspicion();
             }
 
             else if (currentSuspicion > suspisionThresholdAggressif || currentState == CreatureState.aggressive)
@@ -170,7 +172,7 @@ namespace Creature
 
                     moveScript.StartWalkSpeed();
 
-                    StartCoroutine(waypointsScript.StopLookLeftRight(2.5f));
+                    specialMovesScript.LookLeftRight(2.5f);
                 }
             }
         }
