@@ -199,7 +199,6 @@ namespace Creature
             stoppedNormalBehavior = false;
             waitTimer = 0;
 
-            mainScript.currentSuspicion = 0;
             mainScript.currentState = CreatureState.none;
 
             creatureMoverScript.forcedRot = Vector3.zero;
