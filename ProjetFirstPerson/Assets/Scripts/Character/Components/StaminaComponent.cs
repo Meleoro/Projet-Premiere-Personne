@@ -12,7 +12,8 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
     [SerializeField] private float staminaRegainSpeed;
     [SerializeField] private float timeBeforeRegain;
     [Range(0f, 1f)] [SerializeField] private float tiredVolumeRatioAppear;      // From what percentage of the stamina amount the tired volume starts to appear
-    [Range(0f, 1f)] [SerializeField] private float canRunAgainRatio;     
+    [Range(0f, 1f)] [SerializeField] private float canRunAgainRatio;
+    [SerializeField] private float adrenalineStam;
 
     [Header("Public Infos")]
     public bool hasStamina;
@@ -105,6 +106,12 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
             staminaLerpValue = Mathf.Lerp(staminaLerpValue, 0, Time.deltaTime * 5);
             VolumeManager.Instance.staminaVolume.weight = staminaLerpValue;
         }
+    }
+
+
+    public void RegainStamina()
+    {
+        currentStamina += adrenalineStam;
     }
     
     

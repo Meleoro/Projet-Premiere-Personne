@@ -53,6 +53,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         if(isHurted)
             StartCoroutine(Die());
 
+        GetComponent<StaminaComponent>().RegainStamina();
+
         isHurted = true;
         hurtTimer = recoveryTime;
 
