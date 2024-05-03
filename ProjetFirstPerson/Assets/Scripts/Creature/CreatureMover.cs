@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using IK;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace Creature
         [SerializeField] private float maxGroundDist;
         [SerializeField] private float wantedGroundDist;
         [SerializeField] private float rotateSpeed;
+
+        [Header("Speed Parameters")]
         [SerializeField] private float walkSpeed;
         [SerializeField] private float suspicionSpeed;
         public float agressiveSpeed;
@@ -114,6 +117,15 @@ namespace Creature
         {
             SetNextPos();
             stopMoving = false;
+        }
+
+        public IEnumerator StartAggressiveBehavior(float waitDuration)
+        {
+            saveSpeed = 0.1f;
+
+            yield return new WaitForSeconds(waitDuration);
+
+            StartAggressiveSpeed();
         }
 
         public void StartAggressiveSpeed()

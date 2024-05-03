@@ -29,6 +29,9 @@ namespace Creature
         [SerializeField] private float suspisionThresholdAggressif = 100;
         [SerializeField] private float maxSuspicion = 200;
 
+        [Header("Other Parameters")]
+        [SerializeField] private float detectedWaitDuration;
+
         [Header("Valeurs Listen")]      // Pour chacune de ces valeurs, il faut les voir comme 'combien de suspision sont ajout�es par secondes' car elles seront multipli�s par le delta time (sauf l'int�raction)
         [SerializeField] private float suspisionAddedMarche;
         [SerializeField] private float suspisionAddedCourse;
@@ -162,9 +165,11 @@ namespace Creature
 
             else if (currentSuspicion > suspisionThresholdAggressif || currentState == CreatureState.aggressive)
             {
+                if (currentState != CreatureState.aggressive)
+                    StartCoroutine(moveScript.StartAggressiveBehavior(detectedWaitDuration));
+
                 currentState = CreatureState.aggressive;
                 waypointsScript.ChangeDestinationAggressive(CharacterManager.Instance.transform.position);
-                moveScript.StartAggressiveSpeed();
 
                 if (currentSuspicion <= 0)
                 {
