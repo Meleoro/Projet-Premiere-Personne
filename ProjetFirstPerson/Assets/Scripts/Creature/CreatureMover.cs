@@ -10,9 +10,8 @@ namespace Creature
     [RequireComponent(typeof(CreatureLegsMover))]
     public class CreatureMover : MonoBehaviour, ICreatureComponent
     {
-        [Header("Parameters")] 
-        [SerializeField] private float maxGroundDist;
-        [SerializeField] private float wantedGroundDist;
+        [Header("Parameters")]
+        [SerializeField] private CreatureBodyParamData data;
         [SerializeField] private float rotateSpeed;
 
         [Header("Speed Parameters")]
