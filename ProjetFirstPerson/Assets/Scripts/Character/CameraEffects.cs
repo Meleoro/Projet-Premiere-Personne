@@ -14,6 +14,7 @@ public class CameraEffects : GenericSingletonClass<CameraEffects>
     [Header("References")] 
     [SerializeField] private Volume hiddenVolume;
     [SerializeField] private Volume healthVolume;
+    [SerializeField] private Volume hurtVolume;
 
 
     private float hideTimer;
@@ -59,6 +60,26 @@ public class CameraEffects : GenericSingletonClass<CameraEffects>
 
         healthVolume.weight = 0;
     }
+
+
+    private float hurtTimer;
+    public IEnumerator HurtEffect(float duration)
+    {
+        hurtVolume.weight = 1;
+
+        yield return new WaitForSeconds(duration * 0.9f);
+
+        hurtTimer = 0;
+        while(hurtTimer < duration * 0.1f)
+        {
+            hurtTimer += Time.deltaTime;
+
+            hurtVolume.weight = Mathf.Lerp(1, 0, hurtTimer / (duration * 0.1f));
+
+            yield return null;
+        }
+    }
+
 
     private float fadeScreenTimer;
     public IEnumerator FadeScreen(float fadeDuration, float wantedValue)
