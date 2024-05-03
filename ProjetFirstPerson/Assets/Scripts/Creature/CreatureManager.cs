@@ -90,8 +90,8 @@ namespace Creature
 
         private void DoEarAI()
         {
-            if (currentState != CreatureState.none)
-                return;
+            /*if (currentState != CreatureState.none)
+                return;*/
             
             
             if (Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position) < earLoudRadius)
