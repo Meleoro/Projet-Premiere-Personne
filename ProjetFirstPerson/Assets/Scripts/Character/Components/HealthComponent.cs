@@ -9,7 +9,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     [SerializeField] private float recoveryTime;
 
     [Header("Private Infos")] 
-    private bool isHurted;
+    public bool isHurted;
     private float hurtTimer;
     private Vector3 lastCheckPoint;
 
