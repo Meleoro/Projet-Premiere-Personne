@@ -3128,7 +3128,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1.3904412, y: 1.9736336, z: 2.6204355}
   m_Center: {x: -0.19522062, y: -0.11188706, z: 0.024995422}
@@ -6134,6 +6134,7 @@ MonoBehaviour:
   neededPfDist: 0
   suspicionWaitDuration: 3
   waypoints: []
+  isAttacking: 0
 --- !u!114 &3557064016271620304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6146,8 +6147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93895c0141514e0428ed184e5ad6335a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 5
-  attackDuration: 0.1
+  attackRange: 6.5
+  attackSpeed: 4
+  attackDuration: 1.5
   attackCooldown: 2.5
   attackCollider: {fileID: 5041729056765584898}
 --- !u!195 &7820224077794747551

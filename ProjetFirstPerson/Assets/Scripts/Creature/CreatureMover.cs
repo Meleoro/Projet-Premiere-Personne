@@ -145,5 +145,11 @@ namespace Creature
             saveSpeed = walkSpeed;
             isRunning = false;
         }
+
+        public void StartAttackSpeed(float attackSpeed)
+        {
+            saveSpeed = attackSpeed;
+            isRunning = true;
+        }
     }
 }

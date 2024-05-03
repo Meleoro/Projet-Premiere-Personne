@@ -7,6 +7,7 @@ namespace Creature
     {
         [Header("Parameters")] 
         [SerializeField] private float attackRange;
+        [SerializeField] private float attackSpeed;
         [SerializeField] private float attackDuration;
         [SerializeField] private float attackCooldown;
         
@@ -43,15 +44,30 @@ namespace Creature
         private IEnumerator DoAttack()
         {
             attacked = true;
-            attackCollider.enabled = true;
+
             moveScript.StopMoving();
+            Vector3 saveTr = transform.position;
+            Vector3 charSaveTr = CharacterManager.Instance.transform.position;
+
+
+            yield return new WaitForSeconds(0.5f);
+
+            attackCollider.enabled = true;
+
+            moveScript.RestartMoving();
+            GetComponent<CreatureWaypoints>().DoAttack(saveTr, charSaveTr);
+            moveScript.StartAttackSpeed(attackSpeed);
             
             yield return new WaitForSeconds(attackDuration);
-            
+
+            moveScript.StopMoving();
             attackCollider.enabled = false;
             
             yield return new WaitForSeconds(attackCooldown);
-            
+
+            GetComponent<CreatureWaypoints>().isAttacking = false;
+
+            moveScript.StartAggressiveSpeed();
             moveScript.RestartMoving();
             attacked = false;
         }
