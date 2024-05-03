@@ -112,6 +112,8 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
     public void RegainStamina()
     {
         currentStamina += adrenalineStam;
+        if (currentStamina > staminaAmount)
+            currentStamina = staminaAmount;
     }
     
     
