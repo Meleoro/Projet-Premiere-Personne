@@ -27,7 +27,7 @@ public class CameraEffects : GenericSingletonClass<CameraEffects>
             hideTimer += Time.deltaTime;
 
             hiddenVolume.weight = Mathf.Lerp(save, wantedValue, hideTimer / hideEffectLerpDuration);
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
 
         hiddenVolume.weight = wantedValue;
@@ -43,7 +43,7 @@ public class CameraEffects : GenericSingletonClass<CameraEffects>
             healthTimer += Time.deltaTime;
 
             healthVolume.weight = Mathf.Lerp(0, wantedValue, healthTimer / (damageEffectDuration * 0.2f));
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
         
         healthVolume.weight = wantedValue;
@@ -54,9 +54,27 @@ public class CameraEffects : GenericSingletonClass<CameraEffects>
             healthTimer += Time.deltaTime;
 
             healthVolume.weight = Mathf.Lerp(wantedValue, 0, healthTimer / damageEffectDuration);
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
 
         healthVolume.weight = 0;
+    }
+
+    private float fadeScreenTimer;
+    public IEnumerator FadeScreen(float fadeDuration, float wantedValue)
+    {
+        fadeScreenTimer = 0;
+        float saveFadeValue = UIManager.Instance.fadeImage.color.a;
+
+        while (fadeScreenTimer < fadeDuration)
+        {
+            fadeScreenTimer += Time.deltaTime;
+
+            UIManager.Instance.fadeImage.color = new Color(UIManager.Instance.fadeImage.color.r,
+                UIManager.Instance.fadeImage.color.g, UIManager.Instance.fadeImage.color.b, 
+                Mathf.Lerp(saveFadeValue, wantedValue, fadeScreenTimer / fadeDuration));
+
+            yield return null;
+        }
     }
 }
