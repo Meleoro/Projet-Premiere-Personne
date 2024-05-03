@@ -16,6 +16,7 @@ namespace Creature
 
         [Header("Public Infos")]
         public List<Waypoint> waypoints = new List<Waypoint>();
+        public bool isAttacking;
 
         [Header("Private Infos")]
         private bool stoppedNormalBehavior;
@@ -121,6 +122,8 @@ namespace Creature
                 creatureMoverScript.forcedRot = Vector3.zero;
                 didWaypointAction = false;
                 mainScript.currentState = CreatureState.none;
+
+                creatureMoverScript.StartWalkSpeed();
             }
         }
 
@@ -159,6 +162,8 @@ namespace Creature
         /// </summary>
         public void ChangeDestinationAggressive(Vector3 suspicousPlace)
         {
+            if (isAttacking) return;
+
             stoppedNormalBehavior = true;
             waitTimer = 0;
             
@@ -194,11 +199,21 @@ namespace Creature
             stoppedNormalBehavior = false;
             waitTimer = 0;
 
-            mainScript.currentSuspicion = 0;
             mainScript.currentState = CreatureState.none;
 
             creatureMoverScript.forcedRot = Vector3.zero;
             creatureMoverScript.wantedPos = currentWaypoint.transform.position;
+        }
+
+
+        public void DoAttack(Vector3 creaturePos, Vector3 characterPos)
+        {
+            Vector3 wantedPos = creaturePos + (characterPos - creaturePos).normalized * 20f;
+
+            creatureMoverScript.forcedRot = Vector3.zero;
+            creatureMoverScript.wantedPos = wantedPos;
+
+            isAttacking = true;
         }
     }
 }

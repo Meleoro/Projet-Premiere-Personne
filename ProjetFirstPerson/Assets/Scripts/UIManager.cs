@@ -25,12 +25,13 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private Image interactImage;
     [SerializeField] private Image eyeIconImage;
     [SerializeField] private CameraComponent cameraComponent;
+    public Image fadeImage;
 
     [Header("UI Variables")]
     [SerializeField] private GameObject Album;
     [SerializeField] private GameObject LogPanel;
     public bool isUIActive;
-    
+
     
     
     private void Start()
