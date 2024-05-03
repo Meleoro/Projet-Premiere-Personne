@@ -10,9 +10,10 @@ namespace Creature
     {
         [Header("Parameters")]
         [SerializeField] private List<WaypointsManager> possiblePaths = new List<WaypointsManager>();
-        [SerializeField] private float angerPerCycle;
-        [SerializeField] private float neededPfDist;
+        /*[SerializeField] private float angerPerCycle;
+        [SerializeField] private float neededPfDist;*/
         [SerializeField] private float suspicionWaitDuration;
+        [SerializeField] private float suspicionPlaceOffsetMultiplier = 2.5f;
 
         [Header("Public Infos")]
         public List<Waypoint> waypoints = new List<Waypoint>();
@@ -152,7 +153,9 @@ namespace Creature
 
             creatureMoverScript.forcedRot = Vector3.zero;
 
-            placeToGo = suspicousPlace;
+            Vector3 dirToRemove = transform.position - suspicousPlace;
+            
+            placeToGo = suspicousPlace + (dirToRemove.normalized * suspicionPlaceOffsetMultiplier);
             creatureMoverScript.wantedPos = suspicousPlace;
         }
 
