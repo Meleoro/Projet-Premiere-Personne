@@ -10,9 +10,12 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     [Header("Private Infos")] 
     public bool isHurted;
+    private bool isDying;
     private float hurtTimer;
     private Animation anim;
     private Vector3 lastCheckPoint;
+    public CameraComponent cam;
+    public MoveComponent move;
 
 
     private void Start()
@@ -52,7 +55,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     public void TakeDamage()
     {
-        if(isHurted)
+        if(isHurted && !isDying)
             StartCoroutine(Die());
 
         GetComponent<StaminaComponent>().RegainStamina();
@@ -66,19 +69,26 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     private IEnumerator Die()
     {
-        //anim.clip = anim["Death"].clip;
-        //anim.Play();
-        yield return new WaitForSeconds(1);
-        GetComponent<MoveComponent>().canMove = false;
-        GetComponent<CameraComponent>().canRotate = false;        
-        StartCoroutine(CameraEffects.Instance.FadeScreen(0.75f, 1));
+        isDying = true;
+        anim.clip = anim["Death"].clip;
+        anim.Play();
+        cam.canRotate = false;
+        move.canMove = false;
+        yield return new WaitForSeconds(3);
+        StartCoroutine(CameraEffects.Instance.FadeScreen(2f, 1));
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2.5f);
 
         transform.position = lastCheckPoint;
         isHurted = false;
-        GetComponent<MoveComponent>().canMove = true;
-        GetComponent<CameraComponent>().canRotate = true;       
+        cam.transform.GetChild(2).transform.localPosition = new Vector3(0, 0.8f, 0);
+        cam.transform.GetChild(2).transform.localEulerAngles = Vector3.zero;
+        
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.75f, 0));
+        yield return new WaitForSeconds(0.5f);
+        cam.canMove = true;
+        cam.canRotate = true;
+        move.canMove = true;
+        isDying = false;
     }
 }
