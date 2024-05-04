@@ -11,8 +11,7 @@ namespace Creature
     public class CreatureMover : MonoBehaviour, ICreatureComponent
     {
         [Header("Parameters")]
-        [SerializeField] private CreatureBodyParamData data;
-        [SerializeField] private float rotateSpeed;
+        public CreatureBodyParamData data;
 
         [Header("Speed Parameters")]
         [SerializeField] private float walkSpeed;
@@ -36,6 +35,7 @@ namespace Creature
         [SerializeField] private BodyIK bodyIKScript;
         [SerializeField] private Transform targetIKBody;
         [SerializeField] private Transform transformToRotate;
+        [SerializeField] private Transform baseCreatureTr;
         [HideInInspector] public NavMeshAgent navMeshAgent;
         private CreatureLegsMover legsScript;
 
@@ -60,6 +60,7 @@ namespace Creature
 
             //AdaptHeightBody();
             AdaptSpeedWhenRotation();
+            AdaptHeightBySpeed();
         }
 
         
@@ -86,7 +87,7 @@ namespace Creature
             Vector3 currentDir = targetIKBody.position - transform.position;
             currentDir = currentDir.normalized * 4;
 
-            currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo, Time.deltaTime * rotateSpeed, Time.deltaTime * rotateSpeed);
+            currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo, 1, 1);
             
             targetIKBody.position = transform.position + currentDir;
         }
@@ -101,6 +102,19 @@ namespace Creature
             float currentRotationDif = Mathf.Abs(bodyIKScript.currentRotationDif);
 
             navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.1f, currentRotationDif);
+        }
+
+        private void AdaptHeightBySpeed()
+        {
+            float currentSpeed = navMeshAgent.velocity.magnitude / agressiveSpeed;
+            float wantedY = data.wantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
+            Debug.Log(wantedY);
+
+            RaycastHit groundHit;
+            if(Physics.Raycast(baseCreatureTr.position + Vector3.up, Vector3.down, out groundHit, data.maxHeight + 1, LayerManager.Instance.groundLayer))
+            {
+                baseCreatureTr.position = groundHit.point + Vector3.up * wantedY;
+            }
         }
 
         #endregion
