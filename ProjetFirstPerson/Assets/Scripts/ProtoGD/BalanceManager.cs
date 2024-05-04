@@ -11,29 +11,47 @@ public class BalanceManager : MonoBehaviour
     public GameObject poid2Position;
     public int registedPoids1;
     public int registedPoids2;
-    //public Animation anim;
+    private Animator anim;
 
-    /*private void Start()
+    private void Start()
     {
-        anim = transform.GetChild(0).GetComponent<Animation>();
-    }*/
+        anim = GetComponent<Animator>();
+    }
 
     public void CheckPoids()
     {
+        if (poid1Free && poid2Free)
+        {
+            anim.SetBool("isGauche",false);
+            anim.SetBool("isDroite",false);
+        }
+        
+        if (poid1Free && !poid2Free)
+        {
+            anim.SetBool("isGauche",false);
+            anim.SetBool("isDroite",true);
+        }
+        
+        if (!poid1Free && poid2Free)
+        {
+            anim.SetBool("isGauche",true);
+            anim.SetBool("isDroite",false);
+        }
+        
         if (!poid1Free && !poid2Free)
         {
             if (registedPoids1 > registedPoids2)
             {
-                //anim.clip = anim["Gauche"].clip;
-                //anim.Play();
+                anim.SetBool("isGauche",true);
+                anim.SetBool("isDroite",false);
                 Debug.Log("gauche");
             }
 
 
             if (registedPoids2 > registedPoids1)
             {
-                //anim.clip = anim["Droite"].clip;
-                //anim.Play();
+                anim.SetBool("isGauche",false);
+                anim.SetBool("isDroite",true);
                 Debug.Log("droite");
             }
         }

@@ -11,11 +11,13 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     [Header("Private Infos")] 
     public bool isHurted;
     private float hurtTimer;
+    private Animation anim;
     private Vector3 lastCheckPoint;
 
 
     private void Start()
     {
+        anim = GetComponent<Animation>();
         lastCheckPoint = transform.position;
     }
 
@@ -64,13 +66,19 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     private IEnumerator Die()
     {
+        //anim.clip = anim["Death"].clip;
+        //anim.Play();
+        yield return new WaitForSeconds(1);
+        GetComponent<MoveComponent>().canMove = false;
+        GetComponent<CameraComponent>().canRotate = false;        
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.75f, 1));
 
         yield return new WaitForSeconds(1);
 
         transform.position = lastCheckPoint;
         isHurted = false;
-
+        GetComponent<MoveComponent>().canMove = true;
+        GetComponent<CameraComponent>().canRotate = true;       
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.75f, 0));
     }
 }

@@ -19,13 +19,26 @@ public class Poids : MonoBehaviour
         mesh = GetComponent<MeshRenderer>();
     }
 
+    private void Update()
+    {
+        if (currentSpot == 1)
+        {
+            transform.position = manager.poid1Position.transform.position;
+        }
+        
+        if (currentSpot == 2)
+        {
+            transform.position = manager.poid2Position.transform.position;
+        }
+    }
+
     public void OnMouseDown()
     {
         if (currentSpot == 0)
         {
             if (manager.poid1Free)
             {
-                transform.position = manager.poid1Position.transform.position;
+                //transform.position = manager.poid1Position.transform.position;
                 manager.poid1Free = false;
                 currentSpot = 1;
                 manager.registedPoids1 = poids;
@@ -34,7 +47,7 @@ public class Poids : MonoBehaviour
             
             else if (manager.poid2Free)
             {
-                transform.position = manager.poid2Position.transform.position;
+                //transform.position = manager.poid2Position.transform.position;
                 manager.poid2Free = false;
                 currentSpot = 2;               
                 manager.registedPoids2 = poids;
@@ -52,6 +65,7 @@ public class Poids : MonoBehaviour
                 manager.poid2Free = true;
             
             currentSpot = 0;
+            manager.CheckPoids();
         }
     }
 
