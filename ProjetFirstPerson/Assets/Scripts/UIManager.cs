@@ -36,7 +36,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     
     private void Start()
     {
-        LogPanel = GameObject.Find("LogsPanel");
+       // LogPanel = GameObject.Find("LogsPanel");
 
         HideInteractIcon();
         Album.SetActive(false);
