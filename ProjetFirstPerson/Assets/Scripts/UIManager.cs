@@ -28,19 +28,16 @@ public class UIManager : GenericSingletonClass<UIManager>
     public Image fadeImage;
 
     [Header("UI Variables")]
-    [SerializeField] private GameObject Album;
-    [SerializeField] private GameObject LogPanel;
-    public bool isUIActive;
+    [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, MapMenu;
+    [SerializeField] public bool isUIActive = false;
 
     
     
     private void Start()
     {
-       // LogPanel = GameObject.Find("LogsPanel");
 
         HideInteractIcon();
-        Album.SetActive(false);
-        LogPanel.SetActive(false);
+        GeneralMenu.SetActive(false);
     }
 
     void Update()
@@ -50,37 +47,21 @@ public class UIManager : GenericSingletonClass<UIManager>
         // Test Ouvrir Album
         if(Input.GetKeyDown(KeyCode.Tab))
         {
-            if (!Album.activeSelf)
+            if(!isUIActive)
             {
                 cameraComponent.canRotate = false;
                 cameraComponent.LockedCursor(1);
-                Album.SetActive(true);
                 isUIActive = true;
+                CloseAllPanel(true,false,false,false);
             }
-            else
+          else
             {
                 cameraComponent.canRotate = true;
                 cameraComponent.LockedCursor(2);
-                Album.SetActive(false);
                 isUIActive = false;
+                CloseAllPanel(false,false,false,false);
             }
         } 
-
-        if(Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            if (!LogPanel.activeSelf)
-            {
-                cameraComponent.LockedCursor(1);
-                LogPanel.SetActive(true);
-                isUIActive = true;
-            }
-            else
-            {
-                cameraComponent.LockedCursor(2);
-                LogPanel.SetActive(false);
-                isUIActive = false;
-            }
-        }
     }
 
 
@@ -93,6 +74,39 @@ public class UIManager : GenericSingletonClass<UIManager>
     {
         HUDParent.gameObject.SetActive(true);
     }
+    #region Button
+    public void CloseAllPanel(bool GeneralBool, bool BoardBool, bool MapBool, bool LogsBool)
+    {
+        GeneralMenu.SetActive(GeneralBool);
+        BoardMenu.SetActive(BoardBool);
+        MapMenu.SetActive(MapBool);
+        LogsMenu.SetActive(LogsBool);
+    }
+    public void OpenBoardMenu()
+    {
+        if (!BoardMenu.activeSelf)
+            {
+                CloseAllPanel(false,true,false,false);
+                isUIActive = true;
+            }
+    }
+    public void OpenMapMenu()
+    {
+        if (!MapMenu.activeSelf)
+            {
+                CloseAllPanel(false,false,true,false);
+                isUIActive = true;
+            }
+    }
+    public void OpenLogsMenu()
+    {
+        if (!LogsMenu.activeSelf)
+            {
+                CloseAllPanel(false,false,false,true);
+                isUIActive = true;
+            }
+    }
+    #endregion
     
     
     #region SELECTION
