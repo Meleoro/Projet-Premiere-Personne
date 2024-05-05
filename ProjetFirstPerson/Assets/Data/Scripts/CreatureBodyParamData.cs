@@ -9,4 +9,9 @@ public class CreatureBodyParamData : ScriptableObject
     public float maxHeight;
     public float wantedHeight;
     public AnimationCurve heightModifierCurveBySpeed;
+
+    [Header("Rotation")]
+    public float rotationSpeed;
+    public float rotationSpeedFrontJoints;
+    public float maxRotDifFrontBack;
 }

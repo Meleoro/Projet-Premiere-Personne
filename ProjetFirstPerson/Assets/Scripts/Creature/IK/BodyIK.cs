@@ -7,8 +7,7 @@ namespace IK
     public class BodyIK : MonoBehaviour
     {
         [Header("Parameters")]
-        [SerializeField] private float maxRotationFrontToBack;
-        [SerializeField] private float rotationSpeed;
+        [SerializeField] private CreatureBodyParamData data;
         [SerializeField] private AnimationCurve heightLegModificator;
 
         [Header("Public Infos")] 
@@ -22,8 +21,6 @@ namespace IK
         private float currentAtanBack;
         private Vector3 backLocalPosSave;
         private Vector3[] savesLocalEulers;
-        private float frontWantedY;
-        private float backWantedY;
 
         
         [Header("References")]
@@ -63,7 +60,6 @@ namespace IK
         {
             Vector3 dif = backJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
-            float difAtan = Mathf.Atan2(-backJoint.right.z, backJoint.right.x) * Mathf.Rad2Deg;
 
             // To avoid too much abrupt body rotations
             if (atan < -80f && currentAtanBack > 80f)
@@ -77,17 +73,17 @@ namespace IK
                 currentAtan += 360f;
             
             // Back Part
-            currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * rotationSpeed);
+            currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * data.rotationSpeed);
 
             Vector3 eulerBack = backJoint.localEulerAngles;
             eulerBack.y = saveOffset2.y + currentAtanBack;
             backJoint.localEulerAngles = eulerBack;
             
             // Spine Part
-            currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * 2.5f * rotationSpeed);
-            currentAtan = Mathf.Clamp(currentAtan, -maxRotationFrontToBack, maxRotationFrontToBack);
+            currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * data.rotationSpeedFrontJoints);
+            currentAtan = Mathf.Clamp(currentAtan, -data.maxRotDifFrontBack, data.maxRotDifFrontBack);
             
-            currentRotationDif = currentAtan / maxRotationFrontToBack;
+            currentRotationDif = currentAtan / data.maxRotDifFrontBack;
             currentAtanDif = atan - currentAtanBack;
 
             float angleAddedPerJoint = currentAtan / bodyJoints.Length;
