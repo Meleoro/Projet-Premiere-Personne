@@ -47,7 +47,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     private Coroutine upDownCoroutine;
     private float crouchModifierY;
     private bool lockCamera;
-    
+
     [Header("References")] 
     public Transform wantedCameraPos;
     public Transform characterCamera;

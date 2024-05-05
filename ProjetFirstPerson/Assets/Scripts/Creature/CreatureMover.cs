@@ -108,7 +108,7 @@ namespace Creature
         {
             float currentSpeed = navMeshAgent.velocity.magnitude / agressiveSpeed;
             float wantedY = data.wantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
-            Debug.Log(wantedY);
+            //Debug.Log(wantedY);
 
             RaycastHit groundHit;
             if(Physics.Raycast(baseCreatureTr.position + Vector3.up, Vector3.down, out groundHit, data.maxHeight + 1, LayerManager.Instance.groundLayer))

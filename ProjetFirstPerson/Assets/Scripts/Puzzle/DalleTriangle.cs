@@ -12,15 +12,17 @@ namespace Puzzle
     {
         [Header("Parameters")]
         public DalleSymbols dalleSymbol;
-        public Material MaterialOn;
+        public Material MaterialHighlighted;
+        public Material MaterialSelected;
         public Material MaterialOff;
 
         [Header("Public Infos")]
         public int currentIndex;
         public bool canMove;
+        public bool isSelected;
 
         [Header("References")]
-        private MeshRenderer meshRenderer;
+        [HideInInspector] public MeshRenderer meshRenderer;
         private TriangleManager triangleManager;
 
 
@@ -42,13 +44,14 @@ namespace Puzzle
 
         private void OnMouseEnter()
         {
-            if(canMove)
-                meshRenderer.material = MaterialOn;
+            if(canMove && !isSelected)
+                meshRenderer.material = MaterialHighlighted;
         }
 
         private void OnMouseExit()
         {
-            meshRenderer.material = MaterialOff;
+            if(!isSelected)
+                meshRenderer.material = MaterialOff;
         }
     }
 }
