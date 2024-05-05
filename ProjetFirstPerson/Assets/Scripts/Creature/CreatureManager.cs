@@ -29,6 +29,9 @@ namespace Creature
         [SerializeField] private float suspisionThresholdAggressif = 100;
         [SerializeField] private float maxSuspicion = 200;
 
+        [Header("Other Parameters")]
+        [SerializeField] private float detectedWaitDuration;
+
         [Header("Valeurs Listen")]      // Pour chacune de ces valeurs, il faut les voir comme 'combien de suspision sont ajout�es par secondes' car elles seront multipli�s par le delta time (sauf l'int�raction)
         [SerializeField] private float suspisionAddedMarche;
         [SerializeField] private float suspisionAddedCourse;
@@ -87,8 +90,8 @@ namespace Creature
 
         private void DoEarAI()
         {
-            if (currentState != CreatureState.none)
-                return;
+            /*if (currentState != CreatureState.none)
+                return;*/
             
             
             if (Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position) < earLoudRadius)
@@ -156,13 +159,17 @@ namespace Creature
             {
                 currentState = CreatureState.suspicious;
                 waypointsScript.ChangeDestinationSuspicious(CharacterManager.Instance.transform.position);
+
+                moveScript.StartSuspicion();
             }
 
             else if (currentSuspicion > suspisionThresholdAggressif || currentState == CreatureState.aggressive)
             {
+                if (currentState != CreatureState.aggressive)
+                    StartCoroutine(moveScript.StartAggressiveBehavior(detectedWaitDuration));
+
                 currentState = CreatureState.aggressive;
                 waypointsScript.ChangeDestinationAggressive(CharacterManager.Instance.transform.position);
-                moveScript.StartAggressiveSpeed();
 
                 if (currentSuspicion <= 0)
                 {
@@ -170,7 +177,7 @@ namespace Creature
 
                     moveScript.StartWalkSpeed();
 
-                    StartCoroutine(waypointsScript.StopLookLeftRight(2.5f));
+                    specialMovesScript.LookLeftRight(2.5f);
                 }
             }
         }

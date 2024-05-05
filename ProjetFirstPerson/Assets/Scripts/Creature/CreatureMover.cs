@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using IK;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,11 +10,12 @@ namespace Creature
     [RequireComponent(typeof(CreatureLegsMover))]
     public class CreatureMover : MonoBehaviour, ICreatureComponent
     {
-        [Header("Parameters")] 
-        [SerializeField] private float maxGroundDist;
-        [SerializeField] private float wantedGroundDist;
-        [SerializeField] private float rotateSpeed;
+        [Header("Parameters")]
+        public CreatureBodyParamData data;
+
+        [Header("Speed Parameters")]
         [SerializeField] private float walkSpeed;
+        [SerializeField] private float suspicionSpeed;
         public float agressiveSpeed;
         
         [Header("Debug Parameters")] 
@@ -33,6 +35,7 @@ namespace Creature
         [SerializeField] private BodyIK bodyIKScript;
         [SerializeField] private Transform targetIKBody;
         [SerializeField] private Transform transformToRotate;
+        [SerializeField] private Transform baseCreatureTr;
         [HideInInspector] public NavMeshAgent navMeshAgent;
         private CreatureLegsMover legsScript;
 
@@ -57,6 +60,7 @@ namespace Creature
 
             //AdaptHeightBody();
             AdaptSpeedWhenRotation();
+            AdaptHeightBySpeed();
         }
 
         
@@ -83,7 +87,7 @@ namespace Creature
             Vector3 currentDir = targetIKBody.position - transform.position;
             currentDir = currentDir.normalized * 4;
 
-            currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo, Time.deltaTime * rotateSpeed, Time.deltaTime * rotateSpeed);
+            currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo, 1, 1);
             
             targetIKBody.position = transform.position + currentDir;
         }
@@ -93,43 +97,24 @@ namespace Creature
 
         #region NATURAL MOVEMENT
         
-        /*private void AdaptHeightBody()
-        {
-            float legModificatorY = 0;
-            for (int i = 0; i < legsScript.legs.Count; i++)
-            {
-                if (legsScript.legs[i].isMoving)
-                    legModificatorY -= wantedGroundDist * 0.1f;
-            }
-            
-            if (Physics.Raycast(transformToRotate.position, -transformToRotate.up, out RaycastHit hit, maxGroundDist, LayerManager.Instance.groundLayer))
-            {
-                float groundDist = Vector3.Distance(transformToRotate.position, hit.point);
-                
-                timerNoiseY += goDown ? -Time.deltaTime : Time.deltaTime;
-                if (timerNoiseY <= -0.7f)
-                    goDown = false;
-                else if (timerNoiseY >= 0.7f)
-                    goDown = true;
-                
-                addedForceY = Mathf.Lerp(addedForceY, (wantedGroundDist - groundDist) + legModificatorY + timerNoiseY * 0.4f, Time.deltaTime * 5);
-
-                transformToRotate.position += transformToRotate.up * (addedForceY * Time.deltaTime);
-            }
-
-            else
-            {
-                addedForceY = Mathf.Lerp(addedForceY, -1, Time.deltaTime * 5);
-                
-                transformToRotate.position += transformToRotate.up * (addedForceY * Time.deltaTime);
-            }
-        }*/
-        
         private void AdaptSpeedWhenRotation()
         {
             float currentRotationDif = Mathf.Abs(bodyIKScript.currentRotationDif);
 
             navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.1f, currentRotationDif);
+        }
+
+        private void AdaptHeightBySpeed()
+        {
+            float currentSpeed = navMeshAgent.velocity.magnitude / agressiveSpeed;
+            float wantedY = data.wantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
+            //Debug.Log(wantedY);
+
+            RaycastHit groundHit;
+            if(Physics.Raycast(baseCreatureTr.position + Vector3.up, Vector3.down, out groundHit, data.maxHeight + 1, LayerManager.Instance.groundLayer))
+            {
+                baseCreatureTr.position = groundHit.point + Vector3.up * wantedY;
+            }
         }
 
         #endregion
@@ -147,16 +132,37 @@ namespace Creature
             stopMoving = false;
         }
 
+        public IEnumerator StartAggressiveBehavior(float waitDuration)
+        {
+            saveSpeed = 0.1f;
+
+            yield return new WaitForSeconds(waitDuration);
+
+            StartAggressiveSpeed();
+        }
+
         public void StartAggressiveSpeed()
         {
             saveSpeed = agressiveSpeed;
             isRunning = true;
         }
 
+        public void StartSuspicion()
+        {
+            saveSpeed = suspicionSpeed;
+            isRunning = false;
+        }
+
         public void StartWalkSpeed()
         {
             saveSpeed = walkSpeed;
             isRunning = false;
+        }
+
+        public void StartAttackSpeed(float attackSpeed)
+        {
+            saveSpeed = attackSpeed;
+            isRunning = true;
         }
     }
 }

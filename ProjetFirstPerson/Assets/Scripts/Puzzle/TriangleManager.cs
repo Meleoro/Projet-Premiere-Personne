@@ -58,10 +58,15 @@ namespace Puzzle
             if (isMovingDalles) return;
 
             if (selectedDalle1 is null)
+            {
                 selectedDalle1 = selectedDalle;
+                selectedDalle.meshRenderer.material = selectedDalle.MaterialSelected;
+                selectedDalle.isSelected = true;
+            }
 
             else
             {
+                selectedDalle1.isSelected = false;
                 selectedDalle2 = selectedDalle;
                 StartCoroutine(ExchangeTwoDalles(selectedDalle1, selectedDalle2));
             }

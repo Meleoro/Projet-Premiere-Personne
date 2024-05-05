@@ -48,7 +48,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1543558890807978236
 Transform:
   m_ObjectHideFlags: 0
@@ -67,7 +67,6 @@ Transform:
   - {fileID: 1612365238677210492}
   - {fileID: 6420708721550655078}
   - {fileID: 3769525300655219568}
-  - {fileID: 5217439006829088417}
   m_Father: {fileID: 3262935430553862794}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3639876421578968242
@@ -3105,12 +3104,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5059124586635814913}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000000037252903, y: -0, z: 0.0000000037252903, w: 1}
-  m_LocalPosition: {x: -2.941, y: 0.673, z: 0.024}
+  m_LocalRotation: {x: 0.7043732, y: -0.0621168, z: -0.70437306, w: 0.062116757}
+  m_LocalPosition: {x: -0.024000686, y: 1.1017131, z: 0.26112345}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1543558890807978236}
+  m_Father: {fileID: 3262935430553862794}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5041729056765584898
 BoxCollider:
@@ -3129,7 +3128,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1.3904412, y: 1.9736336, z: 2.6204355}
   m_Center: {x: -0.19522062, y: -0.11188706, z: 0.024995422}
@@ -3145,6 +3144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6495333d8d6db0548a291c255fcf67b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creatureTrRef: {fileID: 2878724045546751080}
 --- !u!1 &5412188927084113967
 GameObject:
   m_ObjectHideFlags: 0
@@ -4233,6 +4233,7 @@ Transform:
   - {fileID: 6208844831209347661}
   - {fileID: 7785924718120178745}
   - {fileID: 9071632275033192356}
+  - {fileID: 5217439006829088417}
   - {fileID: 1543558890807978236}
   - {fileID: 8459730844866425450}
   - {fileID: 282208975096010596}
@@ -5928,6 +5929,7 @@ MonoBehaviour:
   suspisionThresholdSuspicieux: 50
   suspisionThresholdAggressif: 100
   maxSuspicion: 200
+  detectedWaitDuration: 2
   suspisionAddedMarche: 15
   suspisionAddedCourse: 30
   suspisionAddedMarcheSneak: 15
@@ -5953,6 +5955,7 @@ MonoBehaviour:
   wantedGroundDist: 5
   rotateSpeed: 10
   walkSpeed: 2.5
+  suspicionSpeed: 2
   agressiveSpeed: 4.5
   doDebugMovement: 0
   debugWantedPos: {fileID: 0}
@@ -6131,6 +6134,7 @@ MonoBehaviour:
   neededPfDist: 0
   suspicionWaitDuration: 3
   waypoints: []
+  isAttacking: 0
 --- !u!114 &3557064016271620304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6143,8 +6147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93895c0141514e0428ed184e5ad6335a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 3
-  attackDuration: 0.1
+  attackRange: 6.5
+  attackSpeed: 4
+  attackDuration: 1.5
   attackCooldown: 2.5
   attackCollider: {fileID: 5041729056765584898}
 --- !u!195 &7820224077794747551
