@@ -25,6 +25,8 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private Image interactImage;
     [SerializeField] private Image eyeIconImage;
     [SerializeField] private CameraComponent cameraComponent;
+    [SerializeField] private MoveComponent moveComponent;
+    //[SerializeField] private Animator tabletteAnim;
     public Image fadeImage;
 
     [Header("UI Variables")]
@@ -50,20 +52,30 @@ public class UIManager : GenericSingletonClass<UIManager>
         // Test Ouvrir Album
         if(Input.GetKeyDown(KeyCode.Tab))
         {
-            if(!isUIActive)
-            {
-                cameraComponent.canRotate = false;
-                cameraComponent.LockedCursor(1);
-                isUIActive = true;
-                CloseAllPanel(true,false,false,false);
-            }
-          else
-            {
-                cameraComponent.canRotate = true;
-                cameraComponent.LockedCursor(2);
-                isUIActive = false;
-                CloseAllPanel(false,false,false,false);
-            }
+            StartCoroutine(OpenMenu());
+        } 
+    }
+
+    IEnumerator OpenMenu()
+    {
+        if(!isUIActive)
+        {
+            yield return new WaitForSeconds(0.5f);
+            //tabletteAnim.SetBool("in",true);
+            cameraComponent.canRotate = false;
+            moveComponent.canMove = false;
+            cameraComponent.LockedCursor(1);
+            isUIActive = true;
+            CloseAllPanel(true,false,false,false);
+        }
+        else
+        {
+            //tabletteAnim.SetBool("in",false);
+            cameraComponent.canRotate = true;
+            moveComponent.canMove = true;
+            cameraComponent.LockedCursor(2);
+            isUIActive = false;
+            CloseAllPanel(false,false,false,false);
         } 
     }
 
