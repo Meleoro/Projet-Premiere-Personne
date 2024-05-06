@@ -34,11 +34,16 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private TextMeshProUGUI schedule;
     [SerializeField] public bool isUIActive = false;
 
+    [Header("Cursor Variables")]
+    public Texture2D cursorTexture;
+    public CursorMode cursorMode = CursorMode.Auto;
+    public Vector2 hotSpot = Vector2.zero;
+
     
     
     private void Start()
     {
-
+        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
         HideInteractIcon();
         GeneralMenu.SetActive(false);
     }

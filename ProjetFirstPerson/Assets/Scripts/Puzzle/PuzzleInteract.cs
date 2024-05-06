@@ -42,7 +42,7 @@ namespace Puzzle
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && isInRange)
                 GetOutInteraction();
         }
 

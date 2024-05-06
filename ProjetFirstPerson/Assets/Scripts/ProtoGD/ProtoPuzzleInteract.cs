@@ -40,7 +40,7 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
             }
         }
      
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && isInRange)
             GetOutInteraction();
     }
     
