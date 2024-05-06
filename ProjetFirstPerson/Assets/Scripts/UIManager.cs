@@ -29,6 +29,7 @@ public class UIManager : GenericSingletonClass<UIManager>
 
     [Header("UI Variables")]
     [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, MapMenu;
+    [SerializeField] private TextMeshProUGUI schedule;
     [SerializeField] public bool isUIActive = false;
 
     
@@ -42,6 +43,8 @@ public class UIManager : GenericSingletonClass<UIManager>
 
     void Update()
     {
+        // Horaire du jeu
+        schedule.text = System.DateTime.Now + "";
         EyeIconUpdate();
         
         // Test Ouvrir Album
