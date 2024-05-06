@@ -13,7 +13,9 @@ public class CameraTestEthan : MonoBehaviour
     public Animator anim;
     public GameObject tablette;
     public GameObject tabletteScreen;
-    public GameObject UI;
+    public GameObject UIPhotoPlayer;
+    public GameObject UIPhotoTablette;
+    public GameObject UIMenuGeneral;
 
     // Update is called once per frame
     void Update()
@@ -22,6 +24,7 @@ public class CameraTestEthan : MonoBehaviour
         {
             if (canInOut)
             {
+                UIPhotoTablette.SetActive(true);
                 isAiming = !isAiming;
                 anim.SetBool("in",true);
                 StartCoroutine(WaitForUI());
@@ -32,13 +35,12 @@ public class CameraTestEthan : MonoBehaviour
         {
             if (canInOut)
             {
-                UI.SetActive(false);
+                UIPhotoPlayer.SetActive(false);
+                UIPhotoTablette.SetActive(false);
                 StopCoroutine(WaitForUI());
-                //tablette.SetActive(true);
                 isAiming = !isAiming;
                 anim.SetBool("in",false);
-               // tablette.SetActive(true);
-                UI.SetActive(false);
+                UIPhotoTablette.SetActive(false);
             }
         }
 
@@ -47,20 +49,19 @@ public class CameraTestEthan : MonoBehaviour
             if (isMenu)
             {
                 canInOut = true;
-                //tabletteScreen.SetActive(false);
                 isMenu = !isMenu;
-                anim.SetBool("Menu",false);
+                anim.SetBool("in",false);
+                UIMenuGeneral.SetActive(false);
                 isAiming = false;
             }
             else
             {
+                UIMenuGeneral.SetActive(true);
+                UIPhotoTablette.SetActive(false);
                 canInOut = false;
                 tabletteScreen.SetActive(true);
                 isMenu = !isMenu;
-                anim.SetBool("Menu",true);
-                anim.SetBool("in",false);
-                //tablette.SetActive(true);
-                UI.SetActive(false);
+                anim.SetBool("in",true);
                 isAiming = false;
             }
         }
@@ -73,15 +74,16 @@ public class CameraTestEthan : MonoBehaviour
            yield return new WaitForSeconds(0.5f);
            if (isAiming)
            {
-            UI.SetActive(true);
-            //tablette.SetActive(false);
+               UIPhotoPlayer.SetActive(true);
+                UIMenuGeneral.SetActive(false);
+                //tablette.SetActive(false);
            }
         }
         else
         {
+            UIPhotoPlayer.SetActive(false);
+            UIMenuGeneral.SetActive(false);
             StopCoroutine(WaitForUI());
-            //tablette.SetActive(true);
-            UI.SetActive(false);
         }
     }
 }
