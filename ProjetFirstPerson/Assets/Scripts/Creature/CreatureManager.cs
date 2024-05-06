@@ -60,6 +60,8 @@ namespace Creature
             creatureComponents = GetComponents<ICreatureComponent>().ToList();
             waypointsScript = GetComponent<CreatureWaypoints>();
             moveScript = GetComponent<CreatureMover>();
+
+            CharacterManager.Instance.GetComponent<HealthComponent>().DieAction += () => currentSuspicion = 0;
         }
 
 
