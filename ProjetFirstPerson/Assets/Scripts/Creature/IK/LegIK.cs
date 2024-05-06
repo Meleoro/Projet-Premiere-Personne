@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Creature;
 using Unity.Collections;
 using UnityEngine;
 
@@ -13,7 +14,11 @@ namespace IK
         [SerializeField] private float articulationXRotMultiplicator;
         [SerializeField] private float articulationXRotMax;
         [SerializeField] private float yEffectorOffset;
-    
+
+        [Header("Public Infos")] 
+        [HideInInspector] public float currentPatouneZRot;
+        [HideInInspector] public bool canMove;
+        
         [Header("Private Infos")]
         private Vector3 offset1;
         private Vector3 offset2;
@@ -21,6 +26,7 @@ namespace IK
         private Vector3[] footOffsetsLocal;
         private Vector3[] footOffsetsWorld;
         private Vector3 effectorSaveLocalPos;
+        private Vector3 saveTargetOriginOffset;
         
         [Header("References")]
         [SerializeField] private Transform joint0;
@@ -30,10 +36,13 @@ namespace IK
         [SerializeField] private Transform target;
         [SerializeField] private Transform[] foot;
         [SerializeField] private Transform transformRotTrRef;
+        [SerializeField] private CreatureMover moveScript;
 
 
         private void Start()
         {
+            saveTargetOriginOffset = transformRotTrRef.InverseTransformVector(effector.position - joint0.position);
+            
             offset1 = joint0.localEulerAngles;
             offset2 = joint1.localEulerAngles;
 
@@ -67,8 +76,10 @@ namespace IK
             {
                 ApplyIK2(joint0, joint1, inverseArticulation);
             }
-
+            
+            ResetTargetsWhenIdle();
             ApplySecondaryRot();
+            ApplyPatouneRot();
         }
 
 
@@ -135,17 +146,8 @@ namespace IK
             Vector3 eulerJoint2 = jointB.localEulerAngles;
             eulerJoint2.z = angleJointB;
             jointB.localEulerAngles = eulerJoint2;
-
-            
-            // We keep the toes / feet to a given rotation
-            for (int i = 0; i < foot.Length; i++)
-            {
-                foot[i].localEulerAngles = footOffsetsLocal[i];
-                foot[i].eulerAngles = new Vector3(footOffsetsWorld[i].x, foot[i].eulerAngles.y, footOffsetsWorld[i].z); ;
-            }
         }
-
-
+        
         private void ApplySecondaryRot()
         {
             Vector3 dif = transformRotTrRef.InverseTransformVector(joint0.position - target.position);
@@ -154,6 +156,38 @@ namespace IK
 
             joint0.localEulerAngles = new Vector3(offset1.x - dif.x * articulationXRotMultiplicator, joint0.localEulerAngles.y, joint0.localEulerAngles.z);
             joint1.localEulerAngles = new Vector3(offset2.x + dif.x * 1.5f * articulationXRotMultiplicator, joint1.localEulerAngles.y, joint1.localEulerAngles.z);
+        }
+        
+        private void ApplyPatouneRot()
+        {
+            // We keep the toes / feet to a given rotation
+            for (int i = 0; i < foot.Length; i++)
+            {
+                foot[i].localEulerAngles = footOffsetsLocal[i];
+                foot[i].eulerAngles = new Vector3(footOffsetsWorld[i].x, foot[i].eulerAngles.y, footOffsetsWorld[i].z + currentPatouneZRot); ;
+            }
+        }
+
+        private void ResetTargetsWhenIdle()
+        {
+            RaycastHit hit;
+            
+            if (moveScript.navMeshAgent.velocity.magnitude / moveScript.agressiveSpeed < 0.2f)
+            {
+                Vector3 wantedPos = Vector3.Lerp(target.position, joint0.position + transformRotTrRef.TransformVector(saveTargetOriginOffset), Time.deltaTime * 10);
+                if (Physics.Raycast(target.position + Vector3.up * 1f, -target.up, out hit, 3f,
+                        LayerManager.Instance.groundLayer))
+                {
+                    wantedPos.y = hit.point.y;
+                }
+
+                target.position = wantedPos;
+                canMove = false;
+            }
+            else
+            {
+                canMove = true;
+            }
         }
 
 
