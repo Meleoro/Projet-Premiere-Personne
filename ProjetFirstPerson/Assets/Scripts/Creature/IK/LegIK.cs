@@ -13,7 +13,10 @@ namespace IK
         [SerializeField] private float articulationXRotMultiplicator;
         [SerializeField] private float articulationXRotMax;
         [SerializeField] private float yEffectorOffset;
-    
+
+        [Header("Public Infos")] 
+        [HideInInspector] public float currentPatouneZRot;
+        
         [Header("Private Infos")]
         private Vector3 offset1;
         private Vector3 offset2;
@@ -69,6 +72,7 @@ namespace IK
             }
 
             ApplySecondaryRot();
+            ApplyPatouneRot();
         }
 
 
@@ -135,17 +139,8 @@ namespace IK
             Vector3 eulerJoint2 = jointB.localEulerAngles;
             eulerJoint2.z = angleJointB;
             jointB.localEulerAngles = eulerJoint2;
-
-            
-            // We keep the toes / feet to a given rotation
-            for (int i = 0; i < foot.Length; i++)
-            {
-                foot[i].localEulerAngles = footOffsetsLocal[i];
-                foot[i].eulerAngles = new Vector3(footOffsetsWorld[i].x, foot[i].eulerAngles.y, footOffsetsWorld[i].z); ;
-            }
         }
-
-
+        
         private void ApplySecondaryRot()
         {
             Vector3 dif = transformRotTrRef.InverseTransformVector(joint0.position - target.position);
@@ -154,6 +149,16 @@ namespace IK
 
             joint0.localEulerAngles = new Vector3(offset1.x - dif.x * articulationXRotMultiplicator, joint0.localEulerAngles.y, joint0.localEulerAngles.z);
             joint1.localEulerAngles = new Vector3(offset2.x + dif.x * 1.5f * articulationXRotMultiplicator, joint1.localEulerAngles.y, joint1.localEulerAngles.z);
+        }
+        
+        private void ApplyPatouneRot()
+        {
+            // We keep the toes / feet to a given rotation
+            for (int i = 0; i < foot.Length; i++)
+            {
+                foot[i].localEulerAngles = footOffsetsLocal[i];
+                foot[i].eulerAngles = new Vector3(footOffsetsWorld[i].x, foot[i].eulerAngles.y, footOffsetsWorld[i].z + currentPatouneZRot); ;
+            }
         }
 
 
