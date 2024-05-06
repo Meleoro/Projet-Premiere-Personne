@@ -18,6 +18,7 @@ namespace Creature
         [Header("References")] 
         [SerializeField] private Collider attackCollider;
         private CreatureMover moveScript;
+        private CreatureManager mainScript;
         private CreatureWaypoints waypointsScript;
         
         
@@ -25,12 +26,15 @@ namespace Creature
         {
             moveScript = GetComponent<CreatureMover>();
             waypointsScript = GetComponent<CreatureWaypoints>();
+            mainScript = GetComponent<CreatureManager>();
             attackCollider.enabled = false;
         }
 
         
         public void ComponentUpdate()
         {
+            if (mainScript.currentState != CreatureState.aggressive) return;
+            
             if (VerifyCanAttack())
                 StartCoroutine(DoAttack());
         }
