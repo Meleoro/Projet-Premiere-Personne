@@ -115,6 +115,10 @@ namespace Creature
             {
                 baseCreatureTr.position = groundHit.point + Vector3.up * wantedY;
             }
+            else
+            {
+                baseCreatureTr.position -= Vector3.up * Time.deltaTime;
+            }
         }
 
         #endregion
