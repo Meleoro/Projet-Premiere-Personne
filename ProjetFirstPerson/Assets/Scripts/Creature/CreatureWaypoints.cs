@@ -53,7 +53,7 @@ namespace Creature
         {
             if (!stoppedNormalBehavior)
             {
-                if(Vector3.Distance(transform.position, currentWaypoint.transform.position) < 3f)
+                if(Vector3.Distance(transform.position, currentWaypoint.transform.position) < 2.2f)
                 {
                     ReachedWaypoint();
                 }

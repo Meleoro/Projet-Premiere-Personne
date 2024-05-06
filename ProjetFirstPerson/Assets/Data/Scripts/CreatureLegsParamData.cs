@@ -28,6 +28,12 @@ public class CreatureLegsParamData : ScriptableObject
     public AnimationCurve backLegYModifierByRot;
     public AnimationCurve backLegDurationModifierBySpeed;
     public AnimationCurve backLegDurationModifierByRot;
+    
+    [Header("Patounes")] 
+    public AnimationCurve frontPatouneRot;
+    public float frontPatouneRotMultiplier;
+    public AnimationCurve backPatouneRot;
+    public float backPatouneRotMultiplier;
 
     [Header("Others")]
     public float backLegsOffset;

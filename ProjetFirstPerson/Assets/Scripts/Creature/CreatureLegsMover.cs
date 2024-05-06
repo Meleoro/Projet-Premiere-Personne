@@ -24,6 +24,7 @@ namespace Creature
         private bool canMoveLeg;
         
         [Header("References")] 
+        [SerializeField] private List<LegIK> legsIK;
         [SerializeField] private List<Transform> legsTargets;
         [SerializeField] private List<Transform> legsOrigins;
         [SerializeField] private Transform mainTrRotRefFront;
@@ -42,7 +43,7 @@ namespace Creature
             {
                 legs.Add(new Leg(legsTargets[i], legsOrigins[i], 
                     Vector3.Distance(legsOrigins[i].position, mainTrRotRefBack.position) > Vector3.Distance(legsOrigins[i].position, mainTrRotRefFront.position), 
-                    transform.InverseTransformPoint(legsTargets[i].position)));
+                    transform.InverseTransformPoint(legsTargets[i].position), legsIK[i]));
             }
 
             canMoveLeg = true;
@@ -65,6 +66,7 @@ namespace Creature
             {
                 ActualiseMovingLegsCounter();
 
+                if (!legs[i].scriptIK.canMove) continue;
                 if (legs[i].isFrontLeg)
                 {
                     if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning) continue;
@@ -238,6 +240,8 @@ namespace Creature
                 if(wantedY != 0)
                     currentLeg.target.position = new Vector3(currentLeg.target.position.x, wantedY, currentLeg.target.position.z);
 
+                currentLeg.scriptIK.currentPatouneZRot = data.frontPatouneRot.Evaluate(timer / moveDuration) * data.frontPatouneRotMultiplier;
+
                 yield return null;
             }
             
@@ -257,8 +261,12 @@ namespace Creature
             currentLeg.isMoving = true;
 
             AnimationCurve currentYCurve = currentLeg.isFrontLeg ? data.frontLegMovementYCurve : data.backLegMovementYCurve;
+            AnimationCurve currentPatouneCurve = currentLeg.isFrontLeg ? data.frontPatouneRot : data.backPatouneRot;
+            
             Vector3 posToKeep = mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position);
             float timer = 0;
+            float patouneMultiplier = currentLeg.isFrontLeg ? data.frontPatouneRotMultiplier : data.backPatouneRotMultiplier;
+            
             RaycastHit hit;
 
             while (timer < moveDuration)
@@ -280,6 +288,8 @@ namespace Creature
 
                 if (wantedY != 0)
                     currentLeg.target.position = new Vector3(currentLeg.target.position.x, wantedY, currentLeg.target.position.z);
+                
+                currentLeg.scriptIK.currentPatouneZRot = currentPatouneCurve.Evaluate(timer / moveDuration) * patouneMultiplier;
 
                 yield return null;
             }
@@ -301,6 +311,8 @@ namespace Creature
 [Serializable]
 public class Leg
 {
+    public LegIK scriptIK;
+    
     public bool isMoving;
     public bool isFrontLeg;
     public Transform target;
@@ -310,12 +322,13 @@ public class Leg
 
     public Vector3 originalPos;
 
-    public Leg(Transform target, Transform origin, bool isFrontLeg, Vector3 originalPos)
+    public Leg(Transform target, Transform origin, bool isFrontLeg, Vector3 originalPos, LegIK ik)
     {
         isMoving = false;
         this.isFrontLeg = isFrontLeg;
         this.target = target;
         this.origin = origin;
         this.originalPos = originalPos;
+        scriptIK = ik;
     }
 }
