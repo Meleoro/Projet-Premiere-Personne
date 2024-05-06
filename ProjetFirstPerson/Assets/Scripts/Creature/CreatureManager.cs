@@ -120,16 +120,20 @@ namespace Creature
             }
         }
 
-
+        private Vector3 offset = new Vector3(0, 0, 5);
         private void DoViewAI()
         {
             Vector3 currentDir = -headJoint.right;
-            currentDir = Quaternion.Euler(-visionRadiusX * 0.5f, -visionRadiusY * 0.5f, 0) * currentDir;
+            currentDir = Quaternion.Euler(0, -visionRadiusY * 0.5f, 0) * currentDir;
+            currentDir = headJoint.InverseTransformVector(currentDir);
+            currentDir = Quaternion.Euler(0, 0, -visionRadiusX * 0.5f) * currentDir;
+            currentDir = headJoint.TransformVector(currentDir);
+            
             UIManager.Instance.isInCreatureView = false;
             
             for (int x = 0; x < visionRadiusX; x+= raycastDensity)
             {
-                for (int y = 0; y < visionRadiusX; y+= raycastDensity)
+                for (int y = 0; y < visionRadiusY; y+= raycastDensity)
                 {
                     Debug.DrawLine(headJoint.position, headJoint.position + currentDir * visionRange, Color.cyan, 0.1f);
 
@@ -147,8 +151,11 @@ namespace Creature
                     
                     currentDir = Quaternion.Euler(0, raycastDensity, 0) * currentDir;
                 }
-                
-                currentDir = Quaternion.Euler(raycastDensity, -visionRadiusY, 0) * currentDir;
+
+                currentDir = Quaternion.Euler(0, -visionRadiusY - raycastDensity * 0.5f, 0) * currentDir;
+                currentDir = headJoint.InverseTransformVector(currentDir);
+                currentDir = Quaternion.Euler(0, 0, raycastDensity) * currentDir;
+                currentDir = headJoint.TransformVector(currentDir);
             }
         }
 
