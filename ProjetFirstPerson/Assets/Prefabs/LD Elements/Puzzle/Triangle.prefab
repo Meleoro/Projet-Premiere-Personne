@@ -34,8 +34,8 @@ Transform:
   - {fileID: 7900447932035444909}
   - {fileID: 777618936252293123}
   - {fileID: 3522284362325231812}
-  - {fileID: 5623330667722052444}
   - {fileID: 5869445607678859498}
+  - {fileID: 5623330667722052444}
   - {fileID: 8781514425883462369}
   - {fileID: 7827665339831938947}
   m_Father: {fileID: 0}
@@ -72,8 +72,8 @@ MonoBehaviour:
   moveDuration: 0.2
   dalles:
   - {fileID: 4158624802487350407}
-  - {fileID: 8621053063012309512}
   - {fileID: 3288996032603887405}
+  - {fileID: 8621053063012309512}
   - {fileID: 4841709496948039253}
   - {fileID: 357240815636311149}
 --- !u!1 &4328125852577208954
@@ -234,7 +234,7 @@ PrefabInstance:
     - target: {fileID: 5261254550241748500, guid: 4061c04e144d35840bab5642c90c11d9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -14.61
+      value: -14.36
       objectReference: {fileID: 0}
     - target: {fileID: 5261254550241748500, guid: 4061c04e144d35840bab5642c90c11d9,
         type: 3}
@@ -335,9 +335,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dalleSymbol: 0
-  MaterialOn: {fileID: 2100000, guid: f1e38594f14520c48bc546f3a41f4f56, type: 2}
+  MaterialHighlighted: {fileID: 0}
+  MaterialSelected: {fileID: 0}
   MaterialOff: {fileID: 2100000, guid: a13259ed47f3b1a42aa65d3e02dc01d8, type: 2}
   currentIndex: 0
+  canMove: 0
+  isSelected: 0
+  meshRenderer: {fileID: 0}
 --- !u!1001 &2007880759612495866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -475,9 +479,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dalleSymbol: 1
-  MaterialOn: {fileID: 2100000, guid: f1e38594f14520c48bc546f3a41f4f56, type: 2}
+  MaterialHighlighted: {fileID: 0}
+  MaterialSelected: {fileID: 0}
   MaterialOff: {fileID: 2100000, guid: b5aead1cab9c6d440b338b201f120875, type: 2}
   currentIndex: 0
+  canMove: 0
+  isSelected: 0
+  meshRenderer: {fileID: 0}
 --- !u!1001 &4769024313053240663
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -514,7 +522,7 @@ PrefabInstance:
     - target: {fileID: 875087194247613963, guid: cb167ae5d8871174f9cd5d49a31573d8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -14.36
+      value: -14.61
       objectReference: {fileID: 0}
     - target: {fileID: 875087194247613963, guid: cb167ae5d8871174f9cd5d49a31573d8,
         type: 3}
@@ -609,9 +617,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dalleSymbol: 3
-  MaterialOn: {fileID: 2100000, guid: f1e38594f14520c48bc546f3a41f4f56, type: 2}
+  MaterialHighlighted: {fileID: 0}
+  MaterialSelected: {fileID: 0}
   MaterialOff: {fileID: 2100000, guid: 635d3c893175e2e4584c55335a0d2111, type: 2}
   currentIndex: 0
+  canMove: 0
+  isSelected: 0
+  meshRenderer: {fileID: 0}
 --- !u!4 &5623330667722052444 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 875087194247613963, guid: cb167ae5d8871174f9cd5d49a31573d8,
@@ -917,9 +929,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dalleSymbol: 2
-  MaterialOn: {fileID: 2100000, guid: f1e38594f14520c48bc546f3a41f4f56, type: 2}
+  MaterialHighlighted: {fileID: 0}
+  MaterialSelected: {fileID: 0}
   MaterialOff: {fileID: 2100000, guid: 8581c002f7f767f49a2a3abeabc8b53c, type: 2}
   currentIndex: 0
+  canMove: 0
+  isSelected: 0
+  meshRenderer: {fileID: 0}
 --- !u!4 &8781514425883462369 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3074287854107563622, guid: 4048ca7a5e3a8874f88c8592cd69ac5c,
@@ -1057,9 +1073,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dalleSymbol: 4
-  MaterialOn: {fileID: 2100000, guid: f1e38594f14520c48bc546f3a41f4f56, type: 2}
+  MaterialHighlighted: {fileID: 0}
+  MaterialSelected: {fileID: 0}
   MaterialOff: {fileID: 2100000, guid: c8c0f83ea0d738646aabf449810044e1, type: 2}
   currentIndex: 0
+  canMove: 0
+  isSelected: 0
+  meshRenderer: {fileID: 0}
 --- !u!4 &7827665339831938947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1992094888561608203, guid: 38c5d5f422faed04fad8f85ba2d5c189,
