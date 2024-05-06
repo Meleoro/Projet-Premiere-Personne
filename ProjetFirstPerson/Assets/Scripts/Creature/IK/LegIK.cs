@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Creature;
 using Unity.Collections;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace IK
 
         [Header("Public Infos")] 
         [HideInInspector] public float currentPatouneZRot;
+        [HideInInspector] public bool canMove;
         
         [Header("Private Infos")]
         private Vector3 offset1;
@@ -24,6 +26,7 @@ namespace IK
         private Vector3[] footOffsetsLocal;
         private Vector3[] footOffsetsWorld;
         private Vector3 effectorSaveLocalPos;
+        private Vector3 saveTargetOriginOffset;
         
         [Header("References")]
         [SerializeField] private Transform joint0;
@@ -33,10 +36,13 @@ namespace IK
         [SerializeField] private Transform target;
         [SerializeField] private Transform[] foot;
         [SerializeField] private Transform transformRotTrRef;
+        [SerializeField] private CreatureMover moveScript;
 
 
         private void Start()
         {
+            saveTargetOriginOffset = transformRotTrRef.InverseTransformVector(effector.position - joint0.position);
+            
             offset1 = joint0.localEulerAngles;
             offset2 = joint1.localEulerAngles;
 
@@ -70,7 +76,8 @@ namespace IK
             {
                 ApplyIK2(joint0, joint1, inverseArticulation);
             }
-
+            
+            ResetTargetsWhenIdle();
             ApplySecondaryRot();
             ApplyPatouneRot();
         }
@@ -158,6 +165,28 @@ namespace IK
             {
                 foot[i].localEulerAngles = footOffsetsLocal[i];
                 foot[i].eulerAngles = new Vector3(footOffsetsWorld[i].x, foot[i].eulerAngles.y, footOffsetsWorld[i].z + currentPatouneZRot); ;
+            }
+        }
+
+        private void ResetTargetsWhenIdle()
+        {
+            RaycastHit hit;
+            
+            if (moveScript.navMeshAgent.velocity.magnitude / moveScript.agressiveSpeed < 0.25f)
+            {
+                Vector3 wantedPos = Vector3.Lerp(target.position, joint0.position + transformRotTrRef.TransformVector(saveTargetOriginOffset), Time.deltaTime * 10);
+                if (Physics.Raycast(target.position + Vector3.up * 1f, -target.up, out hit, 3f,
+                        LayerManager.Instance.groundLayer))
+                {
+                    wantedPos.y = hit.point.y;
+                }
+
+                target.position = wantedPos;
+                canMove = false;
+            }
+            else
+            {
+                canMove = true;
             }
         }
 

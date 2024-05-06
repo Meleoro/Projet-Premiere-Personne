@@ -66,6 +66,7 @@ namespace Creature
             {
                 ActualiseMovingLegsCounter();
 
+                if (!legs[i].scriptIK.canMove) continue;
                 if (legs[i].isFrontLeg)
                 {
                     if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning) continue;
