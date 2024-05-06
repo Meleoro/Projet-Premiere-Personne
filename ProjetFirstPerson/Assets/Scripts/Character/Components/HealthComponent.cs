@@ -8,8 +8,11 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     [Header("Parameters")] 
     [SerializeField] private float recoveryTime;
 
-    [Header("Private Infos")] 
+    [Header("Public Infos")] 
+    public Action DieAction;
     public bool isHurted;
+
+    [Header("Private Infos")] 
     private bool isDying;
     private float hurtTimer;
     private Animation anim;
@@ -69,6 +72,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     private IEnumerator Die()
     {
+        DieAction.Invoke();
+        
         isDying = true;
         anim.clip = anim["Death"].clip;
         anim.Play();
