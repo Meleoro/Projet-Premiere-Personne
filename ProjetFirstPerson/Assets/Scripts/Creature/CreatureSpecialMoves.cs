@@ -51,7 +51,7 @@ namespace Creature
 
             if (Mathf.Abs(bodyIKScript.currentAtanDif) > 65)
             {
-                StartCoroutine(DoHugeTurnCoroutine());
+                //StartCoroutine(DoHugeTurnCoroutine());
             }
         }
 

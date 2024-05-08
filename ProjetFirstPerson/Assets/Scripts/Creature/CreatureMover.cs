@@ -34,7 +34,6 @@ namespace Creature
         [Header("References")] 
         [SerializeField] private BodyIK bodyIKScript;
         [SerializeField] private Transform targetIKBody;
-        [SerializeField] private Transform transformToRotate;
         [SerializeField] private Transform baseCreatureTr;
         [HideInInspector] public NavMeshAgent navMeshAgent;
         private CreatureLegsMover legsScript;
@@ -101,7 +100,7 @@ namespace Creature
         {
             float currentRotationDif = Mathf.Abs(bodyIKScript.currentRotationDif);
 
-            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.1f, currentRotationDif);
+            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.5f, currentRotationDif);
         }
 
         private void AdaptHeightBySpeed()

@@ -99,8 +99,8 @@ namespace IK
 
         private void ApplyZIK()
         {
-            Vector3 frontAveragePos = Vector3.zero;
-            Vector3 backAveragePos = Vector3.zero;
+            Vector3 frontAveragePos;
+            Vector3 backAveragePos;
 
             (frontAveragePos, backAveragePos) = GetLegsAveragePositions();
             float difY = frontAveragePos.y - backAveragePos.y;     // Is > 0 if the front is upside the back
@@ -108,9 +108,9 @@ namespace IK
             for (int i = 0; i < bodyJoints.Length; i++)
             {
                 Vector3 eulerJointBody = bodyJoints[i].localEulerAngles;
-                eulerJointBody.z = savesLocalEulers[i].z + difY * 
-                    heightLegModificator.Evaluate(moveScript.navMeshAgent.velocity.magnitude / moveScript.agressiveSpeed);
-                //eulerJointBody.y = backJoint.eulerAngles.y + angleAddedPerJoint * (i + 1);
+                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z , savesLocalEulers[i].z + difY * 
+                    heightLegModificator.Evaluate(moveScript.navMeshAgent.velocity.magnitude / moveScript.agressiveSpeed), Time.deltaTime * 10);
+
                 bodyJoints[i].localEulerAngles = eulerJointBody;
             }
         }
