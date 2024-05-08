@@ -12,11 +12,11 @@ namespace Creature
         [Header("Parameters")]
         [SerializeField] private CreatureLegsParamData data;
         [SerializeField] private int maxMovingLegsAmountWalk;
-        [SerializeField] private int maxMovingLegsAmountRun;
         [SerializeField] private LayerMask groundLayer;
         
         [Header("Public Infos")] 
         public List<Leg> legs = new List<Leg>();
+        [HideInInspector] public int currentWantToMoveLegsCounter = 0;
         
         [Header("Private Infos")] 
         private int currentMovingLegsFront;
@@ -27,8 +27,8 @@ namespace Creature
         [SerializeField] private List<LegIK> legsIK;
         [SerializeField] private List<Transform> legsTargets;
         [SerializeField] private List<Transform> legsOrigins;
-        [SerializeField] private Transform mainTrRotRefFront;
-        [SerializeField] private Transform mainTrRotRefBack;
+        public Transform mainTrRotRefFront;
+        public Transform mainTrRotRefBack;
         [SerializeField] private BodyIK bodyIK;
         private CreatureMover creatureMover;
 
@@ -61,6 +61,7 @@ namespace Creature
         private void VerifyLegs()
         {
             if (!canMoveLeg) return;
+            currentWantToMoveLegsCounter = 0;
             
             for (int i = 0; i < legs.Count; i++)
             {
@@ -69,7 +70,13 @@ namespace Creature
                 if (!legs[i].scriptIK.canMove) continue;
                 if (legs[i].isFrontLeg)
                 {
-                    if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning) continue;
+                    if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning)
+                    {
+                        if (VerifyLegNeedsToMove(legs[i]))
+                            currentWantToMoveLegsCounter += 1;
+                            
+                        continue;
+                    }
                 }
                 else
                 {
@@ -124,7 +131,8 @@ namespace Creature
         
         private bool VerifyLegNeedsToMove(Leg currentLeg)
         {
-            float distOriginTarget = Vector3.Distance(currentLeg.isFrontLeg ? currentLeg.origin.position : currentLeg.origin.position + transform.right * data.backLegsOffset, currentLeg.target.position);
+            float distOriginTarget = Vector3.Distance(currentLeg.isFrontLeg ?  currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset :
+                currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset, currentLeg.target.position);
 
             if (currentLeg.timerCooldownMove <= 0)
             {
@@ -133,7 +141,7 @@ namespace Creature
                     if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun)
                         return true;
 
-                    else if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun)
                         return true;
                 }
 
@@ -142,7 +150,7 @@ namespace Creature
                     if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk)
                         return true;
 
-                   else  if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk)
                         return true;
                 }
             }
@@ -161,7 +169,8 @@ namespace Creature
 
         private Vector3 GetNextPos(Leg currentLeg)
         {
-            Vector3 origin = currentLeg.isFrontLeg ? currentLeg.origin.position : currentLeg.origin.position + transform.right * data.backLegsOffset;
+            Vector3 origin = currentLeg.isFrontLeg ? currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset 
+                : currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset;
             Vector3 currentTargetPos = currentLeg.target.position;
             Transform transformRef = currentLeg.isFrontLeg ? mainTrRotRefFront : mainTrRotRefBack;
 

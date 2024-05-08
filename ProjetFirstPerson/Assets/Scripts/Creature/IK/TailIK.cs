@@ -9,15 +9,12 @@ namespace IK
         [SerializeField] private float tailWiggleSpeed;
         [SerializeField] private float tailWiggleAmplitude;
         [SerializeField] private int groundedTailJointIndex;       // From which index the tail is stuck to the ground
-        [SerializeField] private int tailAngleModificatorZ;       
         [SerializeField] private AnimationCurve groundYHeight;       
         
         [Header("Private Infos")]
         private Vector3 saveEulerTailStart;
         private Vector3 saveLocalEulerTailStart;
         private Vector3 tailGroundTarget;
-        private Vector3 joint0Offset;
-        private Vector3 saveTailGroundTarget;
         private float atanOrigin;
         private float atanToRemove;
         private float wantedAtan;
@@ -35,8 +32,6 @@ namespace IK
         {
             saveEulerTailStart = tailStart.eulerAngles;
             saveLocalEulerTailStart = tailStart.localEulerAngles;
-            joint0Offset = tailJoints[0].localEulerAngles;
-            saveTailGroundTarget = tailStart.InverseTransformPoint(tailJoints[groundedTailJointIndex].position);
 
             ActualiseSaveHeights();
         }
@@ -162,17 +157,17 @@ namespace IK
         private void ApplyIKOnOneJoint(Transform jointA, Vector3 target, Transform previous)
         {
             Vector3 dif = jointA.position - target;
-            Vector3 localDif = previous.InverseTransformDirection(dif).normalized;
+            Vector3 localDif = bodyIK.legsScript.mainTrRotRefBack.InverseTransformDirection(dif).normalized;
 
-            float angleAtan = Mathf.Atan2(localDif.y, localDif.x) * Mathf.Rad2Deg;
+            float angleAtan = -Mathf.Atan2(localDif.y, localDif.z) * Mathf.Rad2Deg;
             float angleJointA;
 
-            angleJointA = angleAtan + tailAngleModificatorZ;
+            angleJointA = -angleAtan;
 
             // We apply the angles to the joints
-            Vector3 eulerJoint1 = jointA.localEulerAngles;
+            Vector3 eulerJoint1 = jointA.eulerAngles;
             eulerJoint1.z = angleJointA;
-            jointA.localEulerAngles = eulerJoint1;
+            jointA.eulerAngles = eulerJoint1;
         }
 
         #endregion

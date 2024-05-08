@@ -35,6 +35,7 @@ public class CreatureLegsParamData : ScriptableObject
     public AnimationCurve backPatouneRot;
     public float backPatouneRotMultiplier;
 
-    [Header("Others")]
+    [Header("Others")] 
+    public float frontLegsOffset;
     public float backLegsOffset;
 }
