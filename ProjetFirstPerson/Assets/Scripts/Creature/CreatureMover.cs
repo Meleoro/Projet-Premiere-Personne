@@ -57,10 +57,10 @@ namespace Creature
             
             SetNextPos();
             ManageRotation();
-
-            //AdaptHeightBody();
+            
             AdaptSpeedWhenRotation();
             AdaptHeightBySpeed();
+            AdaptSpeedAccordingToLegs();
         }
 
         
@@ -121,8 +121,22 @@ namespace Creature
             }
         }
 
+        private void AdaptSpeedAccordingToLegs()
+        {
+            if (legsScript.currentWantToMoveLegsCounter >= 1)
+            {
+                navMeshAgent.speed = saveSpeed * data.legCantMoveSpeedMultiplier;
+            }
+            else
+            {
+                navMeshAgent.speed = saveSpeed;
+            }
+        }
+
         #endregion
 
+
+        #region Behavior Functions
 
         public void StopMoving()
         {
@@ -168,5 +182,7 @@ namespace Creature
             saveSpeed = attackSpeed;
             isRunning = true;
         }
+
+        #endregion
     }
 }
