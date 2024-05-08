@@ -102,6 +102,7 @@ public class SCR_UiDrag : MonoBehaviour
 
         if(element_rect.CompareTag("Board"))
         {
+            // Clamp des valeurs de position
             var pos =  element_rect.transform.localPosition;
 
             pos.x =  Mathf.Clamp(pos.x, -ClampX, ClampX);
@@ -109,6 +110,20 @@ public class SCR_UiDrag : MonoBehaviour
 
             element_rect.transform.localPosition = pos;
 
+            // Zoom de l'objet
+             element_rect.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
+             ClampX = 3000 * element_rect.localScale.x;
+             ClampY = 2000 * element_rect.localScale.x;
+             if(element_rect.localScale.x <= 0.6f)
+            {
+                element_rect.localScale = new Vector3(0.6f,0.6f,0);
+            }
+           else if(element_rect.localScale.x >= 3f)
+            {
+                element_rect.localScale = new Vector3(3f,3f,0);
+            }
+
+            // Déplacement de l'objet
             Vector2 drag_movement = mouse_position - previous_mouse_position;
             element_rect.anchoredPosition = element_rect.anchoredPosition + drag_movement;
         }
