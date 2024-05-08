@@ -23,47 +23,10 @@ public class BoardMenu : MonoBehaviour
     [SerializeField] private GameObject Arrow;
     [SerializeField] private int OffsetX, OffsetY;
     public bool isCreateArrow;
-
-    [Header("Camera Variables")]
-    [SerializeField] private Camera GameCamera;
-    [SerializeField] private Camera BoardCamera;
-
-    void Start()
-    {
-        BoardCamera.enabled = false;
-    }
     
     // Update is called once per frame
     void Update()
     {
-    /*    if(currentSelect == MyBoard)
-        {
-         //   Debug.Log("Change");
-            MyBoard.GetComponent<RectTransform>().anchoredPosition = Mouse.current.position.ReadValue().normalized;
-           // Debug.Log(Mouse.current.position.ReadValue().normalized);
-
-            Vector2 PivotPos = new Vector2(MyBoard.GetComponent<RectTransform>().anchoredPosition.x,MyBoard.GetComponent<RectTransform>().anchoredPosition.y);
-            Vector2 point = BoardCamera.ScreenToWorldPoint(new Vector2(PivotPos.x, PivotPos.y));
-            Debug.Log(point);
-        }
-        /* if (Input.touchCount > 0)
-        {
-            Debug.Log("Touch");
-            Touch touch = Input.GetTouch(0);
-            Vector2 pos = touch.position;
-            MyBoard.GetComponent<RectTransform>().anchoredPosition = pos;
-        } */
-        // Check si le board est active
-        if(BoardPanel.activeSelf)
-        {
-            BoardCamera.enabled = true;
-            GameCamera.enabled = false;
-        }
-        else
-        {
-            BoardCamera.enabled = false;
-            GameCamera.enabled = true;
-        }
         if(Input.GetKeyDown(KeyCode.Mouse0) && isCreateArrow)
         {
             Instantiate(Arrow, Input.mousePosition, Quaternion.identity, MyBoard.transform);
@@ -153,15 +116,6 @@ public class BoardMenu : MonoBehaviour
                 HisMovingObject.localScale = new Vector3(3f,3f,0);
             }    
         }
-   /*     else if(currentSelect == MyBoard)
-        {
-            Debug.Log(currentSelect);
-            Transform HisMovingObject = currentSelect.transform;
-            if(!isRotating)
-            {
-                HisMovingObject.position = Input.mousePosition;
-            }
-        } */
     }
 
     public void AddElementOnBoard(GameObject element)
