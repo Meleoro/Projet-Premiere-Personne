@@ -27,8 +27,8 @@ namespace Creature
         [SerializeField] private List<LegIK> legsIK;
         [SerializeField] private List<Transform> legsTargets;
         [SerializeField] private List<Transform> legsOrigins;
-        [SerializeField] private Transform mainTrRotRefFront;
-        [SerializeField] private Transform mainTrRotRefBack;
+        public Transform mainTrRotRefFront;
+        public Transform mainTrRotRefBack;
         [SerializeField] private BodyIK bodyIK;
         private CreatureMover creatureMover;
 

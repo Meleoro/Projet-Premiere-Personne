@@ -28,8 +28,8 @@ namespace IK
         public Transform bodyJoint;
         public Transform backJoint;
         [SerializeField] private Transform target;
-        [SerializeField] private CreatureLegsMover legsScript;
-        [SerializeField] private CreatureMover moveScript;
+        public CreatureLegsMover legsScript;
+        public CreatureMover moveScript;
 
 
 
