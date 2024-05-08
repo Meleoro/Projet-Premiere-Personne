@@ -20,6 +20,10 @@ public class SCR_UiDrag : MonoBehaviour
  
     Vector3 mouse_position;
     Vector3 previous_mouse_position;
+
+    [Header("Clamp Values")]
+    public float ClampX;
+    public float ClampY;
  
     void Start()
     {
@@ -98,6 +102,13 @@ public class SCR_UiDrag : MonoBehaviour
 
         if(element_rect.CompareTag("Board"))
         {
+            var pos =  element_rect.transform.localPosition;
+
+            pos.x =  Mathf.Clamp(pos.x, -ClampX, ClampX);
+            pos.y =  Mathf.Clamp(pos.y, -ClampY, ClampY);
+
+            element_rect.transform.localPosition = pos;
+
             Vector2 drag_movement = mouse_position - previous_mouse_position;
             element_rect.anchoredPosition = element_rect.anchoredPosition + drag_movement;
         }
