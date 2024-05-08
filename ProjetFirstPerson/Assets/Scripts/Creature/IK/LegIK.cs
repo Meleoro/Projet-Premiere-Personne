@@ -171,7 +171,7 @@ namespace IK
         {
             RaycastHit hit;
             
-            if (moveScript.navMeshAgent.velocity.magnitude / moveScript.agressiveSpeed < 0.2f)
+            if (moveScript.navMeshAgent.velocity.magnitude < 0.5f)
             {
                 Vector3 wantedPos = Vector3.Lerp(target.position, joint0.position + transformRotTrRef.TransformVector(saveTargetOriginOffset), Time.deltaTime * 10);
                 if (Physics.Raycast(target.position + Vector3.up * 1f, -target.up, out hit, 3f,

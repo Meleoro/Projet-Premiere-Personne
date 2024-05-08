@@ -71,7 +71,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             }
             else
             {
-                RemovePhoto();
+                
             }
         }
     }
@@ -109,6 +109,8 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             screenCapture.Apply();
 
         ShowPhoto();
+        yield return new WaitForSeconds(1.5f);
+        RemovePhoto();
         }
     }
 

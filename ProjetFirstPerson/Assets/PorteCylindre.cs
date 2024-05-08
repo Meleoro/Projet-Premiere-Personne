@@ -8,6 +8,7 @@ public class PorteCylindre : MonoBehaviour
     [SerializeField] private List<CylindrePuzzle> cylinders = new List<CylindrePuzzle>();
     private Animation anim;
     private PuzzleInteract interactScript;
+    //public string animationName;
     void Start()
     {
         anim = GetComponent<Animation>();
@@ -32,7 +33,7 @@ public class PorteCylindre : MonoBehaviour
     private void Win()
     {
         interactScript.GetOutInteraction();
-        anim.clip = anim["Open2"].clip;
+        //anim.clip = anim["OpenCylindresIntro"].clip;
         anim.Play();
     }
     

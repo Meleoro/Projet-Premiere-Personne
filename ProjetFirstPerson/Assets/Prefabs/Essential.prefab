@@ -818,7 +818,9 @@ MonoBehaviour:
   anim: {fileID: 1817729766411431442}
   tablette: {fileID: 8740965811557159211}
   tabletteScreen: {fileID: 5395464222380233878}
-  UI: {fileID: 236811682034051555}
+  UIPhotoPlayer: {fileID: 0}
+  UIPhotoTablette: {fileID: 0}
+  UIMenuGeneral: {fileID: 0}
 --- !u!1 &1002091205258237427
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,10 +977,17 @@ MonoBehaviour:
   interactImage: {fileID: 4805730698326663748}
   eyeIconImage: {fileID: 4275435456226829835}
   cameraComponent: {fileID: 3956260122818378176}
+  moveComponent: {fileID: 0}
   fadeImage: {fileID: 4784046303896899120}
-  Album: {fileID: 0}
-  LogPanel: {fileID: 0}
+  GeneralMenu: {fileID: 0}
+  BoardMenu: {fileID: 0}
+  LogsMenu: {fileID: 0}
+  MapMenu: {fileID: 0}
+  schedule: {fileID: 0}
   isUIActive: 0
+  cursorTexture: {fileID: 0}
+  cursorMode: 0
+  hotSpot: {x: 0, y: 0}
 --- !u!1 &1043936224158003541
 GameObject:
   m_ObjectHideFlags: 0
@@ -2564,7 +2573,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: a6560a915ef98420e9faacc1c7438823, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 043d87bb8a0eef844b8f4b8e6db7edde, type: 2}
 --- !u!1 &4420274105541684868
 GameObject:
   m_ObjectHideFlags: 0

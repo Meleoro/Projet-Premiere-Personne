@@ -24,6 +24,7 @@ namespace Puzzle
 
         private void Start()
         {
+            cameraPos = transform.GetChild(0).gameObject;
             characterMoveScript = CharacterManager.Instance.GetComponent<MoveComponent>();
             characterCameraScript = CharacterManager.Instance.GetComponent<CameraComponent>();
             TryGetComponent<BoxCollider>(out puzzleCollider);
