@@ -9,7 +9,6 @@ public class MovingPanel : MonoBehaviour
     void Start()
     {
        Vector2 PosCenter =  new Vector2 (Screen.width / 2, Screen.height / 2).normalized;
-       Debug.Log(PosCenter);
     }
 
     // Update is called once per frame
@@ -25,7 +24,6 @@ public class MovingPanel : MonoBehaviour
        // Debug.Log(Input.mousePosition);
        // Debug.Log(direction.normalized);
       //  Debug.Log(vecDis);
-        Debug.Log(finalDir);
 
         transform.GetComponent<RectTransform>().pivot = finalDir.normalized;
        
