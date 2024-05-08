@@ -38,7 +38,6 @@ public class UIManager : GenericSingletonClass<UIManager>
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
-
     
     
     private void Start()
