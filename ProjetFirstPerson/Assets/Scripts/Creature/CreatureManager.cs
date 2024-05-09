@@ -88,6 +88,12 @@ namespace Creature
 
             currentSuspicion = Mathf.Clamp(currentSuspicion, 0, maxSuspicion);
 
+            if (currentState == CreatureState.aggressive)
+            {
+                UIManager.Instance.isInCreatureView = true;
+            }
+     
+
             // Moves the body, rotates it, moves the legs etc...
             for (int i = 0; i < creatureComponents.Count; i++)
             {

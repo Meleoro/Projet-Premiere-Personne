@@ -50,8 +50,8 @@ public class UIManager : GenericSingletonClass<UIManager>
     void Update()
     {
         // Horaire du jeu
-        schedule.text = System.DateTime.Now + "";
         EyeIconUpdate();
+        schedule.text = System.DateTime.Now + "";
         
         // Test Ouvrir Album
         if(Input.GetKeyDown(KeyCode.Tab))
