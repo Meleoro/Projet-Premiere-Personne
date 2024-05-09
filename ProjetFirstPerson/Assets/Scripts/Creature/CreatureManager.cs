@@ -38,6 +38,12 @@ namespace Creature
         [SerializeField] private float suspisionAddedMarcheSneak;
         [SerializeField] private float suspisionAddedInteraction;
         [SerializeField] private float suspisionAddedView;
+        
+        [Header("Valeurs Listen Agressive")]      // Pour chacune de ces valeurs, il faut les voir comme 'combien de suspision sont ajout�es par secondes' car elles seront multipli�s par le delta time (sauf l'int�raction)
+        [SerializeField] private float suspisionAddedMarcheAgressive;
+        [SerializeField] private float suspisionAddedCourseAgressive;
+        [SerializeField] private float suspisionAddedMarcheSneakAgressive;
+        [SerializeField] private float suspisionAddedViewAgressive;
 
 
         [Header("Public Infos")]
@@ -100,14 +106,21 @@ namespace Creature
             {
                 if (CharacterManager.Instance.currentNoiseType == NoiseType.Loud)
                 {
-                    currentSuspicion += Time.deltaTime * suspisionAddedCourse;
+                    if(currentState != CreatureState.aggressive)
+                        currentSuspicion += Time.deltaTime * suspisionAddedCourse;
+                    else
+                        currentSuspicion += Time.deltaTime * suspisionAddedCourseAgressive;
+
                 }
                 
                 else if (Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position) < earNormalRadius)
                 {
                     if (CharacterManager.Instance.currentNoiseType == NoiseType.Normal)
                     {
-                        currentSuspicion += Time.deltaTime * suspisionAddedMarche;
+                        if(currentState != CreatureState.aggressive)
+                            currentSuspicion += Time.deltaTime * suspisionAddedMarche;
+                        else
+                            currentSuspicion += Time.deltaTime * suspisionAddedMarcheAgressive;
                     }
 
                     else if(Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position) < earLowRadius)
@@ -115,7 +128,10 @@ namespace Creature
 
                         if (CharacterManager.Instance.currentNoiseType == NoiseType.Quiet)
                         {
-                            currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneak;
+                            if(currentState != CreatureState.aggressive)
+                                currentSuspicion += Time.deltaTime * suspisionAddedMarche;
+                            else
+                                currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneakAgressive;
                         }
                     }
                 }
