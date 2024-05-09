@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using IK;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Creature
 {
@@ -190,6 +191,7 @@ namespace Creature
         }
 
 
+        Vector3 saveLastPlace;
         /// <summary>
         /// Called when the creature is suspicious to setup her destination point
         /// </summary>
@@ -204,6 +206,18 @@ namespace Creature
 
             placeToGo = suspicousPlace;
             creatureMoverScript.wantedPos = suspicousPlace;
+
+            NavMeshPath path = new NavMeshPath();
+            bool esisteNavMesh = creatureMoverScript.navMeshAgent.CalculatePath(suspicousPlace, path);
+
+            if (!esisteNavMesh)
+            {
+                creatureMoverScript.wantedPos = saveLastPlace;
+            }
+            else 
+            {
+                saveLastPlace = suspicousPlace;
+            }
         }
         
         
