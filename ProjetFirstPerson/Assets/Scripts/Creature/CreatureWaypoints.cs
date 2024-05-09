@@ -256,7 +256,7 @@ namespace Creature
 
         public void DoAttack(Vector3 creaturePos, Vector3 characterPos)
         {
-            Vector3 wantedPos = creaturePos + (characterPos - creaturePos).normalized * 20f;
+            Vector3 wantedPos = creaturePos + (characterPos - creaturePos).normalized * 5f;
 
             creatureMoverScript.forcedRot = Vector3.zero;
             creatureMoverScript.wantedPos = wantedPos;

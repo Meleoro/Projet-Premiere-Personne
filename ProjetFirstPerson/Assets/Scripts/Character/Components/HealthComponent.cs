@@ -101,8 +101,6 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     private IEnumerator Die()
     {
-        DieAction.Invoke();
-        
         isDying = true;
         anim.clip = anim["Death"].clip;
         anim.Play();
@@ -124,5 +122,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         cam.canRotate = true;
         move.canMove = true;
         isDying = false;
+
+        DieAction.Invoke();
     }
 }
