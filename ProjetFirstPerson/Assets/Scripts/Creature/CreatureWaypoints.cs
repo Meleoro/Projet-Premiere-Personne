@@ -107,9 +107,9 @@ namespace Creature
             if(currentIndex >= waypoints.Count) currentIndex = 0;
 
             currentWaypointCountNear++;
-
             if(currentWaypointCountNear >= numberOfWaypointBeforeGoNear)
             {
+                currentWaypointCountNear = 0;
                 currentIndex = GetNearestWaypointIndex();
             }
 

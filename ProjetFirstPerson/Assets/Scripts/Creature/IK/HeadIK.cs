@@ -55,7 +55,6 @@ namespace IK
                 Zvalue -= 360f;
             else if (Zvalue < 80f && baseNeckTr.localEulerAngles.z > 180f)
                 Zvalue += 360f;*/
-            Debug.Log(currentZ);
             
             baseNeckTr.localEulerAngles = new Vector3(
                 baseNeckTr.localEulerAngles.x, baseNeckTr.localEulerAngles.y,

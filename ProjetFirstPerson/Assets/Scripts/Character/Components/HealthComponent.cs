@@ -1,3 +1,4 @@
+using ArthurUtilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 {
     [Header("Parameters")] 
     [SerializeField] private float recoveryTime;
+    [SerializeField] private float cameraShakeIntensity;
+    [SerializeField] private float cameraShakeDuration;
 
     [Header("Public Infos")] 
     public Action DieAction;
@@ -61,14 +64,27 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         if(isHurted && !isDying)
             StartCoroutine(Die());
 
+        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity);
+
         GetComponent<StaminaComponent>().RegainStamina();
 
         isHurted = true;
         hurtTimer = recoveryTime;
 
+        StartCoroutine(SlowCharacter(2, 0.5f));
         StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
         StartCoroutine(CameraEffects.Instance.HurtEffect(recoveryTime));
     }
+
+    private IEnumerator SlowCharacter(float duration, float slowRatio)
+    {
+        GetComponent<MoveComponent>().currentSpeedModifier = slowRatio;
+
+        yield return new WaitForSeconds(duration);
+
+        GetComponent<MoveComponent>().currentSpeedModifier = 1;
+    }
+
 
     private IEnumerator Die()
     {
