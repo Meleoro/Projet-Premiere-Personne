@@ -10,8 +10,7 @@ namespace Creature
     {
         [Header("Parameters")]
         [SerializeField] private List<WaypointsManager> possiblePaths = new List<WaypointsManager>();
-        /*[SerializeField] private float angerPerCycle;
-        [SerializeField] private float neededPfDist;*/
+        [SerializeField] private int numberOfWaypointBeforeGoNear;
         [SerializeField] private float suspicionWaitDuration;
         [SerializeField] private float suspicionPlaceOffsetMultiplier = 2.5f;
 
@@ -23,7 +22,7 @@ namespace Creature
         private bool stoppedNormalBehavior;
         private bool didWaypointAction;
         private bool isDoingSpecialAction;
-        private float currentAnger;
+        public int currentWaypointCountNear;
         private Waypoint currentWaypoint;
         private int currentIndex;
         private float waitTimer;
@@ -37,7 +36,9 @@ namespace Creature
 
         private void Start()
         {
-            if(possiblePaths.Count > 0) 
+            currentWaypointCountNear = 0;
+
+            if (possiblePaths.Count > 0) 
                 waypoints = possiblePaths[0].waypoints;
 
             creatureMoverScript = GetComponent<CreatureMover>();
@@ -102,9 +103,35 @@ namespace Creature
             currentIndex++;
             if(currentIndex >= waypoints.Count) currentIndex = 0;
 
+            currentWaypointCountNear++;
+
+            if(currentWaypointCountNear >= numberOfWaypointBeforeGoNear)
+            {
+                currentIndex = GetNearestWaypointIndex();
+            }
+
             waitTimer = 0;
             currentWaypoint = waypoints[currentIndex];
             creatureMoverScript.wantedPos = currentWaypoint.transform.position;
+        }
+
+        private int GetNearestWaypointIndex()
+        {
+            int index = 0;
+            float bestDist = 100;
+
+            for(int i = 0;i < waypoints.Count; i++)
+            {
+                float currentDist = Vector3.Distance(waypoints[i].transform.position, CharacterManager.Instance.transform.position);
+
+                if (currentDist < bestDist)
+                {
+                    index = i;
+                    bestDist = currentDist;
+                }
+            }
+
+            return index;
         }
 
         #endregion
@@ -199,8 +226,9 @@ namespace Creature
 
         public void RestartWaypointBehavior()
         {
-            stoppedNormalBehavior = false;
+            stoppedNormalBehavior = false;           
             waitTimer = 0;
+            currentWaypointCountNear = 0;
 
             mainScript.currentState = CreatureState.none;
 
