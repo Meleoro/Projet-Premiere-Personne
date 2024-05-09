@@ -15,7 +15,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     [Header("Public Infos")] 
     [HideInInspector] public Action DieAction;
-    [HideInInspector] public bool isHurted;
+     public bool isHurted;
 
     [Header("Private Infos")] 
     private bool isDying;

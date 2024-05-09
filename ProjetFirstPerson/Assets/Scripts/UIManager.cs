@@ -75,9 +75,12 @@ public class UIManager : GenericSingletonClass<UIManager>
         else
         {
             //tabletteAnim.SetBool("in",false);
-            cameraComponent.canRotate = true;
-            moveComponent.canMove = true;
-            cameraComponent.LockedCursor(2);
+            if (!CharacterManager.Instance.isInteracting)
+            {
+                cameraComponent.canRotate = true;
+                moveComponent.canMove = true;
+                cameraComponent.LockedCursor(2);
+            }
             isUIActive = false;
             CloseAllPanel(false,false,false,false);
         } 
