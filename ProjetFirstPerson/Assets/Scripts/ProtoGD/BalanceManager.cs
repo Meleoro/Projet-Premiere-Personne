@@ -11,12 +11,8 @@ public class BalanceManager : MonoBehaviour
     public GameObject poid2Position;
     public int registedPoids1;
     public int registedPoids2;
-    private Animator anim;
-
-    private void Start()
-    {
-        anim = GetComponent<Animator>();
-    }
+    public Animator anim;
+    
 
     public void CheckPoids()
     {

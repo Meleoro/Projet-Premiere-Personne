@@ -7,6 +7,7 @@ namespace Creature
     {
         [Header("Parameters")] 
         [SerializeField] private float attackRange;
+        [SerializeField] private float attackStartUp;
         [SerializeField] private float attackSpeed;
         [SerializeField] private float attackDuration;
         [SerializeField] private float attackCooldown;
@@ -17,17 +18,23 @@ namespace Creature
         [Header("References")] 
         [SerializeField] private Collider attackCollider;
         private CreatureMover moveScript;
+        private CreatureManager mainScript;
+        private CreatureWaypoints waypointsScript;
         
         
         void Start()
         {
             moveScript = GetComponent<CreatureMover>();
+            waypointsScript = GetComponent<CreatureWaypoints>();
+            mainScript = GetComponent<CreatureManager>();
             attackCollider.enabled = false;
         }
 
         
         public void ComponentUpdate()
         {
+            if (mainScript.currentState != CreatureState.aggressive) return;
+            
             if (VerifyCanAttack())
                 StartCoroutine(DoAttack());
         }
@@ -50,12 +57,12 @@ namespace Creature
             Vector3 charSaveTr = CharacterManager.Instance.transform.position;
 
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(attackStartUp);
 
             attackCollider.enabled = true;
 
             moveScript.RestartMoving();
-            GetComponent<CreatureWaypoints>().DoAttack(saveTr, charSaveTr);
+            waypointsScript.DoAttack(saveTr, charSaveTr);
             moveScript.StartAttackSpeed(attackSpeed);
             
             yield return new WaitForSeconds(attackDuration);
@@ -65,7 +72,7 @@ namespace Creature
             
             yield return new WaitForSeconds(attackCooldown);
 
-            GetComponent<CreatureWaypoints>().isAttacking = false;
+            waypointsScript.isAttacking = false;
 
             moveScript.StartAggressiveSpeed();
             moveScript.RestartMoving();

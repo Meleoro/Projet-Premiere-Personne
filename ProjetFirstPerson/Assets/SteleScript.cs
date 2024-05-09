@@ -10,6 +10,10 @@ public class SteleScript : MonoBehaviour
     [SerializeField]  public string titleLogs;
     [SerializeField] [TextArea(5,10)] public string myInfo;
     
+    [Header("Parameters Gizmos")] 
+    [SerializeField] private bool showGizmosOnlyOnSelected;
+    [SerializeField] private Color gizmosColor;
+    
     void Start()
     {
         logsMenu = GameObject.Find("TabletteManager").GetComponent<LogsMenu>();
@@ -21,6 +25,28 @@ public class SteleScript : MonoBehaviour
         {
             isAlreadyInLogs = true;
             logsMenu.AddLogsToContent(myInfo,titleLogs);
+        }
+    }
+    
+    private void OnDrawGizmos()
+    {
+        if (!showGizmosOnlyOnSelected)
+        {
+            Gizmos.color = gizmosColor;
+            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+            
+            Gizmos.DrawCube(Vector3.zero, transform.localScale);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (showGizmosOnlyOnSelected)
+        {
+            Gizmos.color = gizmosColor;
+            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+            
+            Gizmos.DrawCube(Vector3.zero, transform.localScale);
         }
     }
 }

@@ -34,7 +34,6 @@ namespace Creature
         [Header("References")] 
         [SerializeField] private BodyIK bodyIKScript;
         [SerializeField] private Transform targetIKBody;
-        [SerializeField] private Transform transformToRotate;
         [SerializeField] private Transform baseCreatureTr;
         [HideInInspector] public NavMeshAgent navMeshAgent;
         private CreatureLegsMover legsScript;
@@ -57,10 +56,10 @@ namespace Creature
             
             SetNextPos();
             ManageRotation();
-
-            //AdaptHeightBody();
+            
             AdaptSpeedWhenRotation();
             AdaptHeightBySpeed();
+            AdaptSpeedAccordingToLegs();
         }
 
         
@@ -101,24 +100,42 @@ namespace Creature
         {
             float currentRotationDif = Mathf.Abs(bodyIKScript.currentRotationDif);
 
-            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.1f, currentRotationDif);
+            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.5f, currentRotationDif);
         }
 
         private void AdaptHeightBySpeed()
         {
             float currentSpeed = navMeshAgent.velocity.magnitude / agressiveSpeed;
             float wantedY = data.wantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
-            //Debug.Log(wantedY);
 
             RaycastHit groundHit;
             if(Physics.Raycast(baseCreatureTr.position + Vector3.up, Vector3.down, out groundHit, data.maxHeight + 1, LayerManager.Instance.groundLayer))
             {
-                baseCreatureTr.position = groundHit.point + Vector3.up * wantedY;
+                baseCreatureTr.position =
+                    Vector3.Lerp(baseCreatureTr.position, groundHit.point + Vector3.up * wantedY, Time.deltaTime * 5);
+            }
+            else
+            {
+                baseCreatureTr.position -= Vector3.up * Time.deltaTime;
+            }
+        }
+
+        private void AdaptSpeedAccordingToLegs()
+        {
+            if (legsScript.currentWantToMoveLegsCounter >= 1)
+            {
+                navMeshAgent.speed = saveSpeed * data.legCantMoveSpeedMultiplier;
+            }
+            else
+            {
+                navMeshAgent.speed = saveSpeed;
             }
         }
 
         #endregion
 
+
+        #region Behavior Functions
 
         public void StopMoving()
         {
@@ -164,5 +181,7 @@ namespace Creature
             saveSpeed = attackSpeed;
             isRunning = true;
         }
+
+        #endregion
     }
 }

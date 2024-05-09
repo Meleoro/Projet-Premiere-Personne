@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Creature;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,7 +12,6 @@ namespace IK
         [Header("Parameters Base Neck")] 
         [SerializeField] private float inclinationMaxBaseNeck;
         [SerializeField] private float rotationMax;
-        [SerializeField] private float speedMaxInclination;
 
         [Header("Public infos")] 
         [HideInInspector] public bool isLookingLeftRight;
@@ -21,7 +21,8 @@ namespace IK
         private Vector3 saveHeadJoint;
         private float currentRatio;
 
-        [Header("References")] 
+        [Header("References")] [SerializeField]
+        private CreatureMover moveScript;
         [SerializeField] private NavMeshAgent rb;
         [SerializeField] private Transform baseNeckTr;
         [SerializeField] private Transform headJointTr;
@@ -35,7 +36,7 @@ namespace IK
 
         private void Update()
         {
-            ModifyInclinationBaseNeck(rb.velocity.magnitude / speedMaxInclination);
+            ModifyInclinationBaseNeck(rb.velocity.magnitude / moveScript.agressiveSpeed);
 
             if (!isLookingLeftRight)
             {
@@ -44,10 +45,21 @@ namespace IK
         }
 
 
+        private float currentZ;
         private void ModifyInclinationBaseNeck(float inclinationRatio)
         {
-            baseNeckTr.localEulerAngles = new Vector3(baseNeckTr.localEulerAngles.x, baseNeckTr.localEulerAngles.y,
-                Mathf.Lerp(saveBaseNeck.z, saveBaseNeck.z - inclinationMaxBaseNeck, inclinationRatio));
+            float Zvalue = Mathf.Lerp(saveBaseNeck.z, saveBaseNeck.z - inclinationMaxBaseNeck, inclinationRatio);
+            currentZ = Mathf.Lerp(currentZ, Zvalue, Time.deltaTime * 5);
+            
+            /*if (baseNeckTr.localEulerAngles.z < 80f && Zvalue > 180f)
+                Zvalue -= 360f;
+            else if (Zvalue < 80f && baseNeckTr.localEulerAngles.z > 180f)
+                Zvalue += 360f;*/
+            Debug.Log(currentZ);
+            
+            baseNeckTr.localEulerAngles = new Vector3(
+                baseNeckTr.localEulerAngles.x, baseNeckTr.localEulerAngles.y,
+                currentZ);    
 
             /*headJointTr.localEulerAngles = new Vector3(Mathf.Lerp(originalInclinationHeadJoint.x, originalInclinationHeadJoint.x - inclinationMaxBaseNeck, inclinationRatio),
                 originalInclinationHeadJoint.y, originalInclinationHeadJoint.z);*/

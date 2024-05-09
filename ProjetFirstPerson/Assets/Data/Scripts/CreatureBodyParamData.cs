@@ -14,4 +14,7 @@ public class CreatureBodyParamData : ScriptableObject
     public float rotationSpeed;
     public float rotationSpeedFrontJoints;
     public float maxRotDifFrontBack;
+
+    [Header("Others")] 
+    [Range(0f, 1f)] public float legCantMoveSpeedMultiplier;
 }

@@ -12,6 +12,7 @@ public class BoardMenu : MonoBehaviour
     [Header("List Objects In Board")]
     public List<GameObject> listBoardElement;
     [SerializeField] private GameObject MyBoard;
+    [SerializeField] private GameObject BoardPanel;
 
     [Header("Manipulation Variables")]
     public GameObject currentSelect;

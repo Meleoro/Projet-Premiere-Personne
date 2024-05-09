@@ -52,9 +52,12 @@ namespace Creature
 
         public void ComponentUpdate()
         {
+            float currentDist = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
+                new Vector2(currentWaypoint.transform.position.x, currentWaypoint.transform.position.z));
+            
             if (!stoppedNormalBehavior)
             {
-                if(Vector3.Distance(transform.position, currentWaypoint.transform.position) < 3f)
+                if(currentDist < 1f)
                 {
                     ReachedWaypoint();
                 }
@@ -62,7 +65,7 @@ namespace Creature
 
             else
             {
-                if (Vector3.Distance(transform.position, placeToGo) < 3f)
+                if (currentDist < 1f)
                 {
                     ReachedPlaceToGo();
                 }

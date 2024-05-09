@@ -19,7 +19,7 @@ public class CylindrePuzzle : MonoBehaviour
     {
         meshRenderer = GetComponent<MeshRenderer>();
         manager = GetComponentInParent<PorteCylindre>();
-        symbol = 0;
+        //symbol = 0;
     }
 
     private void OnMouseEnter()
@@ -34,24 +34,20 @@ public class CylindrePuzzle : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if ((int)symbol < 3)
+        if (!isMoving)
         {
-            if (!isMoving)
+            if ((int)symbol < 3)
             {
                 StartCoroutine(RotateCylinder((int)symbol*-90));
                 symbol += 1;
             }
-        }
-        else
-        {
-            if (!isMoving)
+            else
             {
                 StartCoroutine(RotateCylinder(90));
                 symbol = 0;
-            }
+            }  
+            manager.CheckIfWin();
         }
-
-        manager.CheckIfWin();
     }
 
     IEnumerator RotateCylinder(int newAngle)

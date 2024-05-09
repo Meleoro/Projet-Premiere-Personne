@@ -38,6 +38,12 @@ namespace Creature
         [SerializeField] private float suspisionAddedMarcheSneak;
         [SerializeField] private float suspisionAddedInteraction;
         [SerializeField] private float suspisionAddedView;
+        
+        [Header("Valeurs Listen Agressive")]      // Pour chacune de ces valeurs, il faut les voir comme 'combien de suspision sont ajout�es par secondes' car elles seront multipli�s par le delta time (sauf l'int�raction)
+        [SerializeField] private float suspisionAddedMarcheAgressive;
+        [SerializeField] private float suspisionAddedCourseAgressive;
+        [SerializeField] private float suspisionAddedMarcheSneakAgressive;
+        [SerializeField] private float suspisionAddedViewAgressive;
 
 
         [Header("Public Infos")]
@@ -60,6 +66,8 @@ namespace Creature
             creatureComponents = GetComponents<ICreatureComponent>().ToList();
             waypointsScript = GetComponent<CreatureWaypoints>();
             moveScript = GetComponent<CreatureMover>();
+
+            CharacterManager.Instance.GetComponent<HealthComponent>().DieAction += () => currentSuspicion = 0;
         }
 
 
@@ -98,14 +106,21 @@ namespace Creature
             {
                 if (CharacterManager.Instance.currentNoiseType == NoiseType.Loud)
                 {
-                    currentSuspicion += Time.deltaTime * suspisionAddedCourse;
+                    if(currentState != CreatureState.aggressive)
+                        currentSuspicion += Time.deltaTime * suspisionAddedCourse;
+                    else
+                        currentSuspicion += Time.deltaTime * suspisionAddedCourseAgressive;
+
                 }
                 
                 else if (Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position) < earNormalRadius)
                 {
                     if (CharacterManager.Instance.currentNoiseType == NoiseType.Normal)
                     {
-                        currentSuspicion += Time.deltaTime * suspisionAddedMarche;
+                        if(currentState != CreatureState.aggressive)
+                            currentSuspicion += Time.deltaTime * suspisionAddedMarche;
+                        else
+                            currentSuspicion += Time.deltaTime * suspisionAddedMarcheAgressive;
                     }
 
                     else if(Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position) < earLowRadius)
@@ -113,23 +128,30 @@ namespace Creature
 
                         if (CharacterManager.Instance.currentNoiseType == NoiseType.Quiet)
                         {
-                            currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneak;
+                            if(currentState != CreatureState.aggressive)
+                                currentSuspicion += Time.deltaTime * suspisionAddedMarche;
+                            else
+                                currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneakAgressive;
                         }
                     }
                 }
             }
         }
 
-
+        private Vector3 offset = new Vector3(0, 0, 5);
         private void DoViewAI()
         {
             Vector3 currentDir = -headJoint.right;
-            currentDir = Quaternion.Euler(-visionRadiusX * 0.5f, -visionRadiusY * 0.5f, 0) * currentDir;
+            currentDir = Quaternion.Euler(0, -visionRadiusY * 0.5f, 0) * currentDir;
+            currentDir = headJoint.InverseTransformVector(currentDir);
+            currentDir = Quaternion.Euler(0, 0, -visionRadiusX * 0.5f) * currentDir;
+            currentDir = headJoint.TransformVector(currentDir);
+            
             UIManager.Instance.isInCreatureView = false;
             
             for (int x = 0; x < visionRadiusX; x+= raycastDensity)
             {
-                for (int y = 0; y < visionRadiusX; y+= raycastDensity)
+                for (int y = 0; y < visionRadiusY; y+= raycastDensity)
                 {
                     Debug.DrawLine(headJoint.position, headJoint.position + currentDir * visionRange, Color.cyan, 0.1f);
 
@@ -147,8 +169,11 @@ namespace Creature
                     
                     currentDir = Quaternion.Euler(0, raycastDensity, 0) * currentDir;
                 }
-                
-                currentDir = Quaternion.Euler(raycastDensity, -visionRadiusY, 0) * currentDir;
+
+                currentDir = Quaternion.Euler(0, -visionRadiusY - raycastDensity * 0.5f, 0) * currentDir;
+                currentDir = headJoint.InverseTransformVector(currentDir);
+                currentDir = Quaternion.Euler(0, 0, raycastDensity) * currentDir;
+                currentDir = headJoint.TransformVector(currentDir);
             }
         }
 

@@ -25,62 +25,62 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private Image interactImage;
     [SerializeField] private Image eyeIconImage;
     [SerializeField] private CameraComponent cameraComponent;
+    [SerializeField] private MoveComponent moveComponent;
+    //[SerializeField] private Animator tabletteAnim;
     public Image fadeImage;
 
     [Header("UI Variables")]
-    [SerializeField] private GameObject Album;
-    [SerializeField] private GameObject LogPanel;
-    public bool isUIActive;
+    [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, MapMenu;
+    [SerializeField] private TextMeshProUGUI schedule;
+    [SerializeField] public bool isUIActive = false;
 
+    [Header("Cursor Variables")]
+    public Texture2D cursorTexture;
+    public CursorMode cursorMode = CursorMode.Auto;
+    public Vector2 hotSpot = Vector2.zero;
     
     
     private void Start()
     {
-        LogPanel = GameObject.Find("LogsPanel");
-
+        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
         HideInteractIcon();
-        Album.SetActive(false);
-        LogPanel.SetActive(false);
+        GeneralMenu.SetActive(false);
     }
 
     void Update()
     {
+        // Horaire du jeu
+        schedule.text = System.DateTime.Now + "";
         EyeIconUpdate();
         
         // Test Ouvrir Album
         if(Input.GetKeyDown(KeyCode.Tab))
         {
-            if (!Album.activeSelf)
-            {
-                cameraComponent.canRotate = false;
-                cameraComponent.LockedCursor(1);
-                Album.SetActive(true);
-                isUIActive = true;
-            }
-            else
-            {
-                cameraComponent.canRotate = true;
-                cameraComponent.LockedCursor(2);
-                Album.SetActive(false);
-                isUIActive = false;
-            }
+            StartCoroutine(OpenMenu());
         } 
+    }
 
-        if(Input.GetKeyDown(KeyCode.Keypad0))
+    IEnumerator OpenMenu()
+    {
+        if(!isUIActive)
         {
-            if (!LogPanel.activeSelf)
-            {
-                cameraComponent.LockedCursor(1);
-                LogPanel.SetActive(true);
-                isUIActive = true;
-            }
-            else
-            {
-                cameraComponent.LockedCursor(2);
-                LogPanel.SetActive(false);
-                isUIActive = false;
-            }
+            yield return new WaitForSeconds(0.5f);
+            //tabletteAnim.SetBool("in",true);
+            cameraComponent.canRotate = false;
+            moveComponent.canMove = false;
+            cameraComponent.LockedCursor(1);
+            isUIActive = true;
+            CloseAllPanel(true,false,false,false);
         }
+        else
+        {
+            //tabletteAnim.SetBool("in",false);
+            cameraComponent.canRotate = true;
+            moveComponent.canMove = true;
+            cameraComponent.LockedCursor(2);
+            isUIActive = false;
+            CloseAllPanel(false,false,false,false);
+        } 
     }
 
 
@@ -93,6 +93,39 @@ public class UIManager : GenericSingletonClass<UIManager>
     {
         HUDParent.gameObject.SetActive(true);
     }
+    #region Button
+    public void CloseAllPanel(bool GeneralBool, bool BoardBool, bool MapBool, bool LogsBool)
+    {
+        GeneralMenu.SetActive(GeneralBool);
+        BoardMenu.SetActive(BoardBool);
+        MapMenu.SetActive(MapBool);
+        LogsMenu.SetActive(LogsBool);
+    }
+    public void OpenBoardMenu()
+    {
+        if (!BoardMenu.activeSelf)
+            {
+                CloseAllPanel(false,true,false,false);
+                isUIActive = true;
+            }
+    }
+    public void OpenMapMenu()
+    {
+        if (!MapMenu.activeSelf)
+            {
+                CloseAllPanel(false,false,true,false);
+                isUIActive = true;
+            }
+    }
+    public void OpenLogsMenu()
+    {
+        if (!LogsMenu.activeSelf)
+            {
+                CloseAllPanel(false,false,false,true);
+                isUIActive = true;
+            }
+    }
+    #endregion
     
     
     #region SELECTION

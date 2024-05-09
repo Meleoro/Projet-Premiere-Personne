@@ -50,6 +50,7 @@ namespace Puzzle
         private void Update()
         {
             if(!won) VerifyWin();
+            
         }
 
 
@@ -68,6 +69,7 @@ namespace Puzzle
             {
                 selectedDalle1.isSelected = false;
                 selectedDalle2 = selectedDalle;
+                selectedDalle.meshRenderer.material = selectedDalle.MaterialHighlighted;
                 StartCoroutine(ExchangeTwoDalles(selectedDalle1, selectedDalle2));
             }
         }
