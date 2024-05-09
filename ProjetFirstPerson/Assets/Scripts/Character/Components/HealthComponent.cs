@@ -19,6 +19,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     [Header("Private Infos")] 
     private bool isDying;
+    private bool isInvincible;
     private float hurtTimer;
     private Animation anim;
     private Vector3 lastCheckPoint;
@@ -74,6 +75,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     public void TakeDamage()
     {
+        if (isInvincible) return;
+
         if(isHurted && !isDying)
             StartCoroutine(Die());
 
@@ -84,6 +87,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         isHurted = true;
         hurtTimer = recoveryTime;
 
+        StartCoroutine(InvincibleTime());
         StartCoroutine(SlowCharacter(2, 0.5f));
         StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
         StartCoroutine(CameraEffects.Instance.HurtEffect(recoveryTime));
@@ -96,6 +100,15 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         yield return new WaitForSeconds(duration);
 
         GetComponent<MoveComponent>().currentSpeedModifier = 1;
+    }
+
+    private IEnumerator InvincibleTime()
+    {
+        isInvincible = true;
+
+        yield return new WaitForSeconds(1);
+
+        isInvincible = false;
     }
 
 
