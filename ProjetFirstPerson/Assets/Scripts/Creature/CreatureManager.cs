@@ -98,43 +98,60 @@ namespace Creature
 
         private void DoEarAI()
         {
-            /*if (currentState != CreatureState.none)
-                return;*/
-            
-            
-            if (Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position) < earLoudRadius)
-            {
-                if (CharacterManager.Instance.currentNoiseType == NoiseType.Loud)
-                {
-                    if(currentState != CreatureState.aggressive)
-                        currentSuspicion += Time.deltaTime * suspisionAddedCourse;
-                    else
-                        currentSuspicion += Time.deltaTime * suspisionAddedCourseAgressive;
+            float currentDist = Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position);
 
-                }
-                
-                else if (Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position) < earNormalRadius)
-                {
-                    if (CharacterManager.Instance.currentNoiseType == NoiseType.Normal)
+            switch (CharacterManager.Instance.currentNoiseType)
+            {
+                case NoiseType.Quiet:
+                    if (currentDist < earLowRadius)
                     {
-                        if(currentState != CreatureState.aggressive)
+                        if (currentState != CreatureState.aggressive)
+                            currentSuspicion += Time.deltaTime * suspisionAddedMarche;
+                        else
+                            currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneakAgressive;
+                    }
+                    break;
+
+                case NoiseType.Normal:
+                    if (currentDist < earLowRadius)
+                    {
+                        if (currentState != CreatureState.aggressive)
+                            currentSuspicion += Time.deltaTime * suspisionAddedMarche * 2;
+                        else
+                            currentSuspicion += Time.deltaTime * suspisionAddedMarcheAgressive * 2;
+                    }
+                    else if(currentDist < earNormalRadius)
+                    {
+                        if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedMarche;
                         else
                             currentSuspicion += Time.deltaTime * suspisionAddedMarcheAgressive;
                     }
+                    break;
 
-                    else if(Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position) < earLowRadius)
+                case NoiseType.Loud:
+                    if (currentDist < earLowRadius)
                     {
-
-                        if (CharacterManager.Instance.currentNoiseType == NoiseType.Quiet)
-                        {
-                            if(currentState != CreatureState.aggressive)
-                                currentSuspicion += Time.deltaTime * suspisionAddedMarche;
-                            else
-                                currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneakAgressive;
-                        }
+                        if (currentState != CreatureState.aggressive)
+                            currentSuspicion += Time.deltaTime * suspisionAddedCourse * 3;
+                        else
+                            currentSuspicion += Time.deltaTime * suspisionAddedCourseAgressive * 3;
                     }
-                }
+                    else if (currentDist < earNormalRadius)
+                    {
+                        if (currentState != CreatureState.aggressive)
+                            currentSuspicion += Time.deltaTime * suspisionAddedCourse * 2;
+                        else
+                            currentSuspicion += Time.deltaTime * suspisionAddedCourseAgressive * 2;
+                    }
+                    else if(currentDist < earLoudRadius)
+                    {
+                        if (currentState != CreatureState.aggressive)
+                            currentSuspicion += Time.deltaTime * suspisionAddedCourse;
+                        else
+                            currentSuspicion += Time.deltaTime * suspisionAddedCourseAgressive;
+                    }
+                    break;
             }
         }
 
