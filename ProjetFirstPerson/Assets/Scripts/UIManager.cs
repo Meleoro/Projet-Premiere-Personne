@@ -26,7 +26,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private Image eyeIconImage;
     [SerializeField] private CameraComponent cameraComponent;
     [SerializeField] private MoveComponent moveComponent;
-    //[SerializeField] private Animator tabletteAnim;
+    [SerializeField] private TextMeshProUGUI interactText;
     public Image fadeImage;
 
     [Header("UI Variables")]
@@ -133,11 +133,13 @@ public class UIManager : GenericSingletonClass<UIManager>
     public void DisplayInteractIcon()
     {
         interactImage.gameObject.SetActive(true);
+        interactText.enabled = true;
     }
 
     public void HideInteractIcon()
     {
         interactImage.gameObject.SetActive(false);
+        interactText.enabled = false;
     }
 
     #endregion
