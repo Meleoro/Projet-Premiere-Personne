@@ -10,10 +10,12 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     [SerializeField] private float recoveryTime;
     [SerializeField] private float cameraShakeIntensity;
     [SerializeField] private float cameraShakeDuration;
+    [SerializeField] private float fallMaxHeight;
+    [SerializeField] private float fallRecovery;
 
     [Header("Public Infos")] 
-    public Action DieAction;
-    public bool isHurted;
+    [HideInInspector] public Action DieAction;
+    [HideInInspector] public bool isHurted;
 
     [Header("Private Infos")] 
     private bool isDying;
@@ -50,6 +52,17 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     public void ComponentLateUpdate()
     {
+    }
+
+
+    public void VerifyFall(float fallDist)
+    {
+        if (fallDist > fallMaxHeight)
+        {
+            StartCoroutine(SlowCharacter(fallRecovery, 0.1f));
+            StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity);
+        }
     }
 
 
