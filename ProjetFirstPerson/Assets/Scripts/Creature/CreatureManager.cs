@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -47,7 +48,7 @@ namespace Creature
 
 
         [Header("Public Infos")]
-        [HideInInspector] public CreatureState currentState;
+        public CreatureState currentState;
         public float currentSuspicion;
 
         [Header("Private Infos")]
@@ -221,13 +222,22 @@ namespace Creature
 
                 if (currentSuspicion <= 0)
                 {
-                    currentState = CreatureState.none;
-
-                    moveScript.StartWalkSpeed();
-
-                    specialMovesScript.LookLeftRight(2.5f);
+                    StartCoroutine(QuitAggressiveBehavior());
                 }
             }
+        }
+
+        private IEnumerator QuitAggressiveBehavior()
+        {
+            currentState = CreatureState.none;
+
+            moveScript.StartWalkSpeed();
+
+            specialMovesScript.LookLeftRight(2.5f);
+
+            yield return new WaitForSeconds(2.5f);
+
+            waypointsScript.RestartWaypointBehavior();
         }
 
 

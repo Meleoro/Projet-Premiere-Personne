@@ -49,7 +49,6 @@ namespace IK
         private void Update()
         {
             ApplyMainIK2();
-            //AdaptJointsRotations();
 
             ApplyZIK();
             ApplyLegsEffects();
@@ -58,6 +57,9 @@ namespace IK
 
         private void ApplyMainIK2()
         {
+            float currentSpeed1 = moveScript.isRunning ? data.aggressiveRotationSpeed : data.rotationSpeed;
+            float currentSpeed2 = moveScript.isRunning ? data.aggressiveRotationSpeedFrontJoints : data.rotationSpeedFrontJoints;
+
             Vector3 dif = backJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
 
@@ -73,14 +75,14 @@ namespace IK
                 currentAtan += 360f;
             
             // Back Part
-            currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * data.rotationSpeed);
+            currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * currentSpeed1);
 
             Vector3 eulerBack = backJoint.localEulerAngles;
             eulerBack.y = saveOffset2.y + currentAtanBack;
             backJoint.localEulerAngles = eulerBack;
             
             // Spine Part
-            currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * data.rotationSpeedFrontJoints);
+            currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * currentSpeed2);
             currentAtan = Mathf.Clamp(currentAtan, -data.maxRotDifFrontBack, data.maxRotDifFrontBack);
             
             currentRotationDif = currentAtan / data.maxRotDifFrontBack;
