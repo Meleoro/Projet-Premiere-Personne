@@ -24,6 +24,9 @@ public class SCR_UiDrag : MonoBehaviour
     [Header("Clamp Values")]
     public float ClampX;
     public float ClampY;
+    public GameObject board;
+    private RectTransform RectBoard;
+    public GameObject CenterMouse;
  
     void Start()
     {
@@ -31,11 +34,50 @@ public class SCR_UiDrag : MonoBehaviour
         click_data = new PointerEventData(EventSystem.current);
         click_results = new List<RaycastResult>();
         clicked_elements = new List<GameObject>();
+
+        RectBoard = board.GetComponent<RectTransform>();
     }
  
     void Update()
     {
         MouseDragUi();
+      /*  if(Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            ScaleAround(board,boardPivot, new Vector3(3,3,3));
+        } */
+        if(Input.mouseScrollDelta.y > 0)
+        {
+            Vector3 currentScale = RectBoard.localScale;
+            ScaleAround(board,CenterMouse.transform.localPosition / 2, currentScale += new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y);
+        }
+        if(Input.mouseScrollDelta.y < 0)
+        {
+            Vector3 currentScale = RectBoard.localScale;
+            ScaleAround(board,CenterMouse.transform.localPosition / 2, currentScale += new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y);
+        }
+        if(Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            ScaleAround(board,new Vector3(0,0,0), new Vector3(1,1,1));
+        }
+
+        // Clamp des valeurs de position
+            var pos =  RectBoard.transform.localPosition;
+
+            pos.x =  Mathf.Clamp(pos.x, -ClampX, ClampX);
+            pos.y =  Mathf.Clamp(pos.y, -ClampY, ClampY);
+
+            RectBoard.transform.localPosition = pos;
+
+             ClampX = 3000 * RectBoard.localScale.x;
+             ClampY = 2000 * RectBoard.localScale.x;
+             if(RectBoard.localScale.x <= 0.6f)
+            {
+                RectBoard.localScale = new Vector3(0.6f,0.6f,0);
+            }
+           else if(RectBoard.localScale.x >= 3f)
+            {
+                RectBoard.localScale = new Vector3(3f,3f,0);
+            }
     }
  
     void MouseDragUi()
@@ -102,31 +144,27 @@ public class SCR_UiDrag : MonoBehaviour
 
         if(element_rect.CompareTag("Board"))
         {
-            // Clamp des valeurs de position
-            var pos =  element_rect.transform.localPosition;
-
-            pos.x =  Mathf.Clamp(pos.x, -ClampX, ClampX);
-            pos.y =  Mathf.Clamp(pos.y, -ClampY, ClampY);
-
-            element_rect.transform.localPosition = pos;
-
-            // Zoom de l'objet
-             element_rect.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
-             ClampX = 3000 * element_rect.localScale.x;
-             ClampY = 2000 * element_rect.localScale.x;
-             if(element_rect.localScale.x <= 0.6f)
-            {
-                element_rect.localScale = new Vector3(0.6f,0.6f,0);
-            }
-           else if(element_rect.localScale.x >= 3f)
-            {
-                element_rect.localScale = new Vector3(3f,3f,0);
-            }
-
             // Déplacement de l'objet
             Vector2 drag_movement = mouse_position - previous_mouse_position;
             element_rect.anchoredPosition = element_rect.anchoredPosition + drag_movement;
         }
     }
+
+   public void ScaleAround(GameObject target, Vector3 pivot, Vector3 newScale)
+{
+    Vector3 A = target.transform.localPosition;
+    Vector3 B = pivot;
+
+    Vector3 C = A - B; // diff from object pivot to desired pivot/origin
+
+    float RS = newScale.x / target.transform.localScale.x; // relataive scale factor
+
+    // calc final position post-scale
+    Vector3 FP = B + C * RS;
+
+    // finally, actually perform the scale/translation
+    target.transform.localScale = newScale;
+    target.transform.localPosition = FP;
+}
  
 }
