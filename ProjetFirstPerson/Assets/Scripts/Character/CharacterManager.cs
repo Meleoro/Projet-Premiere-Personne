@@ -11,6 +11,7 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
 
     [Header("Public Infos")] 
     public IInteractible interactibleAtRange;
+    public bool isInteracting;
     public NoiseType currentNoiseType;
     public bool isHidden;
     public bool isInSneakZone;

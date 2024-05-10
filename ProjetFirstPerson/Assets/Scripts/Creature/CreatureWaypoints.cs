@@ -12,6 +12,7 @@ namespace Creature
         [Header("Parameters")]
         [SerializeField] private List<WaypointsManager> possiblePaths = new List<WaypointsManager>();
         [SerializeField] private int numberOfWaypointBeforeGoNear;
+        
         [SerializeField] private float suspicionWaitDuration;
         [SerializeField] private float suspicionPlaceOffsetMultiplier = 2.5f;
 

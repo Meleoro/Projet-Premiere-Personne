@@ -61,6 +61,7 @@ namespace Puzzle
 
         public void GetInInteraction()
         {
+            CharacterManager.Instance.isInteracting = true;
             CameraManager.Instance.transform.parent.transform.position = cameraPos.transform.position;
             CameraManager.Instance.transform.parent.transform.rotation = Quaternion.Euler(desiredRotation);
 
@@ -82,6 +83,7 @@ namespace Puzzle
 
         public void GetOutInteraction()
         {
+            CharacterManager.Instance.isInteracting = false;
             CameraManager.Instance.transform.parent.transform.position = characterCameraScript.wantedCameraPos.position;
             CameraManager.Instance.transform.parent.transform.rotation = Quaternion.identity;
 
