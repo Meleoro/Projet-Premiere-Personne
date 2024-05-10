@@ -179,15 +179,21 @@ namespace Creature
         /// </summary>
         public void ChangeDestinationSuspicious(Vector3 suspicousPlace)
         {
-            stoppedNormalBehavior = true;
-            waitTimer = 0;
+            NavMeshPath path = new NavMeshPath();
+            bool esisteNavMesh = creatureMoverScript.navMeshAgent.CalculatePath(suspicousPlace, path);
 
-            creatureMoverScript.forcedRot = Vector3.zero;
+            if (path.status == NavMeshPathStatus.PathComplete)
+            {
+                stoppedNormalBehavior = true;
+                waitTimer = 0;
 
-            Vector3 dirToRemove = transform.position - suspicousPlace;
-            
-            placeToGo = suspicousPlace + (dirToRemove.normalized * suspicionPlaceOffsetMultiplier);
-            creatureMoverScript.wantedPos = suspicousPlace;
+                creatureMoverScript.forcedRot = Vector3.zero;
+
+                Vector3 dirToRemove = transform.position - suspicousPlace;
+
+                placeToGo = suspicousPlace + (dirToRemove.normalized * suspicionPlaceOffsetMultiplier);
+                creatureMoverScript.wantedPos = suspicousPlace;
+            }
         }
 
 
@@ -210,7 +216,7 @@ namespace Creature
             NavMeshPath path = new NavMeshPath();
             bool esisteNavMesh = creatureMoverScript.navMeshAgent.CalculatePath(suspicousPlace, path);
 
-            if (!esisteNavMesh)
+            if (path.status != NavMeshPathStatus.PathComplete)
             {
                 creatureMoverScript.wantedPos = saveLastPlace;
             }
