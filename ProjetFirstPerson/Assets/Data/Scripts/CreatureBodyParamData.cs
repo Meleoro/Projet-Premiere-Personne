@@ -12,7 +12,9 @@ public class CreatureBodyParamData : ScriptableObject
 
     [Header("Rotation")]
     public float rotationSpeed;
+    public float aggressiveRotationSpeed;
     public float rotationSpeedFrontJoints;
+    public float aggressiveRotationSpeedFrontJoints;
     public float maxRotDifFrontBack;
 
     [Header("Others")] 
