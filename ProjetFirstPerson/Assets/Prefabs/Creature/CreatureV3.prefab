@@ -2033,7 +2033,6 @@ MonoBehaviour:
   tailWiggleSpeed: 3
   tailWiggleAmplitude: 13
   groundedTailJointIndex: 4
-  tailAngleModificatorZ: 0
   groundYHeight:
     serializedVersion: 2
     m_Curve: []
@@ -2833,33 +2832,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 7cb8aa92fe38d70428b28eba88cea00a, type: 2}
-  heightLegModificator:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2.2
-      outSlope: 2.2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 2.2
-      inSlope: 2.2
-      outSlope: 2.2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   currentRotationDif: 0
   hasToDoHugeTurn: 0
   currentAtanDif: 0
+  frontYDif: 0
   saveOffset2: {x: 0, y: 0, z: 0}
   bodyJoints:
   - {fileID: 4572709357879508301}
@@ -4852,24 +4828,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugIK: 0
-  earLoudRadius: 15
-  earNormalRadius: 7.5
-  earLowRadius: 3
-  visionRange: 15.47
-  visionRadiusX: 80
-  visionRadiusY: 80
-  raycastDensity: 6
-  suspisionLostSpeed: 20
-  suspisionLostSpeedAggressive: 40
+  earLoudRadius: 25
+  earNormalRadius: 15
+  earLowRadius: 8.5
+  visionRange: 23
+  visionRadiusX: 90
+  visionRadiusY: 90
+  raycastDensity: 10
+  suspisionLostSpeed: 15
+  suspisionLostSpeedAggressive: 10
   suspisionThresholdSuspicieux: 50
   suspisionThresholdAggressif: 100
   maxSuspicion: 200
-  detectedWaitDuration: 2
+  detectedWaitDuration: 2.2
   suspisionAddedMarche: 15
-  suspisionAddedCourse: 30
-  suspisionAddedMarcheSneak: 15
+  suspisionAddedCourse: 40
+  suspisionAddedMarcheSneak: 10
   suspisionAddedInteraction: 50
-  suspisionAddedView: 200
+  suspisionAddedView: 50
+  suspisionAddedMarcheAgressive: 0
+  suspisionAddedCourseAgressive: 0
+  suspisionAddedMarcheSneakAgressive: 0
+  suspisionAddedViewAgressive: 40
   currentState: 0
   currentSuspicion: 0
   headJoint: {fileID: 4563661520276766961}
@@ -4887,9 +4867,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 7cb8aa92fe38d70428b28eba88cea00a, type: 2}
-  walkSpeed: 2.5
+  walkSpeed: 4
   suspicionSpeed: 2
-  agressiveSpeed: 4.5
+  agressiveSpeed: 8
   doDebugMovement: 0
   debugWantedPos: {fileID: 0}
   wantedPos: {x: 0, y: 0, z: 0}
@@ -4968,11 +4948,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93895c0141514e0428ed184e5ad6335a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 6.5
-  attackStartUp: 0
-  attackSpeed: 4
-  attackDuration: 1.5
-  attackCooldown: 2.5
+  attackRange: 5.5
+  attackStartUp: 0.1
+  attackSpeed: 5
+  attackDuration: 1
+  attackCooldown: 3.7
   attackCollider: {fileID: 3317624020174097282}
 --- !u!195 &3996518086523642888
 NavMeshAgent:
@@ -5003,7 +4983,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5522465051601411064}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: a03d2975368dfdb4a9becdd288b05e31, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -6585,8 +6565,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 1.3904412, y: 1.9736336, z: 2.6204355}
-  m_Center: {x: -0.19522062, y: -0.11188706, z: 0.024995422}
+  m_Size: {x: 1.3904412, y: 1.9736336, z: 2.1992433}
+  m_Center: {x: -0.19522062, y: -0.111887075, z: 0.13458176}
 --- !u!114 &1359647580893228149
 MonoBehaviour:
   m_ObjectHideFlags: 0

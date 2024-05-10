@@ -8,12 +8,12 @@ namespace IK
     {
         [Header("Parameters")]
         [SerializeField] private CreatureBodyParamData data;
-        [SerializeField] private AnimationCurve heightLegModificator;
 
         [Header("Public Infos")] 
         [HideInInspector] public float currentRotationDif;
         [HideInInspector] public bool hasToDoHugeTurn;
         [HideInInspector] public float currentAtanDif;
+        [HideInInspector] public float frontYDif;
         [HideInInspector] public Vector3 saveOffset2;
 
         [Header("Private Infos")]
@@ -101,6 +101,16 @@ namespace IK
 
         private void ApplyZIK()
         {
+            // Ground Part
+            for (int i = 0; i < bodyJoints.Length; i++)
+            {
+                Vector3 eulerJointBody = bodyJoints[i].localEulerAngles;
+                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z, bodyJoints[i].localEulerAngles.z + frontYDif, Time.deltaTime * 5);
+
+                bodyJoints[i].localEulerAngles = eulerJointBody;
+            }
+
+            // Legs Part
             Vector3 frontAveragePos;
             Vector3 backAveragePos;
 
@@ -110,8 +120,13 @@ namespace IK
             for (int i = 0; i < bodyJoints.Length; i++)
             {
                 Vector3 eulerJointBody = bodyJoints[i].localEulerAngles;
-                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z , savesLocalEulers[i].z + difY * 
-                    heightLegModificator.Evaluate(moveScript.navMeshAgent.velocity.magnitude / moveScript.agressiveSpeed), Time.deltaTime * 10);
+                float changedZ = savesLocalEulers[i].z + difY *
+                    data.legsHeightImpactAccordingToSpeed.Evaluate(moveScript.navMeshAgent.velocity.magnitude / moveScript.agressiveSpeed);
+
+                if (Mathf.Abs(changedZ - eulerJointBody.z) > 80)
+                    changedZ += 360;
+
+                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z , changedZ, Time.deltaTime * 15);
 
                 bodyJoints[i].localEulerAngles = eulerJointBody;
             }

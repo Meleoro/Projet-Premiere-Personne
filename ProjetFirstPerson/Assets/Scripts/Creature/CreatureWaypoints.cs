@@ -59,7 +59,7 @@ namespace Creature
             
             if (!stoppedNormalBehavior)
             {
-                if(currentDist < 1f)
+                if(currentDist < 2f)
                 {
                     ReachedWaypoint();
                 }
@@ -194,6 +194,11 @@ namespace Creature
 
                 placeToGo = suspicousPlace + (dirToRemove.normalized * suspicionPlaceOffsetMultiplier);
                 creatureMoverScript.wantedPos = suspicousPlace;
+            }
+
+            else
+            {
+                RestartWaypointBehavior();
             }
         }
 

@@ -237,6 +237,8 @@ namespace Creature
 
             yield return new WaitForSeconds(2.5f);
 
+            moveScript.StartWalkSpeed();
+
             waypointsScript.RestartWaypointBehavior();
         }
 

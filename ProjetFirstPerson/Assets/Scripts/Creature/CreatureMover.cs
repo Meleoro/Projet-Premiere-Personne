@@ -100,23 +100,38 @@ namespace Creature
         {
             float currentRotationDif = Mathf.Abs(bodyIKScript.currentRotationDif);
 
-            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.5f, currentRotationDif);
+            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.3f, currentRotationDif);
         }
 
         private void AdaptHeightBySpeed()
         {
             float currentSpeed = navMeshAgent.velocity.magnitude / agressiveSpeed;
-            float wantedY = data.wantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
+            float wantedYFront = data.frontWantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
+            float wantedYBack = data.backWantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
 
-            RaycastHit groundHit;
-            if(Physics.Raycast(baseCreatureTr.position + Vector3.up, Vector3.down, out groundHit, data.maxHeight + 1, LayerManager.Instance.groundLayer))
+            // Back
+            RaycastHit groundHitBack;
+            if(Physics.Raycast(bodyIKScript.backJoint.position + Vector3.up, Vector3.down, out groundHitBack, data.maxHeight + 1, LayerManager.Instance.groundLayer))
             {
-                baseCreatureTr.position =
-                    Vector3.Lerp(baseCreatureTr.position, groundHit.point + Vector3.up * wantedY, Time.deltaTime * 5);
+                bodyIKScript.backJoint.position =
+                    Vector3.Lerp(bodyIKScript.backJoint.position, groundHitBack.point + Vector3.up * wantedYBack, Time.deltaTime * 5);
             }
             else
             {
-                baseCreatureTr.position -= Vector3.up * Time.deltaTime;
+                bodyIKScript.backJoint.position -= Vector3.up * Time.deltaTime * 3;
+            }
+
+            // Front
+            RaycastHit groundHitFront;
+            if (Physics.Raycast(bodyIKScript.bodyJoint.position + Vector3.up, Vector3.down, out groundHitFront, data.maxHeight + 1, LayerManager.Instance.groundLayer))
+            {
+                Vector3 wantedPosition = groundHitFront.point + Vector3.up * wantedYFront;
+
+                bodyIKScript.frontYDif = wantedPosition.y - bodyIKScript.bodyJoint.position.y;
+            }
+            else
+            {
+                bodyIKScript.frontYDif -= Time.deltaTime * 3;
             }
         }
 
@@ -162,24 +177,32 @@ namespace Creature
         {
             saveSpeed = agressiveSpeed;
             isRunning = true;
+
+            navMeshAgent.speed = saveSpeed;
         }
 
         public void StartSuspicion()
         {
             saveSpeed = suspicionSpeed;
             isRunning = false;
+
+            navMeshAgent.speed = saveSpeed;
         }
 
         public void StartWalkSpeed()
         {
             saveSpeed = walkSpeed;
             isRunning = false;
+
+            navMeshAgent.speed = saveSpeed;
         }
 
         public void StartAttackSpeed(float attackSpeed)
         {
             saveSpeed = attackSpeed;
             isRunning = true;
+
+            navMeshAgent.speed = saveSpeed;
         }
 
         #endregion
