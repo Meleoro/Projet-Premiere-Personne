@@ -190,8 +190,6 @@ namespace Creature
 
             if (path.status == NavMeshPathStatus.PathComplete)
             {
-                Debug.Log(12);
-                
                 stoppedNormalBehavior = true;
                 waitTimer = 0;
 

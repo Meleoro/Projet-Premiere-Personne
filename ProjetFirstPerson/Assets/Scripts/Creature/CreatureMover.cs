@@ -118,7 +118,7 @@ namespace Creature
             }
             else
             {
-                bodyIKScript.backJoint.position -= Vector3.up * Time.deltaTime * 3;
+                bodyIKScript.backJoint.position -= Vector3.up * (Time.deltaTime * 3);
             }
 
             // Front
