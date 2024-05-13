@@ -20,6 +20,7 @@ namespace IK
         private Vector3 saveBaseNeck;
         private Vector3 saveHeadJoint;
         private float currentRatio;
+        private bool followChara;
 
         [Header("References")] 
         [SerializeField] private CreatureMover moveScript;
@@ -59,16 +60,34 @@ namespace IK
         }
 
 
+
+        public void FollowChara()
+        {
+            followChara = true;
+        }
+
+        public void StopFollowChara()
+        {
+            followChara = false;
+        }
+        
+
         private void ModifyRotationHeadTarget()
         {
-            Vector3 dirToRotateTo = (moveScript.wantedPos - moveScript.transform.position).normalized * 10;
-            
-            Vector3 currentDir = target.position - moveScript.transform.position;
-            currentDir = currentDir.normalized * 10;
+            if (followChara)
+                target.position = CharacterManager.Instance.transform.position;
 
-            currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo.normalized, 1, 1);
+            else
+            {
+                Vector3 dirToRotateTo = (moveScript.wantedPos - moveScript.transform.position).normalized * 10;
             
-            target.position = moveScript.transform.position + currentDir;
+                Vector3 currentDir = target.position - moveScript.transform.position;
+                currentDir = currentDir.normalized * 10;
+
+                currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo.normalized, 1, 1);
+            
+                target.position = moveScript.transform.position + currentDir;
+            }
             
             
             Vector3 dir1 = (target.position - headJointTr.position).normalized;

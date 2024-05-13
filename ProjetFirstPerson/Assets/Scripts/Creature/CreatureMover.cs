@@ -33,6 +33,7 @@ namespace Creature
 
         [Header("References")] 
         [SerializeField] private BodyIK bodyIKScript;
+        [SerializeField] private HeadIK headIKScript;
         [SerializeField] private Transform targetIKBody;
         [SerializeField] private Transform baseCreatureTr;
         [HideInInspector] public NavMeshAgent navMeshAgent;
@@ -167,9 +168,11 @@ namespace Creature
         public IEnumerator StartAggressiveBehavior(float waitDuration)
         {
             saveSpeed = 0.1f;
+            headIKScript.FollowChara();
 
             yield return new WaitForSeconds(waitDuration);
 
+            headIKScript.StopFollowChara();
             StartAggressiveSpeed();
         }
 
