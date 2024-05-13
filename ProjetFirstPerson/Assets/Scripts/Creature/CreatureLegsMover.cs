@@ -147,10 +147,10 @@ namespace Creature
 
                 else
                 {
-                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk)
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 0.85f)
                         return true;
 
-                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk * 0.85f)
                         return true;
                 }
             }

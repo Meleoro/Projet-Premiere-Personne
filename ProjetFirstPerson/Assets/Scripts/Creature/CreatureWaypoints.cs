@@ -67,6 +67,11 @@ namespace Creature
 
             else
             {
+                currentDist = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
+                    new Vector2(placeToGo.x, placeToGo.z));
+                
+                Debug.Log(currentDist);
+                
                 if (currentDist < 1f)
                 {
                     ReachedPlaceToGo();
@@ -185,6 +190,8 @@ namespace Creature
 
             if (path.status == NavMeshPathStatus.PathComplete)
             {
+                Debug.Log(12);
+                
                 stoppedNormalBehavior = true;
                 waitTimer = 0;
 
@@ -193,7 +200,7 @@ namespace Creature
                 Vector3 dirToRemove = transform.position - suspicousPlace;
 
                 placeToGo = suspicousPlace + (dirToRemove.normalized * suspicionPlaceOffsetMultiplier);
-                creatureMoverScript.wantedPos = suspicousPlace;
+                creatureMoverScript.wantedPos = placeToGo;
             }
 
             else
