@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using IK;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -56,7 +57,7 @@ namespace Creature
 
 
         [Header("References")] 
-        [SerializeField] private Transform headJoint;
+        [SerializeField] private HeadIK headIK;
         public CreatureSpecialMoves specialMovesScript;
         private List<ICreatureComponent> creatureComponents = new List<ICreatureComponent>();
         private CreatureWaypoints waypointsScript;
@@ -106,7 +107,7 @@ namespace Creature
 
         private void DoEarAI()
         {
-            float currentDist = Vector3.Distance(headJoint.position, CharacterManager.Instance.transform.position);
+            float currentDist = Vector3.Distance(headIK.headJointTr.position, CharacterManager.Instance.transform.position);
 
             switch (CharacterManager.Instance.currentNoiseType)
             {
@@ -166,15 +167,16 @@ namespace Creature
         
         private void DoViewAI()
         {
-            Quaternion saveRot = headJoint.rotation;
+            Quaternion saveRot = headIK.headJointTr.rotation;
             
-            headJoint.rotation = Quaternion.Euler(headJoint.rotation.eulerAngles.x,
-                headJoint.rotation.eulerAngles.y - visionRadiusY * 0.5f - peripheralVisionRadius * 0.5f, 
-                headJoint.rotation.eulerAngles.z - visionRadiusX * 0.5f + 20);
+            headIK.headJointTr.rotation = Quaternion.Euler( headIK.headJointTr.rotation.eulerAngles.x,
+                headIK.headJointTr.rotation.eulerAngles.y - visionRadiusY * 0.5f - peripheralVisionRadius * 0.5f, 
+                headIK.headJointTr.rotation.eulerAngles.z - visionRadiusX * 0.5f + 20);
             
-            Vector3 currentDir = -headJoint.right;
+            Vector3 currentDir = - headIK.headJointTr.right;
             bool isInPeripheral = false;
             UIManager.Instance.isInCreatureView = false;
+            headIK.StopFollowChara();
             
             for (int x = 0; x < visionRadiusX; x+= raycastDensity)
             {
@@ -184,40 +186,41 @@ namespace Creature
                     if (y < peripheralVisionRadius * 0.5f || y > visionRadiusY + peripheralVisionRadius * 0.5f)
                         isInPeripheral = true;
                     
-                    Debug.DrawLine(headJoint.position, headJoint.position + currentDir * visionRange, isInPeripheral ? Color.yellow : Color.cyan, 0.1f);
+                    Debug.DrawLine( headIK.headJointTr.position,  headIK.headJointTr.position + currentDir * visionRange, isInPeripheral ? Color.yellow : Color.cyan, 0.1f);
 
-                    if (Physics.Raycast(headJoint.position, currentDir, out RaycastHit hit, visionRange,
+                    if (Physics.Raycast( headIK.headJointTr.position, currentDir, out RaycastHit hit, visionRange,
                             LayerManager.Instance.playerGroundLayer))
                     {
                         if (hit.collider.CompareTag("Player") && !CharacterManager.Instance.isHidden)
                         {
                             UIManager.Instance.isInCreatureView = true;
                             
-                            if(isInPeripheral)
+                            if(!isInPeripheral)
                                 currentSuspicion += Time.deltaTime * suspisionAddedView;
                             else
                                 currentSuspicion += Time.deltaTime * suspisionAddedPeripheralView;
 
-                            headJoint.rotation = saveRot;
+                            headIK.FollowChara();
+                            headIK.headJointTr.rotation = saveRot;
                             return;
                         }
                     }
                     
-                    headJoint.rotation = Quaternion.Euler(headJoint.rotation.eulerAngles.x,
-                        headJoint.rotation.eulerAngles.y + raycastDensity, 
-                        headJoint.rotation.eulerAngles.z);
+                    headIK.headJointTr.rotation = Quaternion.Euler(headIK.headJointTr.rotation.eulerAngles.x,
+                        headIK.headJointTr.rotation.eulerAngles.y + raycastDensity, 
+                        headIK.headJointTr.rotation.eulerAngles.z);
 
-                    currentDir = -headJoint.right;
+                    currentDir = -headIK.headJointTr.right;
                 }
                 
-                headJoint.rotation = Quaternion.Euler(headJoint.rotation.eulerAngles.x,
-                    headJoint.rotation.eulerAngles.y - visionRadiusY - peripheralVisionRadius - raycastDensity * 0.5f, 
-                    headJoint.rotation.eulerAngles.z + raycastDensity);
+                headIK.headJointTr.rotation = Quaternion.Euler(headIK.headJointTr.rotation.eulerAngles.x,
+                    headIK.headJointTr.rotation.eulerAngles.y - visionRadiusY - peripheralVisionRadius - raycastDensity * 0.5f, 
+                    headIK.headJointTr.rotation.eulerAngles.z + raycastDensity);
 
-                currentDir = -headJoint.right;
+                currentDir = -headIK.headJointTr.right;
             }
 
-            headJoint.rotation = saveRot;
+            headIK.headJointTr.rotation = saveRot;
         }
 
 
@@ -283,16 +286,16 @@ namespace Creature
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(headJoint.position, earLoudRadius);
+            Gizmos.DrawWireSphere(headIK.headJointTr.position, earLoudRadius);
             
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(headJoint.position, earNormalRadius);
+            Gizmos.DrawWireSphere(headIK.headJointTr.position, earNormalRadius);
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(headJoint.position, earLowRadius);
+            Gizmos.DrawWireSphere(headIK.headJointTr.position, earLowRadius);
 
             Gizmos.color = Color.white;
-            Gizmos.matrix = Matrix4x4.TRS(headJoint.position, headJoint.rotation * Quaternion.Euler(0, -90, 0), Vector3.one);
+            Gizmos.matrix = Matrix4x4.TRS(headIK.headJointTr.position, headIK.headJointTr.rotation * Quaternion.Euler(0, -90, 0), Vector3.one);
             Gizmos.DrawFrustum(Vector3.zero, visionRadiusX, visionRange, 0, (float)-visionRadiusY / visionRadiusX);
         }
 

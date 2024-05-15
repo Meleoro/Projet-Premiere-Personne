@@ -27,7 +27,7 @@ namespace IK
         [SerializeField] private CreatureLegsMover legsScript;
         [SerializeField] private NavMeshAgent rb;
         [SerializeField] private Transform baseNeckTr;
-        [SerializeField] private Transform headJointTr;
+        public Transform headJointTr;
         [SerializeField] private Transform target;
 
 
@@ -122,8 +122,6 @@ namespace IK
         
         private void ModifyRotationHead(float rotationRatio)
         {
-            Debug.Log(rotationRatio);
-            
             Vector3 euler = new Vector3(Mathf.Lerp(saveHeadJoint.x + rotationMax, saveHeadJoint.x - rotationMax, rotationRatio),
                 Mathf.Lerp(saveBaseNeck.y + rotationMax, saveBaseNeck.y - rotationMax, rotationRatio),
                 baseNeckTr.localEulerAngles.z);
