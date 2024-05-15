@@ -4866,9 +4866,10 @@ MonoBehaviour:
   earNormalRadius: 15
   earLowRadius: 8.5
   visionRange: 23
-  visionRadiusX: 90
+  visionRadiusX: 45
   visionRadiusY: 90
-  raycastDensity: 10
+  raycastDensity: 6
+  peripheralVisionRadius: 50
   suspisionLostSpeed: 15
   suspisionLostSpeedAggressive: 10
   suspisionThresholdSuspicieux: 50
@@ -4880,10 +4881,10 @@ MonoBehaviour:
   suspisionAddedMarcheSneak: 10
   suspisionAddedInteraction: 50
   suspisionAddedView: 50
+  suspisionAddedPeripheralView: 0
   suspisionAddedMarcheAgressive: 0
   suspisionAddedCourseAgressive: 0
   suspisionAddedMarcheSneakAgressive: 0
-  suspisionAddedViewAgressive: 40
   currentState: 0
   currentSuspicion: 0
   headJoint: {fileID: 4563661520276766961}
@@ -4912,7 +4913,6 @@ MonoBehaviour:
   bodyIKScript: {fileID: 6138824809743134479}
   headIKScript: {fileID: 73405578378008704}
   targetIKBody: {fileID: 7542945677219190636}
-  baseCreatureTr: {fileID: 7462674743157233355}
   navMeshAgent: {fileID: 0}
 --- !u!114 &2314867111104131973
 MonoBehaviour:

@@ -22,6 +22,7 @@ namespace Creature
         [SerializeField] [Range(0, 90)] private int visionRadiusX;
         [SerializeField] [Range(0, 90)] private int visionRadiusY;
         [SerializeField] [Range(0, 10)] private int raycastDensity;
+        [SerializeField] [Range(0, 90)] private int peripheralVisionRadius;
 
         [Header("Suspision Parameters")]
         [SerializeField] private float suspisionLostSpeed;
@@ -39,13 +40,13 @@ namespace Creature
         [SerializeField] private float suspisionAddedMarcheSneak;
         [SerializeField] private float suspisionAddedInteraction;
         [SerializeField] private float suspisionAddedView;
+        [SerializeField] private float suspisionAddedPeripheralView;
         
         [Header("Valeurs Listen Agressive")]      // Pour chacune de ces valeurs, il faut les voir comme 'combien de suspision sont ajout�es par secondes' car elles seront multipli�s par le delta time (sauf l'int�raction)
         [SerializeField] private float suspisionAddedMarcheAgressive;
         [SerializeField] private float suspisionAddedCourseAgressive;
         [SerializeField] private float suspisionAddedMarcheSneakAgressive;
-        [SerializeField] private float suspisionAddedViewAgressive;
-
+        //[SerializeField] private float suspisionAddedViewAgressive;
 
         [Header("Public Infos")]
         public CreatureState currentState;
@@ -113,7 +114,7 @@ namespace Creature
                     if (currentDist < earLowRadius)
                     {
                         if (currentState != CreatureState.aggressive)
-                            currentSuspicion += Time.deltaTime * suspisionAddedMarche;
+                            currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneak;
                         else
                             currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneakAgressive;
                     }
@@ -168,25 +169,34 @@ namespace Creature
             Quaternion saveRot = headJoint.rotation;
             
             headJoint.rotation = Quaternion.Euler(headJoint.rotation.eulerAngles.x,
-                headJoint.rotation.eulerAngles.y - visionRadiusY * 0.5f, 
-                headJoint.rotation.eulerAngles.z - visionRadiusX * 0.5f);
+                headJoint.rotation.eulerAngles.y - visionRadiusY * 0.5f - peripheralVisionRadius * 0.5f, 
+                headJoint.rotation.eulerAngles.z - visionRadiusX * 0.5f + 20);
             
             Vector3 currentDir = -headJoint.right;
+            bool isInPeripheral = false;
             UIManager.Instance.isInCreatureView = false;
             
             for (int x = 0; x < visionRadiusX; x+= raycastDensity)
             {
-                for (int y = 0; y < visionRadiusY; y+= raycastDensity)
+                for (int y = 0; y < visionRadiusY + peripheralVisionRadius; y+= raycastDensity)
                 {
-                    Debug.DrawLine(headJoint.position, headJoint.position + currentDir * visionRange, Color.cyan, 0.1f);
+                    isInPeripheral = false;
+                    if (y < peripheralVisionRadius * 0.5f || y > visionRadiusY + peripheralVisionRadius * 0.5f)
+                        isInPeripheral = true;
+                    
+                    Debug.DrawLine(headJoint.position, headJoint.position + currentDir * visionRange, isInPeripheral ? Color.yellow : Color.cyan, 0.1f);
 
                     if (Physics.Raycast(headJoint.position, currentDir, out RaycastHit hit, visionRange,
                             LayerManager.Instance.playerGroundLayer))
                     {
                         if (hit.collider.CompareTag("Player") && !CharacterManager.Instance.isHidden)
                         {
-                            currentSuspicion += Time.deltaTime * suspisionAddedView;
                             UIManager.Instance.isInCreatureView = true;
+                            
+                            if(isInPeripheral)
+                                currentSuspicion += Time.deltaTime * suspisionAddedView;
+                            else
+                                currentSuspicion += Time.deltaTime * suspisionAddedPeripheralView;
 
                             return;
                         }
@@ -205,7 +215,7 @@ namespace Creature
                 currentDir = headJoint.TransformVector(currentDir);*/
                 
                 headJoint.rotation = Quaternion.Euler(headJoint.rotation.eulerAngles.x,
-                    headJoint.rotation.eulerAngles.y - visionRadiusY, 
+                    headJoint.rotation.eulerAngles.y - visionRadiusY - peripheralVisionRadius - raycastDensity * 0.5f, 
                     headJoint.rotation.eulerAngles.z + raycastDensity);
 
                 currentDir = -headJoint.right;
