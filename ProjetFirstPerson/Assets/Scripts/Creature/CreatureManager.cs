@@ -80,11 +80,11 @@ namespace Creature
             
             // Do AI Part
             float saveSuspision = currentSuspicion;
-
+            
             DoEarAI();
             DoViewAI();
             ManageSuspision();
-
+            
             if (saveSuspision == currentSuspicion && currentSuspicion > 0)
                 currentSuspicion -= (currentState == CreatureState.aggressive) ? Time.deltaTime * suspisionLostSpeedAggressive : Time.deltaTime * suspisionLostSpeed;
 
@@ -198,6 +198,7 @@ namespace Creature
                             else
                                 currentSuspicion += Time.deltaTime * suspisionAddedPeripheralView;
 
+                            headJoint.rotation = saveRot;
                             return;
                         }
                     }
@@ -208,11 +209,6 @@ namespace Creature
 
                     currentDir = -headJoint.right;
                 }
-
-                /*currentDir = Quaternion.Euler(0, -visionRadiusY - raycastDensity * 0.5f, 0) * currentDir;
-                currentDir = headJoint.InverseTransformVector(currentDir);
-                currentDir = Quaternion.Euler(0, 0, raycastDensity) * currentDir;
-                currentDir = headJoint.TransformVector(currentDir);*/
                 
                 headJoint.rotation = Quaternion.Euler(headJoint.rotation.eulerAngles.x,
                     headJoint.rotation.eulerAngles.y - visionRadiusY - peripheralVisionRadius - raycastDensity * 0.5f, 
@@ -249,7 +245,7 @@ namespace Creature
                 }
             }
 
-            else
+            else if(currentSuspicion == 0 && currentState == CreatureState.none)
             {
                 moveScript.StartWalkSpeed();
             }

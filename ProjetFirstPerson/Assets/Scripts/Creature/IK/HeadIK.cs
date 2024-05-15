@@ -39,12 +39,12 @@ namespace IK
 
         private void Update()
         {
-            ModifyInclinationBaseNeck(rb.velocity.magnitude / moveScript.agressiveSpeed);
-
             if (!isLookingLeftRight)
             {
                 ModifyRotationHeadTarget();
             }
+            
+            ModifyInclinationBaseNeck(rb.velocity.magnitude / moveScript.agressiveSpeed);
         }
 
 
@@ -75,11 +75,23 @@ namespace IK
         private void ModifyRotationHeadTarget()
         {
             if (followChara)
-                target.position = CharacterManager.Instance.transform.position;
+            {
+                Vector3 dirToRotateTo = (CharacterManager.Instance.transform.position- headJointTr.transform.position).normalized * 10;
+                Vector3 currentDir = target.position - headJointTr.transform.position;
+                
+                currentDir = currentDir.normalized * 10;
+
+                currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo.normalized, 1, 1);
+            
+                target.position = headJointTr.transform.position + currentDir;
+            }
 
             else
             {
                 Vector3 dirToRotateTo = (moveScript.wantedPos - moveScript.transform.position).normalized * 10;
+                if (Vector3.Distance(moveScript.wantedPos, moveScript.transform.position) < 1f)
+                    dirToRotateTo = (baseNeckTr.position - moveScript.transform.position).normalized * 10;
+                
             
                 Vector3 currentDir = target.position - moveScript.transform.position;
                 currentDir = currentDir.normalized * 10;
@@ -110,16 +122,18 @@ namespace IK
         
         private void ModifyRotationHead(float rotationRatio)
         {
-            Vector3 euler = new Vector3(baseNeckTr.localEulerAngles.x, 
+            Debug.Log(rotationRatio);
+            
+            Vector3 euler = new Vector3(Mathf.Lerp(saveHeadJoint.x + rotationMax, saveHeadJoint.x - rotationMax, rotationRatio),
                 Mathf.Lerp(saveBaseNeck.y + rotationMax, saveBaseNeck.y - rotationMax, rotationRatio),
                 baseNeckTr.localEulerAngles.z);
             
-            baseNeckTr.localRotation = Quaternion.Lerp(baseNeckTr.localRotation, Quaternion.Euler(euler), Time.deltaTime * 10);
+            baseNeckTr.localRotation = Quaternion.Lerp(baseNeckTr.localRotation, Quaternion.Euler(euler), Time.deltaTime * 5);
 
-            euler = new Vector3(Mathf.Lerp(saveHeadJoint.x + rotationMax, saveHeadJoint.x - rotationMax, rotationRatio),
+            /*euler = new Vector3(Mathf.Lerp(saveHeadJoint.x + rotationMax, saveHeadJoint.x - rotationMax, rotationRatio),
                 saveHeadJoint.y, saveHeadJoint.z);
             
-            headJointTr.localRotation = Quaternion.Lerp(headJointTr.localRotation, Quaternion.Euler(euler), Time.deltaTime * 10);
+            headJointTr.localRotation = Quaternion.Lerp(headJointTr.localRotation, Quaternion.Euler(euler), Time.deltaTime * 5);*/
         }
 
 

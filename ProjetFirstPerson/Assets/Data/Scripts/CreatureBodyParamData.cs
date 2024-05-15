@@ -7,7 +7,6 @@ public class CreatureBodyParamData : ScriptableObject
 {
     [Header("Body Height")]
     public float maxHeight;
-    public float wantedHeight;
     public AnimationCurve heightModifierCurveBySpeed;
     public float frontWantedHeight;
     public float backWantedHeight;
