@@ -70,7 +70,7 @@ namespace Creature
                 if (!legs[i].scriptIK.canMove) continue;
                 if (legs[i].isFrontLeg)
                 {
-                    if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning)
+                    if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning && !legs[i].isMoving)
                     {
                         if (VerifyLegNeedsToMove(legs[i]))
                             currentWantToMoveLegsCounter += 1;
@@ -182,20 +182,20 @@ namespace Creature
             Vector3 raycastDir = transformRef.InverseTransformDirection(Vector3.down).RotateDirection(45, Vector3.right);
 
             float currentMax = 0;
-            Vector3 chosenPos = currentLeg.origin.position - Vector3.down * 0.9f;
+            Vector3 chosenPos = currentLeg.origin.position - Vector3.down * 1.5f;
 
             float legMaxDist = currentLeg.isFrontLeg ? data.maxFrontLegDistWalk : data.maxBackLegDistWalk;
             if (creatureMover.isRunning) legMaxDist = currentLeg.isFrontLeg ? data.maxFrontLegDistRun : data.maxBackLegDistRun;
 
             for (int i = 0; i < 45; i++)
             {
-                Debug.DrawRay(origin, transformRef.TransformDirection(raycastDir * (legMaxDist * 1.5f)), Color.blue, 1);
+                Debug.DrawRay(origin, transformRef.TransformDirection(raycastDir * (legMaxDist * 2f)), Color.blue, 1);
 
-                if (Physics.Raycast(origin, transformRef.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist * 1.2f, groundLayer))
+                if (Physics.Raycast(origin, transformRef.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist * 2f, groundLayer))
                 {
                     float dist = Vector3.Distance(hit.point, currentTargetPos);
 
-                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 0.9f)
+                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1f)
                     {
                         currentMax = dist;
                         chosenPos = hit.point;
@@ -254,7 +254,7 @@ namespace Creature
                 yield return null;
             }
             
-            if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 2f,
+            if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
                     LayerManager.Instance.groundLayer))
             {
                 currentLeg.target.position = hit.point;
