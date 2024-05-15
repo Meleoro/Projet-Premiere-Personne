@@ -35,7 +35,6 @@ namespace Creature
         [SerializeField] private BodyIK bodyIKScript;
         [SerializeField] private HeadIK headIKScript;
         [SerializeField] private Transform targetIKBody;
-        [SerializeField] private Transform baseCreatureTr;
         [HideInInspector] public NavMeshAgent navMeshAgent;
         private CreatureLegsMover legsScript;
 

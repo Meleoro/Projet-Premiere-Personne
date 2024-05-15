@@ -49,6 +49,8 @@ namespace Creature
             creatureMoverScript.wantedPos = waypoints[0].transform.position;
             currentIndex = 0;
             currentWaypoint = waypoints[0];
+
+            CharacterManager.Instance.GetComponent<HealthComponent>().DieAction += ResetCurrentWaypointManager;
         }
 
 
@@ -69,8 +71,6 @@ namespace Creature
             {
                 currentDist = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
                     new Vector2(placeToGo.x, placeToGo.z));
-                
-                Debug.Log(currentDist);
                 
                 if (currentDist < 1f)
                 {
@@ -175,6 +175,22 @@ namespace Creature
             currentIndex = 0;
 
             NextWaypoint();
+        }
+
+        private void ResetCurrentWaypointManager()
+        {
+            transform.position = waypoints[0].transform.position;
+            
+            waitTimer = 0;
+            currentIndex = 0;
+            
+            creatureMoverScript.StartWalkSpeed();
+            
+            creatureMoverScript.forcedRot = Vector3.zero;
+            didWaypointAction = false;
+            mainScript.currentState = CreatureState.none;
+
+            RestartWaypointBehavior();
         }
 
         #endregion

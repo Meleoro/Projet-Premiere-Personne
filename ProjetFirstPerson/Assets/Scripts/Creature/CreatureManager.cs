@@ -225,6 +225,11 @@ namespace Creature
                     StartCoroutine(QuitAggressiveBehavior());
                 }
             }
+
+            else
+            {
+                moveScript.StartWalkSpeed();
+            }
         }
 
         private IEnumerator QuitAggressiveBehavior()
