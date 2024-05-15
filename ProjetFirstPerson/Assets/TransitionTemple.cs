@@ -14,22 +14,27 @@ public class TransitionTemple : MonoBehaviour
     [SerializeField][ColorUsage(true, true)] private Color outAmbientEquatorColor;
     [SerializeField][ColorUsage(true, true)]  private Color outAmbientGroundColor;
     [SerializeField] private Color outFogColor;
+    [SerializeField] private Volume outVolume;
     
     [Header("Inside Parameters")] 
     [SerializeField][ColorUsage(true, true)]  private Color inAmbientEquatorColor;
     [SerializeField][ColorUsage(true, true)]  private Color inAmbientGroundColor;
     [SerializeField] private Color inFogColor;
+    [SerializeField] private Volume inVolume;
     
 
 
     private void OnTriggerStay(Collider other)
     {
         float difZ = transform.InverseTransformPoint(CharacterManager.Instance.transform.position).z;
-        float t = (difZ + (transform.localScale.z * 0.5f)) / transform.localScale.z;
+        float t = ((difZ + transform.localScale.z * 0.5f) / transform.localScale.z) * 2 - 0.5f;
 
         RenderSettings.ambientEquatorColor = Color.Lerp(outAmbientEquatorColor, inAmbientGroundColor, t);
         RenderSettings.ambientGroundColor = Color.Lerp(outAmbientGroundColor, inAmbientGroundColor, t);
         RenderSettings.fogColor = Color.Lerp(outFogColor, inFogColor, t);
+
+        if(outVolume != null) outVolume.weight = 1 - t;
+        else if (inVolume != null) inVolume.weight = t;
     }
 
 
