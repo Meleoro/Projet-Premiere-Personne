@@ -29,7 +29,7 @@ public class TransitionTemple : MonoBehaviour
         float difZ = transform.InverseTransformPoint(CharacterManager.Instance.transform.position).z;
         float t = ((difZ + transform.localScale.z * 0.5f) / transform.localScale.z) * 2 - 0.5f;
 
-        RenderSettings.ambientEquatorColor = Color.Lerp(outAmbientEquatorColor, inAmbientGroundColor, t);
+        RenderSettings.ambientEquatorColor = Color.Lerp(outAmbientEquatorColor, inAmbientEquatorColor, t);
         RenderSettings.ambientGroundColor = Color.Lerp(outAmbientGroundColor, inAmbientGroundColor, t);
         RenderSettings.fogColor = Color.Lerp(outFogColor, inFogColor, t);
 
