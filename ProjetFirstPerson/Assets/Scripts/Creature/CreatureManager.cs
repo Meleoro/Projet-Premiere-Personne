@@ -161,16 +161,17 @@ namespace Creature
                     break;
             }
         }
-
-        private Vector3 offset = new Vector3(0, 0, 5);
+        
+        
         private void DoViewAI()
         {
-            Vector3 currentDir = -headJoint.right;
-            currentDir = Quaternion.Euler(0, -visionRadiusY * 0.5f, 0) * currentDir;
-            currentDir = headJoint.InverseTransformVector(currentDir);
-            currentDir = Quaternion.Euler(0, 0, -visionRadiusX * 0.5f) * currentDir;
-            currentDir = headJoint.TransformVector(currentDir);
+            Quaternion saveRot = headJoint.rotation;
             
+            headJoint.rotation = Quaternion.Euler(headJoint.rotation.eulerAngles.x,
+                headJoint.rotation.eulerAngles.y - visionRadiusY * 0.5f, 
+                headJoint.rotation.eulerAngles.z - visionRadiusX * 0.5f);
+            
+            Vector3 currentDir = -headJoint.right;
             UIManager.Instance.isInCreatureView = false;
             
             for (int x = 0; x < visionRadiusX; x+= raycastDensity)
@@ -191,14 +192,26 @@ namespace Creature
                         }
                     }
                     
-                    currentDir = Quaternion.Euler(0, raycastDensity, 0) * currentDir;
+                    headJoint.rotation = Quaternion.Euler(headJoint.rotation.eulerAngles.x,
+                        headJoint.rotation.eulerAngles.y + raycastDensity, 
+                        headJoint.rotation.eulerAngles.z);
+
+                    currentDir = -headJoint.right;
                 }
 
-                currentDir = Quaternion.Euler(0, -visionRadiusY - raycastDensity * 0.5f, 0) * currentDir;
+                /*currentDir = Quaternion.Euler(0, -visionRadiusY - raycastDensity * 0.5f, 0) * currentDir;
                 currentDir = headJoint.InverseTransformVector(currentDir);
                 currentDir = Quaternion.Euler(0, 0, raycastDensity) * currentDir;
-                currentDir = headJoint.TransformVector(currentDir);
+                currentDir = headJoint.TransformVector(currentDir);*/
+                
+                headJoint.rotation = Quaternion.Euler(headJoint.rotation.eulerAngles.x,
+                    headJoint.rotation.eulerAngles.y - visionRadiusY, 
+                    headJoint.rotation.eulerAngles.z + raycastDensity);
+
+                currentDir = -headJoint.right;
             }
+
+            headJoint.rotation = saveRot;
         }
 
 
@@ -274,7 +287,7 @@ namespace Creature
 
             Gizmos.color = Color.white;
             Gizmos.matrix = Matrix4x4.TRS(headJoint.position, headJoint.rotation * Quaternion.Euler(0, -90, 0), Vector3.one);
-            Gizmos.DrawFrustum(Vector3.zero, visionRadiusX, visionRange, 0, (float)-visionRadiusX / visionRadiusY);
+            Gizmos.DrawFrustum(Vector3.zero, visionRadiusX, visionRange, 0, (float)-visionRadiusY / visionRadiusX);
         }
 
         private void OnCollisionEnter(Collision other)
