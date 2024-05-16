@@ -25,8 +25,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ALPHAMODULATE_ON
-  - _COLOROVERLAY_ON
+  - _COLORADDSUBDIFF_ON
   - _FADING_ON
   - _SOFTPARTICLES_ON
   - _SURFACE_TYPE_TRANSPARENT
@@ -105,16 +104,16 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _Blend: 3
+    - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BlendOp: 0
     - _BumpScale: 1
     - _CameraFadingEnabled: 1
-    - _CameraFarFadeDistance: 2
-    - _CameraNearFadeDistance: 0
+    - _CameraFarFadeDistance: 20
+    - _CameraNearFadeDistance: 2
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ColorMode: 3
+    - _ColorMode: 2
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -123,8 +122,8 @@ Material:
     - _DistortionEnabled: 0
     - _DistortionStrength: 1
     - _DistortionStrengthScaled: 0.1
-    - _DstBlend: 0
-    - _DstBlendAlpha: 1
+    - _DstBlend: 10
+    - _DstBlendAlpha: 10
     - _EnvironmentReflections: 1
     - _FlipbookBlending: 0
     - _FlipbookMode: 0
@@ -144,16 +143,16 @@ Material:
     - _SoftParticlesFarFadeDistance: 5
     - _SoftParticlesNearFadeDistance: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 2
-    - _SrcBlendAlpha: 0
+    - _SrcBlend: 5
+    - _SrcBlendAlpha: 1
     - _Surface: 1
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0.06243326, g: 0.5754717, b: 0.49796227, a: 0.8392157}
-    - _BaseColorAddSubDiff: {r: -1, g: 1, b: 0, a: 0}
-    - _CameraFadeParams: {r: 0, g: 0.5, b: 0, a: 0}
-    - _Color: {r: 0.062433243, g: 0.57547164, b: 0.49796218, a: 0.8392157}
+    - _BaseColor: {r: 0.16862744, g: 1, b: 0.9597347, a: 0.27058825}
+    - _BaseColorAddSubDiff: {r: -1, g: 0, b: 0, a: 0}
+    - _CameraFadeParams: {r: 2, g: 0.055555556, b: 0, a: 0}
+    - _Color: {r: 0.16862741, g: 1, b: 0.9597346, a: 0.27058825}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0.2, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
