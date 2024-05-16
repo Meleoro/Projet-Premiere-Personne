@@ -2737,6 +2737,74 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 95805431}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &96247536
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 454640180786714449, guid: 9126f546b017c8c44bba8379aaf25036,
+        type: 3}
+      propertyPath: m_Name
+      value: StelePhoto
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046745059208867533, guid: 9126f546b017c8c44bba8379aaf25036,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 58.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046745059208867533, guid: 9126f546b017c8c44bba8379aaf25036,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 28.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046745059208867533, guid: 9126f546b017c8c44bba8379aaf25036,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 281.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046745059208867533, guid: 9126f546b017c8c44bba8379aaf25036,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.921543
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046745059208867533, guid: 9126f546b017c8c44bba8379aaf25036,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046745059208867533, guid: 9126f546b017c8c44bba8379aaf25036,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.38827646
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046745059208867533, guid: 9126f546b017c8c44bba8379aaf25036,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046745059208867533, guid: 9126f546b017c8c44bba8379aaf25036,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046745059208867533, guid: 9126f546b017c8c44bba8379aaf25036,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -45.695
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046745059208867533, guid: 9126f546b017c8c44bba8379aaf25036,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9126f546b017c8c44bba8379aaf25036, type: 3}
 --- !u!1001 &99316627
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4292,6 +4360,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 554971d754561924a8a65cb2fcafcb36,
     type: 3}
   m_PrefabInstance: {fileID: 164688648}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &166759967 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8423375317432602612, guid: c95f2f9fcecbba643a30eaf70d80938b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1503051411}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &167615768
 GameObject:
@@ -24189,6 +24263,11 @@ PrefabInstance:
       objectReference: {fileID: 1503051412}
     - target: {fileID: 731133079951075317, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
         type: 3}
+      propertyPath: mainCam
+      value: 
+      objectReference: {fileID: 166759967}
+    - target: {fileID: 731133079951075317, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
+        type: 3}
       propertyPath: cameraUI
       value: 
       objectReference: {fileID: 1503051415}
@@ -24197,6 +24276,11 @@ PrefabInstance:
       propertyPath: uiManager
       value: 
       objectReference: {fileID: 618783956}
+    - target: {fileID: 731133079951075317, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
+        type: 3}
+      propertyPath: maxDistance
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 731133079951075317, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
         type: 3}
       propertyPath: tabletteFrame
@@ -65009,3 +65093,4 @@ SceneRoots:
   - {fileID: 537794295}
   - {fileID: 475108899}
   - {fileID: 393276133}
+  - {fileID: 96247536}
