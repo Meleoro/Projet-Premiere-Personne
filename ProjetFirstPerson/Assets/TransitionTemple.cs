@@ -33,8 +33,8 @@ public class TransitionTemple : MonoBehaviour
         RenderSettings.ambientGroundColor = Color.Lerp(outAmbientGroundColor, inAmbientGroundColor, t);
         RenderSettings.fogColor = Color.Lerp(outFogColor, inFogColor, t);
 
-        if(outVolume != null) outVolume.weight = 1 - t;
-        else if (inVolume != null) inVolume.weight = t;
+        if (outVolume != null) outVolume.weight = 1 - t;
+        if (inVolume != null) inVolume.weight = t;
     }
 
 
