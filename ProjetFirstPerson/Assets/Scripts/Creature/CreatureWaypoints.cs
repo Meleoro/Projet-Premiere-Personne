@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using IK;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Creature
 {
@@ -10,8 +11,8 @@ namespace Creature
     {
         [Header("Parameters")]
         [SerializeField] private List<WaypointsManager> possiblePaths = new List<WaypointsManager>();
-        /*[SerializeField] private float angerPerCycle;
-        [SerializeField] private float neededPfDist;*/
+        [SerializeField] private int numberOfWaypointBeforeGoNear;
+        
         [SerializeField] private float suspicionWaitDuration;
         [SerializeField] private float suspicionPlaceOffsetMultiplier = 2.5f;
 
@@ -23,7 +24,7 @@ namespace Creature
         private bool stoppedNormalBehavior;
         private bool didWaypointAction;
         private bool isDoingSpecialAction;
-        private float currentAnger;
+        public int currentWaypointCountNear;
         private Waypoint currentWaypoint;
         private int currentIndex;
         private float waitTimer;
@@ -37,7 +38,9 @@ namespace Creature
 
         private void Start()
         {
-            if(possiblePaths.Count > 0) 
+            currentWaypointCountNear = 0;
+
+            if (possiblePaths.Count > 0) 
                 waypoints = possiblePaths[0].waypoints;
 
             creatureMoverScript = GetComponent<CreatureMover>();
@@ -46,6 +49,8 @@ namespace Creature
             creatureMoverScript.wantedPos = waypoints[0].transform.position;
             currentIndex = 0;
             currentWaypoint = waypoints[0];
+
+            CharacterManager.Instance.GetComponent<HealthComponent>().DieAction += ResetCurrentWaypointManager;
         }
 
 
@@ -56,7 +61,7 @@ namespace Creature
             
             if (!stoppedNormalBehavior)
             {
-                if(currentDist < 1f)
+                if(currentDist < 2f)
                 {
                     ReachedWaypoint();
                 }
@@ -64,6 +69,9 @@ namespace Creature
 
             else
             {
+                currentDist = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
+                    new Vector2(placeToGo.x, placeToGo.z));
+                
                 if (currentDist < 1f)
                 {
                     ReachedPlaceToGo();
@@ -105,9 +113,35 @@ namespace Creature
             currentIndex++;
             if(currentIndex >= waypoints.Count) currentIndex = 0;
 
+            currentWaypointCountNear++;
+            if(currentWaypointCountNear >= numberOfWaypointBeforeGoNear)
+            {
+                currentWaypointCountNear = 0;
+                currentIndex = GetNearestWaypointIndex();
+            }
+
             waitTimer = 0;
             currentWaypoint = waypoints[currentIndex];
             creatureMoverScript.wantedPos = currentWaypoint.transform.position;
+        }
+
+        private int GetNearestWaypointIndex()
+        {
+            int index = 0;
+            float bestDist = 100;
+
+            for(int i = 0;i < waypoints.Count; i++)
+            {
+                float currentDist = Vector3.Distance(waypoints[i].transform.position, CharacterManager.Instance.transform.position);
+
+                if (currentDist < bestDist)
+                {
+                    index = i;
+                    bestDist = currentDist;
+                }
+            }
+
+            return index;
         }
 
         #endregion
@@ -143,6 +177,22 @@ namespace Creature
             NextWaypoint();
         }
 
+        private void ResetCurrentWaypointManager()
+        {
+            transform.position = waypoints[0].transform.position;
+            
+            waitTimer = 0;
+            currentIndex = 0;
+            
+            creatureMoverScript.StartWalkSpeed();
+            
+            creatureMoverScript.forcedRot = Vector3.zero;
+            didWaypointAction = false;
+            mainScript.currentState = CreatureState.none;
+
+            RestartWaypointBehavior();
+        }
+
         #endregion
 
 
@@ -151,18 +201,30 @@ namespace Creature
         /// </summary>
         public void ChangeDestinationSuspicious(Vector3 suspicousPlace)
         {
-            stoppedNormalBehavior = true;
-            waitTimer = 0;
+            NavMeshPath path = new NavMeshPath();
+            bool esisteNavMesh = creatureMoverScript.navMeshAgent.CalculatePath(suspicousPlace, path);
 
-            creatureMoverScript.forcedRot = Vector3.zero;
+            if (path.status == NavMeshPathStatus.PathComplete)
+            {
+                stoppedNormalBehavior = true;
+                waitTimer = 0;
 
-            Vector3 dirToRemove = transform.position - suspicousPlace;
-            
-            placeToGo = suspicousPlace + (dirToRemove.normalized * suspicionPlaceOffsetMultiplier);
-            creatureMoverScript.wantedPos = suspicousPlace;
+                creatureMoverScript.forcedRot = Vector3.zero;
+
+                Vector3 dirToRemove = transform.position - suspicousPlace;
+
+                placeToGo = suspicousPlace + (dirToRemove.normalized * suspicionPlaceOffsetMultiplier);
+                creatureMoverScript.wantedPos = placeToGo;
+            }
+
+            else
+            {
+                RestartWaypointBehavior();
+            }
         }
 
 
+        Vector3 saveLastPlace;
         /// <summary>
         /// Called when the creature is suspicious to setup her destination point
         /// </summary>
@@ -177,6 +239,18 @@ namespace Creature
 
             placeToGo = suspicousPlace;
             creatureMoverScript.wantedPos = suspicousPlace;
+
+            NavMeshPath path = new NavMeshPath();
+            bool esisteNavMesh = creatureMoverScript.navMeshAgent.CalculatePath(suspicousPlace, path);
+
+            if (path.status != NavMeshPathStatus.PathComplete)
+            {
+                creatureMoverScript.wantedPos = saveLastPlace;
+            }
+            else 
+            {
+                saveLastPlace = suspicousPlace;
+            }
         }
         
         
@@ -202,8 +276,9 @@ namespace Creature
 
         public void RestartWaypointBehavior()
         {
-            stoppedNormalBehavior = false;
+            stoppedNormalBehavior = false;           
             waitTimer = 0;
+            currentWaypointCountNear = 0;
 
             mainScript.currentState = CreatureState.none;
 
@@ -214,7 +289,7 @@ namespace Creature
 
         public void DoAttack(Vector3 creaturePos, Vector3 characterPos)
         {
-            Vector3 wantedPos = creaturePos + (characterPos - creaturePos).normalized * 20f;
+            Vector3 wantedPos = creaturePos + (characterPos - creaturePos).normalized * 5f;
 
             creatureMoverScript.forcedRot = Vector3.zero;
             creatureMoverScript.wantedPos = wantedPos;

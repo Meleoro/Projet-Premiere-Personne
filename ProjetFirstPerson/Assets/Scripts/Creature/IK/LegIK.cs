@@ -61,10 +61,9 @@ namespace IK
 
         private void Update()
         {
-            // Keeps the leg aligned with the body
             joint0.localEulerAngles = new Vector3(offset1.x, offset1.y, 0);
             joint1.localEulerAngles = new Vector3(offset2.x, offset2.y, offset2.z);
-
+            
             if(joint2 != null)
             {
                 joint2.localEulerAngles = new Vector3(offset3.x, offset3.y, offset3.z);

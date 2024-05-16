@@ -26,7 +26,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private Image eyeIconImage;
     [SerializeField] private CameraComponent cameraComponent;
     [SerializeField] private MoveComponent moveComponent;
-    //[SerializeField] private Animator tabletteAnim;
+    [SerializeField] private TextMeshProUGUI interactText;
     public Image fadeImage;
 
     [Header("UI Variables")]
@@ -38,7 +38,6 @@ public class UIManager : GenericSingletonClass<UIManager>
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
-
     
     
     private void Start()
@@ -51,8 +50,8 @@ public class UIManager : GenericSingletonClass<UIManager>
     void Update()
     {
         // Horaire du jeu
-        schedule.text = System.DateTime.Now + "";
         EyeIconUpdate();
+        schedule.text = System.DateTime.Now + "";
         
         // Test Ouvrir Album
         if(Input.GetKeyDown(KeyCode.Tab))
@@ -76,9 +75,12 @@ public class UIManager : GenericSingletonClass<UIManager>
         else
         {
             //tabletteAnim.SetBool("in",false);
-            cameraComponent.canRotate = true;
-            moveComponent.canMove = true;
-            cameraComponent.LockedCursor(2);
+            if (!CharacterManager.Instance.isInteracting)
+            {
+                cameraComponent.canRotate = true;
+                moveComponent.canMove = true;
+                cameraComponent.LockedCursor(2);
+            }
             isUIActive = false;
             CloseAllPanel(false,false,false,false);
         } 
@@ -134,11 +136,13 @@ public class UIManager : GenericSingletonClass<UIManager>
     public void DisplayInteractIcon()
     {
         interactImage.gameObject.SetActive(true);
+        interactText.enabled = true;
     }
 
     public void HideInteractIcon()
     {
         interactImage.gameObject.SetActive(false);
+        interactText.enabled = false;
     }
 
     #endregion

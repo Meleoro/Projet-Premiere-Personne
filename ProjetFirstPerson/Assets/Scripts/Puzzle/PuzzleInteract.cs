@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
+using static UnityEngine.GraphicsBuffer;
 
 
 namespace Puzzle
@@ -28,18 +29,24 @@ namespace Puzzle
             characterMoveScript = CharacterManager.Instance.GetComponent<MoveComponent>();
             characterCameraScript = CharacterManager.Instance.GetComponent<CameraComponent>();
             TryGetComponent<BoxCollider>(out puzzleCollider);
+
+            HideUI();
         }
 
 
         private void Update()
         {
-            HideUI();
-
             if (isInRange)
             {
                 if (VerifyLookingItem())
                 {
                     DisplayUI();
+                    CharacterManager.Instance.interactibleAtRange = this;
+                }
+                else
+                {
+                    HideUI();
+                    CharacterManager.Instance.interactibleAtRange = null;
                 }
             }
 
@@ -54,6 +61,7 @@ namespace Puzzle
 
         public void GetInInteraction()
         {
+            CharacterManager.Instance.isInteracting = true;
             CameraManager.Instance.transform.parent.transform.position = cameraPos.transform.position;
             CameraManager.Instance.transform.parent.transform.rotation = Quaternion.Euler(desiredRotation);
 
@@ -75,6 +83,7 @@ namespace Puzzle
 
         public void GetOutInteraction()
         {
+            CharacterManager.Instance.isInteracting = false;
             CameraManager.Instance.transform.parent.transform.position = characterCameraScript.wantedCameraPos.position;
             CameraManager.Instance.transform.parent.transform.rotation = Quaternion.identity;
 
@@ -106,12 +115,12 @@ namespace Puzzle
 
         private bool VerifyLookingItem()
         {
-            Vector3 dirCamItem = transform.position - CameraManager.Instance.transform.position;
+            Vector3 dirCamItem = (transform.position - CameraManager.Instance.transform.position).normalized;
             Vector3 dirCamLook = CameraManager.Instance.transform.forward;
 
-            Vector3 crossProduct = Vector3.Cross(dirCamItem, dirCamLook);
+            float dotProduct = Vector3.Dot(dirCamItem, dirCamLook);
 
-            if (crossProduct.sqrMagnitude < 0.3f)
+            if (dotProduct > 0.45f)
                 return true;
 
             else
@@ -146,6 +155,8 @@ namespace Puzzle
             {
                 isInRange = false;
                 CharacterManager.Instance.interactibleAtRange = null;
+
+                HideUI();
             }
         }
 

@@ -30,13 +30,15 @@ public class ProtoPuzzleInteract : MonoBehaviour, IInteractible
 
     private void Update()
     {
-        HideUI();
-        
         if (isInRange)
         {
             if (VerifyLookingItem())
             {
                 DisplayUI();
+            }
+            else
+            {
+                HideUI();
             }
         }
      

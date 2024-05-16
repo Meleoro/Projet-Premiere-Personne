@@ -10,9 +10,6 @@ namespace Creature
     [RequireComponent(typeof(CreatureLegsMover))]
     public class CreatureMover : MonoBehaviour, ICreatureComponent
     {
-        [Header("Parameters")]
-        public CreatureBodyParamData data;
-
         [Header("Speed Parameters")]
         [SerializeField] private float walkSpeed;
         [SerializeField] private float suspicionSpeed;
@@ -27,21 +24,23 @@ namespace Creature
         [HideInInspector] public Vector3 forcedRot;
         [HideInInspector] public bool isRunning;
 
-        [Header("Private Infos")] 
+        [Header("Private Infos")]
+        private CreatureBodyParamData data;
         private float saveSpeed;
         private bool stopMoving;
 
         [Header("References")] 
         [SerializeField] private BodyIK bodyIKScript;
+        [SerializeField] private HeadIK headIKScript;
         [SerializeField] private Transform targetIKBody;
-        [SerializeField] private Transform transformToRotate;
-        [SerializeField] private Transform baseCreatureTr;
         [HideInInspector] public NavMeshAgent navMeshAgent;
         private CreatureLegsMover legsScript;
 
 
         private void Awake()
         {
+            data = GetComponent<CreatureManager>().bodyData;
+            
             navMeshAgent = GetComponent<NavMeshAgent>();
             legsScript = GetComponent<CreatureLegsMover>();
 
@@ -57,10 +56,10 @@ namespace Creature
             
             SetNextPos();
             ManageRotation();
-
-            //AdaptHeightBody();
+            
             AdaptSpeedWhenRotation();
             AdaptHeightBySpeed();
+            AdaptSpeedAccordingToLegs();
         }
 
         
@@ -101,28 +100,57 @@ namespace Creature
         {
             float currentRotationDif = Mathf.Abs(bodyIKScript.currentRotationDif);
 
-            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.1f, currentRotationDif);
+            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.3f, currentRotationDif);
         }
 
         private void AdaptHeightBySpeed()
         {
             float currentSpeed = navMeshAgent.velocity.magnitude / agressiveSpeed;
-            float wantedY = data.wantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
+            float wantedYFront = data.frontWantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
+            float wantedYBack = data.backWantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
 
-            RaycastHit groundHit;
-            if(Physics.Raycast(baseCreatureTr.position + Vector3.up, Vector3.down, out groundHit, data.maxHeight + 1, LayerManager.Instance.groundLayer))
+            // Back
+            RaycastHit groundHitBack;
+            if(Physics.Raycast(bodyIKScript.backJoint.position + Vector3.up, Vector3.down, out groundHitBack, data.maxHeight + 1, LayerManager.Instance.groundLayer))
             {
-                baseCreatureTr.position =
-                    Vector3.Lerp(baseCreatureTr.position, groundHit.point + Vector3.up * wantedY, Time.deltaTime * 5);
+                bodyIKScript.backJoint.position =
+                    Vector3.Lerp(bodyIKScript.backJoint.position, groundHitBack.point + Vector3.up * wantedYBack, Time.deltaTime * 5);
             }
             else
             {
-                baseCreatureTr.position -= Vector3.up * Time.deltaTime;
+                bodyIKScript.backJoint.position -= Vector3.up * (Time.deltaTime * 3);
+            }
+
+            // Front
+            RaycastHit groundHitFront;
+            if (Physics.Raycast(bodyIKScript.bodyJoint.position + Vector3.up, Vector3.down, out groundHitFront, data.maxHeight + 1, LayerManager.Instance.groundLayer))
+            {
+                Vector3 wantedPosition = groundHitFront.point + Vector3.up * wantedYFront;
+
+                bodyIKScript.frontYDif = wantedPosition.y - bodyIKScript.bodyJoint.position.y;
+            }
+            else
+            {
+                bodyIKScript.frontYDif -= Time.deltaTime * 3;
+            }
+        }
+
+        private void AdaptSpeedAccordingToLegs()
+        {
+            if (legsScript.currentWantToMoveLegsCounter >= 1)
+            {
+                navMeshAgent.speed = saveSpeed * data.legCantMoveSpeedMultiplier;
+            }
+            else
+            {
+                navMeshAgent.speed = saveSpeed;
             }
         }
 
         #endregion
 
+
+        #region Behavior Functions
 
         public void StopMoving()
         {
@@ -139,9 +167,11 @@ namespace Creature
         public IEnumerator StartAggressiveBehavior(float waitDuration)
         {
             saveSpeed = 0.1f;
+            headIKScript.FollowChara();
 
             yield return new WaitForSeconds(waitDuration);
 
+            headIKScript.StopFollowChara();
             StartAggressiveSpeed();
         }
 
@@ -149,24 +179,34 @@ namespace Creature
         {
             saveSpeed = agressiveSpeed;
             isRunning = true;
+
+            navMeshAgent.speed = saveSpeed;
         }
 
         public void StartSuspicion()
         {
             saveSpeed = suspicionSpeed;
             isRunning = false;
+
+            navMeshAgent.speed = saveSpeed;
         }
 
         public void StartWalkSpeed()
         {
             saveSpeed = walkSpeed;
             isRunning = false;
+
+            navMeshAgent.speed = saveSpeed;
         }
 
         public void StartAttackSpeed(float attackSpeed)
         {
             saveSpeed = attackSpeed;
             isRunning = true;
+
+            navMeshAgent.speed = saveSpeed;
         }
+
+        #endregion
     }
 }

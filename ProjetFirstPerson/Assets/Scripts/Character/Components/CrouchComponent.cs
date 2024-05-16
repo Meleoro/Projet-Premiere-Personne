@@ -49,6 +49,11 @@ public class CrouchComponent : MonoBehaviour, ICharacterComponent
             if (isCrouched) GetUp();
             else Crouch();
         }
+
+        if (controls.Player.Run.WasPerformedThisFrame() && !CameraManager.Instance.isCrouching)
+        {
+            if (isCrouched) GetUp();
+        }
     }
 
     public void ComponentFixedUpdate()

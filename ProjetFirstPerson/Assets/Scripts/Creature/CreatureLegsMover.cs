@@ -10,15 +10,15 @@ namespace Creature
     public class CreatureLegsMover : MonoBehaviour, ICreatureComponent
     {
         [Header("Parameters")]
-        [SerializeField] private CreatureLegsParamData data;
         [SerializeField] private int maxMovingLegsAmountWalk;
-        [SerializeField] private int maxMovingLegsAmountRun;
         [SerializeField] private LayerMask groundLayer;
         
         [Header("Public Infos")] 
         public List<Leg> legs = new List<Leg>();
+        [HideInInspector] public int currentWantToMoveLegsCounter = 0;
         
         [Header("Private Infos")] 
+        private CreatureLegsParamData data;
         private int currentMovingLegsFront;
         private int currentMovingLegsBack;
         private bool canMoveLeg;
@@ -27,14 +27,15 @@ namespace Creature
         [SerializeField] private List<LegIK> legsIK;
         [SerializeField] private List<Transform> legsTargets;
         [SerializeField] private List<Transform> legsOrigins;
-        [SerializeField] private Transform mainTrRotRefFront;
-        [SerializeField] private Transform mainTrRotRefBack;
+        public Transform mainTrRotRefFront;
+        public Transform mainTrRotRefBack;
         [SerializeField] private BodyIK bodyIK;
         private CreatureMover creatureMover;
 
 
         private void Awake()
         {
+            data = GetComponent<CreatureManager>().legData;
             creatureMover = GetComponent<CreatureMover>();
 
             legs = new List<Leg>();
@@ -61,6 +62,7 @@ namespace Creature
         private void VerifyLegs()
         {
             if (!canMoveLeg) return;
+            currentWantToMoveLegsCounter = 0;
             
             for (int i = 0; i < legs.Count; i++)
             {
@@ -69,7 +71,13 @@ namespace Creature
                 if (!legs[i].scriptIK.canMove) continue;
                 if (legs[i].isFrontLeg)
                 {
-                    if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning) continue;
+                    if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning && !legs[i].isMoving)
+                    {
+                        if (VerifyLegNeedsToMove(legs[i]))
+                            currentWantToMoveLegsCounter += 1;
+                            
+                        continue;
+                    }
                 }
                 else
                 {
@@ -124,7 +132,8 @@ namespace Creature
         
         private bool VerifyLegNeedsToMove(Leg currentLeg)
         {
-            float distOriginTarget = Vector3.Distance(currentLeg.isFrontLeg ? currentLeg.origin.position : currentLeg.origin.position + transform.right * data.backLegsOffset, currentLeg.target.position);
+            float distOriginTarget = Vector3.Distance(currentLeg.isFrontLeg ?  currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset :
+                currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset, currentLeg.target.position);
 
             if (currentLeg.timerCooldownMove <= 0)
             {
@@ -133,16 +142,16 @@ namespace Creature
                     if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun)
                         return true;
 
-                    else if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun)
                         return true;
                 }
 
                 else
                 {
-                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk)
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 0.85f)
                         return true;
 
-                   else  if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk * 0.85f)
                         return true;
                 }
             }
@@ -161,7 +170,8 @@ namespace Creature
 
         private Vector3 GetNextPos(Leg currentLeg)
         {
-            Vector3 origin = currentLeg.isFrontLeg ? currentLeg.origin.position : currentLeg.origin.position + transform.right * data.backLegsOffset;
+            Vector3 origin = currentLeg.isFrontLeg ? currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset 
+                : currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset;
             Vector3 currentTargetPos = currentLeg.target.position;
             Transform transformRef = currentLeg.isFrontLeg ? mainTrRotRefFront : mainTrRotRefBack;
 
@@ -173,20 +183,20 @@ namespace Creature
             Vector3 raycastDir = transformRef.InverseTransformDirection(Vector3.down).RotateDirection(45, Vector3.right);
 
             float currentMax = 0;
-            Vector3 chosenPos = currentLeg.origin.position - Vector3.down * 0.9f;
+            Vector3 chosenPos = currentLeg.origin.position - Vector3.down * 1.5f;
 
             float legMaxDist = currentLeg.isFrontLeg ? data.maxFrontLegDistWalk : data.maxBackLegDistWalk;
             if (creatureMover.isRunning) legMaxDist = currentLeg.isFrontLeg ? data.maxFrontLegDistRun : data.maxBackLegDistRun;
 
             for (int i = 0; i < 45; i++)
             {
-                Debug.DrawRay(origin, transformRef.TransformDirection(raycastDir * (legMaxDist * 1.5f)), Color.blue, 1);
+                Debug.DrawRay(origin, transformRef.TransformDirection(raycastDir * (legMaxDist * 2f)), Color.blue, 1);
 
-                if (Physics.Raycast(origin, transformRef.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist * 1.2f, groundLayer))
+                if (Physics.Raycast(origin, transformRef.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist * 2f, groundLayer))
                 {
                     float dist = Vector3.Distance(hit.point, currentTargetPos);
 
-                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 0.9f)
+                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1f)
                     {
                         currentMax = dist;
                         chosenPos = hit.point;
@@ -245,7 +255,7 @@ namespace Creature
                 yield return null;
             }
             
-            if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 2f,
+            if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
                     LayerManager.Instance.groundLayer))
             {
                 currentLeg.target.position = hit.point;

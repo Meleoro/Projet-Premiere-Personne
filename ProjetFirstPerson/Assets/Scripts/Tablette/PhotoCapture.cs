@@ -13,6 +13,7 @@ public class PhotoCapture : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     [SerializeField] private BoardMenu boardMenu;
     [SerializeField] private CameraTestEthan cameraTestEthan;
+    [SerializeField] private Camera mainCam;
 
     [Header("Photo Taker")]
     [SerializeField] private Image photoDisplayArea;
@@ -55,10 +56,10 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
         ScreenDetectionLogs = GameObject.Find("DetectPhotoScreen");
     }
-   /* void OnDrawGizmos()
+ /*   void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(ScreenDetectionLogs.transform.position, ScreenDetectionLogs.transform.forward * maxDistance);
+        Gizmos.DrawRay(mainCam.transform.position, ScreenDetectionLogs.transform.forward * maxDistance);
     } */
 
     private void Update()
@@ -69,10 +70,6 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             {
                 StartCoroutine(CapturePhoto());
             }
-            else
-            {
-                RemovePhoto();
-            }
         }
     }
 
@@ -80,9 +77,9 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
     {
          // Raycast
         RaycastHit hit;
-        if (Physics.BoxCast(ScreenDetectionLogs.transform.position, ScreenDetectionLogs.transform.localScale, ScreenDetectionLogs.transform.forward, out hit, ScreenDetectionLogs.transform.localRotation, maxDistance, layerMask))
+        if (Physics.BoxCast(mainCam.transform.position, ScreenDetectionLogs.transform.localScale, ScreenDetectionLogs.transform.forward, out hit, mainCam.transform.localRotation, maxDistance, layerMask))
         {
-            Debug.Log("Detection");
+       //     Debug.Log("Detection Stele");
             var hitScript = hit.transform.GetComponent<SteleScript>();
             if(!hitScript.isAlreadyInLogs)
             {
@@ -109,6 +106,8 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             screenCapture.Apply();
 
         ShowPhoto();
+        yield return new WaitForSeconds(1.5f);
+        RemovePhoto();
         }
     }
 

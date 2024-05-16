@@ -1,3 +1,4 @@
+using ArthurUtilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,13 +8,18 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 {
     [Header("Parameters")] 
     [SerializeField] private float recoveryTime;
+    [SerializeField] private float cameraShakeIntensity;
+    [SerializeField] private float cameraShakeDuration;
+    [SerializeField] private float fallMaxHeight;
+    [SerializeField] private float fallRecovery;
 
     [Header("Public Infos")] 
-    public Action DieAction;
-    public bool isHurted;
+    [HideInInspector] public Action DieAction;
+     public bool isHurted;
 
     [Header("Private Infos")] 
     private bool isDying;
+    private bool isInvincible;
     private float hurtTimer;
     private Animation anim;
     private Vector3 lastCheckPoint;
@@ -50,6 +56,17 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     }
 
 
+    public void VerifyFall(float fallDist)
+    {
+        if (fallDist > fallMaxHeight)
+        {
+            StartCoroutine(SlowCharacter(fallRecovery, 0.1f));
+            StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity);
+        }
+    }
+
+
     public void SavePos()
     {
         lastCheckPoint = transform.position;
@@ -58,22 +75,45 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     public void TakeDamage()
     {
+        if (isInvincible) return;
+
         if(isHurted && !isDying)
             StartCoroutine(Die());
+
+        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity);
 
         GetComponent<StaminaComponent>().RegainStamina();
 
         isHurted = true;
         hurtTimer = recoveryTime;
 
+        StartCoroutine(InvincibleTime());
+        StartCoroutine(SlowCharacter(2, 0.5f));
         StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
         StartCoroutine(CameraEffects.Instance.HurtEffect(recoveryTime));
     }
 
+    private IEnumerator SlowCharacter(float duration, float slowRatio)
+    {
+        GetComponent<MoveComponent>().currentSpeedModifier = slowRatio;
+
+        yield return new WaitForSeconds(duration);
+
+        GetComponent<MoveComponent>().currentSpeedModifier = 1;
+    }
+
+    private IEnumerator InvincibleTime()
+    {
+        isInvincible = true;
+
+        yield return new WaitForSeconds(1);
+
+        isInvincible = false;
+    }
+
+
     private IEnumerator Die()
     {
-        DieAction.Invoke();
-        
         isDying = true;
         anim.clip = anim["Death"].clip;
         anim.Play();
@@ -95,5 +135,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         cam.canRotate = true;
         move.canMove = true;
         isDying = false;
+
+        DieAction.Invoke();
     }
 }

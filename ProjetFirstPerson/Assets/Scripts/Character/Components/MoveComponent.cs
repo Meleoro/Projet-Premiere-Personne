@@ -179,7 +179,9 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         if(!isOnGround) ApplyGravity();
         if(isInSlope) HelpInSlope();
     }
-    
+
+    private bool quitGround;
+    private float YQuitGround;
     private void VerifyCurrentState()
     {
         RaycastHit hitInfo;
@@ -204,7 +206,18 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
 
         if (isOnGround)
         {
+            if (quitGround)
+            {
+                quitGround = false;
+                GetComponent<HealthComponent>().VerifyFall(Mathf.Abs(YQuitGround - transform.position.y));
+            }
+
             isInSlope = Vector3.Angle(hitInfo.normal, Vector3.up) > 20;
+        }
+        else
+        {
+            quitGround = true;
+            YQuitGround = transform.position.y;
         }
     }
 
