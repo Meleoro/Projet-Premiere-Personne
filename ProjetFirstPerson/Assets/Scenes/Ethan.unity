@@ -4293,6 +4293,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 164688648}
   m_PrefabAsset: {fileID: 0}
+--- !u!20 &166759967 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8423375317432602612, guid: c95f2f9fcecbba643a30eaf70d80938b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1503051411}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &167615768
 GameObject:
   m_ObjectHideFlags: 0
@@ -11173,7 +11179,7 @@ PrefabInstance:
         type: 3}
       propertyPath: outVolume
       value: 
-      objectReference: {fileID: 1744365231}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -24189,6 +24195,11 @@ PrefabInstance:
       objectReference: {fileID: 1503051412}
     - target: {fileID: 731133079951075317, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
         type: 3}
+      propertyPath: mainCam
+      value: 
+      objectReference: {fileID: 166759967}
+    - target: {fileID: 731133079951075317, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
+        type: 3}
       propertyPath: cameraUI
       value: 
       objectReference: {fileID: 1503051415}
@@ -24197,6 +24208,11 @@ PrefabInstance:
       propertyPath: uiManager
       value: 
       objectReference: {fileID: 618783956}
+    - target: {fileID: 731133079951075317, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
+        type: 3}
+      propertyPath: maxDistance
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 731133079951075317, guid: e8d4d322a337fa8488b9b31e6a34f7f8,
         type: 3}
       propertyPath: tabletteFrame
@@ -54752,18 +54768,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1394437628}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1744365231 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4493167902510111881, guid: c95f2f9fcecbba643a30eaf70d80938b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1503051411}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1746732138 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3668344787528554202, guid: ab876e5c9d8ce814ca509210a87ec2b5,
