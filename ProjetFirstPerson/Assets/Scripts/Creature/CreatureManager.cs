@@ -12,6 +12,10 @@ namespace Creature
 {
     public class CreatureManager : MonoBehaviour
     {
+        [Header("Datas")] 
+        public CreatureBodyParamData bodyData;
+        public CreatureLegsParamData legData;
+        
         [Header("Debug Parameters")] 
         [SerializeField] private bool debugIK;
         

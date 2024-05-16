@@ -6,17 +6,14 @@ namespace IK
 {
     public class BodyIK : MonoBehaviour
     {
-        [Header("Parameters")]
-        [SerializeField] private CreatureBodyParamData data;
-
         [Header("Public Infos")] 
         [HideInInspector] public float currentRotationDif;
-        [HideInInspector] public bool hasToDoHugeTurn;
         [HideInInspector] public float currentAtanDif;
         [HideInInspector] public float frontYDif;
         [HideInInspector] public Vector3 saveOffset2;
 
         [Header("Private Infos")]
+        private CreatureBodyParamData data;
         private float currentAtan;
         private float currentAtanBack;
         private Vector3 backLocalPosSave;
@@ -35,6 +32,8 @@ namespace IK
 
         private void Start()
         {
+            data = moveScript.GetComponent<CreatureManager>().bodyData;
+            
             backLocalPosSave = backJoint.localPosition;
             saveOffset2 = backJoint.localEulerAngles;
 

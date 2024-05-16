@@ -9,14 +9,11 @@ namespace IK
 {
     public class HeadIK : MonoBehaviour
     {
-        [Header("Parameters Base Neck")] 
-        [SerializeField] private float inclinationMaxBaseNeck;
-        [SerializeField] private float rotationMax;
-
         [Header("Public infos")] 
         [HideInInspector] public bool isLookingLeftRight;
         
         [Header("Private Infos")] 
+        private CreatureBodyParamData data;
         private Vector3 saveBaseNeck;
         private Vector3 saveHeadJoint;
         private float currentRatio;
@@ -33,6 +30,8 @@ namespace IK
 
         private void Start()
         {
+            data = moveScript.GetComponent<CreatureManager>().bodyData;
+            
             saveBaseNeck = baseNeckTr.localEulerAngles;
             saveHeadJoint = headJointTr.localEulerAngles;
         }
@@ -51,7 +50,7 @@ namespace IK
         private float currentZ;
         private void ModifyInclinationBaseNeck(float inclinationRatio)
         {
-            float Zvalue = Mathf.Lerp(saveBaseNeck.z, saveBaseNeck.z - inclinationMaxBaseNeck, inclinationRatio);
+            float Zvalue = Mathf.Lerp(saveBaseNeck.z, saveBaseNeck.z - data.inclinationMaxNeck, inclinationRatio);
             currentZ = Mathf.Lerp(currentZ, Zvalue, Time.deltaTime * 5);
             
             baseNeckTr.localEulerAngles = new Vector3(
@@ -122,16 +121,11 @@ namespace IK
         
         private void ModifyRotationHead(float rotationRatio)
         {
-            Vector3 euler = new Vector3(Mathf.Lerp(saveHeadJoint.x + rotationMax, saveHeadJoint.x - rotationMax, rotationRatio),
-                Mathf.Lerp(saveBaseNeck.y + rotationMax, saveBaseNeck.y - rotationMax, rotationRatio),
+            Vector3 euler = new Vector3(Mathf.Lerp(saveHeadJoint.x + data.rotationMaxNeck, saveHeadJoint.x - data.rotationMaxNeck, rotationRatio),
+                Mathf.Lerp(saveBaseNeck.y + data.rotationMaxNeck, saveBaseNeck.y - data.rotationMaxNeck, rotationRatio),
                 baseNeckTr.localEulerAngles.z);
             
             baseNeckTr.localRotation = Quaternion.Lerp(baseNeckTr.localRotation, Quaternion.Euler(euler), Time.deltaTime * 5);
-
-            /*euler = new Vector3(Mathf.Lerp(saveHeadJoint.x + rotationMax, saveHeadJoint.x - rotationMax, rotationRatio),
-                saveHeadJoint.y, saveHeadJoint.z);
-            
-            headJointTr.localRotation = Quaternion.Lerp(headJointTr.localRotation, Quaternion.Euler(euler), Time.deltaTime * 5);*/
         }
 
 

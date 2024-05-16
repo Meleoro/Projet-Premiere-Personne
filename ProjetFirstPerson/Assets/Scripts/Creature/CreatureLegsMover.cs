@@ -10,7 +10,6 @@ namespace Creature
     public class CreatureLegsMover : MonoBehaviour, ICreatureComponent
     {
         [Header("Parameters")]
-        [SerializeField] private CreatureLegsParamData data;
         [SerializeField] private int maxMovingLegsAmountWalk;
         [SerializeField] private LayerMask groundLayer;
         
@@ -19,6 +18,7 @@ namespace Creature
         [HideInInspector] public int currentWantToMoveLegsCounter = 0;
         
         [Header("Private Infos")] 
+        private CreatureLegsParamData data;
         private int currentMovingLegsFront;
         private int currentMovingLegsBack;
         private bool canMoveLeg;
@@ -35,6 +35,7 @@ namespace Creature
 
         private void Awake()
         {
+            data = GetComponent<CreatureManager>().legData;
             creatureMover = GetComponent<CreatureMover>();
 
             legs = new List<Leg>();

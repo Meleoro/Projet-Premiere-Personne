@@ -18,6 +18,10 @@ public class CreatureBodyParamData : ScriptableObject
     public float aggressiveRotationSpeedFrontJoints;
     public float maxRotDifFrontBack;
 
+    [Header("Head Parameters")] 
+    public int inclinationMaxNeck;
+    public int rotationMaxNeck;
+    
     [Header("Legs Effects")]
     public AnimationCurve legsHeightImpactAccordingToSpeed;
 

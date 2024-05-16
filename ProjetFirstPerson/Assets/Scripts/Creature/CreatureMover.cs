@@ -10,9 +10,6 @@ namespace Creature
     [RequireComponent(typeof(CreatureLegsMover))]
     public class CreatureMover : MonoBehaviour, ICreatureComponent
     {
-        [Header("Parameters")]
-        public CreatureBodyParamData data;
-
         [Header("Speed Parameters")]
         [SerializeField] private float walkSpeed;
         [SerializeField] private float suspicionSpeed;
@@ -27,7 +24,8 @@ namespace Creature
         [HideInInspector] public Vector3 forcedRot;
         [HideInInspector] public bool isRunning;
 
-        [Header("Private Infos")] 
+        [Header("Private Infos")]
+        private CreatureBodyParamData data;
         private float saveSpeed;
         private bool stopMoving;
 
@@ -41,6 +39,8 @@ namespace Creature
 
         private void Awake()
         {
+            data = GetComponent<CreatureManager>().bodyData;
+            
             navMeshAgent = GetComponent<NavMeshAgent>();
             legsScript = GetComponent<CreatureLegsMover>();
 
