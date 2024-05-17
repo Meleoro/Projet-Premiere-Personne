@@ -10,7 +10,7 @@ namespace Creature
     public class CreatureLegsMover : MonoBehaviour, ICreatureComponent
     {
         [Header("Parameters")]
-        [SerializeField] private int maxMovingLegsAmountWalk;
+        public int maxMovingLegsAmountWalk;
         [SerializeField] private LayerMask groundLayer;
         
         [Header("Public Infos")] 

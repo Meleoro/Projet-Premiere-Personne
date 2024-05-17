@@ -8,8 +8,6 @@ namespace IK
         [Header("Parameters")] 
         [SerializeField] private float tailWiggleSpeed;
         [SerializeField] private float tailWiggleAmplitude;
-        [SerializeField] private int groundedTailJointIndex;       // From which index the tail is stuck to the ground
-        [SerializeField] private AnimationCurve groundYHeight;       
         
         [Header("Private Infos")]
         private Vector3 saveEulerTailStart;
@@ -38,12 +36,14 @@ namespace IK
 
         private void ActualiseSaveHeights()
         {
-            tailPositionsSave = new Vector3[tailJoints.Length];
-            tailHeightsSave = new float[tailJoints.Length];
+            tailPositionsSave = new Vector3[tailJoints.Length + 1];
+            tailHeightsSave = new float[tailJoints.Length + 1];
+            tailTargets = new Vector3[tailJoints.Length + 1];
 
             for (int i = 0; i < tailJoints.Length; i++)
             {
                 tailPositionsSave[i] = tailStart.InverseTransformPoint(tailJoints[i].position);
+                tailTargets[i] = tailJoints[i].position;
 
                 RaycastHit hit;
                 if (Physics.Raycast(tailJoints[i].position + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
@@ -51,40 +51,49 @@ namespace IK
                     tailHeightsSave[i] = Vector3.Distance(tailJoints[i].position, hit.point);
                 }
             }
+            
+            tailTargets[tailTargets.Length - 1] =
+                tailJoints[tailJoints.Length - 1].position - tailJoints[tailJoints.Length - 1].right * 0.25f;
+            
+            tailPositionsSave[tailTargets.Length - 1] =
+                tailStart.InverseTransformPoint(tailTargets[tailTargets.Length - 1]);
+            
+            tailHeightsSave[tailTargets.Length - 1] = tailHeightsSave[tailTargets.Length - 2];
         }
 
 
         private void Update()
         {
-            //KeepTailStraight();
-            DoMoveTail1();
-
+            ActualiseTargets();
+            
             ApplyOscillationIK();
-
-            ActualiseGroundTarget();
             ApplyHeightIK();
         }
 
-
-        private float timer = 0;
-        private void DoMoveTail1()
+        
+        private void ActualiseTargets()
         {
-            timer += Time.deltaTime * tailWiggleSpeed;
+            Vector3 saveTailStartAngles = tailStart.eulerAngles;
             
-            ChangeAimedDir(Mathf.Sin(timer) * tailWiggleAmplitude - bodyIK.currentRotationDif * tailWiggleAmplitude * 2);
+            for (int i = 0; i < tailTargets.Length; i++)
+            {
+                tailTargets[i] = Vector3.Lerp(tailTargets[i], tailStart.TransformPoint(tailPositionsSave[i]), Time.deltaTime * (4 - (i / ((float)tailTargets.Length) * 2f)));
+
+                RaycastHit hit;
+                if (Physics.Raycast(tailTargets[i] + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
+                {
+                    Vector3 wantedPos = tailTargets[i] +
+                                        (-tailTargets[i] + hit.point + new Vector3(0, tailHeightsSave[i], 0));
+                    tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, wantedPos.y, Time.deltaTime * 5);
+                }
+
+                if (i != 0)
+                    Debug.DrawLine(tailTargets[i], tailTargets[i - 1], Color.red);
+            }
+            
+            tailStart.eulerAngles = saveTailStartAngles;
         }
         
-
-        public void ChangeAimedDir(float newWantedAtan)
-        {
-            wantedAtan = newWantedAtan;
-        }
-        
-
-        private void KeepTailStraight()
-        {
-            tailStart.eulerAngles = new Vector3(saveEulerTailStart.x, tailStart.eulerAngles.y, saveEulerTailStart.z);
-        }
         
         private void ApplyOscillationIK()
         {
@@ -109,41 +118,21 @@ namespace IK
 
             for (int i = 0; i < tailJoints.Length; i++)
             {
-                tailJoints[i].localEulerAngles = new Vector3(tailJoints[i].localEulerAngles.x, atanToRemove,
-                    tailJoints[i].localEulerAngles.z);
+                Vector3 currentDir = -tailJoints[i].right;
+                float currentAtan = Mathf.Atan2(currentDir.z, currentDir.x) * Mathf.Rad2Deg;
+                
+                Vector3 newDir = tailTargets[i + 1] - tailJoints[i].position;
+                float newAtan = Mathf.Atan2(newDir.z, newDir.x) * Mathf.Rad2Deg;
+
+                float angle = currentAtan - newAtan;
+                
+                tailJoints[i].localRotation = Quaternion.Lerp(tailJoints[i].localRotation, 
+                    Quaternion.Euler(new Vector3(tailJoints[i].localEulerAngles.x, angle, tailJoints[i].localEulerAngles.z)), Time.deltaTime * 5);
             }
         }
 
 
         #region Height Functions
-
-        private void ActualiseGroundTarget()
-        {
-            tailTargets = new Vector3[tailJoints.Length];
-
-            Vector3 saveTailStartAngles = tailStart.eulerAngles;
-
-            for (int i = 0; i < tailJoints.Length; i++)
-            {
-                tailStart.eulerAngles = saveTailStartAngles;
-                if (i != 0)
-                    tailStart.eulerAngles = new Vector3(tailStart.eulerAngles.x, tailJoints[i - 1].eulerAngles.y, tailStart.eulerAngles.z);
-
-                tailTargets[i] = tailStart.TransformPoint(tailPositionsSave[i]);
-
-                RaycastHit hit;
-                if (Physics.Raycast(tailJoints[i].position + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
-                {
-                    //tailTargets[i] = tailJoints[i - 1].TransformPoint(tailPositionsSave[i]);
-                    tailTargets[i].y = tailJoints[i].position.y + (-tailJoints[i].position.y + hit.point.y + tailHeightsSave[i]);
-                }
-
-                if (i != 0)
-                    Debug.DrawLine(tailTargets[i], tailTargets[i - 1], Color.red);
-            }
-
-            tailStart.eulerAngles = saveTailStartAngles;
-        }
 
         private void ApplyHeightIK()
         {

@@ -24,7 +24,7 @@ namespace IK
         [SerializeReference] public Transform[] bodyJoints;
         public Transform bodyJoint;
         public Transform backJoint;
-        [SerializeField] private Transform target;
+        public Transform target;
         public CreatureLegsMover legsScript;
         public CreatureMover moveScript;
 

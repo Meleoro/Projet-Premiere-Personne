@@ -23,6 +23,11 @@ public class BoardMenu : MonoBehaviour
     [SerializeField] private GameObject Arrow;
     [SerializeField] private int OffsetX, OffsetY;
     public bool isCreateArrow;
+
+    [Header("Favorite Variable")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private bool isOpen;
+
     
     // Update is called once per frame
     void Update()
@@ -147,5 +152,24 @@ public class BoardMenu : MonoBehaviour
     public void DeleteElement(GameObject parent)
     {
         Destroy(parent);
+    }
+
+    public void AddFavoritePhoto(GameObject target)
+    {
+        target.GetComponent<ElementsOfBoard>().isFavorite = true;
+        GameObject contentFavoritePhoto = GameObject.Find("ContentFavoritePhoto");
+        Transform favElement = Instantiate(target.transform.parent,new Vector3(0,0,0), Quaternion.identity, contentFavoritePhoto.transform);
+    }
+    public void OpenFavoriteMenu()
+    {
+        isOpen = !isOpen;
+        if(isOpen)
+        {
+            animator.Play("OpenMenu");
+        }
+        else
+        {
+            animator.Play("CloseMenu");
+        }
     }
 }
