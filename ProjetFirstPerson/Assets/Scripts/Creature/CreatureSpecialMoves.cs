@@ -55,12 +55,12 @@ namespace Creature
             
             if (Vector3.Angle(dir1, dir2) > 150)
             {
-                StartCoroutine(DoHugeTurnCoroutineFar());
+                StartCoroutine(DoHugeTurnCoroutineFar(Vector3.Distance(bodyScript.wantedPos, bodyScript.transform.position) < 3));
             }
         }
 
 
-        public IEnumerator DoHugeTurnCoroutineFar()
+        public IEnumerator DoHugeTurnCoroutineFar(bool surPlace)
         {
             float timer = 0;
             float dist = 2f;
@@ -73,7 +73,16 @@ namespace Creature
             Vector3 p1 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-0.7f, 0, 0.9f) * dist);
             Vector3 p2 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-1f, 0, 0.3f) * dist);
             Vector3 p3 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-0.6f, 0, 0f) * dist);
-            Vector3 p4 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(0, 0, 0) * dist);
+
+            if (surPlace)
+            {
+                dist = dist * 0.75f;
+                duration = duration * 1f;
+                
+                p1 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-0.25f, 0, 0.75f) * dist);
+                p2 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(0.25f, 0, 0.5f) * dist);
+                p3 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(0f, 0, 0f) * dist);
+            }
             
             Debug.DrawLine(originalPos, p1, Color.green, 1);
             Debug.DrawLine(p1, p2, Color.green, 1);
@@ -107,7 +116,6 @@ namespace Creature
                 yield return new WaitForSeconds(Time.deltaTime);
             }
             
-
 
             legsScript.maxMovingLegsAmountWalk = 1;
             bodyScript.forcedPos = Vector3.zero;
