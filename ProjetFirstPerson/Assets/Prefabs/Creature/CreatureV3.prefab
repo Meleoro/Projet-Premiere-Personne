@@ -1046,6 +1046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hugeTurnDurationMultiplicator: 0.1
+  bodyScript: {fileID: 3781321407808869279}
   legsScript: {fileID: 2314867111104131973}
 --- !u!1 &1081221014086328874
 GameObject:
@@ -1098,7 +1099,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2071377256333912300
 Transform:
   m_ObjectHideFlags: 0
@@ -2063,13 +2064,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tailWiggleSpeed: 3
   tailWiggleAmplitude: 13
-  groundedTailJointIndex: 4
-  groundYHeight:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   tailHeightsSave: []
   tailPositionsSave: []
   tailJoints:
@@ -2296,7 +2290,7 @@ MonoBehaviour:
   inverseArticulation: 1
   debug: 0
   articulationXRotMultiplicator: 15
-  articulationXRotMax: 0
+  articulationXRotMax: 10
   yEffectorOffset: 0.1
   currentPatouneZRot: 0
   canMove: 0
@@ -4422,7 +4416,7 @@ MonoBehaviour:
   inverseArticulation: 0
   debug: 1
   articulationXRotMultiplicator: -10
-  articulationXRotMax: 0
+  articulationXRotMax: 10
   yEffectorOffset: 0.3
   currentPatouneZRot: 0
   canMove: 0
@@ -4599,7 +4593,7 @@ MonoBehaviour:
   inverseArticulation: 0
   debug: 0
   articulationXRotMultiplicator: -10
-  articulationXRotMax: 0
+  articulationXRotMax: 10
   yEffectorOffset: 0.3
   currentPatouneZRot: 0
   canMove: 0
@@ -4906,9 +4900,11 @@ MonoBehaviour:
   debugWantedPos: {fileID: 0}
   wantedPos: {x: 0, y: 0, z: 0}
   forcedRot: {x: 0, y: 0, z: 0}
+  forcedPos: {x: 0, y: 0, z: 0}
   isRunning: 0
   bodyIKScript: {fileID: 6138824809743134479}
   headIKScript: {fileID: 73405578378008704}
+  specialMovesScript: {fileID: 9132745570899297293}
   targetIKBody: {fileID: 7542945677219190636}
   navMeshAgent: {fileID: 0}
 --- !u!114 &2314867111104131973
@@ -6414,7 +6410,7 @@ MonoBehaviour:
   inverseArticulation: 1
   debug: 0
   articulationXRotMultiplicator: 15
-  articulationXRotMax: 0
+  articulationXRotMax: 10
   yEffectorOffset: 0.1
   currentPatouneZRot: 0
   canMove: 0
