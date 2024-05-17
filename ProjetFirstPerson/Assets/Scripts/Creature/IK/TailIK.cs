@@ -134,33 +134,6 @@ namespace IK
 
         #region Height Functions
 
-        private void ActualiseGroundTarget()
-        {
-            tailTargets = new Vector3[tailJoints.Length];
-
-            Vector3 saveTailStartAngles = tailStart.eulerAngles;
-
-            for (int i = 0; i < tailJoints.Length; i++)
-            {
-                tailStart.eulerAngles = saveTailStartAngles;
-                if (i != 0)
-                    tailStart.eulerAngles = new Vector3(tailStart.eulerAngles.x, tailJoints[i - 1].eulerAngles.y, tailStart.eulerAngles.z);
-
-                tailTargets[i] = tailStart.TransformPoint(tailPositionsSave[i]);
-
-                RaycastHit hit;
-                if (Physics.Raycast(tailJoints[i].position + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
-                {
-                    tailTargets[i].y = tailJoints[i].position.y + (-tailJoints[i].position.y + hit.point.y + tailHeightsSave[i]);
-                }
-
-                if (i != 0)
-                    Debug.DrawLine(tailTargets[i], tailTargets[i - 1], Color.red);
-            }
-
-            tailStart.eulerAngles = saveTailStartAngles;
-        }
-
         private void ApplyHeightIK()
         {
             for (int i = 1; i < tailJoints.Length - 1; i++)
