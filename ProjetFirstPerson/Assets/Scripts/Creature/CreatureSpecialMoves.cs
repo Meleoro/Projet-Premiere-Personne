@@ -55,24 +55,24 @@ namespace Creature
             
             if (Vector3.Angle(dir1, dir2) > 150)
             {
-                StartCoroutine(DoHugeTurnCoroutine());
+                StartCoroutine(DoHugeTurnCoroutineFar());
             }
         }
 
 
-        public IEnumerator DoHugeTurnCoroutine()
+        public IEnumerator DoHugeTurnCoroutineFar()
         {
             float timer = 0;
             float dist = 2f;
-            float duration = 1.1f;
+            float duration = 0.9f;
             
             isDoingHugeTurn = true;
             Vector3 originalPos = legsScript.transform.position;
             legsScript.maxMovingLegsAmountWalk = 1;
 
-            Vector3 p1 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-0.5f, 0, 1f) * dist);
-            Vector3 p2 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-1f, 0, 0.4f) * dist);
-            Vector3 p3 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-0.15f, 0, 0f) * dist);
+            Vector3 p1 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-0.7f, 0, 0.9f) * dist);
+            Vector3 p2 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-1f, 0, 0.3f) * dist);
+            Vector3 p3 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-0.6f, 0, 0f) * dist);
             Vector3 p4 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(0, 0, 0) * dist);
             
             Debug.DrawLine(originalPos, p1, Color.green, 1);
