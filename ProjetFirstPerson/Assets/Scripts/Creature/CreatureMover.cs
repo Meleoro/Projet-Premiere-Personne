@@ -18,10 +18,11 @@ namespace Creature
         [Header("Debug Parameters")] 
         [SerializeField] private bool doDebugMovement;
         [SerializeField] private Transform debugWantedPos;
-
+ 
         [Header("Public Infos")]
         [HideInInspector] public Vector3 wantedPos;
         [HideInInspector] public Vector3 forcedRot;
+        [HideInInspector] public Vector3 forcedPos;
         [HideInInspector] public bool isRunning;
 
         [Header("Private Infos")]
@@ -32,6 +33,7 @@ namespace Creature
         [Header("References")] 
         [SerializeField] private BodyIK bodyIKScript;
         [SerializeField] private HeadIK headIKScript;
+        [SerializeField] private CreatureSpecialMoves specialMovesScript;
         [SerializeField] private Transform targetIKBody;
         [HideInInspector] public NavMeshAgent navMeshAgent;
         private CreatureLegsMover legsScript;
@@ -71,6 +73,10 @@ namespace Creature
             {
                 navMeshAgent.SetDestination(debugWantedPos.position);
             }
+            else if (forcedPos != Vector3.zero)
+            {
+                navMeshAgent.SetDestination(forcedPos);
+            }
             else
             {
                 navMeshAgent.SetDestination(wantedPos);
@@ -82,9 +88,13 @@ namespace Creature
             // Y Rotation
             Vector3 dirToRotateTo = wantedPos - transform.position;
             if (forcedRot != Vector3.zero) dirToRotateTo = forcedRot;
+            if (forcedPos != Vector3.zero) dirToRotateTo = forcedPos - transform.position;
             
             Vector3 currentDir = targetIKBody.position - transform.position;
             currentDir = currentDir.normalized * 4;
+
+            if (Vector3.Angle(currentDir, dirToRotateTo) > 140)
+                StartCoroutine(specialMovesScript.DoHugeTurnCoroutineFar(Vector3.Distance(wantedPos, transform.position) < 3));
 
             currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo, 1, 1);
             
