@@ -56,47 +56,11 @@ namespace Creature
         }
 
 
-        private IEnumerator DoHugeTurnCoroutine()
+        /*private IEnumerator DoHugeTurnCoroutine()
         {
-            isDoingHugeTurn = true;
-
-            yield return new WaitForSeconds(0.05f);
-
-            float turnAmplitude = Mathf.Abs(bodyIKScript.currentAtanDif);
-            float turnDuration = hugeTurnDurationMultiplicator * turnAmplitude * 0.1f;
-
-            for (int i = 0; i < legsScript.legs.Count; i++) 
-            {
-                if (legsScript.legs[i].isFrontLeg)
-                {
-                    StartCoroutine(legsScript.MoveLegStatic(legsScript.legs[i], turnDuration, 2.5f));
-                }
-
-                yield return new WaitForSeconds(0.05f);
-            }
-
-            yield return new WaitForSeconds(turnDuration);
-
-            isDoingHugeTurn = false;
-        }
-
-        private Vector3 CalculateHugeTurnLegFinalPos(Leg currentLeg)
-        {
-            Vector3 calculatedPos;
-
-            Vector3 localLegTargetPos = bodyIKScript.backJoint.InverseTransformPoint(currentLeg.target.position);
-            Quaternion saveBackJointRot = bodyIKScript.backJoint.rotation;
-
-            Vector3 eulerBack = bodyIKScript.backJoint.localEulerAngles;
-            eulerBack.y = bodyIKScript.saveOffset2.y + bodyIKScript.currentAtanDif;
-            bodyIKScript.backJoint.localEulerAngles = eulerBack;
-
-            calculatedPos = bodyIKScript.backJoint.TransformPoint(localLegTargetPos);
-            bodyIKScript.backJoint.rotation = saveBackJointRot;
-
-            return calculatedPos;
-        }
-
+            
+        }*/
+        
         #endregion
 
 

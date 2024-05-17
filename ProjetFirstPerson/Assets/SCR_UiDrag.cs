@@ -48,6 +48,7 @@ public class SCR_UiDrag : MonoBehaviour
         if(Input.mouseScrollDelta.y > 0)
         {
             Vector3 currentScale = RectBoard.localScale;
+            
             ScaleAround(board,CenterMouse.transform.localPosition / 2, currentScale += new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y);
         }
         if(Input.mouseScrollDelta.y < 0)
@@ -69,7 +70,7 @@ public class SCR_UiDrag : MonoBehaviour
             RectBoard.transform.localPosition = pos;
 
              ClampX = 3000 * RectBoard.localScale.x;
-             ClampY = 2000 * RectBoard.localScale.x;
+             ClampY = 2000 * RectBoard.localScale.y;
              if(RectBoard.localScale.x <= 0.6f)
             {
                 RectBoard.localScale = new Vector3(0.6f,0.6f,0);
@@ -151,20 +152,21 @@ public class SCR_UiDrag : MonoBehaviour
     }
 
    public void ScaleAround(GameObject target, Vector3 pivot, Vector3 newScale)
-{
-    Vector3 A = target.transform.localPosition;
-    Vector3 B = pivot;
+   {
+       if (newScale == target.transform.localScale) return; 
+    
+        Vector3 A = target.transform.localPosition;
+        Vector3 B = pivot;
 
-    Vector3 C = A - B; // diff from object pivot to desired pivot/origin
+        Vector3 C = A - B; // diff from object pivot to desired pivot/origin
 
-    float RS = newScale.x / target.transform.localScale.x; // relataive scale factor
+        float RS = newScale.x / target.transform.localScale.x; // relataive scale factor
 
-    // calc final position post-scale
-    Vector3 FP = B + C * RS;
+        // calc final position post-scale
+        Vector3 FP = B + C * RS;
 
-    // finally, actually perform the scale/translation
-    target.transform.localScale = newScale;
-    target.transform.localPosition = FP;
-}
- 
+        // finally, actually perform the scale/translation
+        target.transform.localScale = newScale;
+        target.transform.localPosition = FP;
+    }
 }
