@@ -56,7 +56,6 @@ namespace IK
             ApplyMainIK2();
 
             ApplyZIK();
-            ApplyLegsEffects();
 
             RotatePelvis();
         }
@@ -187,6 +186,8 @@ namespace IK
 
         private float currentRotXPelvis;
         private float currentRotXThorax;
+        [HideInInspector] public float currentAddedFrontY;
+        [HideInInspector] public float currentAddedBackY;
         private void RotatePelvis()
         {
             float rotXPelvis = 0;
@@ -224,7 +225,9 @@ namespace IK
 
             bodyJoints[0].rotation = saveRotSpine1;
             headIK.baseNeckTr.rotation = saveRotNeck;
-            
+
+            currentAddedBackY = Mathf.Abs(0.3f - Mathf.Abs(currentRotXPelvis) / 40);
+            currentAddedFrontY = Mathf.Abs(0.4f - Mathf.Abs(currentRotXThorax) / 40);
         }
     }
 }

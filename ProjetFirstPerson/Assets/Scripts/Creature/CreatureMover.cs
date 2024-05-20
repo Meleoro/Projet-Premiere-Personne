@@ -124,7 +124,7 @@ namespace Creature
             if(Physics.Raycast(bodyIKScript.backJoint.position + Vector3.up, Vector3.down, out groundHitBack, data.maxHeight + 1, LayerManager.Instance.groundLayer))
             {
                 bodyIKScript.backJoint.position =
-                    Vector3.Lerp(bodyIKScript.backJoint.position, groundHitBack.point + Vector3.up * wantedYBack, Time.deltaTime * 5);
+                    Vector3.Lerp(bodyIKScript.backJoint.position, groundHitBack.point + Vector3.up * (wantedYBack + bodyIKScript.currentAddedBackY), Time.deltaTime * 5);
             }
             else
             {
@@ -135,7 +135,7 @@ namespace Creature
             RaycastHit groundHitFront;
             if (Physics.Raycast(bodyIKScript.bodyJoint.position + Vector3.up, Vector3.down, out groundHitFront, data.maxHeight + 1, LayerManager.Instance.groundLayer))
             {
-                Vector3 wantedPosition = groundHitFront.point + Vector3.up * wantedYFront;
+                Vector3 wantedPosition = groundHitFront.point + Vector3.up * (wantedYFront + bodyIKScript.currentAddedFrontY);
 
                 bodyIKScript.frontYDif = wantedPosition.y - bodyIKScript.bodyJoint.position.y;
             }
