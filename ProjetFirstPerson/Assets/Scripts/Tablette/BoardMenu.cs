@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 
 public class BoardMenu : MonoBehaviour
 {

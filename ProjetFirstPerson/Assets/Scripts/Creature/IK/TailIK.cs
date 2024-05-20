@@ -34,6 +34,20 @@ namespace IK
             ActualiseSaveHeights();
         }
 
+
+        public void RebootTargets()
+        {
+            for (int i = 0; i < tailJoints.Length; i++)
+            {
+                //tailJoints[i].position = tailStart.TransformPoint(tailPositionsSave[i]);
+
+                tailTargets[i] = tailJoints[i].position;
+            }
+
+            tailTargets[tailTargets.Length - 1] = tailJoints[tailJoints.Length - 1].position - tailJoints[tailJoints.Length - 1].right * 0.25f;
+        }
+
+
         private void ActualiseSaveHeights()
         {
             tailPositionsSave = new Vector3[tailJoints.Length + 1];
@@ -77,7 +91,7 @@ namespace IK
             
             for (int i = 0; i < tailTargets.Length; i++)
             {
-                tailTargets[i] = Vector3.Lerp(tailTargets[i], tailStart.TransformPoint(tailPositionsSave[i]), Time.deltaTime * (4 - (i / ((float)tailTargets.Length) * 2f)));
+                tailTargets[i] = Vector3.Lerp(tailTargets[i], tailStart.TransformPoint(tailPositionsSave[i]), Time.deltaTime * (5 - (i / ((float)tailTargets.Length) * 2f)));
 
                 RaycastHit hit;
                 if (Physics.Raycast(tailTargets[i] + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
@@ -136,14 +150,14 @@ namespace IK
 
         private void ApplyHeightIK()
         {
-            for (int i = 1; i < tailJoints.Length - 1; i++)
+            for (int i = 1; i < tailJoints.Length; i++)
             {
-                ApplyIKOnOneJoint(tailJoints[i], tailTargets[i + 1], tailJoints[i - 1]);
+                ApplyIKOnOneJoint(tailJoints[i], tailTargets[i + 1]);
                 Debug.DrawLine(tailJoints[i].position, tailTargets[i + 1]);
             }
         }
 
-        private void ApplyIKOnOneJoint(Transform jointA, Vector3 target, Transform previous)
+        private void ApplyIKOnOneJoint(Transform jointA, Vector3 target)
         {
             Vector3 dif = jointA.position - target;
             Vector3 localDif = bodyIK.legsScript.mainTrRotRefBack.InverseTransformDirection(dif).normalized;

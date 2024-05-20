@@ -228,6 +228,8 @@ namespace IK
 
             currentAddedBackY = Mathf.Abs(0.3f - Mathf.Abs(currentRotXPelvis) / 40);
             currentAddedFrontY = Mathf.Abs(0.4f - Mathf.Abs(currentRotXThorax) / 40);
+
+            ApplyLegsEffects();
         }
     }
 }

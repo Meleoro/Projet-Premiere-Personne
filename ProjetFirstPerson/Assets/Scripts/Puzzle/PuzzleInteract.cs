@@ -100,6 +100,11 @@ namespace Puzzle
             characterCameraScript.doFOVEffect = true;
             characterCameraScript.canMove = true;
             characterCameraScript.canRotate = true;
+
+            isInRange = false;
+            CharacterManager.Instance.interactibleAtRange = null;
+
+            HideUI();
         }
 
         #endregion
