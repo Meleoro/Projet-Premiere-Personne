@@ -18,14 +18,14 @@ namespace IK
         [Header("Public Infos")] 
         [HideInInspector] public float currentPatouneZRot;
         [HideInInspector] public bool canMove;
-        
+
         [Header("Private Infos")]
+        private float saveOriginalXRot;
         private Vector3 offset1;
         private Vector3 offset2;
         private Vector3 offset3;
         private Vector3[] footOffsetsLocal;
         private Vector3[] footOffsetsWorld;
-        private Vector3 effectorSaveLocalPos;
         private Vector3 saveTargetOriginOffset;
         
         [Header("References")]
@@ -41,6 +41,8 @@ namespace IK
 
         private void Start()
         {
+            saveOriginalXRot = joint0.eulerAngles.x;
+
             saveTargetOriginOffset = transformRotTrRef.InverseTransformVector(effector.position - joint0.position);
             
             offset1 = joint0.localEulerAngles;
@@ -79,6 +81,11 @@ namespace IK
             ResetTargetsWhenIdle();
             ApplySecondaryRot();
             ApplyPatouneRot();
+        }
+
+        private void LateUpdate()
+        {
+            joint0.rotation = Quaternion.Euler(saveOriginalXRot, joint0.eulerAngles.y, joint0.eulerAngles.z);
         }
 
 

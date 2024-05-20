@@ -14,8 +14,10 @@ namespace IK
 
         [Header("Private Infos")]
         private CreatureBodyParamData data;
+        private CreatureLegsParamData dataLegs;
         private float currentAtan;
         private float currentAtanBack;
+        private float saveThoraxX;
         private Vector3 backLocalPosSave;
         private Vector3[] savesLocalEulers;
 
@@ -27,15 +29,19 @@ namespace IK
         public Transform target;
         public CreatureLegsMover legsScript;
         public CreatureMover moveScript;
+        public HeadIK headIK;
 
 
 
         private void Start()
         {
             data = moveScript.GetComponent<CreatureManager>().bodyData;
-            
+            dataLegs = moveScript.GetComponent<CreatureManager>().legData;
+
             backLocalPosSave = backJoint.localPosition;
             saveOffset2 = backJoint.localEulerAngles;
+
+            saveThoraxX = bodyJoint.eulerAngles.x;
 
             savesLocalEulers = new Vector3[bodyJoints.Length];
             for(int i = 0; i < bodyJoints.Length; i++)
@@ -51,6 +57,8 @@ namespace IK
 
             ApplyZIK();
             ApplyLegsEffects();
+
+            RotatePelvis();
         }
 
 
@@ -174,6 +182,49 @@ namespace IK
             float followSpeed = 3;
 
             backJoint.transform.localPosition = Vector3.Lerp(backJoint.transform.localPosition, backLocalPosSave + Vector3.up * backAddedY, Time.deltaTime * followSpeed);
+        }
+
+
+        private float currentRotXPelvis;
+        private float currentRotXThorax;
+        private void RotatePelvis()
+        {
+            float rotXPelvis = 0;
+            float rotXThorax = 0;
+
+            Quaternion saveRotSpine1 = bodyJoints[0].rotation;
+            Quaternion saveRotNeck = headIK.baseNeckTr.rotation;
+
+            for (int i = 0; i < legsScript.legs.Count; i++)
+            {
+                if (legsScript.legs[i].isFrontLeg)
+                {
+                    if(legsScript.mainTrRotRefFront.InverseTransformPoint(legsScript.legs[i].target.position).z + dataLegs.frontLegsOffset > 0f)
+                    {
+                        rotXThorax += legsScript.mainTrRotRefFront.InverseTransformPoint(legsScript.legs[i].target.position).z * data.thorasLegXRotationMultiplicator;
+                        rotXThorax *= legsScript.mainTrRotRefFront.InverseTransformPoint(legsScript.legs[i].origin.position).x > 0 ? -1 : 1;
+                    }
+                }
+
+                else
+                {
+                    if (legsScript.mainTrRotRefBack.InverseTransformPoint(legsScript.legs[i].target.position).z > 0)
+                    {
+                        rotXPelvis += legsScript.mainTrRotRefBack.InverseTransformPoint(legsScript.legs[i].target.position).z * data.pelvisLegXRotationMultiplicator;
+                        rotXPelvis *= legsScript.mainTrRotRefBack.InverseTransformPoint(legsScript.legs[i].origin.position).x > 0 ? -1 : 1;
+                    }
+                }
+            }
+
+            currentRotXPelvis = Mathf.Lerp(currentRotXPelvis, rotXPelvis, Time.deltaTime * 10);
+            currentRotXThorax = Mathf.Lerp(currentRotXThorax, rotXThorax, Time.deltaTime * 10);
+
+            backJoint.rotation = Quaternion.Euler(currentRotXPelvis, backJoint.eulerAngles.y, backJoint.eulerAngles.z);
+            bodyJoint.rotation = Quaternion.Euler(saveThoraxX + currentRotXThorax, bodyJoint.eulerAngles.y, bodyJoint.eulerAngles.z);
+
+            bodyJoints[0].rotation = saveRotSpine1;
+            headIK.baseNeckTr.rotation = saveRotNeck;
+            
         }
     }
 }
