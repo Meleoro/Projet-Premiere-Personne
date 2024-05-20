@@ -9,6 +9,10 @@ using UnityEditor.Experimental.GraphView;
 
 public class BoardMenu : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private CameraComponent cameraComponent;
+    [SerializeField] private UIManager uIManager;
+
     [Header("List Objects In Board")]
     public List<GameObject> listBoardElement;
     [SerializeField] private GameObject MyBoard;
@@ -121,6 +125,12 @@ public class BoardMenu : MonoBehaviour
                 HisMovingObject.localScale = new Vector3(3f,3f,0);
             }     */
         }
+
+        // OpenFavMenu
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            OpenFavoriteMenu();
+        }
     }
 
     public void AddElementOnBoard(GameObject element)
@@ -160,16 +170,21 @@ public class BoardMenu : MonoBehaviour
         GameObject contentFavoritePhoto = GameObject.Find("ContentFavoritePhoto");
         Transform favElement = Instantiate(target.transform.parent,new Vector3(0,0,0), Quaternion.identity, contentFavoritePhoto.transform);
     }
-    public void OpenFavoriteMenu()
+    private void OpenFavoriteMenu()
     {
         isOpen = !isOpen;
         if(isOpen)
         {
             animator.Play("OpenMenu");
+            cameraComponent.LockedCursor(1);
         }
         else
         {
             animator.Play("CloseMenu");
+            if(!uIManager.isUIActive)
+            {
+                cameraComponent.LockedCursor(2);
+            }
         }
     }
 }
