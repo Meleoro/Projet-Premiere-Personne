@@ -86,7 +86,7 @@ namespace Creature
         private void ManageRotation()
         {
             // Y Rotation
-            Vector3 dirToRotateTo = wantedPos - transform.position;
+            Vector3 dirToRotateTo = navMeshAgent.velocity.normalized;
             if (forcedRot != Vector3.zero) dirToRotateTo = forcedRot;
             if (forcedPos != Vector3.zero) dirToRotateTo = forcedPos - transform.position;
             

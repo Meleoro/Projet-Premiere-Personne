@@ -34,7 +34,9 @@ namespace Creature
             if (placeToTP != null)
             {
                 creatureToMove.transform.GetComponent<CreatureMover>().navMeshAgent.enabled = false;
-                creatureToMove.transform.position = placeToTP.position;
+                Vector3 moveDir = placeToTP.position - creatureToMove.transform.position;
+                creatureToMove.transform.parent.transform.position += moveDir;
+
                 creatureToMove.transform.GetComponent<CreatureMover>().navMeshAgent.enabled = true;
             }
 

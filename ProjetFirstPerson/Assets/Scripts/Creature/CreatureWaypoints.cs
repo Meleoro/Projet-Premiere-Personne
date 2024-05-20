@@ -169,7 +169,9 @@ namespace Creature
         public void ChangeCurrentWaypointManager(WaypointsManager newWaypointManager)
         {
             waypoints = newWaypointManager.waypoints;
-            transform.position = waypoints[0].transform.position;
+
+            Vector3 moveDir = waypoints[0].transform.position - transform.position;
+            transform.parent.transform.position += moveDir;
 
             waitTimer = 0;
             currentIndex = 0;
@@ -179,8 +181,9 @@ namespace Creature
 
         private void ResetCurrentWaypointManager()
         {
-            transform.position = waypoints[0].transform.position;
-            
+            Vector3 moveDir = waypoints[0].transform.position - transform.position;
+            transform.parent.transform.position += moveDir;
+
             waitTimer = 0;
             currentIndex = 0;
             
