@@ -37,7 +37,8 @@ public class CameraManager : GenericSingletonClass<CameraManager>
     private void FixedUpdate()
     {
         transform.localPosition = Vector3.Lerp(transform.localPosition, wantedLocalPosition, Time.fixedDeltaTime * 30);
-        transform.localRotation = Quaternion.Euler(new Vector3(wantedLocalRotation.x, wantedLocalRotation.y, Mathf.Lerp(transform.localRotation.z, wantedLocalRotation.z, Time.fixedDeltaTime * 30)));
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, 
+            Quaternion.Euler(new Vector3(wantedLocalRotation.x, wantedLocalRotation.y, Mathf.Lerp(transform.localRotation.z, wantedLocalRotation.z, Time.fixedDeltaTime * 30))), Time.fixedDeltaTime * 20);
     }
 
 
@@ -145,7 +146,7 @@ public class CameraManager : GenericSingletonClass<CameraManager>
         while (timer < currentLeftRightDuration * 0.5f)
         {
             timer += Time.deltaTime;
-            
+
             wantedLocalRotation = new Vector3(transform.localRotation.eulerAngles.x, 
                 transform.localRotation.eulerAngles.y, Mathf.Lerp(currentLeftRightAmplitude, -currentLeftRightAmplitude, timer / (currentLeftRightDuration * 0.5f)));
             
