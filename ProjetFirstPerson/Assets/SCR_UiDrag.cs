@@ -20,6 +20,7 @@ public class SCR_UiDrag : MonoBehaviour
  
     Vector3 mouse_position;
     Vector3 previous_mouse_position;
+    Vector3 dragMousePosition;
 
     [Header("Clamp Values")]
     public float ClampX;
@@ -41,10 +42,7 @@ public class SCR_UiDrag : MonoBehaviour
     void Update()
     {
         MouseDragUi();
-      /*  if(Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            ScaleAround(board,boardPivot, new Vector3(3,3,3));
-        } */
+        
         if(Input.mouseScrollDelta.y > 0)
         {
             Vector3 currentScale = RectBoard.localScale;
@@ -55,10 +53,6 @@ public class SCR_UiDrag : MonoBehaviour
         {
             Vector3 currentScale = RectBoard.localScale;
             ScaleAround(board,CenterMouse.transform.localPosition / 2, currentScale += new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y);
-        }
-        if(Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            ScaleAround(board,new Vector3(0,0,0), new Vector3(1,1,1));
         }
 
         // Clamp des valeurs de position
@@ -79,6 +73,17 @@ public class SCR_UiDrag : MonoBehaviour
             {
                 RectBoard.localScale = new Vector3(3f,3f,0);
             }
+
+            // Fix Mouse1 return position bug
+            if(Input.GetKeyUp(KeyCode.Mouse1))
+            {
+                StartCoroutine(SetMousePos());
+            }
+    }
+     private IEnumerator SetMousePos()
+    {
+        yield return new WaitForSeconds(0.0001f);
+        Mouse.current.WarpCursorPosition(dragMousePosition);
     }
  
     void MouseDragUi()
@@ -87,14 +92,15 @@ public class SCR_UiDrag : MonoBehaviour
  
         mouse_position = Mouse.current.position.ReadValue();
  
-        if(Mouse.current.leftButton.wasPressedThisFrame)
+        if(Mouse.current.rightButton.wasPressedThisFrame)
         {
             DetectUi();
         }
  
-        if(Mouse.current.leftButton.isPressed && dragging)
+        if(Mouse.current.rightButton.isPressed && dragging)
         {
             DragElement();
+            dragMousePosition = Input.mousePosition;
         }
         else
         {

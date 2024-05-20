@@ -105,13 +105,13 @@ public class BoardMenu : MonoBehaviour
         if(currentSelect != null && currentSelect.CompareTag("MovingUI"))
         {
             Transform HisMovingObject = currentSelect.GetComponent<ElementsOfBoard>().MyMovingObject.transform;
-            HisMovingObject.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
-            Debug.Log(currentSelect);
-
             if(!isRotating)
             {
                 HisMovingObject.position = Input.mousePosition;
             }
+
+            // La rotation des éléments du board
+        /*    HisMovingObject.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
             if(HisMovingObject.localScale.x <= 0.1f)
             {
                 HisMovingObject.localScale = new Vector3(0.1f,0.1f,0);
@@ -119,7 +119,7 @@ public class BoardMenu : MonoBehaviour
            else if(HisMovingObject.localScale.x >= 3f)
             {
                 HisMovingObject.localScale = new Vector3(3f,3f,0);
-            }    
+            }     */
         }
     }
 
