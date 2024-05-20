@@ -11,6 +11,7 @@ public class BoardMenu : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private CameraComponent cameraComponent;
+    [SerializeField] private UIManager uIManager;
 
     [Header("List Objects In Board")]
     public List<GameObject> listBoardElement;
@@ -180,7 +181,10 @@ public class BoardMenu : MonoBehaviour
         else
         {
             animator.Play("CloseMenu");
-            cameraComponent.LockedCursor(2);
+            if(!uIManager.isUIActive)
+            {
+                cameraComponent.LockedCursor(2);
+            }
         }
     }
 }
