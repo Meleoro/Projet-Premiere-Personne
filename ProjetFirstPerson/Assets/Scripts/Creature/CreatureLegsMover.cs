@@ -63,11 +63,12 @@ namespace Creature
         private bool moveBackLegs;
         private void VerifyLegs()
         {
-            if (!canMoveLeg) return;
             currentWantToMoveLegsCounter = 0;
             
             for (int i = 0; i < legs.Count; i++)
             {
+                if (!canMoveLeg) return;
+                
                 ActualiseMovingLegsCounter();
 
                 if (!legs[i].scriptIK.canMove) continue;
@@ -79,8 +80,10 @@ namespace Creature
                         {
                             currentWantToMoveLegsCounter += 1;
                         }
-                        else
+                        else if(VerifyLegNeedsToMove(legs[i], false))
                         {
+                            currentWantToMoveLegsCounter += 1;
+                            
                             continue;
                         }
                     }
@@ -91,10 +94,12 @@ namespace Creature
                     {
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
-                            currentMovingLegsBack += 1;
+                            currentWantToMoveLegsCounter += 1;
                         }
-                        else
+                        else if(VerifyLegNeedsToMove(legs[i], false))
                         {
+                            currentWantToMoveLegsCounter += 1;
+                            
                             continue;
                         }
                     }
@@ -132,8 +137,6 @@ namespace Creature
                             {
                                 moveFrontLegs = true;
                             }
-
-                            ActualiseMovingLegsCounter();
                         }
                     }
                 }
@@ -168,12 +171,18 @@ namespace Creature
 
             if (currentLeg.timerCooldownMove <= 0)
             {
+                if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z > -0.1f)
+                    return false;
+                
+                if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > -0.1f)
+                    return false;
+                
                 if (shouldntMove)
                 {
-                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.1f)
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.15f)
                         return true;
 
-                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.1f)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.15f)
                         return true;
                 }
                 
@@ -188,10 +197,10 @@ namespace Creature
 
                 else
                 {
-                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 0.85f)
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 0.9f)
                         return true;
 
-                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk * 0.85f)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk * 0.9f)
                         return true;
                 }
             }
@@ -254,7 +263,7 @@ namespace Creature
         {
             canMoveLeg = false;
 
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.05f);
 
             canMoveLeg = true;
         }
@@ -301,7 +310,7 @@ namespace Creature
             }
             //currentLeg.target.position = transform.TransformPoint(localEnd);
 
-            currentLeg.timerCooldownMove = 0.15f;
+            currentLeg.timerCooldownMove = 0.3f;
             currentLeg.isMoving = false;
         }
 
