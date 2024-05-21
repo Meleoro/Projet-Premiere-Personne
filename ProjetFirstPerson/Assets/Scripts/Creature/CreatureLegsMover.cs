@@ -163,10 +163,10 @@ namespace Creature
 
                 else
                 {
-                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 0.85f)
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 0.8f)
                         return true;
 
-                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk * 0.85f)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk * 0.8f)
                         return true;
                 }
             }
@@ -211,7 +211,7 @@ namespace Creature
                 {
                     float dist = Vector3.Distance(hit.point, currentTargetPos);
 
-                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1f)
+                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1.05f)
                     {
                         currentMax = dist;
                         chosenPos = hit.point;
@@ -230,7 +230,7 @@ namespace Creature
         {
             canMoveLeg = false;
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.1f);
 
             canMoveLeg = true;
         }
