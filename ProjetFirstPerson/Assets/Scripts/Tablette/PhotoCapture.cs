@@ -75,31 +75,38 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         }
 
         // Stele // Raycast
-        if(cameraTestEthan.isAiming)
+        if (cameraTestEthan.isAiming)
         {
             RaycastHit hit;
-        if (Physics.BoxCast(mainCam.transform.position, ScreenDetectionLogs.transform.localScale, ScreenDetectionLogs.transform.forward, out hit, mainCam.transform.localRotation, maxDistance, layerMask))
-        {
-          //  Debug.Log("Detection Stele");
-            var hitScript = hit.transform.GetComponent<SteleScript>();
-            if(!hitScript.isAlreadyInLogs)
+            if (Physics.BoxCast(mainCam.transform.position, ScreenDetectionLogs.transform.localScale,
+                    ScreenDetectionLogs.transform.forward, out hit, mainCam.transform.localRotation, maxDistance,
+                    layerMask))
             {
-                SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime; 
-                if(SteleChargeImage.fillAmount == 1)
+                //  Debug.Log("Detection Stele");
+                var hitScript = hit.transform.GetComponent<SteleScript>();
+                if (!hitScript.isAlreadyInLogs)
                 {
-                    hitScript.isAlreadyInLogs = true;
-                    SteleChargeImage.fillAmount = 0;
-                    string theInfo = hitScript.myInfo;
-                    string theTitle = hitScript.titleLogs;
-                    GetComponent<LogsMenu>().AddLogsToContent(theInfo,theTitle);
+                    SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime;
+                    if (SteleChargeImage.fillAmount == 1)
+                    {
+                        hitScript.isAlreadyInLogs = true;
+                        SteleChargeImage.fillAmount = 0;
+                        string theInfo = hitScript.myInfo;
+                        string theTitle = hitScript.titleLogs;
+                        GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle);
+                    }
                 }
             }
-        }
+            else if (SteleChargeImage.fillAmount > 0)
+            {
+                SteleChargeImage.fillAmount -= ChargeLogsSpeed * Time.deltaTime;
+            }
         }
         else
-        {
             SteleChargeImage.fillAmount = 0;
-        }
+
+
+
     }
 
     IEnumerator CapturePhoto()
