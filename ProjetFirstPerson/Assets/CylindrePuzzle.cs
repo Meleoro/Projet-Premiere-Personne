@@ -43,7 +43,7 @@ public class CylindrePuzzle : MonoBehaviour
             }
             else
             {
-                StartCoroutine(RotateCylinder(90));
+                StartCoroutine(RotateCylinder(-270));
                 symbol = 0;
             }  
             manager.CheckIfWin();
@@ -61,12 +61,12 @@ public class CylindrePuzzle : MonoBehaviour
         while (timer < rotateDuration)
         {
             timer += Time.deltaTime;
-            currentAngle = new Vector3(0,-90,Mathf.LerpAngle(currentAngle.z, newAngle, timer / rotateDuration));
+            currentAngle = new Vector3(0,90,Mathf.LerpAngle(currentAngle.z, newAngle, timer / rotateDuration));
             
-            transform.localEulerAngles = new Vector3(0,-90,currentAngle.z);
+            transform.localEulerAngles = new Vector3(0,90,currentAngle.z);
             yield return null;
         }
-        transform.localEulerAngles = new Vector3(0, -90, newAngle);
+        transform.localEulerAngles = new Vector3(0, 90, newAngle);
         isMoving = false;
     }
 }
