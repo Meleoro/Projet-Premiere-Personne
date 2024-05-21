@@ -64,10 +64,10 @@ public class ProtoBouleBoulier : MonoBehaviour
          timer += Time.deltaTime;
 
          if(directionToMove == Directions.Left)
-            transform.position = Vector3.Lerp(outPosition, outPosition + new Vector3(-0.25f,0,0), timer / moveDuration);
+            transform.position = Vector3.Lerp(outPosition, outPosition + new Vector3(0,0,-0.25f), timer / moveDuration);
          
          if(directionToMove == Directions.Right)
-            transform.position = Vector3.Lerp(outPosition, outPosition + new Vector3(0.25f,0,0), timer / moveDuration);
+            transform.position = Vector3.Lerp(outPosition, outPosition + new Vector3(0,0,0.25f), timer / moveDuration);
          
          if(directionToMove == Directions.Up)
             transform.position = Vector3.Lerp(outPosition, outPosition + new Vector3(0,0.25f,0), timer / moveDuration);
@@ -87,10 +87,10 @@ public class ProtoBouleBoulier : MonoBehaviour
          timer += Time.deltaTime;
 
          if(directionToMove == Directions.Left)
-            transform.position = Vector3.Lerp(outPosition, outPosition + new Vector3(0.25f,0,0), timer / moveDuration);
+            transform.position = Vector3.Lerp(outPosition, outPosition + new Vector3(0,0,0.25f), timer / moveDuration);
          
          if(directionToMove == Directions.Right)
-            transform.position = Vector3.Lerp(outPosition, outPosition + new Vector3(-0.25f,0,0), timer / moveDuration);
+            transform.position = Vector3.Lerp(outPosition, outPosition + new Vector3(0,0,-0.25f), timer / moveDuration);
          
          if(directionToMove == Directions.Up)
             transform.position = Vector3.Lerp(outPosition, outPosition + new Vector3(0,-0.25f,0), timer / moveDuration);
