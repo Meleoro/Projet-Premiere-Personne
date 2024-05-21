@@ -80,7 +80,7 @@ namespace Creature
                         {
                             currentWantToMoveLegsCounter += 1;
                         }
-                        else if(VerifyLegNeedsToMove(legs[i], false))
+                        else 
                         {
                             currentWantToMoveLegsCounter += 1;
                             
@@ -96,7 +96,7 @@ namespace Creature
                         {
                             currentWantToMoveLegsCounter += 1;
                         }
-                        else if(VerifyLegNeedsToMove(legs[i], false))
+                        else
                         {
                             currentWantToMoveLegsCounter += 1;
                             
@@ -179,10 +179,10 @@ namespace Creature
                 
                 if (shouldntMove)
                 {
-                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.15f)
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.2f)
                         return true;
 
-                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.15f)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.2f)
                         return true;
                 }
                 
