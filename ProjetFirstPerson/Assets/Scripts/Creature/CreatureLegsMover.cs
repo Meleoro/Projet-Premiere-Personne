@@ -64,11 +64,14 @@ namespace Creature
         private void VerifyLegs()
         {
             currentWantToMoveLegsCounter = 0;
+
+            moveFrontLegs = false;
+            moveBackLegs = false;
+            
+            if (!canMoveLeg) return;
             
             for (int i = 0; i < legs.Count; i++)
             {
-                if (!canMoveLeg) return;
-                
                 ActualiseMovingLegsCounter();
 
                 if (!legs[i].scriptIK.canMove) continue;
@@ -109,8 +112,8 @@ namespace Creature
                 {
                     if (VerifyLegNeedsToMove(legs[i], false) || (legs[i].isFrontLeg && moveFrontLegs) || (!legs[i].isFrontLeg && moveBackLegs))
                     {
-                        moveBackLegs = false;
-                        moveFrontLegs = false;
+                        if(!legs[i].isFrontLeg) moveBackLegs = false;
+                        if(legs[i].isFrontLeg) moveFrontLegs = false;
 
                         Vector3 endPos = GetNextPos(legs[i]);
                         float moveDuration = legs[i].isFrontLeg ? data.frontLegMoveDuration : data.backLegMoveDuration;
@@ -179,11 +182,11 @@ namespace Creature
                 
                 if (shouldntMove)
                 {
-                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.2f)
+                    /*if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.15f)
                         return true;
 
-                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.2f)
-                        return true;
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.15f)
+                        return true;*/
                 }
                 
                 else if (creatureMover.isRunning)
@@ -244,7 +247,7 @@ namespace Creature
                 {
                     float dist = Vector3.Distance(hit.point, currentTargetPos);
 
-                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1f)
+                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1.05f)
                     {
                         currentMax = dist;
                         chosenPos = hit.point;
@@ -263,7 +266,7 @@ namespace Creature
         {
             canMoveLeg = false;
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.1f);
 
             canMoveLeg = true;
         }
