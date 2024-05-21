@@ -23,7 +23,7 @@ namespace Creature
         [HideInInspector] public Vector3 wantedPos;
         [HideInInspector] public Vector3 forcedRot;
         [HideInInspector] public Vector3 forcedPos;
-        [HideInInspector] public bool isRunning;
+        public bool isRunning;
 
         [Header("Private Infos")]
         private CreatureBodyParamData data;
