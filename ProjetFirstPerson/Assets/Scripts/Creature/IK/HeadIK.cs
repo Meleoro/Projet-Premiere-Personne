@@ -16,6 +16,7 @@ namespace IK
         private CreatureBodyParamData data;
         private Vector3 saveBaseNeck;
         private Vector3 saveHeadJoint;
+        private Quaternion saveResetBaseNeck;
         private bool followChara;
 
         [Header("References")] 
@@ -33,6 +34,8 @@ namespace IK
             
             saveBaseNeck = baseNeckTr.localEulerAngles;
             saveHeadJoint = headJointTr.localEulerAngles;
+
+            saveResetBaseNeck = baseNeckTr.rotation;
         }
 
         private void Update()

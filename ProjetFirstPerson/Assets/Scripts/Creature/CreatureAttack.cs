@@ -55,8 +55,7 @@ namespace Creature
             moveScript.StopMoving();
             Vector3 saveTr = transform.position;
             Vector3 charSaveTr = CharacterManager.Instance.transform.position;
-
-
+            
             yield return new WaitForSeconds(attackStartUp);
 
             attackCollider.enabled = true;

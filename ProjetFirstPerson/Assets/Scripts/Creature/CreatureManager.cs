@@ -17,7 +17,7 @@ namespace Creature
         public CreatureLegsParamData legData;
         
         [Header("Debug Parameters")] 
-        [SerializeField] private bool debugIK;
+        public bool debugIK;
         
         [Header("View / Hear Parameters")] 
         [SerializeField] private float earLoudRadius;
@@ -234,7 +234,7 @@ namespace Creature
             {
                 currentState = CreatureState.suspicious;
                 waypointsScript.ChangeDestinationSuspicious(CharacterManager.Instance.transform.position);
-
+                
                 moveScript.StartSuspicion();
             }
 
