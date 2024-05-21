@@ -61,7 +61,7 @@ namespace Creature
             
             if (!stoppedNormalBehavior)
             {
-                if(currentDist < 2f)
+                if(currentDist < 1f)
                 {
                     ReachedWaypoint();
                 }
@@ -72,7 +72,7 @@ namespace Creature
                 currentDist = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
                     new Vector2(placeToGo.x, placeToGo.z));
                 
-                if (currentDist < 1f)
+                if (currentDist < 2f)
                 {
                     ReachedPlaceToGo();
                 }
@@ -169,18 +169,26 @@ namespace Creature
         public void ChangeCurrentWaypointManager(WaypointsManager newWaypointManager)
         {
             waypoints = newWaypointManager.waypoints;
-            transform.position = waypoints[0].transform.position;
+
+            Vector3 moveDir = waypoints[0].transform.position - transform.position;
+            transform.parent.transform.position += moveDir;
+
+            creatureMoverScript.tailIKScript.RebootTargets();
 
             waitTimer = 0;
             currentIndex = 0;
 
+            RestartWaypointBehavior();
             NextWaypoint();
         }
 
         private void ResetCurrentWaypointManager()
         {
-            transform.position = waypoints[0].transform.position;
-            
+            Vector3 moveDir = waypoints[0].transform.position - transform.position;
+            transform.parent.transform.position += moveDir;
+
+            creatureMoverScript.tailIKScript.RebootTargets();
+
             waitTimer = 0;
             currentIndex = 0;
             

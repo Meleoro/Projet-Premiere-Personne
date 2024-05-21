@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 
 public class BoardMenu : MonoBehaviour
 {
@@ -31,6 +31,7 @@ public class BoardMenu : MonoBehaviour
     [Header("Favorite Variable")]
     [SerializeField] private Animator animator;
     [SerializeField] private bool isOpen;
+    [SerializeField] private Image theFavImageSelected;
 
     
     // Update is called once per frame
@@ -88,7 +89,7 @@ public class BoardMenu : MonoBehaviour
         {
             mousePos = Input.mousePosition;
         }
-        if(Input.GetKey(KeyCode.Mouse1) && UIManager.Instance.isUIActive)
+        if(Input.GetKey(KeyCode.Mouse1) && UIManager.Instance.isUIActive && !currentSelect.GetComponent<ElementsOfBoard>().isFavorite)
         {
             if(currentSelect != null)
             {
@@ -106,7 +107,7 @@ public class BoardMenu : MonoBehaviour
         }
 
         // Si un élément de board est séléctionné, il suit le curseur de la souris
-        if(currentSelect != null && currentSelect.CompareTag("MovingUI"))
+        if(currentSelect != null && currentSelect.CompareTag("MovingUI") && !currentSelect.GetComponent<ElementsOfBoard>().isFavorite)
         {
             Transform HisMovingObject = currentSelect.GetComponent<ElementsOfBoard>().MyMovingObject.transform;
             if(!isRotating)
@@ -166,9 +167,10 @@ public class BoardMenu : MonoBehaviour
 
     public void AddFavoritePhoto(GameObject target)
     {
-        target.GetComponent<ElementsOfBoard>().isFavorite = true;
         GameObject contentFavoritePhoto = GameObject.Find("ContentFavoritePhoto");
         Transform favElement = Instantiate(target.transform.parent,new Vector3(0,0,0), Quaternion.identity, contentFavoritePhoto.transform);
+        favElement.GetComponentInChildren<ElementsOfBoard>().isFavorite = true;
+        favElement.GetComponentInChildren<Button>().onClick.AddListener(SelectPhotoToFavoriteMod);
     }
     private void OpenFavoriteMenu()
     {
@@ -186,5 +188,13 @@ public class BoardMenu : MonoBehaviour
                 cameraComponent.LockedCursor(2);
             }
         }
+    }
+
+    void SelectPhotoToFavoriteMod()
+    {
+        GameObject MyButton = EventSystem.current.currentSelectedGameObject;
+        Image myImage = MyButton.transform.parent.GetComponent<SlotAlbum>().SlotImage;
+        theFavImageSelected = GameObject.Find("FavImageSelected").GetComponent<Image>();
+        theFavImageSelected.sprite = myImage.sprite;
     }
 }

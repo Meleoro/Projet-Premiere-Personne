@@ -59,6 +59,8 @@ namespace Creature
 
         #region Verify Functions
 
+        private bool moveFrontLegs;
+        private bool moveBackLegs;
         private void VerifyLegs()
         {
             if (!canMoveLeg) return;
@@ -86,8 +88,11 @@ namespace Creature
 
                 if (!legs[i].isMoving)
                 {
-                    if (VerifyLegNeedsToMove(legs[i]))
+                    if (VerifyLegNeedsToMove(legs[i]) || (legs[i].isFrontLeg && moveFrontLegs) || (!legs[i].isFrontLeg && moveBackLegs))
                     {
+                        moveBackLegs = false;
+                        moveFrontLegs = false;
+
                         Vector3 endPos = GetNextPos(legs[i]);
                         float moveDuration = legs[i].isFrontLeg ? data.frontLegMoveDuration : data.backLegMoveDuration;
                         float currentSpeedRatio = creatureMover.navMeshAgent.speed / creatureMover.agressiveSpeed;
@@ -103,6 +108,16 @@ namespace Creature
                         {
                             StartCoroutine(CooldownMoveLeg());
                             StartCoroutine(MoveLeg(legs[i], endPos, moveDuration * durationModifierByRot * durationModifierBySpeed, YModifierBySpeed * YModifierByRot));
+
+                            if (creatureMover.isRunning && !legs[i].isFrontLeg)
+                            {
+                                moveBackLegs = true;
+                            }
+
+                            if (creatureMover.isRunning && legs[i].isFrontLeg)
+                            {
+                                moveFrontLegs = true;
+                            }
                         }
                     }
                 }
