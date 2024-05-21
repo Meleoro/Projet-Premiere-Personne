@@ -14,6 +14,8 @@ public class PhotoCapture : MonoBehaviour
     [SerializeField] private BoardMenu boardMenu;
     [SerializeField] private CameraTestEthan cameraTestEthan;
     [SerializeField] private Camera mainCam;
+    [SerializeField] private Image SteleChargeImage;
+    [SerializeField] private float ChargeLogsSpeed;
 
     [Header("Photo Taker")]
     [SerializeField] private Image photoDisplayArea;
@@ -56,11 +58,11 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
         ScreenDetectionLogs = GameObject.Find("DetectPhotoScreen");
     }
- /*   void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(mainCam.transform.position, ScreenDetectionLogs.transform.forward * maxDistance);
-    } */
+    }
 
     private void Update()
     {
@@ -71,25 +73,37 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                 StartCoroutine(CapturePhoto());
             }
         }
+
+        // Stele // Raycast
+        if(cameraTestEthan.isAiming)
+        {
+            RaycastHit hit;
+        if (Physics.BoxCast(mainCam.transform.position, ScreenDetectionLogs.transform.localScale, ScreenDetectionLogs.transform.forward, out hit, mainCam.transform.localRotation, maxDistance, layerMask))
+        {
+          //  Debug.Log("Detection Stele");
+            var hitScript = hit.transform.GetComponent<SteleScript>();
+            if(!hitScript.isAlreadyInLogs)
+            {
+                SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime; 
+                if(SteleChargeImage.fillAmount == 1)
+                {
+                    hitScript.isAlreadyInLogs = true;
+                    SteleChargeImage.fillAmount = 0;
+                    string theInfo = hitScript.myInfo;
+                    string theTitle = hitScript.titleLogs;
+                    GetComponent<LogsMenu>().AddLogsToContent(theInfo,theTitle);
+                }
+            }
+        }
+        }
+        else
+        {
+            SteleChargeImage.fillAmount = 0;
+        }
     }
 
     IEnumerator CapturePhoto()
     {
-         // Raycast
-        RaycastHit hit;
-        if (Physics.BoxCast(mainCam.transform.position, ScreenDetectionLogs.transform.localScale, ScreenDetectionLogs.transform.forward, out hit, mainCam.transform.localRotation, maxDistance, layerMask))
-        {
-       //     Debug.Log("Detection Stele");
-            var hitScript = hit.transform.GetComponent<SteleScript>();
-            if(!hitScript.isAlreadyInLogs)
-            {
-                hitScript.isAlreadyInLogs = true;
-                string theInfo = hitScript.myInfo;
-                string theTitle = hitScript.titleLogs;
-                GetComponent<LogsMenu>().AddLogsToContent(theInfo,theTitle);
-            }
-        }
-
         // Take Photos
         if(!uiManager.isUIActive)
         {
