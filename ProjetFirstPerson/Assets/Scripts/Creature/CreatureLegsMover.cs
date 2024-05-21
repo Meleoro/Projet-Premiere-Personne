@@ -211,7 +211,7 @@ namespace Creature
                 {
                     float dist = Vector3.Distance(hit.point, currentTargetPos);
 
-                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1.1f)
+                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1.05f)
                     {
                         currentMax = dist;
                         chosenPos = hit.point;
@@ -230,7 +230,7 @@ namespace Creature
         {
             canMoveLeg = false;
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.1f);
 
             canMoveLeg = true;
         }
