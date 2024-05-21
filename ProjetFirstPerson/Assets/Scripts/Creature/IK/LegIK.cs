@@ -37,6 +37,7 @@ namespace IK
         [SerializeField] private Transform[] foot;
         [SerializeField] private Transform transformRotTrRef;
         [SerializeField] private CreatureMover moveScript;
+        [SerializeField] private CreatureManager managerScript;
 
 
         private void Start()
@@ -78,7 +79,7 @@ namespace IK
                 ApplyIK2(joint0, joint1, inverseArticulation);
             }
             
-            ResetTargetsWhenIdle();
+            ResetTargets();
             ApplySecondaryRot();
             ApplyPatouneRot();
         }
@@ -122,7 +123,7 @@ namespace IK
             float angleJointB;
 
             // If the target is out of range
-            if(lA + lB < lC + 0.015f)
+            if(lA + lB < lC + 0.002f)
             {
                 angleJointA = angleAtan;
                 angleJointB = 0;
@@ -174,13 +175,15 @@ namespace IK
             }
         }
 
-        private void ResetTargetsWhenIdle()
+        private void ResetTargets()
         {
+            if (managerScript.debugIK) return;
+            
             RaycastHit hit;
             
             if (moveScript.navMeshAgent.velocity.magnitude < 0.5f)
             {
-                Vector3 wantedPos = Vector3.Lerp(target.position, joint0.position + transformRotTrRef.TransformVector(saveTargetOriginOffset), Time.deltaTime * 10);
+                Vector3 wantedPos = Vector3.Lerp(target.position, joint0.position + transformRotTrRef.TransformVector(saveTargetOriginOffset), Time.deltaTime * 5);
                 if (Physics.Raycast(target.position + Vector3.up * 1f, -target.up, out hit, 3f,
                         LayerManager.Instance.groundLayer))
                 {
@@ -194,6 +197,11 @@ namespace IK
             {
                 canMove = true;
             }
+
+            Vector3 currentTargetPos = target.position;
+            currentTargetPos = joint0.InverseTransformPoint(currentTargetPos);
+            currentTargetPos = new Vector3(currentTargetPos.x, currentTargetPos.y, 0);
+            target.position = Vector3.Lerp(target.position, joint0.TransformPoint(currentTargetPos), Time.deltaTime * 5);
         }
 
 
