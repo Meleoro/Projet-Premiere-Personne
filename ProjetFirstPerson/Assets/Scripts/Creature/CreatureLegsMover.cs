@@ -63,8 +63,12 @@ namespace Creature
         private bool moveBackLegs;
         private void VerifyLegs()
         {
-            if (!canMoveLeg) return;
             currentWantToMoveLegsCounter = 0;
+
+            moveFrontLegs = false;
+            moveBackLegs = false;
+            
+            if (!canMoveLeg) return;
             
             for (int i = 0; i < legs.Count; i++)
             {
@@ -75,23 +79,41 @@ namespace Creature
                 {
                     if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning && !legs[i].isMoving)
                     {
-                        if (VerifyLegNeedsToMove(legs[i]))
+                        if (VerifyLegNeedsToMove(legs[i], true))
+                        {
+                            currentWantToMoveLegsCounter += 1;
+                        }
+                        else 
+                        {
                             currentWantToMoveLegsCounter += 1;
                             
-                        continue;
+                            continue;
+                        }
                     }
                 }
                 else
                 {
-                    if (currentMovingLegsBack >= maxMovingLegsAmountWalk && !creatureMover.isRunning) continue;
+                    if (currentMovingLegsBack >= maxMovingLegsAmountWalk && !creatureMover.isRunning && !legs[i].isMoving)
+                    {
+                        if (VerifyLegNeedsToMove(legs[i], true))
+                        {
+                            currentWantToMoveLegsCounter += 1;
+                        }
+                        else
+                        {
+                            currentWantToMoveLegsCounter += 1;
+                            
+                            continue;
+                        }
+                    }
                 }
 
                 if (!legs[i].isMoving)
                 {
-                    if (VerifyLegNeedsToMove(legs[i]) || (legs[i].isFrontLeg && moveFrontLegs) || (!legs[i].isFrontLeg && moveBackLegs))
+                    if (VerifyLegNeedsToMove(legs[i], false) || (legs[i].isFrontLeg && moveFrontLegs) || (!legs[i].isFrontLeg && moveBackLegs))
                     {
-                        moveBackLegs = false;
-                        moveFrontLegs = false;
+                        if(!legs[i].isFrontLeg) moveBackLegs = false;
+                        if(legs[i].isFrontLeg) moveFrontLegs = false;
 
                         Vector3 endPos = GetNextPos(legs[i]);
                         float moveDuration = legs[i].isFrontLeg ? data.frontLegMoveDuration : data.backLegMoveDuration;
@@ -145,14 +167,29 @@ namespace Creature
         }
 
         
-        private bool VerifyLegNeedsToMove(Leg currentLeg)
+        private bool VerifyLegNeedsToMove(Leg currentLeg, bool shouldntMove)
         {
             float distOriginTarget = Vector3.Distance(currentLeg.isFrontLeg ?  currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset :
                 currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset, currentLeg.target.position);
 
             if (currentLeg.timerCooldownMove <= 0)
             {
-                if (creatureMover.isRunning)
+                if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z > -0.1f)
+                    return false;
+                
+                if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > -0.1f)
+                    return false;
+                
+                if (shouldntMove)
+                {
+                    /*if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.15f)
+                        return true;
+
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.15f)
+                        return true;*/
+                }
+                
+                else if (creatureMover.isRunning)
                 {
                     if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun)
                         return true;
@@ -163,10 +200,10 @@ namespace Creature
 
                 else
                 {
-                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 0.8f)
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 0.9f)
                         return true;
 
-                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk * 0.8f)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk * 0.9f)
                         return true;
                 }
             }
@@ -190,10 +227,9 @@ namespace Creature
             Vector3 currentTargetPos = currentLeg.target.position;
             Transform transformRef = currentLeg.isFrontLeg ? mainTrRotRefFront : mainTrRotRefBack;
 
-            Vector3 targetTranslatedPos = transformRef.InverseTransformVector(currentLeg.origin.position - currentLeg.target.position);
+            //Vector3 targetTranslatedPos = transformRef.InverseTransformVector(currentLeg.origin.position - currentLeg.target.position);
             Vector3 saveOriginalRot = transformRef.localEulerAngles;
-            transformRef.localEulerAngles = new Vector3(0, Mathf.Atan2(targetTranslatedPos.z, targetTranslatedPos.x) * Mathf.Rad2Deg, 0);
-
+            //transformRef.localEulerAngles = new Vector3(0, Mathf.Atan2(targetTranslatedPos.z, targetTranslatedPos.x) * Mathf.Rad2Deg, 0);
 
             Vector3 raycastDir = transformRef.InverseTransformDirection(Vector3.down).RotateDirection(45, Vector3.right);
 
@@ -211,7 +247,7 @@ namespace Creature
                 {
                     float dist = Vector3.Distance(hit.point, currentTargetPos);
 
-                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1.1f)
+                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1.05f)
                     {
                         currentMax = dist;
                         chosenPos = hit.point;
@@ -230,7 +266,7 @@ namespace Creature
         {
             canMoveLeg = false;
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.1f);
 
             canMoveLeg = true;
         }
@@ -277,7 +313,7 @@ namespace Creature
             }
             //currentLeg.target.position = transform.TransformPoint(localEnd);
 
-            currentLeg.timerCooldownMove = 0.15f;
+            currentLeg.timerCooldownMove = 0.3f;
             currentLeg.isMoving = false;
         }
 

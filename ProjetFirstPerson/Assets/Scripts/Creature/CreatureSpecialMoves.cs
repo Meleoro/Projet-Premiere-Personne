@@ -48,7 +48,7 @@ namespace Creature
 
         private void VerifyHugeTurn()
         {
-            if (isDoingHugeTurn) return;
+            if (isDoingHugeTurn || bodyScript.isRunning) return;
 
             Vector3 dir1 = bodyIKScript.target.position - bodyScript.transform.position;
             Vector3 dir2 = bodyIKScript.bodyJoint.position - bodyIKScript.backJoint.position;

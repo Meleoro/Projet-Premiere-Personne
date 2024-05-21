@@ -29,6 +29,7 @@ public class BoardMenu : MonoBehaviour
     public bool isCreateArrow;
 
     [Header("Favorite Variable")]
+    [SerializeField] public bool favCanBeOpen;
     [SerializeField] private Animator animator;
     [SerializeField] private bool isOpen;
     [SerializeField] private Image theFavImageSelected;
@@ -128,7 +129,7 @@ public class BoardMenu : MonoBehaviour
         }
 
         // OpenFavMenu
-        if(Input.GetKeyDown(KeyCode.F))
+        if(Input.GetKeyDown(KeyCode.F) && favCanBeOpen)
         {
             OpenFavoriteMenu();
         }
