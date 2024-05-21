@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Puzzle;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class ProtoBoulier : MonoBehaviour
 {
+    public PuzzleInteract interactManager;
     public List<bool> currentBool;
     public List<bool> expectedBool;
     public bool isGood;
@@ -40,6 +42,7 @@ public class ProtoBoulier : MonoBehaviour
         if (win)
         {
             anim.Play();
+            interactManager.GetOutInteraction();
             Debug.Log("win");
         }
     }
