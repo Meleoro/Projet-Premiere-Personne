@@ -206,6 +206,8 @@ namespace IK
                         * (legsScript.mainTrRotRefFront.InverseTransformPoint(legsScript.legs[i].origin.position).x > 0 ? -1f : 1f);
 
                     rotXThorax = Mathf.Clamp(rotXThorax, -data.maxThoraxLegXRotation, data.maxThoraxLegXRotation);
+                    
+                    Debug.Log(rotXThorax);
                 }
 
                 else

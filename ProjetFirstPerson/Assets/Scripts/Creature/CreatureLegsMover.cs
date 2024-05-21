@@ -75,20 +75,34 @@ namespace Creature
                 {
                     if (currentMovingLegsFront >= maxMovingLegsAmountWalk && !creatureMover.isRunning && !legs[i].isMoving)
                     {
-                        if (VerifyLegNeedsToMove(legs[i]))
+                        if (VerifyLegNeedsToMove(legs[i], true))
+                        {
                             currentWantToMoveLegsCounter += 1;
-                            
-                        continue;
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                 }
                 else
                 {
-                    if (currentMovingLegsBack >= maxMovingLegsAmountWalk && !creatureMover.isRunning) continue;
+                    if (currentMovingLegsBack >= maxMovingLegsAmountWalk && !creatureMover.isRunning && !legs[i].isMoving)
+                    {
+                        if (VerifyLegNeedsToMove(legs[i], true))
+                        {
+                            currentMovingLegsBack += 1;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
                 }
 
                 if (!legs[i].isMoving)
                 {
-                    if (VerifyLegNeedsToMove(legs[i]) || (legs[i].isFrontLeg && moveFrontLegs) || (!legs[i].isFrontLeg && moveBackLegs))
+                    if (VerifyLegNeedsToMove(legs[i], false) || (legs[i].isFrontLeg && moveFrontLegs) || (!legs[i].isFrontLeg && moveBackLegs))
                     {
                         moveBackLegs = false;
                         moveFrontLegs = false;
@@ -118,6 +132,8 @@ namespace Creature
                             {
                                 moveFrontLegs = true;
                             }
+
+                            ActualiseMovingLegsCounter();
                         }
                     }
                 }
@@ -145,14 +161,23 @@ namespace Creature
         }
 
         
-        private bool VerifyLegNeedsToMove(Leg currentLeg)
+        private bool VerifyLegNeedsToMove(Leg currentLeg, bool shouldntMove)
         {
             float distOriginTarget = Vector3.Distance(currentLeg.isFrontLeg ?  currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset :
                 currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset, currentLeg.target.position);
 
             if (currentLeg.timerCooldownMove <= 0)
             {
-                if (creatureMover.isRunning)
+                if (shouldntMove)
+                {
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.1f)
+                        return true;
+
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.1f)
+                        return true;
+                }
+                
+                else if (creatureMover.isRunning)
                 {
                     if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun)
                         return true;
@@ -163,10 +188,10 @@ namespace Creature
 
                 else
                 {
-                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 0.8f)
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 0.85f)
                         return true;
 
-                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk * 0.8f)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistWalk * 0.85f)
                         return true;
                 }
             }
@@ -210,7 +235,7 @@ namespace Creature
                 {
                     float dist = Vector3.Distance(hit.point, currentTargetPos);
 
-                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1.05f)
+                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1f)
                     {
                         currentMax = dist;
                         chosenPos = hit.point;
@@ -229,7 +254,7 @@ namespace Creature
         {
             canMoveLeg = false;
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.15f);
 
             canMoveLeg = true;
         }
