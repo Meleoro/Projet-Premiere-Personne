@@ -24,6 +24,10 @@ public class CreatureBodyParamData : ScriptableObject
     
     [Header("Legs Effects")]
     public AnimationCurve legsHeightImpactAccordingToSpeed;
+    public int pelvisLegXRotationMultiplicator = 50;
+    public int thorasLegXRotationMultiplicator = 50;
+    public int maxPelvisLegXRotation;
+    public int maxThoraxLegXRotation;
 
     [Header("Others")] 
     [Range(0f, 1f)] public float legCantMoveSpeedMultiplier;

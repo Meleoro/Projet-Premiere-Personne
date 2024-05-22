@@ -16,14 +16,14 @@ namespace IK
         private CreatureBodyParamData data;
         private Vector3 saveBaseNeck;
         private Vector3 saveHeadJoint;
-        private float currentRatio;
+        private Quaternion saveResetBaseNeck;
         private bool followChara;
 
         [Header("References")] 
         [SerializeField] private CreatureMover moveScript;
         [SerializeField] private CreatureLegsMover legsScript;
         [SerializeField] private NavMeshAgent rb;
-        [SerializeField] private Transform baseNeckTr;
+        public Transform baseNeckTr;
         public Transform headJointTr;
         [SerializeField] private Transform target;
 
@@ -34,6 +34,8 @@ namespace IK
             
             saveBaseNeck = baseNeckTr.localEulerAngles;
             saveHeadJoint = headJointTr.localEulerAngles;
+
+            saveResetBaseNeck = baseNeckTr.rotation;
         }
 
         private void Update()

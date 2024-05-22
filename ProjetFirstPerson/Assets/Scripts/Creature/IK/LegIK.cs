@@ -18,14 +18,14 @@ namespace IK
         [Header("Public Infos")] 
         [HideInInspector] public float currentPatouneZRot;
         [HideInInspector] public bool canMove;
-        
+
         [Header("Private Infos")]
+        private float saveOriginalXRot;
         private Vector3 offset1;
         private Vector3 offset2;
         private Vector3 offset3;
         private Vector3[] footOffsetsLocal;
         private Vector3[] footOffsetsWorld;
-        private Vector3 effectorSaveLocalPos;
         private Vector3 saveTargetOriginOffset;
         
         [Header("References")]
@@ -37,10 +37,13 @@ namespace IK
         [SerializeField] private Transform[] foot;
         [SerializeField] private Transform transformRotTrRef;
         [SerializeField] private CreatureMover moveScript;
+        [SerializeField] private CreatureManager managerScript;
 
 
         private void Start()
         {
+            saveOriginalXRot = joint0.eulerAngles.x;
+
             saveTargetOriginOffset = transformRotTrRef.InverseTransformVector(effector.position - joint0.position);
             
             offset1 = joint0.localEulerAngles;
@@ -76,9 +79,14 @@ namespace IK
                 ApplyIK2(joint0, joint1, inverseArticulation);
             }
             
-            ResetTargetsWhenIdle();
+            ResetTargets();
             ApplySecondaryRot();
             ApplyPatouneRot();
+        }
+
+        private void LateUpdate()
+        {
+            joint0.rotation = Quaternion.Euler(saveOriginalXRot, joint0.eulerAngles.y, joint0.eulerAngles.z);
         }
 
 
@@ -115,7 +123,7 @@ namespace IK
             float angleJointB;
 
             // If the target is out of range
-            if(lA + lB < lC + 0.015f)
+            if(lA + lB < lC + 0.002f)
             {
                 angleJointA = angleAtan;
                 angleJointB = 0;
@@ -167,13 +175,15 @@ namespace IK
             }
         }
 
-        private void ResetTargetsWhenIdle()
+        private void ResetTargets()
         {
+            if (managerScript.debugIK) return;
+            
             RaycastHit hit;
             
             if (moveScript.navMeshAgent.velocity.magnitude < 0.5f)
             {
-                Vector3 wantedPos = Vector3.Lerp(target.position, joint0.position + transformRotTrRef.TransformVector(saveTargetOriginOffset), Time.deltaTime * 10);
+                Vector3 wantedPos = Vector3.Lerp(target.position, joint0.position + transformRotTrRef.TransformVector(saveTargetOriginOffset), Time.deltaTime * 5);
                 if (Physics.Raycast(target.position + Vector3.up * 1f, -target.up, out hit, 3f,
                         LayerManager.Instance.groundLayer))
                 {
@@ -187,6 +197,11 @@ namespace IK
             {
                 canMove = true;
             }
+
+            Vector3 currentTargetPos = target.position;
+            currentTargetPos = joint0.InverseTransformPoint(currentTargetPos);
+            currentTargetPos = new Vector3(currentTargetPos.x, currentTargetPos.y, 0);
+            target.position = Vector3.Lerp(target.position, joint0.TransformPoint(currentTargetPos), Time.deltaTime * 5);
         }
 
 

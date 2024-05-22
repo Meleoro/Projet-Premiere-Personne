@@ -20,6 +20,7 @@ namespace Puzzle
         private BoxCollider puzzleCollider;
         private MoveComponent characterMoveScript;
         private CameraComponent characterCameraScript;
+        private BoardMenu boardMenu;
 
 
 
@@ -29,6 +30,8 @@ namespace Puzzle
             characterMoveScript = CharacterManager.Instance.GetComponent<MoveComponent>();
             characterCameraScript = CharacterManager.Instance.GetComponent<CameraComponent>();
             TryGetComponent<BoxCollider>(out puzzleCollider);
+
+            boardMenu = GameObject.Find("TabletteManager").GetComponent<BoardMenu>();
 
             HideUI();
         }
@@ -78,6 +81,8 @@ namespace Puzzle
             characterCameraScript.doFOVEffect = false;
             characterCameraScript.canMove = false;
             characterCameraScript.canRotate = false;
+
+            boardMenu.favCanBeOpen = true;
         }
 
 
@@ -100,6 +105,13 @@ namespace Puzzle
             characterCameraScript.doFOVEffect = true;
             characterCameraScript.canMove = true;
             characterCameraScript.canRotate = true;
+
+            isInRange = false;
+            CharacterManager.Instance.interactibleAtRange = null;
+
+            boardMenu.favCanBeOpen = false;
+
+            HideUI();
         }
 
         #endregion

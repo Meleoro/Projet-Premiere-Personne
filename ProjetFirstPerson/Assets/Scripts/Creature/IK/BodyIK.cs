@@ -14,11 +14,13 @@ namespace IK
 
         [Header("Private Infos")]
         private CreatureBodyParamData data;
+        private CreatureLegsParamData dataLegs;
         private float currentAtan;
         private float currentAtanBack;
+        private float saveThoraxX;
         private Vector3 backLocalPosSave;
         private Vector3[] savesLocalEulers;
-
+        private Quaternion saveRotThorax;
         
         [Header("References")]
         [SerializeReference] public Transform[] bodyJoints;
@@ -27,21 +29,27 @@ namespace IK
         public Transform target;
         public CreatureLegsMover legsScript;
         public CreatureMover moveScript;
+        public HeadIK headIK;
 
 
 
         private void Start()
         {
             data = moveScript.GetComponent<CreatureManager>().bodyData;
-            
+            dataLegs = moveScript.GetComponent<CreatureManager>().legData;
+
             backLocalPosSave = backJoint.localPosition;
             saveOffset2 = backJoint.localEulerAngles;
+
+            saveThoraxX = bodyJoint.eulerAngles.x;
 
             savesLocalEulers = new Vector3[bodyJoints.Length];
             for(int i = 0; i < bodyJoints.Length; i++)
             {
                 savesLocalEulers[i] = bodyJoints[i].localEulerAngles;
             }
+
+            saveRotThorax = bodyJoint.localRotation;
         }
 
 
@@ -50,7 +58,8 @@ namespace IK
             ApplyMainIK2();
 
             ApplyZIK();
-            ApplyLegsEffects();
+
+            RotatePelvis();
         }
 
 
@@ -174,6 +183,54 @@ namespace IK
             float followSpeed = 3;
 
             backJoint.transform.localPosition = Vector3.Lerp(backJoint.transform.localPosition, backLocalPosSave + Vector3.up * backAddedY, Time.deltaTime * followSpeed);
+        }
+
+
+        private float currentRotXPelvis;
+        private float currentRotXThorax;
+        [HideInInspector] public float currentAddedFrontY;
+        [HideInInspector] public float currentAddedBackY;
+        private void RotatePelvis()
+        {
+            float rotXPelvis = 0;
+            float rotXThorax = 0;
+
+            Quaternion saveRotSpine1 = bodyJoints[0].rotation;
+            Quaternion saveRotNeck = headIK.baseNeckTr.rotation;
+
+            for (int i = 0; i < legsScript.legs.Count; i++)
+            {
+                if (legsScript.legs[i].isFrontLeg)
+                {
+                    rotXThorax += legsScript.mainTrRotRefFront.InverseTransformPoint(legsScript.legs[i].target.position).z * data.thorasLegXRotationMultiplicator
+                        * (legsScript.mainTrRotRefFront.InverseTransformPoint(legsScript.legs[i].origin.position).x > 0 ? -1f : 1f);
+
+                    rotXThorax = Mathf.Clamp(rotXThorax, -data.maxThoraxLegXRotation, data.maxThoraxLegXRotation);
+                }
+
+                else
+                {
+                    rotXPelvis += legsScript.mainTrRotRefBack.InverseTransformPoint(legsScript.legs[i].target.position).z * data.pelvisLegXRotationMultiplicator *
+                                  (legsScript.mainTrRotRefBack.InverseTransformPoint(legsScript.legs[i].origin.position).x > 0 ? -1 : 1);
+                    
+                    rotXPelvis = Mathf.Clamp(rotXPelvis, -data.maxPelvisLegXRotation, data.maxPelvisLegXRotation);
+                }
+            }
+
+            currentRotXPelvis = Mathf.Lerp(currentRotXPelvis, rotXPelvis, Time.deltaTime * 10);
+            currentRotXThorax = Mathf.Lerp(currentRotXThorax, rotXThorax, Time.deltaTime * 10);
+
+            backJoint.rotation = Quaternion.Euler(currentRotXPelvis, backJoint.eulerAngles.y, backJoint.eulerAngles.z);
+            bodyJoint.rotation = Quaternion.Euler(saveThoraxX + currentRotXThorax, bodyJoint.eulerAngles.y, bodyJoint.eulerAngles.z);
+            bodyJoint.localRotation = Quaternion.Euler(bodyJoint.localEulerAngles.x, saveRotThorax.eulerAngles.y, saveRotThorax.eulerAngles.z);
+
+            bodyJoints[0].rotation = saveRotSpine1;
+            headIK.baseNeckTr.rotation = saveRotNeck;
+
+            currentAddedBackY = Mathf.Abs(0.3f - Mathf.Abs(currentRotXPelvis) / 40);
+            currentAddedFrontY = Mathf.Abs(0.4f - Mathf.Abs(currentRotXThorax) / 40);
+
+            ApplyLegsEffects();
         }
     }
 }

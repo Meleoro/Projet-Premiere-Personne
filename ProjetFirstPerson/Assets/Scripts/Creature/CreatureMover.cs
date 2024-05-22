@@ -23,7 +23,7 @@ namespace Creature
         [HideInInspector] public Vector3 wantedPos;
         [HideInInspector] public Vector3 forcedRot;
         [HideInInspector] public Vector3 forcedPos;
-        [HideInInspector] public bool isRunning;
+        public bool isRunning;
 
         [Header("Private Infos")]
         private CreatureBodyParamData data;
@@ -36,6 +36,7 @@ namespace Creature
         [SerializeField] private CreatureSpecialMoves specialMovesScript;
         [SerializeField] private Transform targetIKBody;
         [HideInInspector] public NavMeshAgent navMeshAgent;
+        public TailIK tailIKScript;
         private CreatureLegsMover legsScript;
 
 
@@ -86,7 +87,7 @@ namespace Creature
         private void ManageRotation()
         {
             // Y Rotation
-            Vector3 dirToRotateTo = wantedPos - transform.position;
+            Vector3 dirToRotateTo = navMeshAgent.velocity.normalized;
             if (forcedRot != Vector3.zero) dirToRotateTo = forcedRot;
             if (forcedPos != Vector3.zero) dirToRotateTo = forcedPos - transform.position;
             
@@ -124,7 +125,7 @@ namespace Creature
             if(Physics.Raycast(bodyIKScript.backJoint.position + Vector3.up, Vector3.down, out groundHitBack, data.maxHeight + 1, LayerManager.Instance.groundLayer))
             {
                 bodyIKScript.backJoint.position =
-                    Vector3.Lerp(bodyIKScript.backJoint.position, groundHitBack.point + Vector3.up * wantedYBack, Time.deltaTime * 5);
+                    Vector3.Lerp(bodyIKScript.backJoint.position, groundHitBack.point + Vector3.up * (wantedYBack + bodyIKScript.currentAddedBackY), Time.deltaTime * 5);
             }
             else
             {
@@ -135,7 +136,7 @@ namespace Creature
             RaycastHit groundHitFront;
             if (Physics.Raycast(bodyIKScript.bodyJoint.position + Vector3.up, Vector3.down, out groundHitFront, data.maxHeight + 1, LayerManager.Instance.groundLayer))
             {
-                Vector3 wantedPosition = groundHitFront.point + Vector3.up * wantedYFront;
+                Vector3 wantedPosition = groundHitFront.point + Vector3.up * (wantedYFront + bodyIKScript.currentAddedFrontY);
 
                 bodyIKScript.frontYDif = wantedPosition.y - bodyIKScript.bodyJoint.position.y;
             }

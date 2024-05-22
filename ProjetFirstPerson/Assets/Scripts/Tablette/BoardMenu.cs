@@ -4,11 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 
 public class BoardMenu : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private CameraComponent cameraComponent;
+    [SerializeField] private UIManager uIManager;
+
     [Header("List Objects In Board")]
     public List<GameObject> listBoardElement;
     [SerializeField] private GameObject MyBoard;
@@ -25,8 +29,10 @@ public class BoardMenu : MonoBehaviour
     public bool isCreateArrow;
 
     [Header("Favorite Variable")]
+    [SerializeField] public bool favCanBeOpen;
     [SerializeField] private Animator animator;
     [SerializeField] private bool isOpen;
+    [SerializeField] private Image theFavImageSelected;
 
     
     // Update is called once per frame
@@ -84,7 +90,7 @@ public class BoardMenu : MonoBehaviour
         {
             mousePos = Input.mousePosition;
         }
-        if(Input.GetKey(KeyCode.Mouse1) && UIManager.Instance.isUIActive)
+        if(Input.GetKey(KeyCode.Mouse1) && UIManager.Instance.isUIActive && !currentSelect.GetComponent<ElementsOfBoard>().isFavorite)
         {
             if(currentSelect != null)
             {
@@ -102,16 +108,16 @@ public class BoardMenu : MonoBehaviour
         }
 
         // Si un élément de board est séléctionné, il suit le curseur de la souris
-        if(currentSelect != null && currentSelect.CompareTag("MovingUI"))
+        if(currentSelect != null && currentSelect.CompareTag("MovingUI") && !currentSelect.GetComponent<ElementsOfBoard>().isFavorite)
         {
             Transform HisMovingObject = currentSelect.GetComponent<ElementsOfBoard>().MyMovingObject.transform;
-            HisMovingObject.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
-            Debug.Log(currentSelect);
-
             if(!isRotating)
             {
                 HisMovingObject.position = Input.mousePosition;
             }
+
+            // La rotation des éléments du board
+        /*    HisMovingObject.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
             if(HisMovingObject.localScale.x <= 0.1f)
             {
                 HisMovingObject.localScale = new Vector3(0.1f,0.1f,0);
@@ -119,7 +125,13 @@ public class BoardMenu : MonoBehaviour
            else if(HisMovingObject.localScale.x >= 3f)
             {
                 HisMovingObject.localScale = new Vector3(3f,3f,0);
-            }    
+            }     */
+        }
+
+        // OpenFavMenu
+        if(Input.GetKeyDown(KeyCode.F) && favCanBeOpen)
+        {
+            OpenFavoriteMenu();
         }
     }
 
@@ -156,20 +168,34 @@ public class BoardMenu : MonoBehaviour
 
     public void AddFavoritePhoto(GameObject target)
     {
-        target.GetComponent<ElementsOfBoard>().isFavorite = true;
         GameObject contentFavoritePhoto = GameObject.Find("ContentFavoritePhoto");
         Transform favElement = Instantiate(target.transform.parent,new Vector3(0,0,0), Quaternion.identity, contentFavoritePhoto.transform);
+        favElement.GetComponentInChildren<ElementsOfBoard>().isFavorite = true;
+        favElement.GetComponentInChildren<Button>().onClick.AddListener(SelectPhotoToFavoriteMod);
     }
-    public void OpenFavoriteMenu()
+    private void OpenFavoriteMenu()
     {
         isOpen = !isOpen;
         if(isOpen)
         {
             animator.Play("OpenMenu");
+            cameraComponent.LockedCursor(1);
         }
         else
         {
             animator.Play("CloseMenu");
+            if(!uIManager.isUIActive)
+            {
+                cameraComponent.LockedCursor(2);
+            }
         }
+    }
+
+    void SelectPhotoToFavoriteMod()
+    {
+        GameObject MyButton = EventSystem.current.currentSelectedGameObject;
+        Image myImage = MyButton.transform.parent.GetComponent<SlotAlbum>().SlotImage;
+        theFavImageSelected = GameObject.Find("FavImageSelected").GetComponent<Image>();
+        theFavImageSelected.sprite = myImage.sprite;
     }
 }
