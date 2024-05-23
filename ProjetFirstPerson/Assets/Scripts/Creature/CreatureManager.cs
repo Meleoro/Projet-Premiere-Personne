@@ -70,6 +70,8 @@ namespace Creature
         
         private void Start()
         {
+            AudioManager.Instance.SetAudioSource(1, GetComponent<AudioSource>());
+            
             creatureComponents = GetComponents<ICreatureComponent>().ToList();
             waypointsScript = GetComponent<CreatureWaypoints>();
             moveScript = GetComponent<CreatureMover>();
@@ -80,8 +82,7 @@ namespace Creature
 
         private void Update()
         {
-            if(debugIK)
-                return;
+            if(debugIK) return;
             
             // Do AI Part
             float saveSuspision = currentSuspicion;
