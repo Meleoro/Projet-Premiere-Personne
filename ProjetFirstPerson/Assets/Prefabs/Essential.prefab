@@ -1058,9 +1058,11 @@ GameObject:
   - component: {fileID: 449452331996375937}
   - component: {fileID: 8915862274001244478}
   - component: {fileID: 7790875678975416560}
-  - component: {fileID: 5884659323695599222}
   - component: {fileID: 4900164842620828014}
+  - component: {fileID: 5884659323695599222}
   - component: {fileID: 5886289317530086611}
+  - component: {fileID: 2772178734971728449}
+  - component: {fileID: 5456574144194047253}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -1077,7 +1079,7 @@ Transform:
   m_GameObject: {fileID: 806445747457324766}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.1384015, y: 90.43022, z: -109.91736}
+  m_LocalPosition: {x: 6.24, y: 5.1, z: -5.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1251,6 +1253,28 @@ MonoBehaviour:
   maxTiltRot: 3
   sensibilityX: 0.4
   sensibilityY: 0.32
+--- !u!114 &4900164842620828014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806445747457324766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e661c698033e4de45afd8aef28e6c632, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uIManager: {fileID: 4233669605135011329}
+  isAiming: 0
+  isMenu: 0
+  canInOut: 1
+  anim: {fileID: 1817729766411431442}
+  tablette: {fileID: 8740965811557159211}
+  tabletteScreen: {fileID: 5395464222380233878}
+  UIPhotoPlayer: {fileID: 236811682034051555}
+  UIPhotoTablette: {fileID: 1222771067618152420}
+  UIMenuGeneral: {fileID: 5092437456289405273}
 --- !u!54 &5884659323695599222
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1277,29 +1301,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!114 &4900164842620828014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 806445747457324766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e661c698033e4de45afd8aef28e6c632, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uIManager: {fileID: 4233669605135011329}
-  isAiming: 0
-  isMenu: 0
-  canInOut: 1
-  anim: {fileID: 1817729766411431442}
-  tablette: {fileID: 8740965811557159211}
-  tabletteScreen: {fileID: 5395464222380233878}
-  UIPhotoPlayer: {fileID: 236811682034051555}
-  UIPhotoTablette: {fileID: 1222771067618152420}
-  UIMenuGeneral: {fileID: 5092437456289405273}
+  m_CollisionDetection: 2
 --- !u!111 &5886289317530086611
 Animation:
   m_ObjectHideFlags: 0
@@ -1316,6 +1318,110 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!81 &2772178734971728449
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806445747457324766}
+  m_Enabled: 1
+--- !u!82 &5456574144194047253
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806445747457324766}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &909874230503342107
 GameObject:
   m_ObjectHideFlags: 0
@@ -3014,10 +3120,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundList:
   - listSoundIdentities:
-    - audioClip: {fileID: 8300000, guid: 6a64dfb788c64e44ebd99bab21fcc7c6, type: 3}
-      volume: 0
+    - audioClip: {fileID: 8300000, guid: 08a930806b6e4044d9623371beaec070, type: 3}
+      volume: 1
     - audioClip: {fileID: 8300000, guid: 66d18c973fe926345b2968afab6bfdae, type: 3}
+      volume: 1
+    - audioClip: {fileID: 0}
       volume: 0
+    - audioClip: {fileID: 0}
+      volume: 0
+    - audioClip: {fileID: 0}
+      volume: 0
+    - audioClip: {fileID: 8300000, guid: 56ab3c2e7c9c1714089749e75f779515, type: 3}
+      volume: 1
   - listSoundIdentities:
     - audioClip: {fileID: 0}
       volume: 0
@@ -3032,8 +3146,17 @@ MonoBehaviour:
     - audioClip: {fileID: 8300000, guid: 359a00b9bc0fb1749939d7c0a53d3af0, type: 3}
       volume: 0
   - listSoundIdentities: []
+  - listSoundIdentities:
+    - audioClip: {fileID: 0}
+      volume: 0
+    - audioClip: {fileID: 8300000, guid: 875b070f3601e4d469739df99ed153cd, type: 3}
+      volume: 0
+    - audioClip: {fileID: 8300000, guid: 5f75807a42925b148a02d1fa73ad91cd, type: 3}
+      volume: 0
   musicCategoryID: 4
-  audioSources: []
+  audioSources:
+  - {fileID: 5456574144194047253}
+  - {fileID: 0}
   masterVolume: 1
   musicVolume: 1
   sfxVolume: 1
@@ -10225,7 +10348,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7498477984615012159}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &5447193768710624759
 MonoBehaviour:
   m_ObjectHideFlags: 0
