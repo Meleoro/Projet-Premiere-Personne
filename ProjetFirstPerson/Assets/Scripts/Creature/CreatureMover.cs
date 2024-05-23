@@ -179,7 +179,6 @@ namespace Creature
         {
             saveSpeed = 0.1f;
             headIKScript.FollowChara();
-            Debug.Log("Cri");
             
             AudioManager.Instance.PlaySoundOneShot(1, 0, 1);
 

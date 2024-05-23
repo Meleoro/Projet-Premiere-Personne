@@ -231,12 +231,22 @@ namespace Creature
         }
 
 
+        private bool wasAtZeroSus;
+        private float timerZeroSus;
         private void ManageSuspision()
         {
+            if (currentSuspicion != 0)
+            {
+                if (wasAtZeroSus && timerZeroSus <= 0)
+                {
+                    wasAtZeroSus = false;
+                    timerZeroSus = 0.5f;
+                    AudioManager.Instance.PlaySoundOneShot(5, 0, 1);
+                }
+            }
+            
             if(currentSuspicion > suspisionThresholdSuspicieux && currentState == CreatureState.none)
             {
-                Debug.Log(currentState);
-                
                 currentState = CreatureState.suspicious;
                 waypointsScript.ChangeDestinationSuspicious(CharacterManager.Instance.transform.position);
                 
@@ -262,6 +272,11 @@ namespace Creature
             else if(currentSuspicion == 0 && currentState == CreatureState.none)
             {
                 moveScript.StartWalkSpeed();
+
+                if (timerZeroSus > 0)
+                    timerZeroSus -= Time.deltaTime;
+                
+                wasAtZeroSus = true;
             }
         }
 
