@@ -160,6 +160,8 @@ namespace Creature
                 creatureMoverScript.forcedRot = Vector3.zero;
                 didWaypointAction = false;
                 mainScript.currentState = CreatureState.none;
+                
+                AudioManager.Instance.FadeOutAudioSource(2.5f, 1);
 
                 creatureMoverScript.StartWalkSpeed();
             }
