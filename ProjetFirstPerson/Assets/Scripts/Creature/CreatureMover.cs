@@ -198,8 +198,6 @@ namespace Creature
 
         public void StartSuspicion()
         {
-            AudioManager.Instance.PlaySoundContinuous(0, 0, 1);
-            
             saveSpeed = suspicionSpeed;
             isRunning = false;
 

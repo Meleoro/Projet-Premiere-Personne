@@ -44,7 +44,7 @@ namespace Creature
             {
                 legs.Add(new Leg(legsTargets[i], legsOrigins[i], 
                     Vector3.Distance(legsOrigins[i].position, mainTrRotRefBack.position) > Vector3.Distance(legsOrigins[i].position, mainTrRotRefFront.position), 
-                    transform.InverseTransformPoint(legsTargets[i].position), legsIK[i]));
+                    legsIK[i]));
             }
 
             canMoveLeg = true;
@@ -82,10 +82,15 @@ namespace Creature
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
                             currentWantToMoveLegsCounter += 1;
+                            legs[i].target.position = mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos);
+                            
+                            continue;
                         }
-                        else 
+                        else if(VerifyLegNeedsToMove(legs[i], false))
                         {
                             currentWantToMoveLegsCounter += 1;
+                            legs[i].saveLastTargetPos =
+                                mainTrRotRefFront.InverseTransformPoint(legs[i].target.position);
                             
                             continue;
                         }
@@ -98,6 +103,8 @@ namespace Creature
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
                             currentWantToMoveLegsCounter += 1;
+                            
+                            continue;
                         }
                         else
                         {
@@ -182,11 +189,11 @@ namespace Creature
                 
                 if (shouldntMove)
                 {
-                    /*if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.15f)
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.1f)
                         return true;
 
-                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.15f)
-                        return true;*/
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.1f)
+                        return true;
                 }
                 
                 else if (creatureMover.isRunning)
@@ -317,54 +324,6 @@ namespace Creature
             currentLeg.isMoving = false;
         }
 
-        public IEnumerator MoveLegStatic(Leg currentLeg, float moveDuration, float yMultiplier)
-        {
-            currentLeg.isMoving = true;
-
-            AnimationCurve currentYCurve = currentLeg.isFrontLeg ? data.frontLegMovementYCurve : data.backLegMovementYCurve;
-            AnimationCurve currentPatouneCurve = currentLeg.isFrontLeg ? data.frontPatouneRot : data.backPatouneRot;
-            
-            Vector3 posToKeep = mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position);
-            float timer = 0;
-            float patouneMultiplier = currentLeg.isFrontLeg ? data.frontPatouneRotMultiplier : data.backPatouneRotMultiplier;
-            
-            RaycastHit hit;
-
-            while (timer < moveDuration)
-            {
-                timer += Time.deltaTime;
-
-                float wantedY = 0;
-                float addedY = currentYCurve.Evaluate(timer / moveDuration);
-                currentLeg.currentAddedY = addedY;
-
-                if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
-                        LayerManager.Instance.groundLayer))
-                {
-                    wantedY = hit.point.y + addedY * yMultiplier;
-                }
-
-                
-                currentLeg.target.position = mainTrRotRefFront.TransformPoint(posToKeep);
-
-                if (wantedY != 0)
-                    currentLeg.target.position = new Vector3(currentLeg.target.position.x, wantedY, currentLeg.target.position.z);
-                
-                currentLeg.scriptIK.currentPatouneZRot = currentPatouneCurve.Evaluate(timer / moveDuration) * patouneMultiplier;
-
-                yield return null;
-            }
-
-            if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
-                    LayerManager.Instance.groundLayer))
-            {
-                currentLeg.target.position = hit.point;
-            }
-
-            currentLeg.timerCooldownMove = 0.1f;
-            currentLeg.isMoving = false;
-        }
-
         #endregion
     }
 }
@@ -381,15 +340,14 @@ public class Leg
     public float timerCooldownMove;
     public float currentAddedY;
 
-    public Vector3 originalPos;
+    public Vector3 saveLastTargetPos;
 
-    public Leg(Transform target, Transform origin, bool isFrontLeg, Vector3 originalPos, LegIK ik)
+    public Leg(Transform target, Transform origin, bool isFrontLeg, LegIK ik)
     {
         isMoving = false;
         this.isFrontLeg = isFrontLeg;
         this.target = target;
         this.origin = origin;
-        this.originalPos = originalPos;
         scriptIK = ik;
     }
 }

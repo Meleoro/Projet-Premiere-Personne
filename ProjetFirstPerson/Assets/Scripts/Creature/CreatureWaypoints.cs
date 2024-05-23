@@ -67,7 +67,7 @@ namespace Creature
                 }
             }
 
-            else
+            else if(mainScript.currentState != CreatureState.aggressive)
             {
                 currentDist = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
                     new Vector2(placeToGo.x, placeToGo.z));
