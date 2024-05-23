@@ -12,8 +12,8 @@ namespace Creature
         [SerializeField] private float attackDuration;
         [SerializeField] private float attackCooldown;
         
-        [Header("Private Infos")] 
-        private bool attacked;
+        [Header("Public Infos")] 
+        [HideInInspector] public bool attacked;
 
         [Header("References")] 
         [SerializeField] private Collider attackCollider;

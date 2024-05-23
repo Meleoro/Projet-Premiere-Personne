@@ -66,6 +66,7 @@ namespace Creature
         private List<ICreatureComponent> creatureComponents = new List<ICreatureComponent>();
         private CreatureWaypoints waypointsScript;
         private CreatureMover moveScript;
+        private CreatureAttack attackScript;
 
         
         private void Start()
@@ -75,6 +76,7 @@ namespace Creature
             creatureComponents = GetComponents<ICreatureComponent>().ToList();
             waypointsScript = GetComponent<CreatureWaypoints>();
             moveScript = GetComponent<CreatureMover>();
+            attackScript = GetComponent<CreatureAttack>();
 
             CharacterManager.Instance.GetComponent<HealthComponent>().DieAction += () => currentSuspicion = 0;
         }
@@ -91,7 +93,7 @@ namespace Creature
             DoViewAI();
             ManageSuspision();
             
-            if (saveSuspision == currentSuspicion && currentSuspicion > 0)
+            if (saveSuspision == currentSuspicion && currentSuspicion > 0 && !attackScript.attacked)
                 currentSuspicion -= (currentState == CreatureState.aggressive) ? Time.deltaTime * suspisionLostSpeedAggressive : Time.deltaTime * suspisionLostSpeed;
 
             currentSuspicion = Mathf.Clamp(currentSuspicion, 0, maxSuspicion);
@@ -233,8 +235,12 @@ namespace Creature
         {
             if(currentSuspicion > suspisionThresholdSuspicieux && currentState == CreatureState.none)
             {
+                Debug.Log(currentState);
+                
                 currentState = CreatureState.suspicious;
                 waypointsScript.ChangeDestinationSuspicious(CharacterManager.Instance.transform.position);
+                
+                AudioManager.Instance.PlaySoundContinuous(0, 0, 1);
                 
                 moveScript.StartSuspicion();
             }
