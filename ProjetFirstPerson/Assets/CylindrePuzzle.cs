@@ -36,14 +36,16 @@ public class CylindrePuzzle : MonoBehaviour
     {
         if (!isMoving)
         {
-            if ((int)symbol < 3)
+            if ((int)symbol < 3) //tout sauf feuille
             {
-                StartCoroutine(RotateCylinder((int)symbol*-90));
+                Debug.Log("normal");
+                StartCoroutine(RotateCylinder(((int)symbol+1)*-78));
                 symbol += 1;
             }
-            else
+            else // feuille
             {
-                StartCoroutine(RotateCylinder(-270));
+                Debug.Log("last");
+                StartCoroutine(RotateCylinder(20));
                 symbol = 0;
             }  
             manager.CheckIfWin();

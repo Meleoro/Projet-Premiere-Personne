@@ -18,6 +18,15 @@ public class AudioManager : GenericSingletonClass<AudioManager>
     [Range(0f, 1f)] [SerializeField] private float musicVolume;
     [Range(0f, 1f)] [SerializeField] private float sfxVolume;
 
+
+    public void SetAudioSource(int index, AudioSource audioSource)
+    {
+        if (index > audioSources.Count)
+            audioSources.Add(audioSource);
+
+        else
+            audioSources[index] = audioSource;
+    }
     
     
     #region Play Sounds Functions
@@ -28,7 +37,10 @@ public class AudioManager : GenericSingletonClass<AudioManager>
     public void PlaySoundOneShot(int soundId, int categoryId = 0, int audioSourceId = 0, AudioSource audioSource = null)
     {
         AudioSource currentAudioSource = audioSource is not null ? audioSource : audioSources[audioSourceId];
-        currentAudioSource.PlayOneShot(soundList[categoryId].listSoundIdentities[soundId].audioClip, soundList[categoryId].listSoundIdentities[soundId].volume * masterVolume * sfxVolume);
+        currentAudioSource.PlayOneShot(soundList[categoryId].listSoundIdentities[soundId].audioClip, 
+            soundList[categoryId].listSoundIdentities[soundId].volume * masterVolume * sfxVolume);
+        
+        currentAudioSource.volume = soundList[categoryId].listSoundIdentities[soundId].volume * masterVolume * sfxVolume;
     }
     
     /// <summary>

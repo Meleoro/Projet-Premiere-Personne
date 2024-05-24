@@ -179,6 +179,8 @@ namespace Creature
         {
             saveSpeed = 0.1f;
             headIKScript.FollowChara();
+            
+            AudioManager.Instance.PlaySoundOneShot(1, 0, 1);
 
             yield return new WaitForSeconds(waitDuration);
 

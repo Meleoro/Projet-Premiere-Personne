@@ -30,7 +30,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     public Image fadeImage;
 
     [Header("UI Variables")]
-    [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, MapMenu;
+    [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, SettingsMenu;
     [SerializeField] private TextMeshProUGUI schedule;
     [SerializeField] public bool isUIActive = false;
 
@@ -97,11 +97,11 @@ public class UIManager : GenericSingletonClass<UIManager>
         HUDParent.gameObject.SetActive(true);
     }
     #region Button
-    public void CloseAllPanel(bool GeneralBool, bool BoardBool, bool MapBool, bool LogsBool)
+    public void CloseAllPanel(bool GeneralBool, bool BoardBool, bool SettingsBool, bool LogsBool)
     {
         GeneralMenu.SetActive(GeneralBool);
         BoardMenu.SetActive(BoardBool);
-        MapMenu.SetActive(MapBool);
+        SettingsMenu.SetActive(SettingsBool);
         LogsMenu.SetActive(LogsBool);
     }
     public void OpenBoardMenu()
@@ -112,9 +112,9 @@ public class UIManager : GenericSingletonClass<UIManager>
                 isUIActive = true;
             }
     }
-    public void OpenMapMenu()
+    public void OpenSettingsMenu()
     {
-        if (!MapMenu.activeSelf)
+        if (!SettingsMenu.activeSelf)
             {
                 CloseAllPanel(false,false,true,false);
                 isUIActive = true;

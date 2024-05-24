@@ -67,7 +67,7 @@ namespace Creature
                 }
             }
 
-            else
+            else if(mainScript.currentState != CreatureState.aggressive)
             {
                 currentDist = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
                     new Vector2(placeToGo.x, placeToGo.z));
@@ -160,6 +160,8 @@ namespace Creature
                 creatureMoverScript.forcedRot = Vector3.zero;
                 didWaypointAction = false;
                 mainScript.currentState = CreatureState.none;
+                
+                AudioManager.Instance.FadeOutAudioSource(2.5f, 1);
 
                 creatureMoverScript.StartWalkSpeed();
             }

@@ -6,14 +6,10 @@ public class PorteCylindre : MonoBehaviour
 {
     [SerializeField] private List<CylindreSymbols> wantedOrder = new List<CylindreSymbols>();
     [SerializeField] private List<CylindrePuzzle> cylinders = new List<CylindrePuzzle>();
-    private Animation anim;
+    public Animation anim;
     public PuzzleInteract interactScript;
     //public string animationName;
-    void Start()
-    {
-        anim = GetComponent<Animation>();
-    }
-    
+
     public void CheckIfWin()
     {
         bool win = true;
