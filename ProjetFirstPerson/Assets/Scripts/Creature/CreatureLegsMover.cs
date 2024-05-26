@@ -95,6 +95,13 @@ namespace Creature
                             continue;
                         }
                     }
+                    else if (!VerifyLegNeedsToMove(legs[i], false))
+                    {
+                        legs[i].saveLastTargetPos =
+                            mainTrRotRefFront.InverseTransformPoint(legs[i].target.position);
+
+                        continue;
+                    }
                 }
                 else
                 {
@@ -112,6 +119,13 @@ namespace Creature
                             
                             continue;
                         }
+                    }
+                    else if (!VerifyLegNeedsToMove(legs[i], false))
+                    {
+                        legs[i].saveLastTargetPos =
+                            mainTrRotRefFront.InverseTransformPoint(legs[i].target.position);
+
+                        continue;
                     }
                 }
 
