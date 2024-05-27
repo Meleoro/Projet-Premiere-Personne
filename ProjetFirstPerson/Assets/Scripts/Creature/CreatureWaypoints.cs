@@ -67,7 +67,7 @@ namespace Creature
                 }
             }
 
-            else
+            else if(mainScript.currentState != CreatureState.aggressive)
             {
                 currentDist = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
                     new Vector2(placeToGo.x, placeToGo.z));
@@ -173,7 +173,7 @@ namespace Creature
             waypoints = newWaypointManager.waypoints;
 
             Vector3 moveDir = waypoints[0].transform.position - transform.position;
-            transform.parent.transform.position += moveDir;
+            //transform.parent.transform.position += moveDir;
 
             creatureMoverScript.tailIKScript.RebootTargets();
 

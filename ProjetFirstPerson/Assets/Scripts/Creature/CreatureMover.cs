@@ -180,7 +180,7 @@ namespace Creature
             saveSpeed = 0.1f;
             headIKScript.FollowChara();
             
-            AudioManager.Instance.PlaySoundOneShot(1, 0, 1);
+            AudioManager.Instance.PlaySoundOneShot(0, 1, 1);
 
             yield return new WaitForSeconds(waitDuration);
 
@@ -198,8 +198,6 @@ namespace Creature
 
         public void StartSuspicion()
         {
-            AudioManager.Instance.PlaySoundContinuous(0, 0, 1);
-            
             saveSpeed = suspicionSpeed;
             isRunning = false;
 
