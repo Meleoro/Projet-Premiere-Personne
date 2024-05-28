@@ -241,7 +241,7 @@ namespace Creature
                 {
                     wasAtZeroSus = false;
                     timerZeroSus = 0.5f;
-                    AudioManager.Instance.PlaySoundOneShot(5, 0, 1);
+                    AudioManager.Instance.PlaySoundOneShot(0, 5, 1);
                 }
             }
             
