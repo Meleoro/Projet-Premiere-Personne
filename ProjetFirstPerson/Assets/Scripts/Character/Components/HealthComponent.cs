@@ -106,7 +106,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     {
         isInvincible = true;
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2.4f);
 
         isInvincible = false;
     }

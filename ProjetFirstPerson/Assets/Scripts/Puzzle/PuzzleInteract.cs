@@ -32,6 +32,7 @@ namespace Puzzle
             TryGetComponent<BoxCollider>(out puzzleCollider);
 
             boardMenu = GameObject.Find("TabletteManager").GetComponent<BoardMenu>();
+            
 
             HideUI();
         }
@@ -73,10 +74,11 @@ namespace Puzzle
             CharacterManager.Instance.capsule.gameObject.SetActive(false);
 
             UIManager.Instance.HideHUD();
+            UIManager.Instance.InteractHUD.gameObject.SetActive(true);
 
             puzzleCollider.enabled = false;
 
-            characterCameraScript.LockedCursor(0);
+            characterCameraScript.LockedCursor(1);
             characterCameraScript.doMoveFeel = false;
             characterCameraScript.doFOVEffect = false;
             characterCameraScript.canMove = false;
@@ -88,6 +90,10 @@ namespace Puzzle
 
         public void GetOutInteraction()
         {
+            characterCameraScript.LockedCursor(2);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            
             CharacterManager.Instance.isInteracting = false;
             CameraManager.Instance.transform.parent.transform.position = characterCameraScript.wantedCameraPos.position;
             CameraManager.Instance.transform.parent.transform.rotation = Quaternion.identity;
@@ -97,10 +103,11 @@ namespace Puzzle
             CharacterManager.Instance.capsule.gameObject.SetActive(true);
 
             UIManager.Instance.ShowHUD();
+            UIManager.Instance.InteractHUD.gameObject.SetActive(false);
 
             puzzleCollider.enabled = true;
 
-            characterCameraScript.LockedCursor(2);
+           
             characterCameraScript.doMoveFeel = true;
             characterCameraScript.doFOVEffect = true;
             characterCameraScript.canMove = true;
