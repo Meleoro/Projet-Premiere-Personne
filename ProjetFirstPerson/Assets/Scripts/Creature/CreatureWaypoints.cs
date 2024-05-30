@@ -173,7 +173,7 @@ namespace Creature
             waypoints = newWaypointManager.waypoints;
 
             Vector3 moveDir = waypoints[0].transform.position - transform.position;
-            transform.parent.transform.position += moveDir;
+            //transform.parent.transform.position += moveDir;
 
             creatureMoverScript.tailIKScript.RebootTargets();
 

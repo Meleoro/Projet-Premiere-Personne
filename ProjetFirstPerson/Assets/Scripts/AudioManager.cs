@@ -34,7 +34,7 @@ public class AudioManager : GenericSingletonClass<AudioManager>
     /// <summary>
     /// WILL THE PLAY THE SOUND ONLY ONE TIME WITH NORMAL PITCH
     /// </summary>
-    public void PlaySoundOneShot(int soundId, int categoryId = 0, int audioSourceId = 0, AudioSource audioSource = null)
+    public void PlaySoundOneShot(int categoryId, int soundId, int audioSourceId = 0, AudioSource audioSource = null)
     {
         AudioSource currentAudioSource = audioSource is not null ? audioSource : audioSources[audioSourceId];
         currentAudioSource.PlayOneShot(soundList[categoryId].listSoundIdentities[soundId].audioClip, 
@@ -46,7 +46,7 @@ public class AudioManager : GenericSingletonClass<AudioManager>
     /// <summary>
     /// WILL PLAY THE SOUND ENDLESSLY (used to play music)
     /// </summary>
-    public void PlaySoundContinuous(int soundId, int categoryId = 0, int audioSourceId = 0, AudioSource audioSource = null)
+    public void PlaySoundContinuous(int categoryId, int soundId, int audioSourceId = 0, AudioSource audioSource = null)
     {
         AudioSource currentAudioSource = audioSource is not null ? audioSource : audioSources[audioSourceId];
         currentAudioSource.clip = soundList[categoryId].listSoundIdentities[soundId].audioClip;
@@ -72,9 +72,9 @@ public class AudioManager : GenericSingletonClass<AudioManager>
     }
 
 
-    public void PlaySoundFadingIn(float timeToFade, int soundId, int categoryId = 0, int audioSourceId = 0, AudioSource audioSource = null)
+    public void PlaySoundFadingIn(float timeToFade, int categoryId, int soundId, int audioSourceId = 0, AudioSource audioSource = null)
     {
-        PlaySoundContinuous(soundId, categoryId, audioSourceId, audioSource);
+        PlaySoundContinuous(categoryId, soundId, audioSourceId, audioSource);
         
         AudioSource currentAudioSource = audioSource is not null ? audioSource : audioSources[audioSourceId];
         float wantedVolume = currentAudioSource.volume;
@@ -82,7 +82,7 @@ public class AudioManager : GenericSingletonClass<AudioManager>
         StartCoroutine(FadeValue(0, wantedVolume, timeToFade, currentAudioSource));
     }
     
-    public void FadeOutAudioSource(float timeToFade, int audioSourceId = 0, AudioSource audioSource = null)
+    public void FadeOutAudioSource(float timeToFade, int audioSourceId, AudioSource audioSource = null)
     {
         AudioSource currentAudioSource = audioSource is not null ? audioSource : audioSources[audioSourceId];
         StartCoroutine(FadeValue(currentAudioSource.volume, 0, timeToFade, currentAudioSource));

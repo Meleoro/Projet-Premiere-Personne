@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraManager : GenericSingletonClass<CameraManager>
@@ -72,9 +73,9 @@ public class CameraManager : GenericSingletonClass<CameraManager>
             timer += Time.deltaTime;
             
             wantedLocalPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(originalYSave,
-                originalYSave + currentUpDownAmplitude, timer / (currentUpDownDuration * 0.27f)), transform.localPosition.z);
+                originalYSave - currentUpDownAmplitude, timer / (currentUpDownDuration * 0.27f)), transform.localPosition.z);
             
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
         
         timer = 0;
@@ -82,10 +83,10 @@ public class CameraManager : GenericSingletonClass<CameraManager>
         {
             timer += Time.deltaTime;
             
-            wantedLocalPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(originalYSave + currentUpDownAmplitude,
-                originalYSave - currentUpDownAmplitude, timer / (currentUpDownDuration * 0.46f)), transform.localPosition.z);
+            wantedLocalPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(originalYSave - currentUpDownAmplitude,
+                originalYSave + currentUpDownAmplitude, timer / (currentUpDownDuration * 0.46f)), transform.localPosition.z);
             
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
         
         timer = 0;
@@ -93,10 +94,10 @@ public class CameraManager : GenericSingletonClass<CameraManager>
         {
             timer += Time.deltaTime;
             
-            wantedLocalPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(originalYSave - currentUpDownAmplitude,
+            wantedLocalPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(originalYSave + currentUpDownAmplitude,
                 originalYSave, timer / (currentUpDownDuration * 0.27f)), transform.localPosition.z);
             
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
 
         isDoingUpDownEffect = false;
@@ -137,7 +138,7 @@ public class CameraManager : GenericSingletonClass<CameraManager>
             wantedLocalRotation = new Vector3(transform.localRotation.eulerAngles.x, 
                 transform.localRotation.eulerAngles.y, Mathf.Lerp(0, currentLeftRightAmplitude, timer / (currentLeftRightDuration * 0.25f)));
             
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
 
         //yield return new WaitForSeconds(currentLeftRightDuration * 0.1f);
@@ -150,7 +151,7 @@ public class CameraManager : GenericSingletonClass<CameraManager>
             wantedLocalRotation = new Vector3(transform.localRotation.eulerAngles.x, 
                 transform.localRotation.eulerAngles.y, Mathf.Lerp(currentLeftRightAmplitude, -currentLeftRightAmplitude, timer / (currentLeftRightDuration * 0.5f)));
             
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
         
         //yield return new WaitForSeconds(currentLeftRightDuration * 0.1f);
@@ -163,7 +164,7 @@ public class CameraManager : GenericSingletonClass<CameraManager>
             wantedLocalRotation = new Vector3(transform.localRotation.eulerAngles.x, 
                 transform.localRotation.eulerAngles.y, Mathf.Lerp(-currentLeftRightAmplitude, 0, timer / (currentLeftRightDuration * 0.25f)));
             
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
 
         isDoingLeftRightEffect = false;

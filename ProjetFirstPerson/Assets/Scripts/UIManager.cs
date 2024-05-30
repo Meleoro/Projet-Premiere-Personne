@@ -22,6 +22,7 @@ public class UIManager : GenericSingletonClass<UIManager>
 
     [Header("References")]
     [SerializeField] private RectTransform HUDParent;
+    [SerializeField] public RectTransform InteractHUD;
     [SerializeField] private Image interactImage;
     [SerializeField] private Image eyeIconImage;
     [SerializeField] private CameraComponent cameraComponent;
@@ -66,6 +67,7 @@ public class UIManager : GenericSingletonClass<UIManager>
         {
             yield return new WaitForSeconds(0.5f);
             //tabletteAnim.SetBool("in",true);
+            InteractHUD.gameObject.SetActive(false);
             cameraComponent.canRotate = false;
             moveComponent.canMove = false;
             cameraComponent.LockedCursor(1);
@@ -81,6 +83,8 @@ public class UIManager : GenericSingletonClass<UIManager>
                 moveComponent.canMove = true;
                 cameraComponent.LockedCursor(2);
             }
+            else InteractHUD.gameObject.SetActive(true);
+            
             isUIActive = false;
             CloseAllPanel(false,false,false,false);
         } 

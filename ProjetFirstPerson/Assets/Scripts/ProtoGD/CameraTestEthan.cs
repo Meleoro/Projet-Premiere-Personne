@@ -11,7 +11,7 @@ public class CameraTestEthan : MonoBehaviour
     public bool isMenu;
     public bool canInOut;
     public Animator anim;
-    public GameObject tablette;
+    public GameObject NormalHUD;
     public GameObject tabletteScreen;
     public GameObject UIPhotoPlayer;
     public GameObject UIPhotoTablette;
@@ -24,6 +24,7 @@ public class CameraTestEthan : MonoBehaviour
         {
             if (canInOut)
             {
+                uIManager.InteractHUD.gameObject.SetActive(false);
                 UIPhotoTablette.SetActive(true);
                 isAiming = !isAiming;
                 anim.SetBool("in",true);
@@ -35,6 +36,8 @@ public class CameraTestEthan : MonoBehaviour
         {
             if (canInOut)
             {
+                if(CharacterManager.Instance.isInteracting)
+                    uIManager.InteractHUD.gameObject.SetActive(true);
                 UIPhotoPlayer.SetActive(false);
                 UIPhotoTablette.SetActive(false);
                 StopCoroutine(WaitForUI());
@@ -48,6 +51,7 @@ public class CameraTestEthan : MonoBehaviour
         {
             if (isMenu)
             {
+                NormalHUD.SetActive(true);
                 canInOut = true;
                 isMenu = !isMenu;
                 anim.SetBool("in",false);
@@ -56,6 +60,7 @@ public class CameraTestEthan : MonoBehaviour
             }
             else
             {
+                NormalHUD.SetActive(false);
                 UIMenuGeneral.SetActive(true);
                 UIPhotoTablette.SetActive(false);
                 canInOut = false;
