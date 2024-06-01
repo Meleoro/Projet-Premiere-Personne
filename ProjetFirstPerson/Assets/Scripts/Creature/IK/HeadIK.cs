@@ -19,14 +19,21 @@ namespace IK
         private Quaternion saveResetBaseNeck;
         private bool followChara;
 
-        [Header("References")] 
+        [Header("References")]
+        [SerializeField] private CreatureReferences referencesScript;
         [SerializeField] private CreatureMover moveScript;
         [SerializeField] private CreatureLegsMover legsScript;
         [SerializeField] private NavMeshAgent rb;
-        public Transform baseNeckTr;
-        public Transform headJointTr;
+        [HideInInspector] public Transform baseNeckTr;
+        [HideInInspector] public Transform headJointTr;
         [SerializeField] private Transform target;
 
+
+        private void Awake()
+        {
+            baseNeckTr = referencesScript.neckBones[0];
+            headJointTr = referencesScript.neckBones[referencesScript.neckBones.Count - 1];
+        }
 
         private void Start()
         {

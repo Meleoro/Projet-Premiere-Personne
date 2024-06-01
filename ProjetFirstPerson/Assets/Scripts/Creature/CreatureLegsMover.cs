@@ -26,17 +26,29 @@ namespace Creature
         [Header("References")] 
         [SerializeField] private List<LegIK> legsIK;
         [SerializeField] private List<Transform> legsTargets;
-        [SerializeField] private List<Transform> legsOrigins;
-        public Transform mainTrRotRefFront;
-        public Transform mainTrRotRefBack;
+        private List<Transform> legsOrigins;
+        [HideInInspector] public Transform mainTrRotRefFront;
+        [HideInInspector] public Transform mainTrRotRefBack;
         [SerializeField] private BodyIK bodyIK;
         private CreatureMover creatureMover;
+        private CreatureManager creatureManager;
 
 
         private void Awake()
         {
             data = GetComponent<CreatureManager>().legData;
             creatureMover = GetComponent<CreatureMover>();
+            creatureManager = GetComponent<CreatureManager>();
+
+            legsOrigins = new List<Transform>();
+            legsOrigins.Add(creatureManager.creatureRefScript.frontLeg1Bone1);
+            legsOrigins.Add(creatureManager.creatureRefScript.frontLeg2Bone1);
+            legsOrigins.Add(creatureManager.creatureRefScript.backLeg1Bone1);
+            legsOrigins.Add(creatureManager.creatureRefScript.backLeg2Bone1);
+
+            creatureManager.ActualiseTransformRefs();
+            mainTrRotRefBack = creatureManager.backTransformRef;
+            mainTrRotRefFront = creatureManager.frontTransformRef;
 
             legs = new List<Leg>();
             

@@ -23,14 +23,28 @@ namespace IK
         private Quaternion saveRotThorax;
         
         [Header("References")]
-        [SerializeReference] public Transform[] bodyJoints;
-        public Transform bodyJoint;
-        public Transform backJoint;
+        [SerializeReference] private CreatureReferences referencesScript;
+        [HideInInspector] public Transform[] bodyJoints;
+        [HideInInspector] public Transform bodyJoint;
+        [HideInInspector] public Transform backJoint;
         public Transform target;
         public CreatureLegsMover legsScript;
         public CreatureMover moveScript;
         public HeadIK headIK;
 
+
+        private void Awake()
+        {
+            bodyJoint = referencesScript.pantherRibCage;
+            backJoint = referencesScript.pantherPelvis;
+
+            bodyJoints = new Transform[referencesScript.spineBones.Count];
+
+            for(int i = 0; i < referencesScript.spineBones.Count; i++)
+            {
+                bodyJoints[i] = referencesScript.spineBones[i];
+            } 
+        }
 
 
         private void Start()
