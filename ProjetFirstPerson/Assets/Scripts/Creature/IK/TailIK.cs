@@ -20,10 +20,23 @@ namespace IK
         public Vector3[] tailPositionsSave;
         private Vector3[] tailTargets;
 
-        [Header("References")] 
-        [SerializeField] private Transform[] tailJoints;
-        [SerializeField] private Transform tailStart;
+        [Header("References")]
+        [SerializeField] private CreatureReferences referencesScript;
+        private Transform[] tailJoints;
+        private Transform tailStart;
         [SerializeField] private BodyIK bodyIK;
+
+
+        private void Awake()
+        {
+            tailStart = referencesScript.tailBones[0];
+            tailJoints = new Transform[referencesScript.tailBones.Count - 1];
+
+            for (int i = 1; i < referencesScript.tailBones.Count; i++)
+            {
+                tailJoints[i - 1] = referencesScript.tailBones[i];
+            }
+        }
 
 
         private void Start()

@@ -58,17 +58,21 @@ namespace Creature
         public float currentSuspicion;
 
         [Header("Private Infos")]
-
+        private Vector3 saveRotBackTrRef;
+        private Vector3 saveRotFrontTrRef;
 
         [Header("References")] 
         [SerializeField] private HeadIK headIK;
         public CreatureSpecialMoves specialMovesScript;
+        public Transform backTransformRef;
+        public Transform frontTransformRef;
+        public CreatureReferences creatureRefScript;
         private List<ICreatureComponent> creatureComponents = new List<ICreatureComponent>();
         private CreatureWaypoints waypointsScript;
         private CreatureMover moveScript;
         private CreatureAttack attackScript;
 
-        
+
         private void Start()
         {
             AudioManager.Instance.SetAudioSource(1, GetComponent<AudioSource>());
@@ -79,13 +83,18 @@ namespace Creature
             attackScript = GetComponent<CreatureAttack>();
 
             CharacterManager.Instance.GetComponent<HealthComponent>().DieAction += () => currentSuspicion = 0;
-        }
 
+            saveRotBackTrRef = creatureRefScript.pantherPelvis.eulerAngles;
+            saveRotFrontTrRef = creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].eulerAngles;
+        }
+    
 
         private void Update()
         {
             if(debugIK) return;
-            
+
+            ActualiseTransformRefs();
+
             // Do AI Part
             float saveSuspision = currentSuspicion;
             
@@ -109,6 +118,16 @@ namespace Creature
             {
                 creatureComponents[i].ComponentUpdate();
             }
+        }
+
+
+        public void ActualiseTransformRefs()
+        {
+            backTransformRef.position = creatureRefScript.pantherPelvis.position;
+            backTransformRef.rotation = Quaternion.Euler(0, -90, 0) * Quaternion.Euler(-saveRotBackTrRef + creatureRefScript.pantherPelvis.eulerAngles);
+
+            frontTransformRef.position = creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].position;
+            frontTransformRef.rotation = Quaternion.Euler(0, -90, 0) * Quaternion.Euler(-saveRotFrontTrRef + creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].eulerAngles);
         }
 
 

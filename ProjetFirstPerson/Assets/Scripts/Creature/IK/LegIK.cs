@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using Creature;
 using Unity.Collections;
 using UnityEngine;
+using static UnityEditor.Recorder.OutputPath;
 
 namespace IK
 {
     public class LegIK : MonoBehaviour
     {
-        [Header("Parameters")] 
+        [Header("Parameters")]
+        [SerializeField] private int legIndex = 0;
         [SerializeField] private bool inverseArticulation;
         [SerializeField] private bool debug;
         [SerializeField] private float articulationXRotMultiplicator;
@@ -29,19 +31,57 @@ namespace IK
         private Vector3 saveTargetOriginOffset;
         
         [Header("References")]
-        [SerializeField] private Transform joint0;
-        [SerializeField] private Transform joint1;
-        [SerializeField] private Transform joint2;
-        [SerializeField] private Transform effector;
         [SerializeField] private Transform target;
-        [SerializeField] private Transform[] foot;
+        private Transform joint0;
+        private Transform joint1;
+        private Transform joint2;
+        private Transform effector;
+        private Transform[] foot;
         [SerializeField] private Transform transformRotTrRef;
         [SerializeField] private CreatureMover moveScript;
         [SerializeField] private CreatureManager managerScript;
 
 
+        private void Awake()
+        {
+            if(legIndex == 0)
+            {
+                joint0 = managerScript.creatureRefScript.frontLeg1Bone1;
+                joint1 = managerScript.creatureRefScript.frontLeg1Bone2;
+                effector = managerScript.creatureRefScript.frontLeg1Foot;
+            }
+            else if (legIndex == 1)
+            {
+                joint0 = managerScript.creatureRefScript.frontLeg2Bone1;
+                joint1 = managerScript.creatureRefScript.frontLeg2Bone2;
+                effector = managerScript.creatureRefScript.frontLeg2Foot;
+            }
+            else if (legIndex == 2)
+            {
+                joint0 = managerScript.creatureRefScript.backLeg1Bone1;
+                joint1 = managerScript.creatureRefScript.backLeg1Bone2;
+                joint2 = managerScript.creatureRefScript.backLeg1Bone3;
+                effector = managerScript.creatureRefScript.backLeg1Foot;
+            }
+            else if (legIndex == 3)
+            {
+                joint0 = managerScript.creatureRefScript.backLeg2Bone1;
+                joint1 = managerScript.creatureRefScript.backLeg2Bone2;
+                joint2 = managerScript.creatureRefScript.backLeg2Bone3;
+                effector = managerScript.creatureRefScript.backLeg2Foot;
+            }
+
+
+            foot = new Transform[1];
+            foot[0] = effector;
+
+            target.position = effector.position;
+        }
+
         private void Start()
         {
+            transformRotTrRef = managerScript.backTransformRef;
+
             saveOriginalXRot = joint0.eulerAngles.x;
 
             saveTargetOriginOffset = transformRotTrRef.InverseTransformVector(effector.position - joint0.position);
