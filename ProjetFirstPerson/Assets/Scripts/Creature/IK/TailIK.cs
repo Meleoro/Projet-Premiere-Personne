@@ -133,15 +133,30 @@ namespace IK
             for (int i = 0; i < tailJoints.Length; i++)
             {
                 Vector3 currentDir = -tailJoints[i].right;
-                float currentAtan = Mathf.Atan2(currentDir.z, currentDir.x) * Mathf.Rad2Deg;
+                Vector2 vector2Dir1 = new Vector2(currentDir.x, currentDir.z).normalized;
+                float currentAtan = Mathf.Atan2(vector2Dir1.y, vector2Dir1.x) * Mathf.Rad2Deg;
                 
                 Vector3 newDir = tailTargets[i + 1] - tailJoints[i].position;
-                float newAtan = Mathf.Atan2(newDir.z, newDir.x) * Mathf.Rad2Deg;
+                Vector2 vector2Dir2 = new Vector2(newDir.x, newDir.z).normalized;
+                float newAtan = Mathf.Atan2(vector2Dir2.y, vector2Dir2.x) * Mathf.Rad2Deg;
+
+                if (currentAtan < -80f && newAtan > 80f)
+                    newAtan -= 360f;
+                else if (newAtan < -80f && currentAtan > 80f)
+                    newAtan += 360f;
+
+                if (currentAtan < -80f && newAtan > 80f)
+                    currentAtan -= 360f;
+                else if (newAtan < -80f && currentAtan > 80f)
+                    currentAtan += 360f;
 
                 float angle = currentAtan - newAtan;
+                angle = Mathf.Clamp(angle, -90, 90);
+                if (i == 1) Debug.Log(angle);
                 
                 tailJoints[i].localRotation = Quaternion.Lerp(tailJoints[i].localRotation, 
                     Quaternion.Euler(new Vector3(tailJoints[i].localEulerAngles.x, angle, tailJoints[i].localEulerAngles.z)), Time.deltaTime * 5);
+                //tailJoints[i].localEulerAngles = Vector3.Lerp(tailJoints[i].localEulerAngles, new Vector3(tailJoints[i].localEulerAngles.x, angle, tailJoints[i].localEulerAngles.z), Time.deltaTime * 5);
             }
         }
 
