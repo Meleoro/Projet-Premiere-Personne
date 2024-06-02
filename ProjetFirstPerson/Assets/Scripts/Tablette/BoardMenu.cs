@@ -163,6 +163,7 @@ public class BoardMenu : MonoBehaviour
     }
     public void DeleteElement(GameObject parent)
     {
+        AudioManager.Instance.PlaySoundOneShot(1, 18, 1);
         Destroy(parent);
     }
 

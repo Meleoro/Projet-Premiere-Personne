@@ -29,6 +29,7 @@ public class LogsScripts : MonoBehaviour
 
     public void InstantiateMyInfo()
     {
+        
         logsMenu.currentLog = gameObject;
 
         if(!isTraducted)
@@ -48,5 +49,10 @@ public class LogsScripts : MonoBehaviour
         {
             logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
         }
+    }
+    
+    public void PlayUISound()
+    {
+        AudioManager.Instance.PlaySoundOneShot(1, 16, 1);
     }
 }
