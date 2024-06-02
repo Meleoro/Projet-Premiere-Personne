@@ -165,7 +165,6 @@ namespace IK
 
                 float angle = currentAtan - newAtan;
                 angle = Mathf.Clamp(angle, -90, 90);
-                if (i == 1) Debug.Log(angle);
                 
                 tailJoints[i].localRotation = Quaternion.Lerp(tailJoints[i].localRotation, 
                     Quaternion.Euler(new Vector3(tailJoints[i].localEulerAngles.x, angle, tailJoints[i].localEulerAngles.z)), Time.deltaTime * 5);
