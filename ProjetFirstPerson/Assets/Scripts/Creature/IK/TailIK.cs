@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace IK
@@ -18,7 +19,9 @@ namespace IK
         private float wantedAtan;
         public float[] tailHeightsSave;
         public Vector3[] tailPositionsSave;
+        public float[] tailHeightRatioSave;
         private Vector3[] tailTargets;
+        private float saveOriginalHeight;
 
         [Header("References")]
         [SerializeField] private CreatureReferences referencesScript;
@@ -66,6 +69,9 @@ namespace IK
             tailPositionsSave = new Vector3[tailJoints.Length + 1];
             tailHeightsSave = new float[tailJoints.Length + 1];
             tailTargets = new Vector3[tailJoints.Length + 1];
+            tailHeightRatioSave = new float[tailJoints.Length + 1];
+
+            saveOriginalHeight = (tailStart.transform.position.y - tailJoints[tailJoints.Length - 1].position.y);
 
             for (int i = 0; i < tailJoints.Length; i++)
             {
@@ -76,6 +82,8 @@ namespace IK
                 if (Physics.Raycast(tailJoints[i].position + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
                 {
                     tailHeightsSave[i] = Vector3.Distance(tailJoints[i].position, hit.point);
+
+                    tailHeightRatioSave[i] = tailHeightsSave[i] / saveOriginalHeight;
                 }
             }
             
@@ -86,6 +94,8 @@ namespace IK
                 tailStart.InverseTransformPoint(tailTargets[tailTargets.Length - 1]);
             
             tailHeightsSave[tailTargets.Length - 1] = tailHeightsSave[tailTargets.Length - 2];
+
+            tailHeightRatioSave[tailJoints.Length - 1] = 0;
         }
 
 
@@ -101,16 +111,23 @@ namespace IK
         private void ActualiseTargets()
         {
             Vector3 saveTailStartAngles = tailStart.eulerAngles;
-            
+
+            RaycastHit hit;
+            float maxHeight = 0;
+            if (Physics.Raycast(tailStart.position + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
+            {
+                maxHeight = Vector3.Distance(hit.point, tailStart.position);
+            }
+
             for (int i = 0; i < tailTargets.Length; i++)
             {
-                tailTargets[i] = Vector3.Lerp(tailTargets[i], tailStart.TransformPoint(tailPositionsSave[i]), Time.deltaTime * (5 - (i / ((float)tailTargets.Length) * 2f)));
+                Vector3 wantedGlobalPos = Vector3.Lerp(tailTargets[i], tailStart.TransformPoint(tailPositionsSave[i] + new Vector3(0, 0, 1f * (saveOriginalHeight - maxHeight))), Time.deltaTime * (5 - (i / ((float)tailTargets.Length) * 2f)));
 
-                RaycastHit hit;
+                tailTargets[i] = new Vector3(wantedGlobalPos.x, tailTargets[i].y, wantedGlobalPos.z);
+
                 if (Physics.Raycast(tailTargets[i] + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
                 {
-                    Vector3 wantedPos = tailTargets[i] +
-                                        (-tailTargets[i] + hit.point + new Vector3(0, tailHeightsSave[i], 0));
+                    Vector3 wantedPos = hit.point + new Vector3(0, maxHeight * tailHeightRatioSave[i], 0);
                     tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, wantedPos.y, Time.deltaTime * 5);
                 }
 
