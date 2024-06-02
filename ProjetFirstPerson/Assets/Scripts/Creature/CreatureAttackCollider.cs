@@ -14,13 +14,13 @@ public class CreatureAttackCollider : MonoBehaviour
 
     private void Start()
     {
-        saveOffset = creatureTrRef.InverseTransformPoint(transform.position);
+        //0saveOffset = creatureTrRef.InverseTransformPoint(transform.position);
     }
 
     private void Update()
     {
-        transform.position = creatureTrRef.TransformPoint(saveOffset);
-        transform.rotation = creatureTrRef.rotation;
+        //transform.position = creatureTrRef.TransformPoint(saveOffset);
+        //transform.rotation = creatureTrRef.rotation;
     }
 
 
