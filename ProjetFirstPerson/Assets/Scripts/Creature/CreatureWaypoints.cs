@@ -262,7 +262,7 @@ namespace Creature
 
             if (path.status != NavMeshPathStatus.PathComplete)
             {
-                creatureMoverScript.wantedPos = saveLastPlace;
+                creatureMoverScript.wantedPos = saveLastPlace + (-saveLastPlace + transform.position).normalized * 5;
             }
             else 
             {
