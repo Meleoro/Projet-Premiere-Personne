@@ -104,7 +104,12 @@ public class SettingsMenu : MonoBehaviour
    // Debug.Log(enable);
     // Set the PlayerPrefs equal to our current state.
     PlayerPrefs.SetInt("FullScreen", enable);
-    } 
+    }
+
+    public void PlayUISound()
+    {
+        AudioManager.Instance.PlaySoundOneShot(1, 16, 1);
+    }
 
 }
 

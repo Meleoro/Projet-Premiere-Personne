@@ -53,6 +53,9 @@ public class StaminaComponent : MonoBehaviour, ICharacterComponent
             {
                 wasRunning = false;
                 regainTimer = timeBeforeRegain;
+
+                if(currentStamina <= 0)
+                    AudioManager.Instance.PlaySoundOneShot(1, 5, 0);
             }
 
             if (regainTimer <= 0)

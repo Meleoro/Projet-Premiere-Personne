@@ -30,6 +30,13 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private TextMeshProUGUI interactText;
     public Image fadeImage;
 
+    [Header("References Menu Général Tablette")]
+    [SerializeField] private HealthComponent playerHealth;
+    [SerializeField] private TextMeshProUGUI textHealth;
+    [SerializeField] private GameObject fullLifeBar;
+    [SerializeField] private GameObject halfLifeBar;
+    
+    
     [Header("UI Variables")]
     [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, SettingsMenu;
     [SerializeField] private TextMeshProUGUI schedule;
@@ -65,6 +72,18 @@ public class UIManager : GenericSingletonClass<UIManager>
     {
         if(!isUIActive)
         {
+            if (playerHealth.isHurted)
+            {
+                textHealth.text = "État de Santé : Critique";
+                fullLifeBar.SetActive(false);
+                halfLifeBar.SetActive(true);
+            }
+            else
+            {
+                textHealth.text = "État de Santé : Bon";
+                fullLifeBar.SetActive(true);
+                halfLifeBar.SetActive(false);
+            }
             yield return new WaitForSeconds(0.5f);
             //tabletteAnim.SetBool("in",true);
             InteractHUD.gameObject.SetActive(false);
