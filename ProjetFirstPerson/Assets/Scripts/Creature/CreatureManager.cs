@@ -290,7 +290,7 @@ namespace Creature
                 if (wasAtZeroSus && timerZeroSus <= 0)
                 {
                     wasAtZeroSus = false;
-                    timerZeroSus = 0.5f;
+                    timerZeroSus = 3.5f;
                     AudioManager.Instance.PlaySoundOneShot(0, 5, 1);
                 }
             }
