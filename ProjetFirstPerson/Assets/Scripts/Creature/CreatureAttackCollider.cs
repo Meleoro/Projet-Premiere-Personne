@@ -8,21 +8,6 @@ public class CreatureAttackCollider : MonoBehaviour
     [Header("Private Infos")]
     private Vector3 saveOffset;
 
-    [Header("References")]
-    [SerializeField] private Transform creatureTrRef;
-
-
-    private void Start()
-    {
-        saveOffset = creatureTrRef.InverseTransformPoint(transform.position);
-    }
-
-    private void Update()
-    {
-        transform.position = creatureTrRef.TransformPoint(saveOffset);
-        transform.rotation = creatureTrRef.rotation;
-    }
-
 
 
     private void OnTriggerEnter(Collider other)
@@ -31,7 +16,12 @@ public class CreatureAttackCollider : MonoBehaviour
         {
             if (CharacterManager.Instance.gameObject.TryGetComponent<HealthComponent>(out HealthComponent healthScript))
             {
-                healthScript.TakeDamage();
+                RaycastHit hit;
+                if (!Physics.Raycast(transform.parent.position, (CharacterManager.Instance.transform.position - transform.parent.position).normalized, out hit, 
+                    Vector3.Distance(CharacterManager.Instance.transform.position, transform.parent.position), LayerManager.Instance.groundLayer))
+                {
+                    healthScript.TakeDamage();
+                }
             }
         }
     }

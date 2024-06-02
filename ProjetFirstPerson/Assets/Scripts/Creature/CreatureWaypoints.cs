@@ -168,12 +168,15 @@ namespace Creature
         }
 
 
-        public void ChangeCurrentWaypointManager(WaypointsManager newWaypointManager)
+        public void ChangeCurrentWaypointManager(WaypointsManager newWaypointManager, bool tp)
         {
             waypoints = newWaypointManager.waypoints;
 
-            Vector3 moveDir = waypoints[0].transform.position - transform.position;
-            //transform.parent.transform.position += moveDir;
+            if (tp)
+            {
+                Vector3 moveDir = waypoints[0].transform.position - transform.position;
+                transform.parent.transform.position += moveDir;
+            }
 
             creatureMoverScript.tailIKScript.RebootTargets();
 
@@ -186,8 +189,12 @@ namespace Creature
 
         private void ResetCurrentWaypointManager()
         {
+            creatureMoverScript.navMeshAgent.enabled = false;
+
             Vector3 moveDir = waypoints[0].transform.position - transform.position;
             transform.parent.transform.position += moveDir;
+
+            creatureMoverScript.navMeshAgent.enabled = true;
 
             creatureMoverScript.tailIKScript.RebootTargets();
 
@@ -255,7 +262,7 @@ namespace Creature
 
             if (path.status != NavMeshPathStatus.PathComplete)
             {
-                creatureMoverScript.wantedPos = saveLastPlace;
+                creatureMoverScript.wantedPos = saveLastPlace + (-saveLastPlace + transform.position).normalized * 5;
             }
             else 
             {
