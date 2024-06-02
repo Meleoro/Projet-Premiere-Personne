@@ -5,6 +5,7 @@ using System.Linq;
 using IK;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 
 
@@ -141,6 +142,8 @@ namespace Creature
                 case NoiseType.Quiet:
                     if (currentDist < earLowRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneak;
                         else
@@ -151,6 +154,8 @@ namespace Creature
                 case NoiseType.Normal:
                     if (currentDist < earLowRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedMarche * 2;
                         else
@@ -158,6 +163,8 @@ namespace Creature
                     }
                     else if(currentDist < earNormalRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedMarche;
                         else
@@ -168,6 +175,8 @@ namespace Creature
                 case NoiseType.Loud:
                     if (currentDist < earLowRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedCourse * 3;
                         else
@@ -175,6 +184,8 @@ namespace Creature
                     }
                     else if (currentDist < earNormalRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedCourse * 2;
                         else
@@ -182,6 +193,8 @@ namespace Creature
                     }
                     else if(currentDist < earLoudRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedCourse;
                         else
@@ -194,6 +207,10 @@ namespace Creature
         
         private void DoViewAI()
         {
+            UIManager.Instance.isInCreatureView = false;
+
+            if (!GetIsPlayerSafe()) return;
+
             Quaternion saveRot = headIK.headJointTr.rotation;
             
             headIK.headJointTr.rotation = Quaternion.Euler( headIK.headJointTr.rotation.eulerAngles.x,
@@ -202,7 +219,6 @@ namespace Creature
             
             Vector3 currentDir = - headIK.headJointTr.right;
             bool isInPeripheral = false;
-            UIManager.Instance.isInCreatureView = false;
             headIK.StopFollowChara();
             
             for (int x = 0; x < visionRadiusX; x+= raycastDensity)
@@ -248,6 +264,20 @@ namespace Creature
             }
 
             headIK.headJointTr.rotation = saveRot;
+        }
+
+
+        private bool GetIsPlayerSafe()
+        {
+            NavMeshPath path = new NavMeshPath();
+            bool isOkay = moveScript.navMeshAgent.CalculatePath(CharacterManager.Instance.transform.position, path);
+
+            if (path.status == NavMeshPathStatus.PathComplete)
+            {
+                return true;
+            }
+
+            return false;
         }
 
 
