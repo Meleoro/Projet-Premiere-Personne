@@ -94,7 +94,8 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                         SteleChargeImage.fillAmount = 0;
                         string theInfo = hitScript.myInfo;
                         string theTitle = hitScript.titleLogs;
-                        GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle);
+                        GetComponent<LogsMenu>().TraductionButton.gameObject.SetActive(true);
+                        GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle,false);
                     }
                 }
             }

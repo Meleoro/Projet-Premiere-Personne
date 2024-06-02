@@ -25,7 +25,7 @@ public class SteleScript : MonoBehaviour
         {
             AudioManager.Instance.PlaySoundOneShot(1, 17, 0);
             isAlreadyInLogs = true;
-            logsMenu.AddLogsToContent(myInfo,titleLogs);
+            logsMenu.AddLogsToContent(myInfo,titleLogs,true);
         }
     }
     

@@ -9,14 +9,16 @@ public class LogsMenu : MonoBehaviour
     [SerializeField] private GameObject ContentLog;
     [SerializeField] private GameObject LogPrefab;
     [SerializeField] public GameObject currentLog;
+    [SerializeField] public Button TraductionButton;
 
     [Header("Lorem ipsum")]
     [SerializeField] string characters = "abcdefghijklmnopqrstuvwyz0123456789";
     [SerializeField] private int loremIpsumLenghtValue = 150;
     [SerializeField] private string myRandomString;
 
-    public void AddLogsToContent(string info, string title)
+    public void AddLogsToContent(string info, string title, bool isTriggered)
     {
+        TraductionButton.gameObject.SetActive(true);
         GameObject NewLog = Instantiate(LogPrefab,Vector3.zero,Quaternion.Euler(0,0,0),ContentLog.transform);
         NewLog.GetComponent<LogsScripts>().TitleArea.text = title;
 
@@ -24,9 +26,18 @@ public class LogsMenu : MonoBehaviour
         {
             myRandomString += characters[Random.Range(0, characters.Length)];
         }
-        NewLog.GetComponent<LogsScripts>().codedInfo = myRandomString;
-        myRandomString = null;
-        NewLog.GetComponent<LogsScripts>().MyInformation = info;
+        if(isTriggered)
+        {
+            NewLog.GetComponent<LogsScripts>().codedInfo = info;
+            NewLog.GetComponent<LogsScripts>().MyInformation = info;
+            NewLog.GetComponent<LogsScripts>().isTraducted = true;
+        }
+        else
+        {
+            NewLog.GetComponent<LogsScripts>().codedInfo = myRandomString;
+            myRandomString = null;
+            NewLog.GetComponent<LogsScripts>().MyInformation = info;
+        }
     }
 
     void Update()
