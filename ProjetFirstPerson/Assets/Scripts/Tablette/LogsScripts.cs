@@ -40,6 +40,7 @@ public class LogsScripts : MonoBehaviour
     {
         
         logsMenu.currentLog = gameObject;
+        transform.GetChild(1).gameObject.SetActive(false);
 
         if(!isTraducted)
         {
