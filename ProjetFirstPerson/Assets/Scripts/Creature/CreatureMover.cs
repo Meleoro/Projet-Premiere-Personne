@@ -95,7 +95,7 @@ namespace Creature
             currentDir = currentDir.normalized * 4;
 
             if (Vector3.Angle(currentDir, dirToRotateTo) > 140)
-                StartCoroutine(specialMovesScript.DoHugeTurnCoroutineFar(Vector3.Distance(wantedPos, transform.position) < 3));
+                StartCoroutine(specialMovesScript.DoHugeTurnCoroutine(Vector3.Distance(wantedPos, transform.position) < 3));
 
             currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo, 1, 1);
             

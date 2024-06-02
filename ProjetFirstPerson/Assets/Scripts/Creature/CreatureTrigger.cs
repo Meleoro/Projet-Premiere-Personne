@@ -28,7 +28,11 @@ namespace Creature
         {
             if (newWaypointsManager != null)
             {
-                creatureToMove.ChangeCurrentWaypointManager(newWaypointsManager);
+                if(placeToTP != null)
+                    creatureToMove.ChangeCurrentWaypointManager(newWaypointsManager, true);
+
+                else
+                    creatureToMove.ChangeCurrentWaypointManager(newWaypointsManager, false);
             }
 
             if (placeToTP != null)

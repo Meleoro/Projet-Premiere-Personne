@@ -91,9 +91,9 @@ namespace Creature
 
         private void Update()
         {
-            if(debugIK) return;
-
             ActualiseTransformRefs();
+
+            if (debugIK) return;
 
             // Do AI Part
             float saveSuspision = currentSuspicion;
@@ -124,10 +124,11 @@ namespace Creature
         public void ActualiseTransformRefs()
         {
             backTransformRef.position = creatureRefScript.pantherPelvis.position;
-            backTransformRef.rotation = Quaternion.Euler(0, -90, 0) * Quaternion.Euler(-saveRotBackTrRef + creatureRefScript.pantherPelvis.eulerAngles);
+            backTransformRef.rotation = Quaternion.Euler(0, -90, 0) * Quaternion.Euler(new Vector3(0, (-saveRotBackTrRef + creatureRefScript.pantherPelvis.eulerAngles).y, 0));
 
             frontTransformRef.position = creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].position;
-            frontTransformRef.rotation = Quaternion.Euler(0, -90, 0) * Quaternion.Euler(-saveRotFrontTrRef + creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].eulerAngles);
+            frontTransformRef.rotation = Quaternion.Euler(0, -90, 0) * Quaternion.Euler(new Vector3(0, 
+                (-saveRotFrontTrRef + creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].eulerAngles).y, 0));
         }
 
 
@@ -331,16 +332,17 @@ namespace Creature
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(headIK.headJointTr.position, earLoudRadius);
+            Gizmos.DrawWireSphere(creatureRefScript.neckBones[creatureRefScript.neckBones.Count - 1].position, earLoudRadius);
             
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(headIK.headJointTr.position, earNormalRadius);
+            Gizmos.DrawWireSphere(creatureRefScript.neckBones[creatureRefScript.neckBones.Count - 1].position, earNormalRadius);
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(headIK.headJointTr.position, earLowRadius);
+            Gizmos.DrawWireSphere(creatureRefScript.neckBones[creatureRefScript.neckBones.Count - 1].position, earLowRadius);
 
             Gizmos.color = Color.white;
-            Gizmos.matrix = Matrix4x4.TRS(headIK.headJointTr.position, headIK.headJointTr.rotation * Quaternion.Euler(0, -90, 0), Vector3.one);
+            Gizmos.matrix = Matrix4x4.TRS(creatureRefScript.neckBones[creatureRefScript.neckBones.Count - 1].position, 
+                creatureRefScript.neckBones[creatureRefScript.neckBones.Count - 1].rotation * Quaternion.Euler(0, -90, 0), Vector3.one);
             Gizmos.DrawFrustum(Vector3.zero, visionRadiusX, visionRange, 0, (float)-visionRadiusY / visionRadiusX);
         }
 

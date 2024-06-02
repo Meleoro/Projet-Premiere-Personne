@@ -55,67 +55,47 @@ namespace Creature
             
             if (Vector3.Angle(dir1, dir2) > 150)
             {
-                StartCoroutine(DoHugeTurnCoroutineFar(Vector3.Distance(bodyScript.wantedPos, bodyScript.transform.position) < 3));
+                StartCoroutine(DoHugeTurnCoroutine(Vector3.Distance(bodyScript.wantedPos, bodyScript.transform.position) < 3));
             }
         }
 
 
-        public IEnumerator DoHugeTurnCoroutineFar(bool surPlace)
+        public IEnumerator DoHugeTurnCoroutine(bool surPlace)
         {
+            if(surPlace) yield break;
+
             float timer = 0;
-            float dist = 2f;
-            float duration = 0.9f;
             
             isDoingHugeTurn = true;
             Vector3 originalPos = legsScript.transform.position;
             legsScript.maxMovingLegsAmountWalk = 1;
 
-            Vector3 p1 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-0.7f, 0, 0.9f) * dist);
-            Vector3 p2 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-1f, 0, 0.3f) * dist);
-            Vector3 p3 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-0.6f, 0, 0f) * dist);
-
+            bodyScript.forcedPos = originalPos;
             if (surPlace)
             {
-                dist = dist * 0.75f;
-                duration = duration * 1f;
-                
-                p1 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(-0.25f, 0, 0.75f) * dist);
-                p2 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(0.25f, 0, 0.5f) * dist);
-                p3 = legsScript.mainTrRotRefBack.TransformPoint(new Vector3(0f, 0, 0f) * dist);
-            }
-            
-            Debug.DrawLine(originalPos, p1, Color.green, 1);
-            Debug.DrawLine(p1, p2, Color.green, 1);
-            Debug.DrawLine(p2, p3, Color.green, 1);
+                while (timer < 2.5f)
+                {
+                    timer += Time.deltaTime;
+                    bodyScript.forcedPos = legsScript.mainTrRotRefFront.TransformPoint(new Vector3(-0.5f, 0, 0.5f));
 
-            bodyScript.forcedPos = originalPos;
-            
-            while (timer < duration)
-            {
-                timer += Time.deltaTime;
-                bodyScript.forcedPos = Vector3.Lerp(originalPos, p1, timer);
-                
-                yield return new WaitForSeconds(Time.deltaTime);
+                    Debug.DrawLine(bodyScript.forcedPos, transform.position, Color.green, 1);
+
+                    yield return null;
+                }
             }
-            
-            timer = 0;
-            while (timer < duration)
+
+            else
             {
-                timer += Time.deltaTime;
-                bodyScript.forcedPos = Vector3.Lerp(p1, p2, timer);
-                
-                yield return new WaitForSeconds(Time.deltaTime);
+                while (timer < 2.5f)
+                {
+                    timer += Time.deltaTime;
+                    bodyScript.forcedPos = legsScript.mainTrRotRefFront.TransformPoint(new Vector3(-0.5f, 0, 0.5f));
+
+                    Debug.DrawLine(bodyScript.forcedPos, transform.position, Color.green, 1);
+
+                    yield return null;
+                }
             }
-            
-            timer = 0;
-            while (timer < duration)
-            {
-                timer += Time.deltaTime;
-                bodyScript.forcedPos = Vector3.Lerp(p2, p3, timer);
-                
-                yield return new WaitForSeconds(Time.deltaTime);
-            }
-            
 
             legsScript.maxMovingLegsAmountWalk = 1;
             bodyScript.forcedPos = Vector3.zero;

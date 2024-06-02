@@ -221,9 +221,9 @@ namespace IK
             
             RaycastHit hit;
             
-            if (moveScript.navMeshAgent.velocity.magnitude < 0.25f)
+            if (moveScript.navMeshAgent.velocity.magnitude < 0.25)
             {
-                Vector3 wantedPos = Vector3.Lerp(target.position, joint0.position + transformRotTrRef.TransformVector(saveTargetOriginOffset), Time.deltaTime * 2.5f);
+                Vector3 wantedPos = Vector3.Lerp(target.position, joint0.position + transformRotTrRef.TransformVector(saveTargetOriginOffset), Time.deltaTime * 2f);
                 if (Physics.Raycast(target.position + Vector3.up * 1f, -target.up, out hit, 3f,
                         LayerManager.Instance.groundLayer))
                 {
@@ -241,7 +241,7 @@ namespace IK
             Vector3 currentTargetPos = target.position;
             currentTargetPos = joint0.InverseTransformPoint(currentTargetPos);
             currentTargetPos = new Vector3(currentTargetPos.x, currentTargetPos.y, 0);
-            target.position = Vector3.Lerp(target.position, joint0.TransformPoint(currentTargetPos), Time.deltaTime * 20);
+            target.position = Vector3.Lerp(target.position, joint0.TransformPoint(currentTargetPos), Time.deltaTime * 10);
         }
 
 
