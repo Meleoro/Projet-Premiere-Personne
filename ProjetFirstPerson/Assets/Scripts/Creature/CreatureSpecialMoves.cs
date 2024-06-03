@@ -62,8 +62,6 @@ namespace Creature
 
         public IEnumerator DoHugeTurnCoroutine(bool surPlace)
         {
-            if(surPlace) yield break;
-
             float timer = 0;
             
             isDoingHugeTurn = true;
@@ -73,12 +71,17 @@ namespace Creature
             bodyScript.forcedPos = originalPos;
             if (surPlace)
             {
-                while (timer < 2.5f)
+                bodyScript.forcedPos = legsScript.mainTrRotRefFront.position + (legsScript.mainTrRotRefFront.position - legsScript.mainTrRotRefBack.position);
+                Vector3 wantedDir = bodyScript.targetIKBody.position - bodyScript.transform.position;
+                Vector3 startDir = legsScript.mainTrRotRefFront.position - legsScript.mainTrRotRefBack.position;
+                Vector3 currentDir;
+
+                while (timer < 2f)
                 {
                     timer += Time.deltaTime;
-                    bodyScript.forcedPos = legsScript.mainTrRotRefFront.TransformPoint(new Vector3(-0.5f, 0, 0.5f));
-
-                    Debug.DrawLine(bodyScript.forcedPos, transform.position, Color.green, 1);
+                    currentDir = Vector3.Lerp(startDir, wantedDir, timer / 2f);
+                    
+                    bodyScript.forcedRot = currentDir;
 
                     yield return null;
                 }
