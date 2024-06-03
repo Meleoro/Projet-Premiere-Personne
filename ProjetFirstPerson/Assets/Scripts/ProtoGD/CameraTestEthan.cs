@@ -58,7 +58,7 @@ public class CameraTestEthan : MonoBehaviour
                 UIMenuGeneral.SetActive(false);
                 isAiming = false;
             }
-            else
+           /* else
             {
                 NormalHUD.SetActive(false);
                 UIMenuGeneral.SetActive(true);
@@ -68,7 +68,7 @@ public class CameraTestEthan : MonoBehaviour
                 isMenu = !isMenu;
                 anim.SetBool("in",true);
                 isAiming = false;
-            }
+            }*/
         }
     }
 

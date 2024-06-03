@@ -10,18 +10,21 @@ public class LogsMenu : MonoBehaviour
     [SerializeField] private GameObject LogPrefab;
     [SerializeField] public GameObject currentLog;
     [SerializeField] public Button TraductionButton;
+    public Animation logPopUpAnim;
 
     [Header("Lorem ipsum")]
     [SerializeField] string characters = "abcdefghijklmnopqrstuvwyz0123456789";
     [SerializeField] private int loremIpsumLenghtValue = 150;
     [SerializeField] private string myRandomString;
+    
+    public int unreadLogs;
 
     public void AddLogsToContent(string info, string title, bool isTriggered)
     {
         TraductionButton.gameObject.SetActive(true);
         GameObject NewLog = Instantiate(LogPrefab,Vector3.zero,Quaternion.Euler(0,0,0),ContentLog.transform);
         NewLog.GetComponent<LogsScripts>().TitleArea.text = title;
-
+        unreadLogs += 1;
         for(int i = 0; i < loremIpsumLenghtValue; i++)
         {
             myRandomString += characters[Random.Range(0, characters.Length)];
