@@ -61,9 +61,11 @@ namespace Creature
         [Header("Private Infos")]
         private Vector3 saveRotBackTrRef;
         private Vector3 saveRotFrontTrRef;
+        private Vector3 saveRotCollider;
 
         [Header("References")] 
         [SerializeField] private HeadIK headIK;
+        [SerializeField] private BoxCollider creatureCollider;
         public CreatureSpecialMoves specialMovesScript;
         public Transform backTransformRef;
         public Transform frontTransformRef;
