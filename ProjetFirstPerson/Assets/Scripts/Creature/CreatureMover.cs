@@ -34,7 +34,7 @@ namespace Creature
         [SerializeField] private BodyIK bodyIKScript;
         [SerializeField] private HeadIK headIKScript;
         [SerializeField] private CreatureSpecialMoves specialMovesScript;
-        [SerializeField] private Transform targetIKBody;
+        public Transform targetIKBody;
         [HideInInspector] public NavMeshAgent navMeshAgent;
         public TailIK tailIKScript;
         private CreatureLegsMover legsScript;
@@ -89,17 +89,17 @@ namespace Creature
             // Y Rotation
             Vector3 dirToRotateTo = navMeshAgent.velocity.normalized;
             if (forcedRot != Vector3.zero) dirToRotateTo = forcedRot;
-            if (forcedPos != Vector3.zero) dirToRotateTo = forcedPos - transform.position;
+            else if (forcedPos != Vector3.zero) dirToRotateTo = forcedPos - transform.position;
             
             Vector3 currentDir = targetIKBody.position - transform.position;
             currentDir = currentDir.normalized * 4;
 
-            if (Vector3.Angle(currentDir, dirToRotateTo) > 140)
-                StartCoroutine(specialMovesScript.DoHugeTurnCoroutine(Vector3.Distance(wantedPos, transform.position) < 3));
-
             currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo, 1, 1);
             
             targetIKBody.position = transform.position + currentDir;
+            
+            if (Vector3.Angle(currentDir, dirToRotateTo) > 140)
+                StartCoroutine(specialMovesScript.DoHugeTurnCoroutine(Vector3.Distance(wantedPos, transform.position) < 3));
         }
 
         #endregion
