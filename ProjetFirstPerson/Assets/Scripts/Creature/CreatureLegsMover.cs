@@ -122,7 +122,7 @@ namespace Creature
                             
                             continue;
                         }
-                        else
+                        else if(VerifyLegNeedsToMove(legs[i], false))
                         {
                             currentWantToMoveLegsCounter += 1;
                             
