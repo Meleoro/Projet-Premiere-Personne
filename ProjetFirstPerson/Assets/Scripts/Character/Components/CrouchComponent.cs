@@ -85,7 +85,7 @@ public class CrouchComponent : MonoBehaviour, ICharacterComponent
 
     private void GetUp()
     {
-        if (Physics.Raycast(transform.position, Vector3.up, 1.5f, LayerManager.Instance.groundLayer)) return;
+        if (Physics.Raycast(transform.position, Vector3.up, 1.5f, LayerManager.Instance.defaultLayer)) return;
         
         isCrouched = false;
         
