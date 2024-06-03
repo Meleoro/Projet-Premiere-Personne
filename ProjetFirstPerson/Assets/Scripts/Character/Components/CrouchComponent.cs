@@ -85,6 +85,8 @@ public class CrouchComponent : MonoBehaviour, ICharacterComponent
 
     private void GetUp()
     {
+        if (Physics.Raycast(transform.position, Vector3.up, 1.5f, LayerManager.Instance.groundLayer)) return;
+        
         isCrouched = false;
         
         normalCollider.enabled = true;

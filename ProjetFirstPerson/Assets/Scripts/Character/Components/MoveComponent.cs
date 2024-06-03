@@ -150,7 +150,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         rb.AddForce(inputDirection * (Time.deltaTime * currentAcceleration * currentSpeedModifier), ForceMode.Force);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, (currentSpeed + addedSpeed) * currentSpeedModifier);
 
-        if(inputDirection == Vector3.zero)
+        if(inputDirection == Vector3.zero && rb.velocity.magnitude > 0.1f)
             rb.AddForce(-rb.velocity.normalized * (Time.deltaTime * currentAcceleration * currentSpeedModifier), ForceMode.Force);
 
         // We apply the feel to the camera according to our current speed
