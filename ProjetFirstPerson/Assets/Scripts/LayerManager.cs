@@ -6,4 +6,5 @@ public class LayerManager : GenericSingletonClass<LayerManager>
 {
     public LayerMask groundLayer;
     public LayerMask playerGroundLayer;
+    public LayerMask defaultLayer;
 }
