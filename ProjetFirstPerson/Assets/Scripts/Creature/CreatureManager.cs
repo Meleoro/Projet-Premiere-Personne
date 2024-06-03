@@ -74,6 +74,14 @@ namespace Creature
         private CreatureAttack attackScript;
 
 
+        private void Awake()
+        {
+            saveRotBackTrRef = creatureRefScript.pantherPelvis.eulerAngles;
+            saveRotFrontTrRef = creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].eulerAngles;
+
+            ActualiseTransformRefs();
+        }
+
         private void Start()
         {
             AudioManager.Instance.SetAudioSource(1, GetComponent<AudioSource>());
@@ -84,9 +92,6 @@ namespace Creature
             attackScript = GetComponent<CreatureAttack>();
 
             CharacterManager.Instance.GetComponent<HealthComponent>().DieAction += () => currentSuspicion = 0;
-
-            saveRotBackTrRef = creatureRefScript.pantherPelvis.eulerAngles;
-            saveRotFrontTrRef = creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].eulerAngles;
         }
     
 

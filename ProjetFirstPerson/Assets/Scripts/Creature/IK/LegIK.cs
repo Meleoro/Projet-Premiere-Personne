@@ -13,6 +13,7 @@ namespace IK
         [SerializeField] private int legIndex = 0;
         [SerializeField] private bool inverseArticulation;
         [SerializeField] private bool debug;
+        [SerializeField] private bool isFront;
         [SerializeField] private float articulationXRotMultiplicator;
         [SerializeField] private float articulationXRotMax;
         [SerializeField] private float yEffectorOffset;
@@ -81,10 +82,8 @@ namespace IK
         private void Start()
         {
             transformRotTrRef = managerScript.backTransformRef;
-
             saveOriginalXRot = joint0.eulerAngles.x;
-
-            saveTargetOriginOffset = transformRotTrRef.InverseTransformVector(effector.position - joint0.position);
+            saveTargetOriginOffset = transformRotTrRef.InverseTransformPoint(effector.position);
             
             offset1 = joint0.localEulerAngles;
             offset2 = joint1.localEulerAngles;
@@ -221,10 +220,14 @@ namespace IK
             
             RaycastHit hit;
             
+            Debug.DrawLine(target.position, transformRotTrRef.TransformPoint(saveTargetOriginOffset));
+            
             if (moveScript.navMeshAgent.velocity.magnitude < 0.25)
             {
-                Vector3 wantedPos = Vector3.Lerp(target.position, joint0.position + transformRotTrRef.TransformVector(saveTargetOriginOffset), Time.deltaTime * 2f);
-                if (Physics.Raycast(target.position + Vector3.up * 1f, -target.up, out hit, 3f,
+                float offset = isFront ? managerScript.legData.frontLegsOffset :managerScript.legData.backLegsOffset;
+                
+                Vector3 wantedPos = Vector3.Lerp(target.position, transformRotTrRef.TransformPoint(saveTargetOriginOffset), Time.deltaTime * 2f);
+                if (Physics.Raycast(wantedPos + Vector3.up * 1f, -target.up, out hit, 5f,
                         LayerManager.Instance.groundLayer))
                 {
                     wantedPos.y = hit.point.y;
