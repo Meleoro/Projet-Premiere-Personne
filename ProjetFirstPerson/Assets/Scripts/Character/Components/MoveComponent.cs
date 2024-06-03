@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using Random = UnityEngine.Random;
 using UnityEngine;
 using Task = System.Threading.Tasks.Task;
 
@@ -22,6 +23,10 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     [SerializeField] private float slopHelpStrength;
     [SerializeField] private float groundRaycastDist;
 
+    [Header("Sound Parameters")]
+    [SerializeField] private float crouchSoundDuration;
+    [SerializeField] private float runSoundDuration;
+
     [Header("Public Infos")] 
     [HideInInspector] public bool isRunning;
     [HideInInspector] public bool disableRun;
@@ -35,6 +40,8 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     private float addedSpeed;
     private bool isOnGround;
     private bool isInSlope;
+    private float walkSoundTimer;
+    private float walkSoundDuration;
 
     [Header("References")] 
     public Rigidbody rb;
@@ -81,9 +88,13 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     public void ComponentUpdate()
     {
         ManageInputs();
-        
-        if(canMove)
+
+        if (canMove)
+        {
             MoveCharacter();
+
+            ManageWalkSound();
+        }
     }
 
     public void ComponentFixedUpdate()
@@ -139,7 +150,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         rb.AddForce(inputDirection * (Time.deltaTime * currentAcceleration * currentSpeedModifier), ForceMode.Force);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, (currentSpeed + addedSpeed) * currentSpeedModifier);
 
-        if(inputDirection == Vector3.zero)
+        if(inputDirection == Vector3.zero && rb.velocity.magnitude > 0.1f)
             rb.AddForce(-rb.velocity.normalized * (Time.deltaTime * currentAcceleration * currentSpeedModifier), ForceMode.Force);
 
         // We apply the feel to the camera according to our current speed
@@ -235,4 +246,20 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     }
 
     #endregion
+
+
+    private void ManageWalkSound()
+    {
+        walkSoundDuration = Mathf.Lerp(crouchSoundDuration, runSoundDuration, rb.velocity.magnitude / runSpeed);
+        if (inputDirection == Vector3.zero)
+            return;
+
+        walkSoundTimer += Time.deltaTime;
+
+        if(walkSoundTimer > walkSoundDuration)
+        {
+            walkSoundTimer = 0;
+            AudioManager.Instance.PlaySoundOneShot(1, Random.Range(6, 16), 0);
+        }
+    }
 }

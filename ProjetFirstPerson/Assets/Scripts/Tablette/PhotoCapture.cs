@@ -89,11 +89,13 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                     SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime;
                     if (SteleChargeImage.fillAmount == 1)
                     {
+                        AudioManager.Instance.PlaySoundOneShot(1, 17, 0);
                         hitScript.isAlreadyInLogs = true;
                         SteleChargeImage.fillAmount = 0;
                         string theInfo = hitScript.myInfo;
                         string theTitle = hitScript.titleLogs;
-                        GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle);
+                        GetComponent<LogsMenu>().TraductionButton.gameObject.SetActive(true);
+                        GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle,false);
                     }
                 }
             }

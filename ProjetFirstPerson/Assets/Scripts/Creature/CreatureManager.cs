@@ -5,6 +5,7 @@ using System.Linq;
 using IK;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 
 
@@ -91,9 +92,9 @@ namespace Creature
 
         private void Update()
         {
-            if(debugIK) return;
-
             ActualiseTransformRefs();
+
+            if (debugIK) return;
 
             // Do AI Part
             float saveSuspision = currentSuspicion;
@@ -124,10 +125,11 @@ namespace Creature
         public void ActualiseTransformRefs()
         {
             backTransformRef.position = creatureRefScript.pantherPelvis.position;
-            backTransformRef.rotation = Quaternion.Euler(0, -90, 0) * Quaternion.Euler(-saveRotBackTrRef + creatureRefScript.pantherPelvis.eulerAngles);
+            backTransformRef.rotation = Quaternion.Euler(0, -90, 0) * Quaternion.Euler(new Vector3(0, (-saveRotBackTrRef + creatureRefScript.pantherPelvis.eulerAngles).y, 0));
 
             frontTransformRef.position = creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].position;
-            frontTransformRef.rotation = Quaternion.Euler(0, -90, 0) * Quaternion.Euler(-saveRotFrontTrRef + creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].eulerAngles);
+            frontTransformRef.rotation = Quaternion.Euler(0, -90, 0) * Quaternion.Euler(new Vector3(0, 
+                (-saveRotFrontTrRef + creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].eulerAngles).y, 0));
         }
 
 
@@ -140,6 +142,8 @@ namespace Creature
                 case NoiseType.Quiet:
                     if (currentDist < earLowRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedMarcheSneak;
                         else
@@ -150,6 +154,8 @@ namespace Creature
                 case NoiseType.Normal:
                     if (currentDist < earLowRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedMarche * 2;
                         else
@@ -157,6 +163,8 @@ namespace Creature
                     }
                     else if(currentDist < earNormalRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedMarche;
                         else
@@ -167,6 +175,8 @@ namespace Creature
                 case NoiseType.Loud:
                     if (currentDist < earLowRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedCourse * 3;
                         else
@@ -174,6 +184,8 @@ namespace Creature
                     }
                     else if (currentDist < earNormalRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedCourse * 2;
                         else
@@ -181,6 +193,8 @@ namespace Creature
                     }
                     else if(currentDist < earLoudRadius)
                     {
+                        if (!GetIsPlayerSafe()) return;
+
                         if (currentState != CreatureState.aggressive)
                             currentSuspicion += Time.deltaTime * suspisionAddedCourse;
                         else
@@ -193,6 +207,10 @@ namespace Creature
         
         private void DoViewAI()
         {
+            UIManager.Instance.isInCreatureView = false;
+
+            if (!GetIsPlayerSafe()) return;
+
             Quaternion saveRot = headIK.headJointTr.rotation;
             
             headIK.headJointTr.rotation = Quaternion.Euler( headIK.headJointTr.rotation.eulerAngles.x,
@@ -201,7 +219,6 @@ namespace Creature
             
             Vector3 currentDir = - headIK.headJointTr.right;
             bool isInPeripheral = false;
-            UIManager.Instance.isInCreatureView = false;
             headIK.StopFollowChara();
             
             for (int x = 0; x < visionRadiusX; x+= raycastDensity)
@@ -250,6 +267,20 @@ namespace Creature
         }
 
 
+        private bool GetIsPlayerSafe()
+        {
+            NavMeshPath path = new NavMeshPath();
+            bool isOkay = moveScript.navMeshAgent.CalculatePath(CharacterManager.Instance.transform.position, path);
+
+            if (path.status == NavMeshPathStatus.PathComplete)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
         private bool wasAtZeroSus;
         private float timerZeroSus;
         private void ManageSuspision()
@@ -259,7 +290,7 @@ namespace Creature
                 if (wasAtZeroSus && timerZeroSus <= 0)
                 {
                     wasAtZeroSus = false;
-                    timerZeroSus = 0.5f;
+                    timerZeroSus = 3.5f;
                     AudioManager.Instance.PlaySoundOneShot(0, 5, 1);
                 }
             }
@@ -331,16 +362,17 @@ namespace Creature
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(headIK.headJointTr.position, earLoudRadius);
+            Gizmos.DrawWireSphere(creatureRefScript.neckBones[creatureRefScript.neckBones.Count - 1].position, earLoudRadius);
             
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(headIK.headJointTr.position, earNormalRadius);
+            Gizmos.DrawWireSphere(creatureRefScript.neckBones[creatureRefScript.neckBones.Count - 1].position, earNormalRadius);
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(headIK.headJointTr.position, earLowRadius);
+            Gizmos.DrawWireSphere(creatureRefScript.neckBones[creatureRefScript.neckBones.Count - 1].position, earLowRadius);
 
             Gizmos.color = Color.white;
-            Gizmos.matrix = Matrix4x4.TRS(headIK.headJointTr.position, headIK.headJointTr.rotation * Quaternion.Euler(0, -90, 0), Vector3.one);
+            Gizmos.matrix = Matrix4x4.TRS(creatureRefScript.neckBones[creatureRefScript.neckBones.Count - 1].position, 
+                creatureRefScript.neckBones[creatureRefScript.neckBones.Count - 1].rotation * Quaternion.Euler(0, -90, 0), Vector3.one);
             Gizmos.DrawFrustum(Vector3.zero, visionRadiusX, visionRange, 0, (float)-visionRadiusY / visionRadiusX);
         }
 
