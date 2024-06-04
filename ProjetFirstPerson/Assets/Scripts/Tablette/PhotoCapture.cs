@@ -14,9 +14,11 @@ public class PhotoCapture : MonoBehaviour
     [SerializeField] private BoardMenu boardMenu;
     [SerializeField] private CameraTestEthan cameraTestEthan;
     [SerializeField] private LogsMenu logsMenu;
+    [SerializeField] private CanvasGroup photoGC;
     [SerializeField] private Camera mainCam;
     [SerializeField] private Image SteleChargeImage;
     [SerializeField] private float ChargeLogsSpeed;
+    [SerializeField] private float photoFadeOutDuration;
 
     [Header("Photo Taker")]
     [SerializeField] private Image photoDisplayArea;
@@ -134,21 +136,31 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
         ShowPhoto();
         yield return new WaitForSeconds(1.5f);
-        RemovePhoto();
+        StartCoroutine(FadeOutPhoto());
         }
     }
 
     void ShowPhoto()
     {
+        photoGC.alpha = 1;
         Sprite photoSprite = Sprite.Create(screenCapture, new Rect(0.0f,0.0f, ScreenRectTransform.width, ScreenRectTransform.height), new Vector2(0.5f,0.5f), 100.0f);
         photoDisplayArea.sprite = photoSprite;
         photoFrame.SetActive(true);
 
         SaveScreenShot();
     }
+    
 
-    void RemovePhoto()
+    IEnumerator FadeOutPhoto()
     {
+        float timer = 0;
+        while (timer < photoFadeOutDuration)
+        {
+            photoGC.alpha = Mathf.Lerp(photoGC.alpha, 0, timer / photoFadeOutDuration);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        photoGC.alpha = 0;
         viewingPhoto = false;
         photoFrame.SetActive(false);
         cameraUI.SetActive(true);
