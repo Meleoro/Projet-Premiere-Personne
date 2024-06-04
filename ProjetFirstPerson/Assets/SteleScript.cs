@@ -10,6 +10,7 @@ public class SteleScript : MonoBehaviour
     [SerializeField]  public string titleLogs;
     [SerializeField] [TextArea(5,10)] public string myInfo;
     
+    
     [Header("Parameters Gizmos")] 
     [SerializeField] private bool showGizmosOnlyOnSelected;
     [SerializeField] private Color gizmosColor;
@@ -23,6 +24,8 @@ public class SteleScript : MonoBehaviour
     {
         if(other.CompareTag("Player") && !isAlreadyInLogs)
         {
+            logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["NewLogAnim"].clip;
+            logsMenu.logPopUpAnim.Play();
             AudioManager.Instance.PlaySoundOneShot(1, 17, 0);
             isAlreadyInLogs = true;
             logsMenu.AddLogsToContent(myInfo,titleLogs,true);

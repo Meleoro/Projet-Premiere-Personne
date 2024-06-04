@@ -14,6 +14,7 @@ public class LogsScripts : MonoBehaviour
     public string codedInfo;
     public string MyInformation;
     [SerializeField] private Button TraductionButton;
+    [HideInInspector] public bool isRead;
     [HideInInspector] public bool isTraducted;
 
     [Header("Scripts Letter")]
@@ -22,6 +23,7 @@ public class LogsScripts : MonoBehaviour
     
     void Start()
     {
+        isRead = false;
         logsMenu = GameObject.Find("TabletteManager").GetComponent<LogsMenu>();
         InformationArea = GameObject.Find("LogsInfoAreaText").GetComponent<TextMeshProUGUI>();
         TraductionButton = logsMenu.TraductionButton;
@@ -40,7 +42,22 @@ public class LogsScripts : MonoBehaviour
     {
         
         logsMenu.currentLog = gameObject;
-        transform.GetChild(1).gameObject.SetActive(false);
+        
+        if (!isRead)
+        {
+            transform.GetChild(1).gameObject.SetActive(false);
+            logsMenu.unreadLogs -= 1;
+            if (logsMenu.unreadLogs == 0)
+            {
+                for (int i = 0; i < logsMenu.logIconUI.Count; i++)
+                {
+                    logsMenu.logIconUI[i].SetActive(false);
+                }
+                logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["NewLogAnimOut"].clip;
+                logsMenu.logPopUpAnim.Play();
+            }
+        }
+      
 
         if(!isTraducted)
         {
