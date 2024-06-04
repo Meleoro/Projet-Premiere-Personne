@@ -12,6 +12,7 @@ namespace Puzzle
         [Header("Parameters")]
         [SerializeField] private GameObject cameraPos;
         [SerializeField] private Vector3 desiredRotation;
+        [SerializeField] private bool isTriangle;
 
         [Header("Private Infos")]
         private bool isInRange;
@@ -119,6 +120,17 @@ namespace Puzzle
             boardMenu.favCanBeOpen = false;
 
             HideUI();
+
+            if (isTriangle)
+            {
+                TriangleManager triangle = transform.parent.GetComponent<TriangleManager>();
+                if (triangle.selectedDalle1 is not null)
+                {
+                    DalleTriangle selectedDalle = triangle.selectedDalle1;
+                    selectedDalle.GetComponent<MeshRenderer>().material = selectedDalle.MaterialOff;
+                    triangle.selectedDalle1 = null;
+                }
+            }
         }
 
         #endregion
