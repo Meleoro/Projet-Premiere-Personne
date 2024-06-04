@@ -130,6 +130,10 @@ namespace IK
                     Vector3 wantedPos = hit.point + new Vector3(0, maxHeight * tailHeightRatioSave[i], 0);
                     tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, wantedPos.y, Time.deltaTime * 5);
                 }
+                else
+                {
+                    tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, tailStart.TransformPoint(tailPositionsSave[i]).y, Time.deltaTime * 5);
+                }
 
                 if (i != 0)
                     Debug.DrawLine(tailTargets[i], tailTargets[i - 1], Color.red);
