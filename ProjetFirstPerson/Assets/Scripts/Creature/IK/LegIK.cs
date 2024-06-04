@@ -243,7 +243,7 @@ namespace IK
 
             if (!isMoving)
             {
-                if (Physics.Raycast(target.position + Vector3.up * 1f, -Vector3.up, out hit, 5f,
+                if (Physics.Raycast(target.position + Vector3.up * 1.5f, -Vector3.up, out hit, 5f,
                         LayerManager.Instance.groundLayer))
                 {
                     target.position = new Vector3(target.position.x, Mathf.Lerp(target.position.y, hit.point.y, Time.deltaTime * 10), target.position.z);
