@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Creature;
 using Unity.Collections;
 using UnityEngine;
-using static UnityEditor.Recorder.OutputPath;
 
 namespace IK
 {

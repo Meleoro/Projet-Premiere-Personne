@@ -49,6 +49,10 @@ public class LogsScripts : MonoBehaviour
             logsMenu.unreadLogs -= 1;
             if (logsMenu.unreadLogs == 0)
             {
+                for (int i = 0; i < logsMenu.logIconUI.Count; i++)
+                {
+                    logsMenu.logIconUI[i].SetActive(false);
+                }
                 logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["NewLogAnimOut"].clip;
                 logsMenu.logPopUpAnim.Play();
             }
