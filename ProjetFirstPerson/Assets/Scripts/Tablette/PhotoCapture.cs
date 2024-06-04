@@ -13,6 +13,7 @@ public class PhotoCapture : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     [SerializeField] private BoardMenu boardMenu;
     [SerializeField] private CameraTestEthan cameraTestEthan;
+    [SerializeField] private LogsMenu logsMenu;
     [SerializeField] private Camera mainCam;
     [SerializeField] private Image SteleChargeImage;
     [SerializeField] private float ChargeLogsSpeed;
@@ -48,6 +49,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
     private void Start()
     {
+        logsMenu = GetComponent<LogsMenu>();
         screenCapture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
 
         // Suppression et création du dossier data
@@ -89,6 +91,8 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                     SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime;
                     if (SteleChargeImage.fillAmount == 1)
                     {
+                        logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["NewLogAnim"].clip;
+                        logsMenu.logPopUpAnim.Play();
                         AudioManager.Instance.PlaySoundOneShot(1, 17, 0);
                         hitScript.isAlreadyInLogs = true;
                         SteleChargeImage.fillAmount = 0;

@@ -26,7 +26,6 @@ public class CameraTestEthan : MonoBehaviour
             {
                 uIManager.InteractHUD.gameObject.SetActive(false);
                 UIPhotoTablette.SetActive(true);
-                isAiming = !isAiming;
                 anim.SetBool("in",true);
                 StartCoroutine(WaitForUI());
             }
@@ -36,12 +35,12 @@ public class CameraTestEthan : MonoBehaviour
         {
             if (canInOut)
             {
+                isAiming = false;
                 if(CharacterManager.Instance.isInteracting)
                     uIManager.InteractHUD.gameObject.SetActive(true);
                 UIPhotoPlayer.SetActive(false);
                 UIPhotoTablette.SetActive(false);
                 StopCoroutine(WaitForUI());
-                isAiming = !isAiming;
                 anim.SetBool("in",false);
                 UIPhotoTablette.SetActive(false);
             }
@@ -58,37 +57,25 @@ public class CameraTestEthan : MonoBehaviour
                 UIMenuGeneral.SetActive(false);
                 isAiming = false;
             }
-           /* else
-            {
-                NormalHUD.SetActive(false);
-                UIMenuGeneral.SetActive(true);
-                UIPhotoTablette.SetActive(false);
-                canInOut = false;
-                tabletteScreen.SetActive(true);
-                isMenu = !isMenu;
-                anim.SetBool("in",true);
-                isAiming = false;
-            }*/
         }
     }
 
     public IEnumerator WaitForUI()
     {
-        if (isAiming)
-        {
-           yield return new WaitForSeconds(0.5f);
-           if (isAiming)
+        yield return new WaitForSeconds(0.5f);
+        isAiming = true;
+        
+           if (isAiming && Input.GetKey(KeyCode.Mouse1))
            {
-               UIPhotoPlayer.SetActive(true);
+                UIPhotoPlayer.SetActive(true);
                 UIMenuGeneral.SetActive(false);
-                //tablette.SetActive(false);
            }
-        }
-        else
-        {
-            UIPhotoPlayer.SetActive(false);
-            UIMenuGeneral.SetActive(false);
-            StopCoroutine(WaitForUI());
-        }
+           else
+           {
+               isAiming = false;
+               UIPhotoPlayer.SetActive(false);
+                UIMenuGeneral.SetActive(false);
+                StopCoroutine(WaitForUI());
+           }
     }
 }
