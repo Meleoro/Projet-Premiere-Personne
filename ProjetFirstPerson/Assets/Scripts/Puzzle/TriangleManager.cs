@@ -15,7 +15,7 @@ namespace Puzzle
         [Header("Private Infos")]
         private bool isMovingDalles;
         private bool won;
-        private DalleTriangle selectedDalle1;
+        [HideInInspector] public DalleTriangle selectedDalle1;
         private DalleTriangle selectedDalle2;
 
         [Header("References")]
@@ -101,7 +101,8 @@ namespace Puzzle
 
             dalle1.transform.position = originalPosDalle2;
             dalle2.transform.position = originalPosDalle1;
-
+            
+            selectedDalle1.GetComponent<MeshRenderer>().material = selectedDalle1.MaterialOff;
             selectedDalle1 = null;
             selectedDalle2 = null;
 

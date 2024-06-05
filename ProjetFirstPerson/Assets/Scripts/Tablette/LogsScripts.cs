@@ -14,13 +14,24 @@ public class LogsScripts : MonoBehaviour
     public string codedInfo;
     public string MyInformation;
     [SerializeField] private Button TraductionButton;
-    private bool isTraducted;
+    [HideInInspector] public bool isRead;
+    [HideInInspector] public bool isTraducted;
+
+    [Header("Scripts Letter")]
+    [SerializeField] private float typingSpeed = 0.05f;
+    private bool isWriting;
     
     void Start()
     {
+        isRead = false;
         logsMenu = GameObject.Find("TabletteManager").GetComponent<LogsMenu>();
         InformationArea = GameObject.Find("LogsInfoAreaText").GetComponent<TextMeshProUGUI>();
-        TraductionButton = GameObject.Find("TraductionButton").GetComponent<Button>();
+        TraductionButton = logsMenu.TraductionButton;
+
+        if(isTraducted)
+        {
+            TraductionButton.gameObject.SetActive(false);
+        }
     }
     public void ChangeTitle()
     {
@@ -31,28 +42,60 @@ public class LogsScripts : MonoBehaviour
     {
         
         logsMenu.currentLog = gameObject;
+        
+        if (!isRead)
+        {
+            transform.GetChild(1).gameObject.SetActive(false);
+            logsMenu.unreadLogs -= 1;
+            if (logsMenu.unreadLogs == 0)
+            {
+                for (int i = 0; i < logsMenu.logIconUI.Count; i++)
+                {
+                    logsMenu.logIconUI[i].SetActive(false);
+                }
+                logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["NewLogAnimOut"].clip;
+                logsMenu.logPopUpAnim.Play();
+            }
+        }
+      
 
         if(!isTraducted)
         {
             InformationArea.text = codedInfo;
+            TraductionButton.gameObject.SetActive(true);
         }
         else
         {
             InformationArea.text = MyInformation;
+            TraductionButton.gameObject.SetActive(false);
         }
         TraductionButton.GetComponent<LogsScripts>().MyInformation = MyInformation;
     }
     public void Traduction()
     {
-        InformationArea.text = MyInformation;
-        if(logsMenu.currentLog != null)
-        {
-            logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
-        }
+      //  InformationArea.text = MyInformation;
+        StartCoroutine(TypeText(MyInformation));
+        TraductionButton.interactable = false;
     }
     
     public void PlayUISound()
     {
         AudioManager.Instance.PlaySoundOneShot(1, 16, 1);
+    }
+
+     private IEnumerator TypeText(string text)
+    {
+        isWriting = true;
+        InformationArea.text = "";
+          foreach(char letter in text.ToCharArray())
+            {
+                if(isWriting)
+                {
+                    InformationArea.text += letter;
+                    yield return new WaitForSeconds(typingSpeed);
+                }
+            }  
+            logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
+            TraductionButton.gameObject.SetActive(false);
     }
 }

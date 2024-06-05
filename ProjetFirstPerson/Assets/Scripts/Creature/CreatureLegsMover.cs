@@ -77,9 +77,6 @@ namespace Creature
         {
             currentWantToMoveLegsCounter = 0;
 
-            moveFrontLegs = false;
-            moveBackLegs = false;
-            
             if (!canMoveLeg) return;
             
             for (int i = 0; i < legs.Count; i++)
@@ -125,7 +122,7 @@ namespace Creature
                             
                             continue;
                         }
-                        else
+                        else if(VerifyLegNeedsToMove(legs[i], false))
                         {
                             currentWantToMoveLegsCounter += 1;
                             
@@ -148,7 +145,7 @@ namespace Creature
                         if(!legs[i].isFrontLeg) moveBackLegs = false;
                         if(legs[i].isFrontLeg) moveFrontLegs = false;
 
-                        Vector3 endPos = GetNextPos(legs[i]);
+                        Vector3 endPos = GetNextPos(legs[i], creatureMover.isRunning);
                         float moveDuration = legs[i].isFrontLeg ? data.frontLegMoveDuration : data.backLegMoveDuration;
                         float currentSpeedRatio = creatureMover.navMeshAgent.speed / creatureMover.agressiveSpeed;
                         float currentRotRatio = bodyIK.currentRotationDif;
@@ -253,7 +250,7 @@ namespace Creature
 
         #region Move Functions
 
-        private Vector3 GetNextPos(Leg currentLeg)
+        private Vector3 GetNextPos(Leg currentLeg, bool forceFront)
         {
             Vector3 origin = currentLeg.isFrontLeg ? currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset 
                 : currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset;
@@ -279,6 +276,8 @@ namespace Creature
                 if (Physics.Raycast(origin, transformRef.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist * 2f, groundLayer))
                 {
                     float dist = Vector3.Distance(hit.point, currentTargetPos);
+                    if(forceFront)
+                        dist = Vector3.Distance(hit.point, mainTrRotRefBack.position);
 
                     if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1.05f)
                     {
@@ -299,7 +298,7 @@ namespace Creature
         {
             canMoveLeg = false;
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
 
             canMoveLeg = true;
         }

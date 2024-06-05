@@ -13,9 +13,12 @@ public class PhotoCapture : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     [SerializeField] private BoardMenu boardMenu;
     [SerializeField] private CameraTestEthan cameraTestEthan;
+    [SerializeField] private LogsMenu logsMenu;
+    [SerializeField] private CanvasGroup photoGC;
     [SerializeField] private Camera mainCam;
     [SerializeField] private Image SteleChargeImage;
     [SerializeField] private float ChargeLogsSpeed;
+    [SerializeField] private float photoFadeOutDuration;
 
     [Header("Photo Taker")]
     [SerializeField] private Image photoDisplayArea;
@@ -48,6 +51,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
     private void Start()
     {
+        logsMenu = GetComponent<LogsMenu>();
         screenCapture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
 
         // Suppression et création du dossier data
@@ -89,12 +93,15 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                     SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime;
                     if (SteleChargeImage.fillAmount == 1)
                     {
+                        logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["NewLogAnim"].clip;
+                        logsMenu.logPopUpAnim.Play();
                         AudioManager.Instance.PlaySoundOneShot(1, 17, 0);
                         hitScript.isAlreadyInLogs = true;
                         SteleChargeImage.fillAmount = 0;
                         string theInfo = hitScript.myInfo;
                         string theTitle = hitScript.titleLogs;
-                        GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle);
+                        GetComponent<LogsMenu>().TraductionButton.gameObject.SetActive(true);
+                        GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle,false);
                     }
                 }
             }
@@ -129,21 +136,31 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
         ShowPhoto();
         yield return new WaitForSeconds(1.5f);
-        RemovePhoto();
+        StartCoroutine(FadeOutPhoto());
         }
     }
 
     void ShowPhoto()
     {
+        photoGC.alpha = 1;
         Sprite photoSprite = Sprite.Create(screenCapture, new Rect(0.0f,0.0f, ScreenRectTransform.width, ScreenRectTransform.height), new Vector2(0.5f,0.5f), 100.0f);
         photoDisplayArea.sprite = photoSprite;
         photoFrame.SetActive(true);
 
         SaveScreenShot();
     }
+    
 
-    void RemovePhoto()
+    IEnumerator FadeOutPhoto()
     {
+        float timer = 0;
+        while (timer < photoFadeOutDuration)
+        {
+            photoGC.alpha = Mathf.Lerp(photoGC.alpha, 0, timer / photoFadeOutDuration);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        photoGC.alpha = 0;
         viewingPhoto = false;
         photoFrame.SetActive(false);
         cameraUI.SetActive(true);

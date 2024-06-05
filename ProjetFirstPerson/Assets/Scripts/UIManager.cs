@@ -27,9 +27,18 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private Image eyeIconImage;
     [SerializeField] private CameraComponent cameraComponent;
     [SerializeField] private MoveComponent moveComponent;
+    [SerializeField] private CameraTestEthan cam;
     [SerializeField] private TextMeshProUGUI interactText;
     public Image fadeImage;
 
+    [Header("References Menu Général Tablette")]
+    [SerializeField] private HealthComponent playerHealth;
+    [SerializeField] private TextMeshProUGUI textHealth;
+    [SerializeField] private GameObject fullLifeBar;
+    [SerializeField] private GameObject halfLifeBar;
+    [SerializeField] private GameObject tabletteWorldFakeMenu;
+    
+    
     [Header("UI Variables")]
     [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, SettingsMenu;
     [SerializeField] private TextMeshProUGUI schedule;
@@ -63,31 +72,48 @@ public class UIManager : GenericSingletonClass<UIManager>
 
     IEnumerator OpenMenu()
     {
-        if(!isUIActive)
+        if (!cam.isAiming)
         {
-            yield return new WaitForSeconds(0.5f);
-            //tabletteAnim.SetBool("in",true);
-            InteractHUD.gameObject.SetActive(false);
-            cameraComponent.canRotate = false;
-            moveComponent.canMove = false;
-            cameraComponent.LockedCursor(1);
-            isUIActive = true;
-            CloseAllPanel(true,false,false,false);
-        }
-        else
-        {
-            //tabletteAnim.SetBool("in",false);
-            if (!CharacterManager.Instance.isInteracting)
+            if(!isUIActive)
             {
-                cameraComponent.canRotate = true;
-                moveComponent.canMove = true;
-                cameraComponent.LockedCursor(2);
+                if (playerHealth.isHurted)
+                {
+                    textHealth.text = "État de Santé : Critique";
+                    fullLifeBar.SetActive(false);
+                    halfLifeBar.SetActive(true);
+                }
+                else
+                {
+                    textHealth.text = "État de Santé : Bon";
+                    fullLifeBar.SetActive(true);
+                    halfLifeBar.SetActive(false);
+                }
+                cam.anim.SetBool("in",true);
+                tabletteWorldFakeMenu.SetActive(true);
+                yield return new WaitForSeconds(0.5f);
+                InteractHUD.gameObject.SetActive(false);
+                cameraComponent.canRotate = false;
+                moveComponent.canMove = false;
+                cameraComponent.LockedCursor(1);
+                isUIActive = true;
+                CloseAllPanel(true,false,false,false);
             }
-            else InteractHUD.gameObject.SetActive(true);
+            else
+            {
+                tabletteWorldFakeMenu.SetActive(false);
+                cam.anim.SetBool("in",false);
+                if (!CharacterManager.Instance.isInteracting)
+                {
+                    cameraComponent.canRotate = true;
+                    moveComponent.canMove = true;
+                    cameraComponent.LockedCursor(2);
+                }
+                else InteractHUD.gameObject.SetActive(true);
             
-            isUIActive = false;
-            CloseAllPanel(false,false,false,false);
-        } 
+                isUIActive = false;
+                CloseAllPanel(false,false,false,false);
+            } 
+        }
     }
 
 

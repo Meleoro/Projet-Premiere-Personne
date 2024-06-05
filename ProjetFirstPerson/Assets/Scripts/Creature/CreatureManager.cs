@@ -61,9 +61,11 @@ namespace Creature
         [Header("Private Infos")]
         private Vector3 saveRotBackTrRef;
         private Vector3 saveRotFrontTrRef;
+        private Vector3 saveRotCollider;
 
         [Header("References")] 
         [SerializeField] private HeadIK headIK;
+        [SerializeField] private BoxCollider creatureCollider;
         public CreatureSpecialMoves specialMovesScript;
         public Transform backTransformRef;
         public Transform frontTransformRef;
@@ -73,6 +75,14 @@ namespace Creature
         private CreatureMover moveScript;
         private CreatureAttack attackScript;
 
+
+        private void Awake()
+        {
+            saveRotBackTrRef = creatureRefScript.pantherPelvis.eulerAngles;
+            saveRotFrontTrRef = creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].eulerAngles;
+
+            ActualiseTransformRefs();
+        }
 
         private void Start()
         {
@@ -84,9 +94,6 @@ namespace Creature
             attackScript = GetComponent<CreatureAttack>();
 
             CharacterManager.Instance.GetComponent<HealthComponent>().DieAction += () => currentSuspicion = 0;
-
-            saveRotBackTrRef = creatureRefScript.pantherPelvis.eulerAngles;
-            saveRotFrontTrRef = creatureRefScript.spineBones[creatureRefScript.spineBones.Count - 1].eulerAngles;
         }
     
 
@@ -308,13 +315,17 @@ namespace Creature
             else if (currentSuspicion > suspisionThresholdAggressif || currentState == CreatureState.aggressive)
             {
                 if (currentState != CreatureState.aggressive)
+                {
+                    creatureRefScript.coleretteAnimator.SetBool("IsOpen", true);
                     StartCoroutine(moveScript.StartAggressiveBehavior(detectedWaitDuration));
+                }
 
                 currentState = CreatureState.aggressive;
                 waypointsScript.ChangeDestinationAggressive(CharacterManager.Instance.transform.position);
 
                 if (currentSuspicion <= 0)
                 {
+                    creatureRefScript.coleretteAnimator.SetBool("IsOpen", false);
                     StartCoroutine(QuitAggressiveBehavior());
                 }
             }

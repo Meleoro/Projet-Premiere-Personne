@@ -15,7 +15,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     [Header("Public Infos")] 
     [HideInInspector] public Action DieAction;
-     public bool isHurted;
+    public bool isHurted;
+    public TriggerPoursuiteFinale currentTriggerPoursuiteF;
 
     [Header("Private Infos")] 
     private bool isDying;
@@ -129,6 +130,9 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         cam.transform.GetChild(2).transform.localPosition = new Vector3(0, 0.8f, 0);
         cam.transform.GetChild(2).transform.localEulerAngles = Vector3.zero;
         
+        if(currentTriggerPoursuiteF != null)
+            currentTriggerPoursuiteF.ActivateTrigger();
+
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.75f, 0));
         yield return new WaitForSeconds(0.5f);
         cam.canMove = true;
