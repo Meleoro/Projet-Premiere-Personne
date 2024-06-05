@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
+using Random = UnityEngine.Random;
 
 
 namespace Creature
@@ -39,6 +40,8 @@ namespace Creature
 
         [Header("Other Parameters")]
         [SerializeField] private float detectedWaitDuration;
+        [SerializeField] private float timeMinBetweenGrognements;
+        [SerializeField] private float timeMaxBetweenGrognements;
 
         [Header("Valeurs Listen")]      // Pour chacune de ces valeurs, il faut les voir comme 'combien de suspision sont ajout�es par secondes' car elles seront multipli�s par le delta time (sauf l'int�raction)
         [SerializeField] private float suspisionAddedMarche;
@@ -94,6 +97,8 @@ namespace Creature
             attackScript = GetComponent<CreatureAttack>();
 
             CharacterManager.Instance.GetComponent<HealthComponent>().DieAction += () => currentSuspicion = 0;
+
+            StartCoroutine(GrognementsSoudns());
         }
     
 
@@ -356,6 +361,14 @@ namespace Creature
             waypointsScript.RestartWaypointBehavior();
         }
 
+        private IEnumerator GrognementsSoudns()
+        {
+            yield return new WaitForSeconds(Random.Range(timeMinBetweenGrognements, timeMaxBetweenGrognements));
+
+            AudioManager.Instance.PlaySoundOneShot(0, Random.Range(8, 11), 0);
+
+            StartCoroutine(GrognementsSoudns());
+        }
 
         public void TurnAggressive()
         {
