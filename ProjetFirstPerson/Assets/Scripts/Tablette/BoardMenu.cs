@@ -90,7 +90,7 @@ public class BoardMenu : MonoBehaviour
         {
             mousePos = Input.mousePosition;
         }
-        if(Input.GetKey(KeyCode.Mouse1) && UIManager.Instance.isUIActive && !currentSelect.GetComponent<ElementsOfBoard>().isFavorite)
+        if(currentSelect != null && Input.GetKey(KeyCode.Mouse1) && UIManager.Instance.isUIActive && !currentSelect.GetComponent<ElementsOfBoard>().isFavorite)
         {
             if(currentSelect != null)
             {
