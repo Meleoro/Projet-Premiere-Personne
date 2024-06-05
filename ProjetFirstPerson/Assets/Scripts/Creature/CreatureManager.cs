@@ -315,13 +315,17 @@ namespace Creature
             else if (currentSuspicion > suspisionThresholdAggressif || currentState == CreatureState.aggressive)
             {
                 if (currentState != CreatureState.aggressive)
+                {
+                    creatureRefScript.coleretteAnimator.SetBool("IsOpen", true);
                     StartCoroutine(moveScript.StartAggressiveBehavior(detectedWaitDuration));
+                }
 
                 currentState = CreatureState.aggressive;
                 waypointsScript.ChangeDestinationAggressive(CharacterManager.Instance.transform.position);
 
                 if (currentSuspicion <= 0)
                 {
+                    creatureRefScript.coleretteAnimator.SetBool("IsOpen", false);
                     StartCoroutine(QuitAggressiveBehavior());
                 }
             }
