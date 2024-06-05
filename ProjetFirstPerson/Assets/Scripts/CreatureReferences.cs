@@ -33,6 +33,7 @@ public class CreatureReferences : MonoBehaviour
 
     [Header("Head References")]
     public List<Transform> neckBones;
+    public Animator coleretteAnimator;
 
     [Header("Tail References")]
     public List<Transform> tailBones;
