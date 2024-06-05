@@ -20,6 +20,7 @@ namespace IK
         [Header("Public Infos")] 
         [HideInInspector] public float currentPatouneZRot;
         [HideInInspector] public bool canMove;
+        [HideInInspector] public bool isMoving;
 
         [Header("Private Infos")]
         private float saveOriginalXRot;
@@ -226,7 +227,7 @@ namespace IK
                 float offset = isFront ? managerScript.legData.frontLegsOffset :managerScript.legData.backLegsOffset;
                 
                 Vector3 wantedPos = Vector3.Lerp(target.position, transformRotTrRef.TransformPoint(saveTargetOriginOffset), Time.deltaTime * 2f);
-                if (Physics.Raycast(wantedPos + Vector3.up * 1f, -target.up, out hit, 5f,
+                if (Physics.Raycast(wantedPos + Vector3.up * 1f, -Vector3.up, out hit, 5f,
                         LayerManager.Instance.groundLayer))
                 {
                     wantedPos.y = hit.point.y;
@@ -240,10 +241,21 @@ namespace IK
                 canMove = true;
             }
 
+            if (!isMoving)
+            {
+                if (Physics.Raycast(target.position + Vector3.up * 1.5f, -Vector3.up, out hit, 5f,
+                        LayerManager.Instance.groundLayer))
+                {
+                    target.position = new Vector3(target.position.x, Mathf.Lerp(target.position.y, hit.point.y, Time.deltaTime * 10), target.position.z);
+                }
+            }
+
             Vector3 currentTargetPos = target.position;
             currentTargetPos = joint0.InverseTransformPoint(currentTargetPos);
             currentTargetPos = new Vector3(currentTargetPos.x, currentTargetPos.y, 0);
             target.position = Vector3.Lerp(target.position, joint0.TransformPoint(currentTargetPos), Time.deltaTime * 10);
+
+
         }
 
 
