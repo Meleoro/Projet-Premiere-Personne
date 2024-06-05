@@ -365,7 +365,7 @@ namespace Creature
         {
             yield return new WaitForSeconds(Random.Range(timeMinBetweenGrognements, timeMaxBetweenGrognements));
 
-            AudioManager.Instance.PlaySoundOneShot(0, Random.Range(8, 11), 0);
+            AudioManager.Instance.PlaySoundOneShot(0, Random.Range(8, 11), 1);
 
             StartCoroutine(GrognementsSoudns());
         }

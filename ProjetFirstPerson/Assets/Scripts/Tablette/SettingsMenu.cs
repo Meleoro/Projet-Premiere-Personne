@@ -108,7 +108,7 @@ public class SettingsMenu : MonoBehaviour
 
     public void PlayUISound()
     {
-        AudioManager.Instance.PlaySoundOneShot(1, 16, 1);
+        AudioManager.Instance.PlaySoundOneShot(1, 16, 0);
     }
 
 }
