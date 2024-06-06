@@ -202,7 +202,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
 
         isOnGround = Physics.Raycast(transform.position, Vector3.down, out hitInfo, groundRaycastDist,LayerManager.Instance.groundLayer);
 
-        float dist = 0.25f;
+        float dist = 0.23f;
         if(!isOnGround)
             isOnGround = Physics.Raycast(transform.position + new Vector3(dist, 0, 0), Vector3.down, out hitInfo, groundRaycastDist, LayerManager.Instance.groundLayer);
 
@@ -226,18 +226,22 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
                 GetComponent<HealthComponent>().VerifyFall(Mathf.Abs(YQuitGround - transform.position.y));
             }
 
+            currentGravity = 0;
             isInSlope = Vector3.Angle(hitInfo.normal, Vector3.up) > 20;
         }
-        else
+        else if (!quitGround)
         {
             quitGround = true;
             YQuitGround = transform.position.y;
         }
     }
 
+    private float currentGravity = 0;
     private void ApplyGravity()
     {
-        rb.AddForce(Vector3.down * (gravityStrength * Time.fixedDeltaTime), ForceMode.Acceleration);
+        currentGravity += Time.fixedDeltaTime * gravityStrength;
+
+        rb.AddForce(Vector3.down * currentGravity, ForceMode.Acceleration);
     }
 
     private void HelpInSlope()
