@@ -51,8 +51,5 @@ public class LogsMenu : MonoBehaviour
         logsList.Add(NewLog);
     }
 
-    void Update()
-    {
-        
-    }
+   
 }
