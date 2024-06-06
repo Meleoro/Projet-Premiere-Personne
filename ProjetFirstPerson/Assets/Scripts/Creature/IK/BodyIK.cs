@@ -97,14 +97,14 @@ namespace IK
                 currentAtan += 360f;
             
             // Back Part
-            currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * currentSpeed1);
+            currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * Mathf.Abs(currentSpeed1 / (atan - currentAtanBack)));
 
             Vector3 eulerBack = backJoint.localEulerAngles;
             eulerBack.y = saveOffset2.y + currentAtanBack;
             backJoint.localEulerAngles = eulerBack;
             
             // Spine Part
-            currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * currentSpeed2);
+            currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * Mathf.Abs(currentSpeed2 / (atan - currentAtanBack)));
             currentAtan = Mathf.Clamp(currentAtan, -data.maxRotDifFrontBack, data.maxRotDifFrontBack);
             
             currentRotationDif = currentAtan / data.maxRotDifFrontBack;

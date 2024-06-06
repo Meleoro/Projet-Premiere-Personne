@@ -76,10 +76,10 @@ namespace Creature
                 Vector3 startDir = legsScript.mainTrRotRefFront.position - legsScript.mainTrRotRefBack.position;
                 Vector3 currentDir;
 
-                while (timer < 2f)
+                while (timer < 2.5f)
                 {
                     timer += Time.deltaTime;
-                    currentDir = Vector3.Lerp(startDir, wantedDir, timer / 2f);
+                    currentDir = Vector3.Lerp(startDir, wantedDir, timer / 2.5f);
                     
                     bodyScript.forcedRot = currentDir;
 

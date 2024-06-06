@@ -115,6 +115,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     private IEnumerator Die()
     {
+        AudioManager.Instance.PlaySoundOneShot(1,4,0);
         isDying = true;
         anim.clip = anim["Death"].clip;
         anim.Play();

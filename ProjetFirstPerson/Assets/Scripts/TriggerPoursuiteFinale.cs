@@ -28,7 +28,9 @@ public class TriggerPoursuiteFinale : MonoBehaviour
         // We put back the objects
         for (int i = 0; i < objectsToPutBack.Count; i++)
         {
+            objectsToPutBack[i].GetComponent<Rigidbody>().isKinematic = true;
             objectsToPutBack[i].position = originalPosition[i];
+            objectsToPutBack[i].GetComponent<Rigidbody>().isKinematic = false;
         }
 
         // We reactivate the trigger
@@ -49,7 +51,7 @@ public class TriggerPoursuiteFinale : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<HealthComponent>().currentTriggerPoursuiteF = this;
+            other.transform.parent.GetComponent<HealthComponent>().currentTriggerPoursuiteF = this;
         }
     }
 

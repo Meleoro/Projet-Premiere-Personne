@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Creature
 {
@@ -140,7 +141,8 @@ namespace Creature
 
                 if (!legs[i].isMoving)
                 {
-                    if (VerifyLegNeedsToMove(legs[i], false) || (legs[i].isFrontLeg && moveFrontLegs) || (!legs[i].isFrontLeg && moveBackLegs))
+                    if (VerifyLegNeedsToMove(legs[i], false) || (legs[i].isFrontLeg && currentMovingLegsFront == 1 && creatureMover.isRunning) || 
+                        (!legs[i].isFrontLeg && currentMovingLegsBack == 1 && creatureMover.isRunning))
                     {
                         if(!legs[i].isFrontLeg) moveBackLegs = false;
                         if(legs[i].isFrontLeg) moveFrontLegs = false;
@@ -210,7 +212,7 @@ namespace Creature
                 if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > -0.1f)
                     return false;
                 
-                if (shouldntMove)
+                if (shouldntMove && !creatureMover.isRunning)
                 {
                     if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.1f)
                         return true;
@@ -347,6 +349,13 @@ namespace Creature
 
             currentLeg.timerCooldownMove = 0.3f;
             currentLeg.isMoving = false;
+
+            if(!creatureMover.isRunning)
+                AudioManager.Instance.PlaySoundOneShot(0, Random.Range(2, 5), 1);
+
+            else
+                AudioManager.Instance.PlaySoundOneShot(0, Random.Range(5, 8), 1);
+
         }
 
         #endregion

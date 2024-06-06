@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using Unity.VisualScripting;
+using System;
 
 public class BoardMenu : MonoBehaviour
 {
@@ -47,20 +48,22 @@ public class BoardMenu : MonoBehaviour
         // Quand le joueur clic, on check si un élément est séléctionné dans l'Event system et on fait une variable
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            GameObject NewGameObject = EventSystem.current.currentSelectedGameObject;
+       /*     GameObject NewGameObject = EventSystem.current.currentSelectedGameObject;
             if(NewGameObject == currentSelect && NewGameObject != null && currentSelect.CompareTag("MovingUI"))
             {
                     currentSelect.GetComponent<ElementsOfBoard>().OptionPanel.SetActive(true);
                     EventSystem.current.SetSelectedGameObject(null);
                     currentSelect = null;
-            }
+                    Debug.Log("1");
+            } */
             
-            else if(EventSystem.current.currentSelectedGameObject == null)
+            if(EventSystem.current.currentSelectedGameObject == null)
             {
                 listBoardElement.RemoveAll(item => item == null);
                 for(int i = 0; i < listBoardElement.Count ; i++)
                  {
-                        listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().OptionPanel.SetActive(false);
+                        listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().DeleteButton.SetActive(false);
+                        //listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().FavoriteButton.SetActive(false);
                  }
             }
 
@@ -71,6 +74,14 @@ public class BoardMenu : MonoBehaviour
                 {
                     currentSelect.GetComponentInChildren<ElementsOfBoard>().isSelectedOneTime = true;
                 }
+                else
+                {
+                    for(int i = 0; i < listBoardElement.Count ; i++)
+                 {
+                        listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().DeleteButton.SetActive(false);
+                        //listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().FavoriteButton.SetActive(false);
+                 }
+                }
             }
 
             
@@ -79,7 +90,8 @@ public class BoardMenu : MonoBehaviour
         {
             if(currentSelect.CompareTag("MovingUI"))
                 {
-                    currentSelect.GetComponent<ElementsOfBoard>().OptionPanel.SetActive(true);
+                    currentSelect.GetComponent<ElementsOfBoard>().DeleteButton.SetActive(true);
+                    //currentSelect.GetComponent<ElementsOfBoard>().FavoriteButton.SetActive(true);
                 }
             currentSelect = null;
             EventSystem.current.SetSelectedGameObject(null);
@@ -89,16 +101,6 @@ public class BoardMenu : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Mouse1))
         {
             mousePos = Input.mousePosition;
-        }
-        if(currentSelect != null && Input.GetKey(KeyCode.Mouse1) && UIManager.Instance.isUIActive && !currentSelect.GetComponent<ElementsOfBoard>().isFavorite)
-        {
-            if(currentSelect != null)
-            {
-                Transform HisMovingObject = currentSelect.GetComponent<ElementsOfBoard>().MyMovingObject.transform;
-                HisMovingObject.localEulerAngles = new Vector3(0,0,Input.mousePosition.y);
-                isRotating = true;
-                Cursor.visible = false;
-            }
         }
         if(Input.GetKeyUp(KeyCode.Mouse1) && UIManager.Instance.isUIActive)
         {
@@ -116,7 +118,7 @@ public class BoardMenu : MonoBehaviour
                 HisMovingObject.position = Input.mousePosition;
             }
 
-            // La rotation des éléments du board
+            // La scale des éléments du board
         /*    HisMovingObject.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
             if(HisMovingObject.localScale.x <= 0.1f)
             {
@@ -129,7 +131,7 @@ public class BoardMenu : MonoBehaviour
         }
 
         // OpenFavMenu
-        if(Input.GetKeyDown(KeyCode.F) && favCanBeOpen)
+        if(Input.GetKeyDown(KeyCode.F) && favCanBeOpen )
         {
             OpenFavoriteMenu();
         }
@@ -163,7 +165,8 @@ public class BoardMenu : MonoBehaviour
     }
     public void DeleteElement(GameObject parent)
     {
-        AudioManager.Instance.PlaySoundOneShot(1, 18, 1);
+        Debug.Log("Destroy");
+        AudioManager.Instance.PlaySoundOneShot(1, 18, 0);
         Destroy(parent);
     }
 

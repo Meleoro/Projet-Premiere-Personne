@@ -16,10 +16,11 @@ public class LogsScripts : MonoBehaviour
     [SerializeField] private Button TraductionButton;
     [HideInInspector] public bool isRead;
     [HideInInspector] public bool isTraducted;
-
+    private Coroutine traduction;
     [Header("Scripts Letter")]
     [SerializeField] private float typingSpeed = 0.05f;
-    private bool isWriting;
+    [HideInInspector] public bool isWriting;
+    public bool isActive;
     
     void Start()
     {
@@ -33,18 +34,25 @@ public class LogsScripts : MonoBehaviour
             TraductionButton.gameObject.SetActive(false);
         }
     }
-    public void ChangeTitle()
+    public void LogsListFunction()
     {
-
+        List<GameObject> newLogsList = logsMenu.logsList;
+        for(int i = 0; i < newLogsList.Count ; i++)
+        {
+            newLogsList[i].SetActive(false);
+            newLogsList[i].SetActive(true);
+        }
     }
+    
 
     public void InstantiateMyInfo()
     {
-        
         logsMenu.currentLog = gameObject;
+        LogsListFunction();
         
         if (!isRead)
         {
+            isRead = true;
             transform.GetChild(1).gameObject.SetActive(false);
             logsMenu.unreadLogs -= 1;
             if (logsMenu.unreadLogs == 0)
@@ -63,6 +71,7 @@ public class LogsScripts : MonoBehaviour
         {
             InformationArea.text = codedInfo;
             TraductionButton.gameObject.SetActive(true);
+            TraductionButton.interactable = true;
         }
         else
         {
@@ -74,8 +83,14 @@ public class LogsScripts : MonoBehaviour
     public void Traduction()
     {
       //  InformationArea.text = MyInformation;
-        StartCoroutine(TypeText(MyInformation));
+        traduction = StartCoroutine(TypeText(MyInformation));
         TraductionButton.interactable = false;
+    }
+
+    public void StopTraduction()
+    {
+        if(traduction != null)
+            StopCoroutine(traduction);
     }
     
     public void PlayUISound()
@@ -85,6 +100,7 @@ public class LogsScripts : MonoBehaviour
 
      private IEnumerator TypeText(string text)
     {
+        logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
         isWriting = true;
         InformationArea.text = "";
           foreach(char letter in text.ToCharArray())
@@ -95,7 +111,6 @@ public class LogsScripts : MonoBehaviour
                     yield return new WaitForSeconds(typingSpeed);
                 }
             }  
-            logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
             TraductionButton.gameObject.SetActive(false);
     }
 }
