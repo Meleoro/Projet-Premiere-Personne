@@ -91,7 +91,6 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                 if (!hitScript.isAlreadyInLogs)
                 {
                     SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime;
-                        Debug.Log("Translating");
                     if (SteleChargeImage.fillAmount >= 1)
                     {
                         //hitScript.isAlreadyInLogs = true;
