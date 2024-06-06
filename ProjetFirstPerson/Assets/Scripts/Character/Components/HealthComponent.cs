@@ -12,6 +12,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     [SerializeField] private float cameraShakeDuration;
     [SerializeField] private float fallMaxHeight;
     [SerializeField] private float fallRecovery;
+    [SerializeField] private float knockbackStrength;
+    [SerializeField] private float knockbackDuration;
 
     [Header("Public Infos")] 
     [HideInInspector] public Action DieAction;
@@ -74,12 +76,17 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     }
 
 
-    public void TakeDamage()
+    public void TakeDamage(Vector3 attackDir)
     {
         if (isInvincible) return;
 
         if(isHurted && !isDying)
             StartCoroutine(Die());
+
+        else
+            StartCoroutine(move.AddKnockback(attackDir, knockbackStrength, knockbackDuration));
+
+        isInvincible = true;
 
         CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity);
 
