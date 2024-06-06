@@ -76,6 +76,7 @@ public class UIManager : GenericSingletonClass<UIManager>
         {
             if(!isUIActive)
             {
+                AudioManager.Instance.PlaySoundOneShot(1,21,0);
                 if (playerHealth.isHurted)
                 {
                     textHealth.text = "État de Santé : Critique";
@@ -100,6 +101,7 @@ public class UIManager : GenericSingletonClass<UIManager>
             }
             else
             {
+                AudioManager.Instance.PlaySoundOneShot(1,22,0);
                 tabletteWorldFakeMenu.SetActive(false);
                 cam.anim.SetBool("in",false);
                 if (!CharacterManager.Instance.isInteracting)

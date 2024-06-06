@@ -28,6 +28,7 @@ public class PorteCylindre : MonoBehaviour
 
     private IEnumerator Win()
     {
+        AudioManager.Instance.PlaySoundOneShot(3,4,0);
         for (int i = 0; i < cylinders.Count; i++)
         {
             cylinders[i].isMoving = true;
