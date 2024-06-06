@@ -64,7 +64,6 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = PlayerPrefs.GetInt("resolution", 21);
         resolutionDropdown.RefreshShownValue();
-        Debug.Log(resolutionDropdown.value);
 
     }
 
@@ -88,7 +87,6 @@ public class SettingsMenu : MonoBehaviour
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         PlayerPrefs.SetInt("resolution", resolutionIndex);
-        Debug.Log(resolutionIndex);
     }
 
     public void ClearSavedData()

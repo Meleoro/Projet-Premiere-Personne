@@ -85,6 +85,7 @@ public class LogsScripts : MonoBehaviour
 
      private IEnumerator TypeText(string text)
     {
+        logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
         isWriting = true;
         InformationArea.text = "";
           foreach(char letter in text.ToCharArray())
@@ -95,7 +96,6 @@ public class LogsScripts : MonoBehaviour
                     yield return new WaitForSeconds(typingSpeed);
                 }
             }  
-            logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
             TraductionButton.gameObject.SetActive(false);
     }
 }
