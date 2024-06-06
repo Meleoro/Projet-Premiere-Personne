@@ -85,9 +85,12 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
         if(isHurted && !isDying)
             StartCoroutine(Die());
-
         else
+        {
             StartCoroutine(move.AddKnockback(attackDir, knockbackStrength, knockbackDuration));
+            //anim.clip = anim["TakeDamage"].clip;
+            //anim.Play();
+        }
 
         isInvincible = true;
 
