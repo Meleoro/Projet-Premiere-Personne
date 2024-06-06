@@ -52,6 +52,7 @@ public class LogsScripts : MonoBehaviour
         
         if (!isRead)
         {
+            isRead = true;
             transform.GetChild(1).gameObject.SetActive(false);
             logsMenu.unreadLogs -= 1;
             if (logsMenu.unreadLogs == 0)
