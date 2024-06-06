@@ -63,7 +63,7 @@ public class BoardMenu : MonoBehaviour
                 for(int i = 0; i < listBoardElement.Count ; i++)
                  {
                         listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().DeleteButton.SetActive(false);
-                        listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().FavoriteButton.SetActive(false);
+                        //listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().FavoriteButton.SetActive(false);
                  }
             }
 
@@ -79,7 +79,7 @@ public class BoardMenu : MonoBehaviour
                     for(int i = 0; i < listBoardElement.Count ; i++)
                  {
                         listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().DeleteButton.SetActive(false);
-                        listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().FavoriteButton.SetActive(false);
+                        //listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().FavoriteButton.SetActive(false);
                  }
                 }
             }
@@ -91,7 +91,7 @@ public class BoardMenu : MonoBehaviour
             if(currentSelect.CompareTag("MovingUI"))
                 {
                     currentSelect.GetComponent<ElementsOfBoard>().DeleteButton.SetActive(true);
-                    currentSelect.GetComponent<ElementsOfBoard>().FavoriteButton.SetActive(true);
+                    //currentSelect.GetComponent<ElementsOfBoard>().FavoriteButton.SetActive(true);
                 }
             currentSelect = null;
             EventSystem.current.SetSelectedGameObject(null);
