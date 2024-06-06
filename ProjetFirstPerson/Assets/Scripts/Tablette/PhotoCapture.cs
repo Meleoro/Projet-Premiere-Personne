@@ -91,17 +91,19 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                 if (!hitScript.isAlreadyInLogs)
                 {
                     SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime;
-                    if (SteleChargeImage.fillAmount == 1)
+                        Debug.Log("Translating");
+                    if (SteleChargeImage.fillAmount >= 1)
                     {
+                        //hitScript.isAlreadyInLogs = true;
                         logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["NewLogAnim"].clip;
                         logsMenu.logPopUpAnim.Play();
                         AudioManager.Instance.PlaySoundOneShot(1, 17, 0);
-                        hitScript.isAlreadyInLogs = true;
-                        SteleChargeImage.fillAmount = 0;
                         string theInfo = hitScript.myInfo;
                         string theTitle = hitScript.titleLogs;
                         GetComponent<LogsMenu>().TraductionButton.gameObject.SetActive(true);
                         GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle,false);
+                        hitScript.isAlreadyInLogs = true;
+                        SteleChargeImage.fillAmount = 0;
                     }
                 }
             }
