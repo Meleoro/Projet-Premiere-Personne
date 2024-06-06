@@ -330,7 +330,6 @@ namespace Creature
 
                 if (currentSuspicion <= 0)
                 {
-                    creatureRefScript.coleretteAnimator.SetBool("IsOpen", false);
                     StartCoroutine(QuitAggressiveBehavior());
                 }
             }
@@ -353,6 +352,7 @@ namespace Creature
             moveScript.StartWalkSpeed();
 
             specialMovesScript.LookLeftRight(2.5f);
+            creatureRefScript.coleretteAnimator.SetBool("IsOpen", false);
 
             yield return new WaitForSeconds(2.5f);
 
