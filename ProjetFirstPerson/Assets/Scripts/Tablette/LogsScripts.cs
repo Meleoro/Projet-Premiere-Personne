@@ -16,7 +16,7 @@ public class LogsScripts : MonoBehaviour
     [SerializeField] private Button TraductionButton;
     [HideInInspector] public bool isRead;
     [HideInInspector] public bool isTraducted;
-
+    private Coroutine traduction;
     [Header("Scripts Letter")]
     [SerializeField] private float typingSpeed = 0.05f;
     [HideInInspector] public bool isWriting;
@@ -83,8 +83,14 @@ public class LogsScripts : MonoBehaviour
     public void Traduction()
     {
       //  InformationArea.text = MyInformation;
-        StartCoroutine(TypeText(MyInformation));
+        traduction = StartCoroutine(TypeText(MyInformation));
         TraductionButton.interactable = false;
+    }
+
+    public void StopTraduction()
+    {
+        if(traduction != null)
+            StopCoroutine(traduction);
     }
     
     public void PlayUISound()

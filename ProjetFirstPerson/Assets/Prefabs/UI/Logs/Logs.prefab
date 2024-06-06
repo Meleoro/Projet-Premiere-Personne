@@ -223,6 +223,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8358833654666422922}
+        m_TargetAssemblyTypeName: LogsScripts, Assembly-CSharp
+        m_MethodName: StopTraduction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8358833654666422922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,8 +253,11 @@ MonoBehaviour:
   codedInfo: 
   MyInformation: Bonjour, ceci est un texte.
   TraductionButton: {fileID: 0}
+  isRead: 0
   isTraducted: 0
   typingSpeed: 0.05
+  isWriting: 0
+  isActive: 0
 --- !u!1 &8126534555340877773
 GameObject:
   m_ObjectHideFlags: 0
