@@ -11,7 +11,7 @@ namespace Creature
     public class CreatureMover : MonoBehaviour, ICreatureComponent
     {
         [Header("Speed Parameters")]
-        [SerializeField] private float walkSpeed;
+        [SerializeField] public float walkSpeed;
         [SerializeField] private float suspicionSpeed;
         public float agressiveSpeed;
         
