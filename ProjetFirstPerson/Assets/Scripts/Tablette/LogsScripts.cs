@@ -19,7 +19,8 @@ public class LogsScripts : MonoBehaviour
 
     [Header("Scripts Letter")]
     [SerializeField] private float typingSpeed = 0.05f;
-    private bool isWriting;
+    [HideInInspector] public bool isWriting;
+    public bool isActive;
     
     void Start()
     {
@@ -33,15 +34,21 @@ public class LogsScripts : MonoBehaviour
             TraductionButton.gameObject.SetActive(false);
         }
     }
-    public void ChangeTitle()
+    public void LogsListFunction()
     {
-
+        List<GameObject> newLogsList = logsMenu.logsList;
+        for(int i = 0; i < newLogsList.Count ; i++)
+        {
+            newLogsList[i].SetActive(false);
+            newLogsList[i].SetActive(true);
+        }
     }
+    
 
     public void InstantiateMyInfo()
     {
-        
         logsMenu.currentLog = gameObject;
+        LogsListFunction();
         
         if (!isRead)
         {
@@ -63,6 +70,7 @@ public class LogsScripts : MonoBehaviour
         {
             InformationArea.text = codedInfo;
             TraductionButton.gameObject.SetActive(true);
+            TraductionButton.interactable = true;
         }
         else
         {
