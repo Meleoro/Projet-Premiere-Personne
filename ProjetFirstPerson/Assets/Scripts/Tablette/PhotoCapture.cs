@@ -200,7 +200,6 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             tmp.Myindex = index;
             tmp.MyposPhoto = pos;
             tmp.MyscreenPhoto = sprite;
-            Debug.Log(pos);
             
 
             MyPhotos.Add(tmp);

@@ -5,7 +5,8 @@ using UnityEngine;
 public class ElementsOfBoard : MonoBehaviour
 {
     [SerializeField] public GameObject MyMovingObject;
-    [SerializeField] public GameObject OptionPanel;
+    [SerializeField] public GameObject DeleteButton;
+    [SerializeField] public GameObject FavoriteButton;
     [SerializeField] public bool isSelectedOneTime = false;
     [SerializeField] public bool isFavorite;
 }

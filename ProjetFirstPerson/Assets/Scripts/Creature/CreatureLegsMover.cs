@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Creature
 {
@@ -347,6 +348,13 @@ namespace Creature
 
             currentLeg.timerCooldownMove = 0.3f;
             currentLeg.isMoving = false;
+
+            if(!creatureMover.isRunning)
+                AudioManager.Instance.PlaySoundOneShot(0, Random.Range(2, 5), 1);
+
+            else
+                AudioManager.Instance.PlaySoundOneShot(0, Random.Range(5, 8), 1);
+
         }
 
         #endregion

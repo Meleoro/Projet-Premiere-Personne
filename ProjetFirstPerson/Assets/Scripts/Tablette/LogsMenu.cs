@@ -12,6 +12,7 @@ public class LogsMenu : MonoBehaviour
     [SerializeField] public GameObject currentLog;
     [SerializeField] public Button TraductionButton;
     public Animation logPopUpAnim;
+    public List<GameObject> logsList;
     public List<GameObject> logIconUI;
 
     [Header("Lorem ipsum")]
@@ -47,6 +48,7 @@ public class LogsMenu : MonoBehaviour
             myRandomString = null;
             NewLog.GetComponent<LogsScripts>().MyInformation = info;
         }
+        logsList.Add(NewLog);
     }
 
     void Update()
