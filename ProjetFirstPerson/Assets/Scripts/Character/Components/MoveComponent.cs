@@ -229,7 +229,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
             currentGravity = 0;
             isInSlope = Vector3.Angle(hitInfo.normal, Vector3.up) > 20;
         }
-        else
+        else if (!quitGround)
         {
             quitGround = true;
             YQuitGround = transform.position.y;

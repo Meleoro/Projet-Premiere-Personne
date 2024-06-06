@@ -269,7 +269,7 @@ namespace Creature
                 }
                 
                 headIK.headJointTr.rotation = Quaternion.Euler(headIK.headJointTr.rotation.eulerAngles.x,
-                    headIK.headJointTr.rotation.eulerAngles.y - visionRadiusY - peripheralVisionRadius - raycastDensity * 0.5f, 
+                    headIK.headJointTr.rotation.eulerAngles.y - visionRadiusY - peripheralVisionRadius, 
                     headIK.headJointTr.rotation.eulerAngles.z + raycastDensity);
 
                 currentDir = -headIK.headJointTr.right;
