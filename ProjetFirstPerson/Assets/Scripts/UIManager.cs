@@ -70,7 +70,7 @@ public class UIManager : GenericSingletonClass<UIManager>
         } 
     }
 
-    IEnumerator OpenMenu()
+    public IEnumerator OpenMenu()
     {
         if (!cam.isAiming)
         {

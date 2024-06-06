@@ -55,7 +55,7 @@ namespace Puzzle
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape) && isInRange)
+            if (Input.GetKeyDown(KeyCode.Escape) && isInRange && CharacterManager.Instance.isInteracting)
                 GetOutInteraction();
         }
 
@@ -108,6 +108,10 @@ namespace Puzzle
 
             puzzleCollider.enabled = true;
 
+            if (UIManager.Instance.isUIActive)
+            {
+                StartCoroutine(UIManager.Instance.OpenMenu());
+            }
            
             characterCameraScript.doMoveFeel = true;
             characterCameraScript.doFOVEffect = true;

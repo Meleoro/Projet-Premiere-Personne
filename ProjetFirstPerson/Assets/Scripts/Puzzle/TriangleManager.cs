@@ -130,12 +130,17 @@ namespace Puzzle
                 }
             }
 
-            if (win) Win();
+            if (win) StartCoroutine(Win());
         }
 
 
-        private void Win()
+        private IEnumerator Win()
         {
+            for (int i = 0; i < dalles.Length; i++)
+            {
+                dalles[i].canMove = false;
+            }
+            yield return new WaitForSeconds(1f);
             won = true;
 
             interactScript.GetOutInteraction();
