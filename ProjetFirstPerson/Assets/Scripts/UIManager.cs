@@ -44,6 +44,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, SettingsMenu;
     [SerializeField] private TextMeshProUGUI schedule;
     [SerializeField] public bool isUIActive = false;
+    private LogsMenu logsMenu;
 
     [Header("Cursor Variables")]
     public Texture2D cursorTexture;
@@ -56,6 +57,7 @@ public class UIManager : GenericSingletonClass<UIManager>
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
         HideInteractIcon();
         GeneralMenu.SetActive(false);
+        logsMenu = GameObject.Find("TabletteManager").GetComponent<LogsMenu>();
     }
 
     void Update()
@@ -69,13 +71,10 @@ public class UIManager : GenericSingletonClass<UIManager>
         {
             StartCoroutine(OpenMenu());
         } 
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            if(isUIActive)
-            {
-                SceneManager.LoadScene("MainMenu");
-            }
-        } 
+    }
+    public void OpenMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     public IEnumerator OpenMenu()
@@ -166,6 +165,7 @@ public class UIManager : GenericSingletonClass<UIManager>
             {
                 CloseAllPanel(false,false,false,true);
                 isUIActive = true;
+                logsMenu.RefreshLogs();
             }
     }
     #endregion
