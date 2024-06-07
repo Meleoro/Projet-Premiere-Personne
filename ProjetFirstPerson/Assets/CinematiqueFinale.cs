@@ -14,18 +14,15 @@ public class CinematiqueFinale : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (isOpen)
-            {
-                light.SetActive(true);
-                doorAnim.clip = doorAnim["OuverturePorteFinale"].clip;
-                doorAnim.Play();
-            }
-            else
-            {
-                doorAnim.clip = doorAnim["FermeturePorte"].clip;
-                doorAnim.Play();
-            }
-           
+            doorAnim.clip = doorAnim["FermeturePorte"].clip;
+            doorAnim.Play();
         }
+    }
+
+    public void DoSecondPart()
+    {
+        light.SetActive(true);
+        doorAnim.clip = doorAnim["OuverturePorteFinale"].clip;
+        doorAnim.Play();
     }
 }

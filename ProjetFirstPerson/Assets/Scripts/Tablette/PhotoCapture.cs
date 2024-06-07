@@ -10,6 +10,7 @@ public class PhotoCapture : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private CameraComponent cameraComponent;
+    [SerializeField] private MoveComponent moveComponent;
     [SerializeField] private UIManager uiManager;
     [SerializeField] private BoardMenu boardMenu;
     [SerializeField] private CameraTestEthan cameraTestEthan;
@@ -114,6 +115,11 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                         GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle,false);
                         hitScript.isAlreadyInLogs = true;
                         SteleChargeImage.fillAmount = 0;
+
+                        if (hitScript.isFinalStele)
+                        {
+                            StartCoroutine(AutoGoToLog());
+                        }
                     }
                 }
             }
@@ -128,11 +134,20 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             SteleChargeImage.fillAmount = 0;
             soundDone = false;
         }
-
-
-
     }
 
+    IEnumerator AutoGoToLog()
+    {
+        cameraComponent.canRotate = false;
+        cameraComponent.canMove = false;
+        moveComponent.canMove = false;
+        //bloquer mouvements et camera
+        cameraTestEthan.AutoQuitPhoto();
+        yield return new WaitForSeconds(1.5f);
+        StartCoroutine(UIManager.Instance.OpenLogMenu());
+        UIManager.Instance.isFinalCinematic = true;
+    }
+    
     IEnumerator CapturePhoto()
     {
         // Take Photos

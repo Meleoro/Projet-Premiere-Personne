@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -47,6 +48,8 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     private Coroutine upDownCoroutine;
     private float crouchModifierY;
     private bool lockCamera;
+    private bool isInCinematic;
+    private Vector3 wantedRotCinematic;
 
     [Header("References")] 
     public Transform wantedCameraPos;
@@ -91,7 +94,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
 
     public void ComponentLateUpdate()
     {
-        if(!lockCamera)
+        if(!lockCamera && !isInCinematic)
             ActualiseInputs();
         
         if(canMove)
@@ -113,6 +116,14 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     // ROTATES THE CAMERA
     private void RotateCamera()
     {
+        if (isInCinematic)
+        {
+            Vector3 dir = Vector3.Lerp(characterCamera.forward, wantedRotCinematic, Time.deltaTime * 5);
+            characterCamera.rotation = Quaternion.LookRotation(dir, Vector3.up);
+            
+            return;
+        }
+        
         if (lerpCameraRotation)
         {
             lerpedRotation = Vector2.Lerp(lerpedRotation, currentRotation, lerpSpeed * Time.deltaTime);
@@ -204,6 +215,12 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     }
     #endregion
 
+
+    public void LookTowardsCinematic(Vector3 lookedPoint)
+    {
+        wantedRotCinematic = lookedPoint - characterCamera.position;
+        isInCinematic = true;
+    }
 
     public void StartTilting()
     {
