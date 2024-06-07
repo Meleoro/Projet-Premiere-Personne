@@ -41,6 +41,7 @@ public class ProtoBoulier : MonoBehaviour
 
         if (win)
         {
+            AudioManager.Instance.PlaySoundOneShot(3,4,0);
             anim.Play();
             interactManager.GetOutInteraction();
             Debug.Log("win");

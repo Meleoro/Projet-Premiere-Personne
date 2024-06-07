@@ -51,8 +51,16 @@ public class LogsMenu : MonoBehaviour
         logsList.Add(NewLog);
     }
 
-    void Update()
+   public void RefreshLogs()
     {
-        
+        for(int i = 0; i < logsList.Count ; i++)
+        {
+            if(logsList[i].GetComponent<LogsScripts>().isActive == true)
+            {
+                logsList[i].GetComponent<LogsScripts>().InstantiateMyInfo();
+            }
+        }
     }
+
+   
 }

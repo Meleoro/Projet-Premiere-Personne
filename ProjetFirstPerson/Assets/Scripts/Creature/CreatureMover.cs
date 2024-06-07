@@ -11,7 +11,7 @@ namespace Creature
     public class CreatureMover : MonoBehaviour, ICreatureComponent
     {
         [Header("Speed Parameters")]
-        [SerializeField] private float walkSpeed;
+        [SerializeField] public float walkSpeed;
         [SerializeField] private float suspicionSpeed;
         public float agressiveSpeed;
         
@@ -24,6 +24,7 @@ namespace Creature
         [HideInInspector] public Vector3 forcedRot;
         [HideInInspector] public Vector3 forcedPos;
         public bool isRunning;
+        [HideInInspector] public Vector3 currentDir;
 
         [Header("Private Infos")]
         private CreatureBodyParamData data;
@@ -90,8 +91,8 @@ namespace Creature
             Vector3 dirToRotateTo = navMeshAgent.velocity.normalized;
             if (forcedRot != Vector3.zero) dirToRotateTo = forcedRot;
             else if (forcedPos != Vector3.zero) dirToRotateTo = forcedPos - transform.position;
-            
-            Vector3 currentDir = targetIKBody.position - transform.position;
+
+            currentDir = targetIKBody.position - transform.position;
             currentDir = currentDir.normalized * 4;
 
             currentDir = Vector3.RotateTowards(currentDir, dirToRotateTo, 1, 1);

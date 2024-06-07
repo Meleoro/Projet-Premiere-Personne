@@ -1225,7 +1225,7 @@ Transform:
   m_GameObject: {fileID: 806445747457324766}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.58, y: 1.004, z: 4.269}
+  m_LocalPosition: {x: -3.3715982, y: 96.739, z: -103.587364}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1266,10 +1266,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recoveryTime: 18
-  cameraShakeIntensity: 0.6
-  cameraShakeDuration: 0.3
   fallMaxHeight: 0.2
   fallRecovery: 1.5
+  knockbackStrength: 15000
+  knockbackDuration: 0.6
+  cameraShakeIntensity: 6
+  cameraShakeDuration: 0.3
+  cameraShakeChangePosFrames: 2
   isHurted: 0
   currentTriggerPoursuiteF: {fileID: 0}
   cam: {fileID: 3956260122818378176}
@@ -1325,7 +1328,7 @@ MonoBehaviour:
   canRun: 1
   runSpeed: 6
   runAcceleration: 1500
-  gravityStrength: 11500
+  gravityStrength: 500
   slopHelpStrength: 300
   groundRaycastDist: 1.18
   crouchSoundDuration: 1.1
@@ -1354,7 +1357,7 @@ MonoBehaviour:
   timeBeforeRegain: 5
   tiredVolumeRatioAppear: 1
   canRunAgainRatio: 1
-  adrenalineStam: 10
+  adrenalineStam: 20
   hasStamina: 0
   currentStamina: 0
 --- !u!114 &449452331996375937
@@ -3842,31 +3845,31 @@ MonoBehaviour:
   soundList:
   - listSoundIdentities:
     - audioClip: {fileID: 8300000, guid: 08a930806b6e4044d9623371beaec070, type: 3}
-      volume: 1.5
+      volume: 2
     - audioClip: {fileID: 8300000, guid: 66d18c973fe926345b2968afab6bfdae, type: 3}
       volume: 1.5
     - audioClip: {fileID: 8300000, guid: bf5f7f047ad7d7d4a8d636b8d4b9b2a3, type: 3}
-      volume: 2
+      volume: 0.7
     - audioClip: {fileID: 8300000, guid: e6b2df6992a6d574a9cc43377c7c2134, type: 3}
-      volume: 2
+      volume: 0.7
     - audioClip: {fileID: 8300000, guid: 4e544a06ef38d4c4d98d7b6dd82568c9, type: 3}
-      volume: 2
+      volume: 0.7
     - audioClip: {fileID: 8300000, guid: 46065f6bb2b400f41a891803c1ddae76, type: 3}
-      volume: 2
+      volume: 0.7
     - audioClip: {fileID: 8300000, guid: af468c94778108e4181f0877fc7b9b78, type: 3}
-      volume: 2
+      volume: 0.7
     - audioClip: {fileID: 8300000, guid: 49a3fed53722f5149a68a32703088026, type: 3}
-      volume: 2
+      volume: 0.7
     - audioClip: {fileID: 8300000, guid: 72a29329a25134c40869be2afe3eb2e1, type: 3}
-      volume: 1
+      volume: 1.5
     - audioClip: {fileID: 8300000, guid: 6ac19facbbd8cc7429ff8ab480cefdc7, type: 3}
-      volume: 1
+      volume: 1.5
     - audioClip: {fileID: 8300000, guid: c8a9d79998e1d8346b36c63474044616, type: 3}
-      volume: 1
+      volume: 1.5
     - audioClip: {fileID: 0}
       volume: 1
     - audioClip: {fileID: 8300000, guid: 56ab3c2e7c9c1714089749e75f779515, type: 3}
-      volume: 1.5
+      volume: 2
   - listSoundIdentities:
     - audioClip: {fileID: 0}
       volume: 0
@@ -3876,36 +3879,44 @@ MonoBehaviour:
       volume: 0
     - audioClip: {fileID: 0}
       volume: 0
-    - audioClip: {fileID: 0}
-      volume: 0
-    - audioClip: {fileID: 8300000, guid: 359a00b9bc0fb1749939d7c0a53d3af0, type: 3}
+    - audioClip: {fileID: 8300000, guid: f31286d8a65c1864190137c134a5473a, type: 3}
+      volume: 2.5
+    - audioClip: {fileID: 8300000, guid: 147d9a3a76daed54f8cdf0ff3f01651f, type: 3}
       volume: 1.5
     - audioClip: {fileID: 8300000, guid: e732607d5d57ec149aaf00e1a55e5b26, type: 3}
-      volume: 0.7
+      volume: 1
     - audioClip: {fileID: 8300000, guid: dcc04cb7a0ec4ee4f9a963ef58ef86a4, type: 3}
-      volume: 0.7
+      volume: 1
     - audioClip: {fileID: 8300000, guid: 8f04333031cd6734591bd53d8fe98a20, type: 3}
-      volume: 0.7
+      volume: 1
     - audioClip: {fileID: 8300000, guid: 0ad0692a9ff3a7740b359c9ea949585d, type: 3}
-      volume: 0.7
+      volume: 1
     - audioClip: {fileID: 8300000, guid: d7a2622dfd300c348832e2c2ab3eee83, type: 3}
-      volume: 0.7
+      volume: 1
     - audioClip: {fileID: 8300000, guid: ee2397421e543f9439480692ece02d1e, type: 3}
-      volume: 0.7
+      volume: 1
     - audioClip: {fileID: 8300000, guid: d90a4f1d79a3df3498ee7b973218374a, type: 3}
-      volume: 0.7
+      volume: 1
     - audioClip: {fileID: 8300000, guid: 00c2ad1bb7ede7942852d604b56c75c1, type: 3}
       volume: 1
     - audioClip: {fileID: 8300000, guid: 70d2e12368799fe468027f43ae0da0ab, type: 3}
-      volume: 0.7
+      volume: 1
     - audioClip: {fileID: 8300000, guid: 8f73d7e9f553f334897e9c0421639c6b, type: 3}
-      volume: 0.7
+      volume: 1
     - audioClip: {fileID: 8300000, guid: 246b8c42640bdad409b6fd9466c6131e, type: 3}
       volume: 0.6
     - audioClip: {fileID: 8300000, guid: 0a95ecb9a0e837b4da5e8db19a649ab7, type: 3}
       volume: 0.65
     - audioClip: {fileID: 8300000, guid: 49a926fe6e761c6498958aeb4f76efa9, type: 3}
       volume: 0.55
+    - audioClip: {fileID: 8300000, guid: 9e7bacceba347be4d9881ca78a9bacff, type: 3}
+      volume: 1
+    - audioClip: {fileID: 8300000, guid: 1e98dd498ee2d6840bb39933b983d8ba, type: 3}
+      volume: 1
+    - audioClip: {fileID: 8300000, guid: 9b13642b12dd20f4a9876b111b2a6d8b, type: 3}
+      volume: 0.7
+    - audioClip: {fileID: 8300000, guid: 346060ff9acdf004b826692c0203ff83, type: 3}
+      volume: 0.7
   - listSoundIdentities: []
   - listSoundIdentities:
     - audioClip: {fileID: 0}
@@ -3913,6 +3924,10 @@ MonoBehaviour:
     - audioClip: {fileID: 8300000, guid: 875b070f3601e4d469739df99ed153cd, type: 3}
       volume: 0.6
     - audioClip: {fileID: 8300000, guid: 5f75807a42925b148a02d1fa73ad91cd, type: 3}
+      volume: 1
+    - audioClip: {fileID: 0}
+      volume: 1
+    - audioClip: {fileID: 8300000, guid: a14ab8acd0467b048b319dc321499f63, type: 3}
       volume: 1
   musicCategoryID: 4
   audioSources:

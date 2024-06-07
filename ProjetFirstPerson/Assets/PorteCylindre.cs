@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Puzzle;
 using UnityEngine;
@@ -22,11 +23,17 @@ public class PorteCylindre : MonoBehaviour
             }
         }
 
-        if (win) Win();
+        if (win) StartCoroutine(Win());
     }
 
-    private void Win()
+    private IEnumerator Win()
     {
+        AudioManager.Instance.PlaySoundOneShot(3,4,0);
+        for (int i = 0; i < cylinders.Count; i++)
+        {
+            cylinders[i].isMoving = true;
+        }
+        yield return new WaitForSeconds(1);
         interactScript.GetOutInteraction();
         //anim.clip = anim["OpenCylindresIntro"].clip;
         anim.Play();

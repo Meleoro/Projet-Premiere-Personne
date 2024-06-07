@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class UIManager : GenericSingletonClass<UIManager>
 {
@@ -43,6 +44,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, SettingsMenu;
     [SerializeField] private TextMeshProUGUI schedule;
     [SerializeField] public bool isUIActive = false;
+    private LogsMenu logsMenu;
 
     [Header("Cursor Variables")]
     public Texture2D cursorTexture;
@@ -55,6 +57,7 @@ public class UIManager : GenericSingletonClass<UIManager>
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
         HideInteractIcon();
         GeneralMenu.SetActive(false);
+        logsMenu = GameObject.Find("TabletteManager").GetComponent<LogsMenu>();
     }
 
     void Update()
@@ -69,13 +72,18 @@ public class UIManager : GenericSingletonClass<UIManager>
             StartCoroutine(OpenMenu());
         } 
     }
+    public void OpenMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 
-    IEnumerator OpenMenu()
+    public IEnumerator OpenMenu()
     {
         if (!cam.isAiming)
         {
             if(!isUIActive)
             {
+                AudioManager.Instance.PlaySoundOneShot(1,21,0);
                 if (playerHealth.isHurted)
                 {
                     textHealth.text = "État de Santé : Critique";
@@ -100,6 +108,7 @@ public class UIManager : GenericSingletonClass<UIManager>
             }
             else
             {
+                AudioManager.Instance.PlaySoundOneShot(1,22,0);
                 tabletteWorldFakeMenu.SetActive(false);
                 cam.anim.SetBool("in",false);
                 if (!CharacterManager.Instance.isInteracting)
@@ -156,6 +165,7 @@ public class UIManager : GenericSingletonClass<UIManager>
             {
                 CloseAllPanel(false,false,false,true);
                 isUIActive = true;
+                logsMenu.RefreshLogs();
             }
     }
     #endregion

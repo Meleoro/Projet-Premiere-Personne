@@ -9,6 +9,10 @@ namespace Creature
         [SerializeField] private Transform placeToTP;
         [SerializeField] private WaypointsManager newWaypointsManager;
         [SerializeField] private bool turnsTheCreatureAggressive;
+        [SerializeField] private bool changeWaypointTillChase;
+        [SerializeField] private int newWaypointTillChase;
+        [SerializeField] private bool changeWalkSpeed;
+        [SerializeField] private float newWalkSpeed;
 
         [Header("Parameters Gizmos")] 
         [SerializeField] private bool showGizmosOnlyOnSelected;
@@ -49,6 +53,16 @@ namespace Creature
             if (turnsTheCreatureAggressive)
             {
                 creatureToMove.GetComponent<CreatureManager>().TurnAggressive();
+            }
+
+            if (changeWaypointTillChase)
+            {
+                creatureToMove.GetComponent<CreatureWaypoints>().numberOfWaypointBeforeGoNear = newWaypointTillChase;
+            }
+
+            if (changeWalkSpeed)
+            {
+                creatureToMove.GetComponent<CreatureMover>().walkSpeed = newWalkSpeed;
             }
         }
     

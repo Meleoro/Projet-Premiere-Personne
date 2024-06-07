@@ -1,3 +1,4 @@
+using Creature;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,6 +6,9 @@ using UnityEngine;
 
 public class CreatureAttackCollider : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private CreatureMover moveScript;
+
     [Header("Private Infos")]
     private Vector3 saveOffset;
 
@@ -20,7 +24,7 @@ public class CreatureAttackCollider : MonoBehaviour
                 if (!Physics.Raycast(transform.parent.position, (CharacterManager.Instance.transform.position - transform.parent.position).normalized, out hit, 
                     Vector3.Distance(CharacterManager.Instance.transform.position, transform.parent.position), LayerManager.Instance.groundLayer))
                 {
-                    healthScript.TakeDamage();
+                    healthScript.TakeDamage(moveScript.currentDir);
                 }
             }
         }

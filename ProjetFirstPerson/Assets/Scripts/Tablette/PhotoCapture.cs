@@ -48,9 +48,11 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
     [Header("Album Variables")]
     [SerializeField] private GameObject Album;
     [SerializeField] private GameObject SlotAlbum;
+    private bool soundDone;
 
     private void Start()
     {
+        soundDone = false;
         logsMenu = GetComponent<LogsMenu>();
         screenCapture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
 
@@ -90,8 +92,13 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                 var hitScript = hit.transform.GetComponent<SteleScript>();
                 if (!hitScript.isAlreadyInLogs)
                 {
+                    if (!soundDone)
+                    {
+                        AudioManager.Instance.PlaySoundOneShot(1,20,0);
+                        soundDone = true;
+                    }
                     SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime;
-                        Debug.Log("Translating");
+                    
                     if (SteleChargeImage.fillAmount >= 1)
                     {
                         //hitScript.isAlreadyInLogs = true;
@@ -110,10 +117,14 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
             else if (SteleChargeImage.fillAmount > 0)
             {
                 SteleChargeImage.fillAmount -= ChargeLogsSpeed * Time.deltaTime;
+                soundDone = false;
             }
         }
         else
+        {
             SteleChargeImage.fillAmount = 0;
+            soundDone = false;
+        }
 
 
 
@@ -124,6 +135,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         // Take Photos
         if(!uiManager.isUIActive)
         {
+            AudioManager.Instance.PlaySoundOneShot(1,19,0);
             cameraUI.SetActive(false);
             tabletteFrame.SetActive(false);
             viewingPhoto = true;

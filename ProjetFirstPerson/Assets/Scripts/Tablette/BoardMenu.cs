@@ -13,6 +13,7 @@ public class BoardMenu : MonoBehaviour
     [Header("References")]
     [SerializeField] private CameraComponent cameraComponent;
     [SerializeField] private UIManager uIManager;
+    [SerializeField] private SCR_UiDrag sCR_UiDrag;
 
     [Header("List Objects In Board")]
     public List<GameObject> listBoardElement;
@@ -201,5 +202,11 @@ public class BoardMenu : MonoBehaviour
         Image myImage = MyButton.transform.parent.GetComponent<SlotAlbum>().SlotImage;
         theFavImageSelected = GameObject.Find("FavImageSelected").GetComponent<Image>();
         theFavImageSelected.sprite = myImage.sprite;
+    }
+
+    public void SetZoomBoard()
+    {
+        float zoomValue = sCR_UiDrag.zoomSlider.value;
+        MyBoard.transform.localScale = new Vector3(zoomValue, zoomValue, zoomValue);
     }
 }

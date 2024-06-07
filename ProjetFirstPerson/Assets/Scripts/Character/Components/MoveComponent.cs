@@ -42,6 +42,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     private bool isInSlope;
     private float walkSoundTimer;
     private float walkSoundDuration;
+    private bool isInKnockback;
 
     [Header("References")] 
     public Rigidbody rb;
@@ -150,7 +151,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         rb.AddForce(inputDirection * (Time.deltaTime * currentAcceleration * currentSpeedModifier), ForceMode.Force);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, (currentSpeed + addedSpeed) * currentSpeedModifier);
 
-        if(inputDirection == Vector3.zero && rb.velocity.magnitude > 0.1f)
+        if(inputDirection == Vector3.zero && rb.velocity.magnitude > 0.1f && !isInKnockback)
             rb.AddForce(-rb.velocity.normalized * (Time.deltaTime * currentAcceleration * currentSpeedModifier), ForceMode.Force);
 
         // We apply the feel to the camera according to our current speed
@@ -202,7 +203,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
 
         isOnGround = Physics.Raycast(transform.position, Vector3.down, out hitInfo, groundRaycastDist,LayerManager.Instance.groundLayer);
 
-        float dist = 0.25f;
+        float dist = 0.23f;
         if(!isOnGround)
             isOnGround = Physics.Raycast(transform.position + new Vector3(dist, 0, 0), Vector3.down, out hitInfo, groundRaycastDist, LayerManager.Instance.groundLayer);
 
@@ -223,21 +224,27 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
             if (quitGround)
             {
                 quitGround = false;
-                GetComponent<HealthComponent>().VerifyFall(Mathf.Abs(YQuitGround - transform.position.y));
+
+                if(!isInKnockback)
+                    GetComponent<HealthComponent>().VerifyFall(Mathf.Abs(YQuitGround - transform.position.y));
             }
 
+            currentGravity = 0;
             isInSlope = Vector3.Angle(hitInfo.normal, Vector3.up) > 20;
         }
-        else
+        else if (!quitGround)
         {
             quitGround = true;
             YQuitGround = transform.position.y;
         }
     }
 
+    private float currentGravity = 0;
     private void ApplyGravity()
     {
-        rb.AddForce(Vector3.down * (gravityStrength * Time.fixedDeltaTime), ForceMode.Acceleration);
+        currentGravity += Time.fixedDeltaTime * gravityStrength;
+
+        rb.AddForce(Vector3.down * currentGravity, ForceMode.Acceleration);
     }
 
     private void HelpInSlope()
@@ -261,5 +268,24 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
             walkSoundTimer = 0;
             AudioManager.Instance.PlaySoundOneShot(1, Random.Range(6, 16), 0);
         }
+    }
+
+
+    public IEnumerator AddKnockback(Vector3 knockbackDir, float knockBackStength, float knockbackDuration)
+    {
+        float timer = 0;
+        isInKnockback = true;
+        rb.AddForce(Vector3.up * 50, ForceMode.Impulse);
+
+        while (timer < knockbackDuration)
+        {
+            timer += Time.fixedDeltaTime;
+
+            rb.AddForce(knockbackDir * knockBackStength * (knockbackDuration - timer) * Time.fixedDeltaTime, ForceMode.Force);
+
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+        }
+
+        isInKnockback = false;
     }
 }

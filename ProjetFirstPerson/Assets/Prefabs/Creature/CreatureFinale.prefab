@@ -737,7 +737,7 @@ MonoBehaviour:
   visionRange: 23
   visionRadiusX: 80
   visionRadiusY: 80
-  raycastDensity: 10
+  raycastDensity: 5
   peripheralVisionRadius: 50
   suspisionLostSpeed: 15
   suspisionLostSpeedAggressive: 20
@@ -785,6 +785,7 @@ MonoBehaviour:
   forcedRot: {x: 0, y: 0, z: 0}
   forcedPos: {x: 0, y: 0, z: 0}
   isRunning: 0
+  currentDir: {x: 0, y: 0, z: 0}
   bodyIKScript: {fileID: 880188959251786627}
   headIKScript: {fileID: 1144836449055827914}
   specialMovesScript: {fileID: 1214979640504382652}
@@ -1185,6 +1186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6495333d8d6db0548a291c255fcf67b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveScript: {fileID: 5248007510597707412}
 --- !u!1 &9047377990650700850
 GameObject:
   m_ObjectHideFlags: 0
