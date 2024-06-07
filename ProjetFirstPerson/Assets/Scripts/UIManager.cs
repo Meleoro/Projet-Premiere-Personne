@@ -46,6 +46,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private Sprite unselectedImage, selectedImage; */
     [SerializeField] private TextMeshProUGUI schedule;
     [SerializeField] public bool isUIActive = false;
+    public bool isFinalCinematic;
     private LogsMenu logsMenu;
 
     [Header("Cursor Variables")]
@@ -123,11 +124,25 @@ public class UIManager : GenericSingletonClass<UIManager>
             
                 isUIActive = false;
                 CloseAllPanel(false,false,false,false);
-            } 
+            }
+
+            if (isFinalCinematic)
+            {
+                cameraComponent.canRotate = false;
+                cameraComponent.canMove = false;
+                moveComponent.canMove = false;
+                //fonction de regard de camera
+            }
         }
     }
 
-
+    public IEnumerator OpenLogMenu()
+    {
+       StartCoroutine(OpenMenu());
+       yield return new WaitForSeconds(0.5f);
+       CloseAllPanel(false,false,false,true);
+    }
+    
     public void HideHUD()
     {
         HUDParent.gameObject.SetActive(false);
