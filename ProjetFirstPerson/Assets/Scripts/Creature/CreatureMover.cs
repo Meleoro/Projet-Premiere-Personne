@@ -56,13 +56,14 @@ namespace Creature
 
         public void ComponentUpdate()
         {
+            AdaptHeightBySpeed();
+            
             if (stopMoving) return;
             
             SetNextPos();
             ManageRotation();
             
             AdaptSpeedWhenRotation();
-            AdaptHeightBySpeed();
             AdaptSpeedAccordingToLegs();
         }
 
@@ -143,6 +144,8 @@ namespace Creature
             }
             else
             {
+                Debug.Log(12);
+                
                 bodyIKScript.frontYDif -= Time.deltaTime * 3;
             }
         }

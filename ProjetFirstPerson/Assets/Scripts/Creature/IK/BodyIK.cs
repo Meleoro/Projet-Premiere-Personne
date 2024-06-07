@@ -9,7 +9,7 @@ namespace IK
         [Header("Public Infos")] 
         [HideInInspector] public float currentRotationDif;
         [HideInInspector] public float currentAtanDif;
-        [HideInInspector] public float frontYDif;
+        public float frontYDif;
         [HideInInspector] public Vector3 saveOffset2;
 
         [Header("Private Infos")]
@@ -121,17 +121,18 @@ namespace IK
             }
         }
 
+        private float changedZ = 0;
         private void ApplyZIK()
         {
             // Ground Part
             for (int i = 0; i < bodyJoints.Length; i++)
             {
                 Vector3 eulerJointBody = bodyJoints[i].localEulerAngles;
-                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z, bodyJoints[i].localEulerAngles.z + frontYDif, Time.deltaTime * 5);
+                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z, bodyJoints[i].localEulerAngles.z + frontYDif, Time.deltaTime * 15);
 
                 bodyJoints[i].localEulerAngles = eulerJointBody;
             }
-
+            
             // Legs Part
             Vector3 frontAveragePos;
             Vector3 backAveragePos;
@@ -142,13 +143,16 @@ namespace IK
             for (int i = 0; i < bodyJoints.Length; i++)
             {
                 Vector3 eulerJointBody = bodyJoints[i].localEulerAngles;
-                float changedZ = savesLocalEulers[i].z + difY *
+                float changedZ = bodyJoints[i].localEulerAngles.z + difY *
                     data.legsHeightImpactAccordingToSpeed.Evaluate(moveScript.navMeshAgent.velocity.magnitude / moveScript.agressiveSpeed);
 
                 if (Mathf.Abs(changedZ - eulerJointBody.z) > 80)
                     changedZ -= 360;
+                
+                if(Mathf.Abs(changedZ - eulerJointBody.z) < -80)
+                    changedZ += 360;
 
-                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z , changedZ, Time.deltaTime * 15);
+                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z , changedZ, Time.deltaTime * 10);
 
                 bodyJoints[i].localRotation = Quaternion.Euler(eulerJointBody);
             }
@@ -161,13 +165,13 @@ namespace IK
 
             for (int i = 0; i < legsScript.legs.Count; i++)
             {
-                if (legsScript.legs[i].isFrontLeg)
+                if (legsScript.legs[i].isFrontLeg && legsScript.legs[i].isMoving)
                 {
-                    frontAveragePos += legsScript.legs[i].target.position;
+                    frontAveragePos += Vector3.up * legsScript.legs[i].currentAddedY;
                 }
-                else
+                else if(legsScript.legs[i].isMoving)
                 {
-                    backAveragePos += legsScript.legs[i].target.position;
+                    backAveragePos += Vector3.up * legsScript.legs[i].currentAddedY;
                 }
             }
 
@@ -241,8 +245,8 @@ namespace IK
             bodyJoints[0].rotation = saveRotSpine1;
             //headIK.baseNeckTr.rotation = saveRotNeck;
 
-            currentAddedBackY = Mathf.Abs(0.3f - Mathf.Abs(currentRotXPelvis) / 40);
-            currentAddedFrontY = Mathf.Abs(0.4f - Mathf.Abs(currentRotXThorax) / 40);
+            //currentAddedBackY = Mathf.Abs(0.3f - Mathf.Abs(currentRotXPelvis) / 40);
+            //currentAddedFrontY = Mathf.Abs(0.4f - Mathf.Abs(currentRotXThorax) / 40);
 
             ApplyLegsEffects();
         }
