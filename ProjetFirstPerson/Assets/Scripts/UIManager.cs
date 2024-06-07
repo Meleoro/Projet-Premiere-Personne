@@ -30,6 +30,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private MoveComponent moveComponent;
     [SerializeField] private CameraTestEthan cam;
     [SerializeField] private TextMeshProUGUI interactText;
+    [SerializeField] private CinematiqueFinale cinematiqueFinale;
     public Image fadeImage;
 
     [Header("References Menu Général Tablette")]
@@ -131,7 +132,8 @@ public class UIManager : GenericSingletonClass<UIManager>
                 cameraComponent.canRotate = false;
                 cameraComponent.canMove = false;
                 moveComponent.canMove = false;
-                //fonction de regard de camera
+                cameraComponent.LookTowardsCinematic(new Vector3(0,25,0));
+                cinematiqueFinale.DoSecondPart();
             }
         }
     }
