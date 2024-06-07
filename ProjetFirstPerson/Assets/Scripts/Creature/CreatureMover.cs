@@ -113,7 +113,7 @@ namespace Creature
         {
             float currentRotationDif = Mathf.Abs(bodyIKScript.currentRotationDif);
 
-            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.3f, currentRotationDif);
+            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.2f, currentRotationDif);
         }
 
         private void AdaptHeightBySpeed()

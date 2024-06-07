@@ -253,7 +253,7 @@ namespace IK
             Vector3 currentTargetPos = target.position;
             currentTargetPos = joint0.InverseTransformPoint(currentTargetPos);
             currentTargetPos = new Vector3(currentTargetPos.x, currentTargetPos.y, 0);
-            target.position = Vector3.Lerp(target.position, joint0.TransformPoint(currentTargetPos), Time.deltaTime * 10);
+            target.position = Vector3.Lerp(target.position, joint0.TransformPoint(currentTargetPos), Time.deltaTime * 5);
 
 
         }
