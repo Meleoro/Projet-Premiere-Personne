@@ -35,11 +35,20 @@ public class BoardMenu : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private bool isOpen;
     [SerializeField] private Image theFavImageSelected;
+    [SerializeField] private Transform contentFavoritePhoto;
 
     
     // Update is called once per frame
     void Update()
     {
+        // Desactive touts les options panel du board
+        if(EventSystem.current.currentSelectedGameObject == MyBoard)
+        {
+            for(int i = 0; i < listBoardElement.Count ; i++)
+                 {
+                    listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().OptionPanel.SetActive(false);
+                 }
+        }
         if(Input.GetKeyDown(KeyCode.Mouse0) && isCreateArrow)
         {
             Instantiate(Arrow, Input.mousePosition, Quaternion.identity, MyBoard.transform);
@@ -48,24 +57,10 @@ public class BoardMenu : MonoBehaviour
 
         // Quand le joueur clic, on check si un élément est séléctionné dans l'Event system et on fait une variable
         if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
-       /*     GameObject NewGameObject = EventSystem.current.currentSelectedGameObject;
-            if(NewGameObject == currentSelect && NewGameObject != null && currentSelect.CompareTag("MovingUI"))
-            {
-                    currentSelect.GetComponent<ElementsOfBoard>().OptionPanel.SetActive(true);
-                    EventSystem.current.SetSelectedGameObject(null);
-                    currentSelect = null;
-                    Debug.Log("1");
-            } */
-            
+        {   
             if(EventSystem.current.currentSelectedGameObject == null)
             {
                 listBoardElement.RemoveAll(item => item == null);
-                for(int i = 0; i < listBoardElement.Count ; i++)
-                 {
-                        listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().DeleteButton.SetActive(false);
-                        //listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().FavoriteButton.SetActive(false);
-                 }
             }
 
             else
@@ -75,25 +70,12 @@ public class BoardMenu : MonoBehaviour
                 {
                     currentSelect.GetComponentInChildren<ElementsOfBoard>().isSelectedOneTime = true;
                 }
-                else
-                {
-                    for(int i = 0; i < listBoardElement.Count ; i++)
-                 {
-                        listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().DeleteButton.SetActive(false);
-                        //listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().FavoriteButton.SetActive(false);
-                 }
-                }
             }
 
             
         }
         if(Input.GetKeyUp(KeyCode.Mouse0) && currentSelect != null)
         {
-            if(currentSelect.CompareTag("MovingUI"))
-                {
-                    currentSelect.GetComponent<ElementsOfBoard>().DeleteButton.SetActive(true);
-                    //currentSelect.GetComponent<ElementsOfBoard>().FavoriteButton.SetActive(true);
-                }
             currentSelect = null;
             EventSystem.current.SetSelectedGameObject(null);
         }
@@ -118,17 +100,6 @@ public class BoardMenu : MonoBehaviour
             {
                 HisMovingObject.position = Input.mousePosition;
             }
-
-            // La scale des éléments du board
-        /*    HisMovingObject.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
-            if(HisMovingObject.localScale.x <= 0.1f)
-            {
-                HisMovingObject.localScale = new Vector3(0.1f,0.1f,0);
-            }
-           else if(HisMovingObject.localScale.x >= 3f)
-            {
-                HisMovingObject.localScale = new Vector3(3f,3f,0);
-            }     */
         }
 
         // OpenFavMenu
@@ -171,10 +142,9 @@ public class BoardMenu : MonoBehaviour
         Destroy(parent);
     }
 
-    public void AddFavoritePhoto(GameObject target)
+    public void AddFavoritePhoto(Transform target)
     {
-        GameObject contentFavoritePhoto = GameObject.Find("ContentFavoritePhoto");
-        Transform favElement = Instantiate(target.transform.parent,new Vector3(0,0,0), Quaternion.identity, contentFavoritePhoto.transform);
+        Transform favElement = Instantiate(target,new Vector3(0,0,0), Quaternion.identity, contentFavoritePhoto);
         favElement.GetComponentInChildren<ElementsOfBoard>().isFavorite = true;
         favElement.GetComponentInChildren<Button>().onClick.AddListener(SelectPhotoToFavoriteMod);
     }

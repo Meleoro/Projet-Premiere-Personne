@@ -9,7 +9,7 @@ public class SteleScript : MonoBehaviour
     public bool isAlreadyInLogs;
     [SerializeField]  public string titleLogs;
     [SerializeField] [TextArea(5,10)] public string myInfo;
-    
+    public bool isFinalStele;
     
     [Header("Parameters Gizmos")] 
     [SerializeField] private bool showGizmosOnlyOnSelected;
