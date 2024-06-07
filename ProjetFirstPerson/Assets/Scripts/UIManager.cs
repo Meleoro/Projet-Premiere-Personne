@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class UIManager : GenericSingletonClass<UIManager>
 {
@@ -67,6 +68,13 @@ public class UIManager : GenericSingletonClass<UIManager>
         if(Input.GetKeyDown(KeyCode.Tab))
         {
             StartCoroutine(OpenMenu());
+        } 
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(isUIActive)
+            {
+                SceneManager.LoadScene("MainMenu");
+            }
         } 
     }
 
