@@ -28,6 +28,8 @@ public class SCR_UiDrag : MonoBehaviour
     public GameObject board;
     private RectTransform RectBoard;
     public GameObject CenterMouse;
+    [Header("Ui References")]
+    [SerializeField] private Slider zoomSlider;
  
     void Start()
     {
@@ -43,10 +45,10 @@ public class SCR_UiDrag : MonoBehaviour
     {
         MouseDragUi();
         
+        zoomSlider.value = RectBoard.localScale.x;
         if(Input.mouseScrollDelta.y > 0)
         {
             Vector3 currentScale = RectBoard.localScale;
-            
             ScaleAround(board,CenterMouse.transform.localPosition / 2, currentScale += new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y);
         }
         if(Input.mouseScrollDelta.y < 0)
