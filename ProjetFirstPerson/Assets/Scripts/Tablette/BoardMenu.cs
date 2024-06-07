@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using Unity.VisualScripting;
 using System;
+using System.Linq;
 
 public class BoardMenu : MonoBehaviour
 {
@@ -124,6 +125,17 @@ public class BoardMenu : MonoBehaviour
         }
         OffsetX = 0;
         OffsetY = 0;
+        if(newElement.CompareTag("Slot"))
+        {
+            // Delete
+            UnityAction UaDelete;
+            UaDelete = new UnityAction(() => DeleteElement(newElement,gameObject.GetComponent<BoardMenu>()));
+            newElement.GetComponentInChildren<ElementsOfBoard>().OptionPanel.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(UaDelete);
+            // Favoris
+            UnityAction UaFavorite;
+            UaFavorite = new UnityAction(() => AddFavoritePhoto(newElement.transform,contentFavoritePhoto));
+            newElement.GetComponentInChildren<ElementsOfBoard>().OptionPanel.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(UaFavorite);
+        }
     }
     public void AddBackgroundOnBoard(GameObject background)
     {
@@ -135,16 +147,22 @@ public class BoardMenu : MonoBehaviour
     {
         isCreateArrow = true;
     }
-    public void DeleteElement(GameObject parent)
+    public void DeleteElement(GameObject parent, BoardMenu boardMenu)
     {
-        Debug.Log("Destroy");
+        for(int i = 0 ; i < boardMenu.listBoardElement.Count; i++)
+        {
+            if(boardMenu.listBoardElement[i].gameObject == parent)
+            {
+                boardMenu.listBoardElement.RemoveAt(i);
+            }
+        }
         AudioManager.Instance.PlaySoundOneShot(1, 18, 0);
         Destroy(parent);
     }
 
-    public void AddFavoritePhoto(Transform target)
+    public void AddFavoritePhoto(Transform target, Transform parent)
     {
-        Transform favElement = Instantiate(target,new Vector3(0,0,0), Quaternion.identity, contentFavoritePhoto);
+        Transform favElement = Instantiate(target,new Vector3(0,0,0), Quaternion.identity, parent);
         favElement.GetComponentInChildren<ElementsOfBoard>().isFavorite = true;
         favElement.GetComponentInChildren<Button>().onClick.AddListener(SelectPhotoToFavoriteMod);
     }
