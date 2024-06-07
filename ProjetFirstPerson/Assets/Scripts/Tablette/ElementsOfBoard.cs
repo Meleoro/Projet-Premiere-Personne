@@ -12,14 +12,14 @@ public class ElementsOfBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (eventData.button == PointerEventData.InputButton.Left && transform.parent.CompareTag("Slot"))
         {
             OptionPanel.SetActive(false);
         }
     }
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (eventData.button == PointerEventData.InputButton.Left && transform.parent.CompareTag("Slot"))
         {
             OptionPanel.SetActive(true);
         }

@@ -80,4 +80,17 @@ public class CameraTestEthan : MonoBehaviour
                 StopCoroutine(WaitForUI());
            }
     }
+
+    public void AutoQuitPhoto()
+    {
+        AudioManager.Instance.PlaySoundOneShot(1,22,0);
+        isAiming = false;
+        if(CharacterManager.Instance.isInteracting)
+            uIManager.InteractHUD.gameObject.SetActive(true);
+        UIPhotoPlayer.SetActive(false);
+        UIPhotoTablette.SetActive(false);
+        StopCoroutine(WaitForUI());
+        anim.SetBool("in",false);
+        UIPhotoTablette.SetActive(false);
+    }
 }
