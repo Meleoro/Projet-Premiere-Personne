@@ -47,24 +47,26 @@ namespace IK
 
         private void Update()
         {
+            ModifyInclinationBaseNeck(rb.velocity.magnitude / moveScript.agressiveSpeed);
+            
             if (!isLookingLeftRight)
             {
                 ModifyRotationHeadTarget();
             }
-            
-            ModifyInclinationBaseNeck(rb.velocity.magnitude / moveScript.agressiveSpeed);
         }
 
 
         private float currentZ;
         private void ModifyInclinationBaseNeck(float inclinationRatio)
         {
-            float Zvalue = Mathf.Lerp(saveBaseNeck.z, saveBaseNeck.z - data.inclinationMaxNeck, inclinationRatio);
-            currentZ = Mathf.Lerp(currentZ, Zvalue, Time.deltaTime * 5);
+            float Zvalue = Mathf.Lerp(saveBaseNeck.z, saveBaseNeck.z - data.inclinationMaxNeck, Mathf.Clamp(inclinationRatio, 0, 1));
             
-            baseNeckTr.localEulerAngles = new Vector3(
-                baseNeckTr.localEulerAngles.x, baseNeckTr.localEulerAngles.y,
-                currentZ);    
+            
+            currentZ = Zvalue;
+            //currentZ = Zvalue;
+            
+            /*baseNeckTr.localRotation = Quaternion.Lerp(transform.localRotation ,Quaternion.Euler(new Vector3(
+                baseNeckTr.localEulerAngles.x, baseNeckTr.localEulerAngles.y, currentZ)), Time.deltaTime * 5);    */
         }
 
 
@@ -126,13 +128,16 @@ namespace IK
             
             ModifyRotationHead(Mathf.Clamp(0.5f + (finalAngle / 90), 0, 1));
         }
-        
-        
+
+
+        private float saveZ = 0;
         private void ModifyRotationHead(float rotationRatio)
         {
             Vector3 euler = new Vector3(Mathf.Lerp(saveHeadJoint.x + data.rotationMaxNeck, saveHeadJoint.x - data.rotationMaxNeck, rotationRatio),
                 Mathf.Lerp(saveBaseNeck.y + data.rotationMaxNeck, saveBaseNeck.y - data.rotationMaxNeck, rotationRatio),
-                baseNeckTr.localEulerAngles.z);
+                currentZ);
+
+            saveZ = currentZ;
             
             baseNeckTr.localRotation = Quaternion.Lerp(baseNeckTr.localRotation, Quaternion.Euler(euler), Time.deltaTime * 5);
         }
