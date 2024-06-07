@@ -146,11 +146,11 @@ namespace IK
                     data.legsHeightImpactAccordingToSpeed.Evaluate(moveScript.navMeshAgent.velocity.magnitude / moveScript.agressiveSpeed);
 
                 if (Mathf.Abs(changedZ - eulerJointBody.z) > 80)
-                    changedZ += 360;
+                    changedZ -= 360;
 
                 eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z , changedZ, Time.deltaTime * 15);
 
-                bodyJoints[i].localEulerAngles = eulerJointBody;
+                bodyJoints[i].localRotation = Quaternion.Euler(eulerJointBody);
             }
         }
 
@@ -239,7 +239,7 @@ namespace IK
             bodyJoint.localRotation = Quaternion.Euler(bodyJoint.localEulerAngles.x, saveRotThorax.eulerAngles.y, saveRotThorax.eulerAngles.z);
 
             bodyJoints[0].rotation = saveRotSpine1;
-            headIK.baseNeckTr.rotation = saveRotNeck;
+            //headIK.baseNeckTr.rotation = saveRotNeck;
 
             currentAddedBackY = Mathf.Abs(0.3f - Mathf.Abs(currentRotXPelvis) / 40);
             currentAddedFrontY = Mathf.Abs(0.4f - Mathf.Abs(currentRotXThorax) / 40);
