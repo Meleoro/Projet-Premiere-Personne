@@ -59,12 +59,15 @@ namespace IK
         private float currentZ;
         private void ModifyInclinationBaseNeck(float inclinationRatio)
         {
-            float Zvalue = Mathf.Lerp(saveBaseNeck.z, saveBaseNeck.z - data.inclinationMaxNeck, inclinationRatio);
-            currentZ = Mathf.Lerp(currentZ, Zvalue, Time.deltaTime * 5);
+            float Zvalue = Mathf.Lerp(saveBaseNeck.z, saveBaseNeck.z - data.inclinationMaxNeck, Mathf.Clamp(inclinationRatio, 0, 1));
+
+            Debug.Log(Zvalue);
             
-            baseNeckTr.localEulerAngles = new Vector3(
-                baseNeckTr.localEulerAngles.x, baseNeckTr.localEulerAngles.y,
-                currentZ);    
+            //currentZ = Mathf.Lerp(currentZ, Zvalue, Time.deltaTime * 5);
+            currentZ = Zvalue;
+            
+            /*baseNeckTr.localRotation = Quaternion.Lerp(transform.localRotation ,Quaternion.Euler(new Vector3(
+                baseNeckTr.localEulerAngles.x, baseNeckTr.localEulerAngles.y, currentZ)), Time.deltaTime * 5);    */
         }
 
 
@@ -132,7 +135,7 @@ namespace IK
         {
             Vector3 euler = new Vector3(Mathf.Lerp(saveHeadJoint.x + data.rotationMaxNeck, saveHeadJoint.x - data.rotationMaxNeck, rotationRatio),
                 Mathf.Lerp(saveBaseNeck.y + data.rotationMaxNeck, saveBaseNeck.y - data.rotationMaxNeck, rotationRatio),
-                baseNeckTr.localEulerAngles.z);
+                currentZ);
             
             baseNeckTr.localRotation = Quaternion.Lerp(baseNeckTr.localRotation, Quaternion.Euler(euler), Time.deltaTime * 5);
         }

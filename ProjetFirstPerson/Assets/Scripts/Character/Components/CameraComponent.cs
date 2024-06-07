@@ -199,7 +199,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
 
             crouchModifierY = Mathf.Lerp(save, YModifier, crouchTimer / crouchDuration);
             
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
     }
     #endregion

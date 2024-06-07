@@ -42,6 +42,8 @@ public class UIManager : GenericSingletonClass<UIManager>
     
     [Header("UI Variables")]
     [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, SettingsMenu;
+   /* [SerializeField] private Sprite BoardSprite, LogsSprite, SettingsSprite;
+    [SerializeField] private Sprite unselectedImage, selectedImage; */
     [SerializeField] private TextMeshProUGUI schedule;
     [SerializeField] public bool isUIActive = false;
     private LogsMenu logsMenu;

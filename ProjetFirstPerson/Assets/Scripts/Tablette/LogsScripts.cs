@@ -17,6 +17,7 @@ public class LogsScripts : MonoBehaviour
     [HideInInspector] public bool isRead;
     public bool isTraducted;
     public Coroutine traduction;
+    [SerializeField] private Sprite unselectedLogs, selectedLogs;
     [Header("Scripts Letter")]
     [SerializeField] private float typingSpeed = 0.05f;
     [HideInInspector] public bool isWriting;
@@ -45,10 +46,12 @@ public class LogsScripts : MonoBehaviour
             if(newLogsList[i] == gameObject)
             {
                 newLogsList[i].GetComponent<LogsScripts>().isActive = true;
+                newLogsList[i].GetComponent<Image>().sprite = selectedLogs;
             }
             else
             {
                 newLogsList[i].GetComponent<LogsScripts>().isActive = false;
+                newLogsList[i].GetComponent<Image>().sprite = unselectedLogs;
             }
         }
     }
