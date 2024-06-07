@@ -57,7 +57,10 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         screenCapture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
 
         // Suppression et création du dossier data
-        Directory.Delete(Application.dataPath + "/Scripts/Tablette/Data", true);
+        if(Directory.Exists(Application.dataPath + "/Scripts/Tablette/Data"))
+        {
+            Directory.Delete(Application.dataPath + "/Scripts/Tablette/Data", true);
+        }
         Directory.CreateDirectory(Application.dataPath + "/Scripts/Tablette/Data");
 
         ScreenRectTransform = ScreenPhotoImage.GetComponent<RectTransform>().rect;
