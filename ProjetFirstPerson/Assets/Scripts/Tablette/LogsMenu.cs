@@ -11,6 +11,7 @@ public class LogsMenu : MonoBehaviour
     [SerializeField] private GameObject ContentLog;
     [SerializeField] private GameObject LogPrefab;
     [SerializeField] public GameObject currentLog;
+    [SerializeField] public GameObject bouttonToLog;
     [SerializeField] public Button TraductionButton;
     public Animation logPopUpAnim;
     public TextMeshProUGUI unreadCounter;
@@ -31,6 +32,7 @@ public class LogsMenu : MonoBehaviour
         NewLog.GetComponent<LogsScripts>().TitleArea.text = title;
         unreadLogs += 1;
         unreadCounter.text = unreadLogs + "";
+        bouttonToLog.SetActive(true);
         for (int i = 0; i < logIconUI.Count; i++)
         {
             logIconUI[i].SetActive(true);

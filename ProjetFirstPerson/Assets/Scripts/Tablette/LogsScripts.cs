@@ -71,6 +71,7 @@ public class LogsScripts : MonoBehaviour
             logsMenu.unreadLogs -= 1;
             if (logsMenu.unreadLogs == 0)
             {
+                logsMenu.bouttonToLog.SetActive(false);
                 for (int i = 0; i < logsMenu.logIconUI.Count; i++)
                 {
                     logsMenu.logIconUI[i].SetActive(false);

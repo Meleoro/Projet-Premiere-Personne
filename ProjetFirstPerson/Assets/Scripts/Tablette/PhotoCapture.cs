@@ -151,6 +151,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         // Take Photos
         if(!uiManager.isUIActive)
         {
+            SteleChargeImage.gameObject.SetActive(false);
             AudioManager.Instance.PlaySoundOneShot(1,19,0);
             cameraUI.SetActive(false);
             tabletteFrame.SetActive(false);
@@ -166,6 +167,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
         ShowPhoto();
         yield return new WaitForSeconds(1.5f);
+        //SteleChargeImage.gameObject.SetActive(true);
         StartCoroutine(FadeOutPhoto());
         }
     }
