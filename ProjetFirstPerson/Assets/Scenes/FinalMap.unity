@@ -636,6 +636,14 @@ PrefabInstance:
       propertyPath: creatureToMove
       value: 
       objectReference: {fileID: 1017667275}
+    - target: {fileID: 8717867005076147568, guid: 945c899694e1f484fa2c56a4d8f12b18,
+        type: 3}
+      propertyPath: myInfo
+      value: "Lors de nos pri\xE8res, nos pens\xE9es se sont rassembl\xE9es pour
+        donner vie \xE0 une forme animale, nous gardant des dangers du d\xE9sert.
+        Nos pri\xE8res lui sont maintenant d\xE9di\xE9es, \xE0 cette cr\xE9ature,
+        gardienne de notre ascension."
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3403,6 +3411,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 673838346341836923, guid: eee32820edab3104297fe82ef6223e68,
+        type: 3}
+      propertyPath: myInfo
+      value: "La cr\xE9ature que nous avons rep\xE9r\xE9e semble avoir les caract\xE9ristiques
+        d'un pr\xE9dateur. Si tu la croises, tes meilleures chances sont de rester
+        discret. Maintiens <color=orange>Ctrl</color> pour t'accroupir. Reste accroupis
+        dans les <color=orange>hautes herbes</color> pour \xE9chapper \xE0 son regard,
+        et fais le moins de bruit possible pour ne pas attirer son attention."
+      objectReference: {fileID: 0}
     - target: {fileID: 3618578458269327396, guid: eee32820edab3104297fe82ef6223e68,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3453,6 +3470,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3930344650774759203, guid: eee32820edab3104297fe82ef6223e68,
+        type: 3}
+      propertyPath: myInfo
+      value: "Notre \xE9quipe de recherche vient de nous alerter de la pr\xE9sence
+        d'un \xEAtre vivant \xE0 proximit\xE9. Nous ne pouvons pas encore te donner
+        plus d'informations sur ses caract\xE9ristiques. Les ondes \xE9mises ne ressemblent
+        en rien \xE0 une esp\xE8ce connue. Reste sur tes gardes."
+      objectReference: {fileID: 0}
     - target: {fileID: 3987699894914495606, guid: eee32820edab3104297fe82ef6223e68,
         type: 3}
       propertyPath: indicTouche
@@ -3465,7 +3490,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5702941104391771902, guid: eee32820edab3104297fe82ef6223e68,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1887622380}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eee32820edab3104297fe82ef6223e68, type: 3}
 --- !u!1001 &377173652
@@ -4315,6 +4344,12 @@ Transform:
 --- !u!1 &564486824 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3637452524671259631, guid: eee32820edab3104297fe82ef6223e68,
+    type: 3}
+  m_PrefabInstance: {fileID: 370800535}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &564486825 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5702941104391771902, guid: eee32820edab3104297fe82ef6223e68,
     type: 3}
   m_PrefabInstance: {fileID: 370800535}
   m_PrefabAsset: {fileID: 0}
@@ -5526,6 +5561,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 838127307}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &843532596 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1435140095530717798, guid: c95f2f9fcecbba643a30eaf70d80938b,
+    type: 3}
+  m_PrefabInstance: {fileID: 904948436}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &848217307 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5562383490666160140, guid: c95f2f9fcecbba643a30eaf70d80938b,
@@ -5763,6 +5804,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 117130517263675343, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: m_Animation
+      value: 
+      objectReference: {fileID: 7400000, guid: ebe3fa1e7228cbc4d8a55e30d0a23001, type: 2}
+    - target: {fileID: 117130517263675343, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: m_PlayAutomatically
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 117130517263675343, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: m_Animations.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 117130517263675343, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: m_Animations.Array.data[1]
+      value: 
+      objectReference: {fileID: 7400000, guid: ebe3fa1e7228cbc4d8a55e30d0a23001, type: 2}
     - target: {fileID: 139744874286770523, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_CastShadows
@@ -5871,7 +5932,7 @@ PrefabInstance:
     - target: {fileID: 3159081065610885539, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.39
+      value: -0.26
       objectReference: {fileID: 0}
     - target: {fileID: 3159081065610885539, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
@@ -5881,27 +5942,57 @@ PrefabInstance:
     - target: {fileID: 3159081065610885539, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -108.14
+      value: -108.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191963914546153222, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.3131
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191963914546153222, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1669
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191963914546153222, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.598999
       objectReference: {fileID: 0}
     - target: {fileID: 3191963914546153222, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.1908091
+      value: 0.6952662
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191963914546153222, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.6952662
       objectReference: {fileID: 0}
     - target: {fileID: 3191963914546153222, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.9816272
+      value: 0.12886
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191963914546153222, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.12886
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191963914546153222, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3191963914546153222, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 158
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3191963914546153222, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 3350420873121842016, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
@@ -7869,6 +7960,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4713181856270276237, guid: 5cdf20f2f68fa5742bff5436079e3a1a,
+        type: 3}
+      propertyPath: myInfo
+      value: "Lieu du d\xE9bat et de la confrontation, dernier lieu de pri\xE8re
+        avant la <color=orange>Grande Porte</color>"
+      objectReference: {fileID: 0}
     - target: {fileID: 4913891366118669799, guid: 5cdf20f2f68fa5742bff5436079e3a1a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7933,6 +8030,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 141.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 9220658039981692705, guid: 5cdf20f2f68fa5742bff5436079e3a1a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.205
+      objectReference: {fileID: 0}
+    - target: {fileID: 9220658039981692705, guid: 5cdf20f2f68fa5742bff5436079e3a1a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.551
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9340,6 +9447,12 @@ MonoBehaviour:
 --- !u!224 &1448574585 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1653832545146215716, guid: c95f2f9fcecbba643a30eaf70d80938b,
+    type: 3}
+  m_PrefabInstance: {fileID: 904948436}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &1463269936 stripped
+Animation:
+  m_CorrespondingSourceObject: {fileID: 117130517263675343, guid: c95f2f9fcecbba643a30eaf70d80938b,
     type: 3}
   m_PrefabInstance: {fileID: 904948436}
   m_PrefabAsset: {fileID: 0}
@@ -11329,6 +11442,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 192.1
       objectReference: {fileID: 0}
+    - target: {fileID: 1295726820366475816, guid: ab876e5c9d8ce814ca509210a87ec2b5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -27.36
+      objectReference: {fileID: 0}
     - target: {fileID: 1334655315289363157, guid: ab876e5c9d8ce814ca509210a87ec2b5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13242,11 +13360,28 @@ PrefabInstance:
       propertyPath: creatureToMove
       value: 
       objectReference: {fileID: 1017667275}
+    - target: {fileID: 4951484537433106269, guid: 64e19f7bcd4e9d94fb3b761b7383a291,
+        type: 3}
+      propertyPath: myInfo
+      value: "Tous les ans, le grand p\xE8lerinage est lanc\xE9. Par centaines, nous
+        nous dirigeons vers la <color=orange>grande porte</color>. Pendant notre
+        voyage, nos pri\xE8res prennent la forme de discussions et de d\xE9bats,
+        afin d'entamer notre ascension et \xE9lever notre esprit vers le ciel."
+      objectReference: {fileID: 0}
     - target: {fileID: 6853540178995234247, guid: 64e19f7bcd4e9d94fb3b761b7383a291,
         type: 3}
       propertyPath: creatureToMove
       value: 
       objectReference: {fileID: 1017667275}
+    - target: {fileID: 7761572716648970369, guid: 64e19f7bcd4e9d94fb3b761b7383a291,
+        type: 3}
+      propertyPath: myInfo
+      value: "Il semble y avoir une <color=orange>st\xE8le</color> grav\xE9e d'\xE9critures
+        inconnues devant toi. Utilise le module de traduction automatique de ta tablette
+        en la <color=orange>visant</color> avec ton appareil photo. Ces textes pourraient
+        nous en apprendre plus sur cette civilisation, et pourraientt m\xEAme te
+        donner des indices sur la marche \xE0 suivre."
+      objectReference: {fileID: 0}
     - target: {fileID: 8584219834072647986, guid: 64e19f7bcd4e9d94fb3b761b7383a291,
         type: 3}
       propertyPath: creatureToMove
@@ -13627,6 +13762,55 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1879208146}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1887622379
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1887622380}
+  - component: {fileID: 1887622381}
+  m_Layer: 0
+  m_Name: "Cin\xE9matique intro  Manager"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1887622380
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887622379}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 564486825}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1887622381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887622379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4475a4e6554fb1e40aacf41a15b5c51c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doCinematique: 0
+  move: {fileID: 1355409392}
+  cam: {fileID: 904948448}
+  capsule: {fileID: 843532596}
+  camAnim: {fileID: 1463269936}
 --- !u!1 &1898856817
 GameObject:
   m_ObjectHideFlags: 0
