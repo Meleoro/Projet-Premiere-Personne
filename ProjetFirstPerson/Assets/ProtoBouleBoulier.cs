@@ -53,6 +53,7 @@ public class ProtoBouleBoulier : MonoBehaviour
             isIn = false;
          }
          master.CheckIfGood();
+         AudioManager.Instance.PlaySoundOneShot(2,8,0);
       }
    }
 

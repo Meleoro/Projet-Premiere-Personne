@@ -53,6 +53,7 @@ public class Poids : MonoBehaviour
                 manager.registedPoids2 = poids;
                 manager.CheckPoids();
             }
+            AudioManager.Instance.PlaySoundOneShot(2,1,0);
         }
         else
         {
@@ -66,6 +67,7 @@ public class Poids : MonoBehaviour
             
             currentSpot = 0;
             manager.CheckPoids();
+            AudioManager.Instance.PlaySoundOneShot(2,0,0);
         }
     }
 

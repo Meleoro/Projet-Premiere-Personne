@@ -72,6 +72,7 @@ namespace Puzzle
         {
             if (isMovingDalles) yield break;
             isMovingDalles = true;
+            AudioManager.Instance.PlaySoundOneShot(2,7,0);
 
             float timer = 0;
             (dalle1.currentIndex, dalle2.currentIndex) = (dalle2.currentIndex, dalle1.currentIndex);

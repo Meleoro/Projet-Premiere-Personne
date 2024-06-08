@@ -49,6 +49,15 @@ public class CylindrePuzzle : MonoBehaviour
                 symbol = 0;
             }  
             manager.CheckIfWin();
+            
+            if(symbol == PorteCylindre.CylindreSymbols.Feuille)
+                AudioManager.Instance.PlaySoundOneShot(2,3,0);
+            if(symbol == PorteCylindre.CylindreSymbols.Pales)
+                AudioManager.Instance.PlaySoundOneShot(2,4,0);
+            if(symbol == PorteCylindre.CylindreSymbols.Fleur)
+                AudioManager.Instance.PlaySoundOneShot(2,5,0);
+            if(symbol == PorteCylindre.CylindreSymbols.Soleil)
+                AudioManager.Instance.PlaySoundOneShot(2,6,0);
         }
     }
 
