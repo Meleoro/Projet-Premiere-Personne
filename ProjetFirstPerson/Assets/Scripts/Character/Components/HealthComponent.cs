@@ -24,7 +24,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     public TriggerPoursuiteFinale currentTriggerPoursuiteF;
 
     [Header("Private Infos")] 
-    private bool isDying;
+    public bool isDying;
     private bool isInvincible;
     private float hurtTimer;
     private Animation anim;

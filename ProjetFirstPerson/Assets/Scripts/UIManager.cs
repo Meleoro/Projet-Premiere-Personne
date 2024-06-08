@@ -31,6 +31,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private CameraTestEthan cam;
     [SerializeField] private TextMeshProUGUI interactText;
     [SerializeField] private CinematiqueFinale cinematiqueFinale;
+    [SerializeField] private GameObject normalHUD;
     public Image fadeImage;
 
     [Header("References Menu Général Tablette")]
@@ -83,7 +84,7 @@ public class UIManager : GenericSingletonClass<UIManager>
 
     public IEnumerator OpenMenu()
     {
-        if (!cam.isAiming)
+        if (!cam.isAiming && !playerHealth.isDying)
         {
             if(!isUIActive)
             {
@@ -104,16 +105,18 @@ public class UIManager : GenericSingletonClass<UIManager>
                 tabletteWorldFakeMenu.SetActive(true);
                 yield return new WaitForSeconds(0.5f);
                 InteractHUD.gameObject.SetActive(false);
+                normalHUD.SetActive(false);
                 cameraComponent.canRotate = false;
                 moveComponent.canMove = false;
                 cameraComponent.LockedCursor(1);
                 isUIActive = true;
-                CloseAllPanel(true,false,false,false);
+                CloseAllPanel(false,true,false,false);
             }
             else
             {
                 AudioManager.Instance.PlaySoundOneShot(1,22,0);
                 tabletteWorldFakeMenu.SetActive(false);
+                normalHUD.SetActive(true);
                 cam.anim.SetBool("in",false);
                 if (!CharacterManager.Instance.isInteracting)
                 {
