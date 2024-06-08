@@ -35,7 +35,9 @@ public class IndicationTouche : MonoBehaviour
             while (indicTouche.alpha < 1)
             {
                 indicTouche.alpha += Time.deltaTime*fadeSpeed;
-            }  
+            }
+
+            indicTouche.alpha = 1;
         }
         else
         {
@@ -43,6 +45,7 @@ public class IndicationTouche : MonoBehaviour
             {
                 indicTouche.alpha -= Time.deltaTime*fadeSpeed;
             }  
+            indicTouche.alpha = 0;
         }
         
     }
