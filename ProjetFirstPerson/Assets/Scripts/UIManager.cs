@@ -129,11 +129,10 @@ public class UIManager : GenericSingletonClass<UIManager>
 
             if (isFinalCinematic)
             {
-                cameraComponent.canRotate = false;
-                cameraComponent.canMove = false;
+                //cameraComponent.canRotate = false;
+                //cameraComponent.canMove = false;
                 moveComponent.canMove = false;
-                cameraComponent.LookTowardsCinematic(new Vector3(0,25,0));
-                cinematiqueFinale.DoSecondPart();
+                StartCoroutine(cinematiqueFinale.DoSecondPart());
             }
         }
     }
@@ -143,6 +142,7 @@ public class UIManager : GenericSingletonClass<UIManager>
        StartCoroutine(OpenMenu());
        yield return new WaitForSeconds(0.5f);
        CloseAllPanel(false,false,false,true);
+       isFinalCinematic = true;
     }
     
     public void HideHUD()

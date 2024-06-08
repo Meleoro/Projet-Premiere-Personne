@@ -141,11 +141,9 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         cameraComponent.canRotate = false;
         cameraComponent.canMove = false;
         moveComponent.canMove = false;
-        //bloquer mouvements et camera
         cameraTestEthan.AutoQuitPhoto();
         yield return new WaitForSeconds(1.5f);
         StartCoroutine(UIManager.Instance.OpenLogMenu());
-        UIManager.Instance.isFinalCinematic = true;
     }
     
     IEnumerator CapturePhoto()

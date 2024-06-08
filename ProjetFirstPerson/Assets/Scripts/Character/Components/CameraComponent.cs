@@ -48,8 +48,9 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     private Coroutine upDownCoroutine;
     private float crouchModifierY;
     private bool lockCamera;
-    private bool isInCinematic;
-    private Vector3 wantedRotCinematic;
+    public bool isInCinematic;
+    public float cinematicLookSpeed;
+    public Vector3 wantedRotCinematic;
 
     [Header("References")] 
     public Transform wantedCameraPos;
@@ -118,7 +119,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     {
         if (isInCinematic)
         {
-            Vector3 dir = Vector3.Lerp(characterCamera.forward, wantedRotCinematic, Time.deltaTime * 5);
+            Vector3 dir = Vector3.Lerp(characterCamera.forward, wantedRotCinematic, Time.deltaTime * cinematicLookSpeed);
             characterCamera.rotation = Quaternion.LookRotation(dir, Vector3.up);
             
             return;
@@ -216,9 +217,9 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     #endregion
 
 
-    public void LookTowardsCinematic(Vector3 lookedPoint)
+    public void LookTowardsCinematic(Transform lookedPoint)
     {
-        wantedRotCinematic = lookedPoint - characterCamera.position;
+        wantedRotCinematic = lookedPoint.position - characterCamera.position;
         isInCinematic = true;
     }
 
