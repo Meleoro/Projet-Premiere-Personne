@@ -28,7 +28,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     private bool isInvincible;
     private float hurtTimer;
     private Animation anim;
-    private Vector3 lastCheckPoint;
+    public Vector3 lastCheckPoint;
     public CameraComponent cam;
     public MoveComponent move;
 
