@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class CinematiqueFinale : MonoBehaviour
 {
-    public GameObject light;
+    public GameObject lightEtape2;
+    public GameObject lightEtape1;
     public Animation doorAnim;
     private BoxCollider collider;
     public CameraComponent camera;
@@ -38,10 +39,9 @@ public class CinematiqueFinale : MonoBehaviour
         creatureMover.agressiveSpeed = 0;
         camera.cinematicLookSpeed = 0;
         camera.isInCinematic = true;
-        light.SetActive(true);
-        
         yield return new WaitForSeconds(0.4f);
         AudioManager.Instance.PlaySoundOneShot(2,2,0);
+        lightEtape2.SetActive(true);
         doorAnim.clip = doorAnim["OuverturePorteFinale"].clip;
         doorAnim.Play();
         yield return new WaitForSeconds(1.4f);
