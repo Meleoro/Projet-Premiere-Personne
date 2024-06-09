@@ -31,12 +31,13 @@ public class ProtoBouleBoulier : MonoBehaviour
 
    private void OnMouseEnter()
    {
-      mr.material = materialOn;
+      if (!UIManager.Instance.isUIActive && !UIManager.Instance.cam.isAiming)
+         mr.material = materialOn;
    }
    
    private void OnMouseDown()
    {
-      if (canMove)
+      if (canMove  && !UIManager.Instance.isUIActive && !UIManager.Instance.cam.isAiming)
       {
          if (!isIn)
          {

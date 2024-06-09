@@ -59,7 +59,7 @@ public class TriggerPoursuiteFinale : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<HealthComponent>().currentTriggerPoursuiteF = null;
+            other.transform.parent.GetComponent<HealthComponent>().currentTriggerPoursuiteF = null;
         }
     }
 }

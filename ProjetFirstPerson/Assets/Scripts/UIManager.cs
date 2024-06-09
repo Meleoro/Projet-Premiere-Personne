@@ -28,7 +28,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private Image eyeIconImage;
     [SerializeField] private CameraComponent cameraComponent;
     [SerializeField] private MoveComponent moveComponent;
-    [SerializeField] private CameraTestEthan cam;
+    [SerializeField] public CameraTestEthan cam;
     [SerializeField] private TextMeshProUGUI interactText;
     [SerializeField] private CinematiqueFinale cinematiqueFinale;
     [SerializeField] private GameObject normalHUD;
@@ -117,10 +117,10 @@ public class UIManager : GenericSingletonClass<UIManager>
             {
                 AudioManager.Instance.PlaySoundOneShot(1,22,0);
                 tabletteWorldFakeMenu.SetActive(false);
-                normalHUD.SetActive(true);
                 cam.anim.SetBool("in",false);
                 if (!CharacterManager.Instance.isInteracting)
                 {
+                    normalHUD.SetActive(true);
                     cameraComponent.canRotate = true;
                     moveComponent.canMove = true;
                     cameraComponent.LockedCursor(2);
