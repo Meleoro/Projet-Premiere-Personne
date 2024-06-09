@@ -7,7 +7,7 @@ public class CinematiqueIntro : MonoBehaviour
     public bool doCinematique;
     public MoveComponent move;
     public CameraComponent cam;
-    public GameObject capsule;
+    public MeshRenderer capsule;
     public Animation camAnim;
     public Animation eyesAnim;
     public GameObject triggerLog;
@@ -17,6 +17,7 @@ public class CinematiqueIntro : MonoBehaviour
     {
         if (doCinematique)
         {
+            capsule.enabled = false;
             player.transform.position = new Vector3(0.525015116f, 90.1800003f, -108.139076f);
             eyesAnim.gameObject.SetActive(true);
             StartCoroutine(CameraEffects.Instance.FadeScreen(0.01f, 1));
