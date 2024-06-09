@@ -49,6 +49,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private TextMeshProUGUI schedule;
     [SerializeField] public bool isUIActive = false;
     public bool isFinalCinematic;
+    public bool canMenu;
     private LogsMenu logsMenu;
 
     [Header("Cursor Variables")]
@@ -84,7 +85,7 @@ public class UIManager : GenericSingletonClass<UIManager>
 
     public IEnumerator OpenMenu()
     {
-        if (!cam.isAiming && !playerHealth.isDying)
+        if (!cam.isAiming && !playerHealth.isDying && canMenu)
         {
             if(!isUIActive)
             {

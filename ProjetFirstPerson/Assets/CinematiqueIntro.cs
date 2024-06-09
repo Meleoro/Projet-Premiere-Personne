@@ -10,13 +10,17 @@ public class CinematiqueIntro : MonoBehaviour
     public MeshRenderer capsule;
     public Animation camAnim;
     public Animation eyesAnim;
+    public CameraTestEthan tablettePhoto;
     public GameObject triggerLog;
     public GameObject HUD;
     public GameObject player;
+    
     void Start()
     {
         if (doCinematique)
         {
+            UIManager.Instance.canMenu = false;
+            tablettePhoto.canInOut = false;
             capsule.enabled = false;
             player.transform.position = new Vector3(0.525015116f, 90.1800003f, -108.139076f);
             eyesAnim.gameObject.SetActive(true);
@@ -24,6 +28,10 @@ public class CinematiqueIntro : MonoBehaviour
             triggerLog.SetActive(false);
             StartCoroutine(Cinematique());
             HUD.SetActive(false);
+        }
+        else
+        {
+            UIManager.Instance.canMenu = true;
         }
     }
 
@@ -49,5 +57,7 @@ public class CinematiqueIntro : MonoBehaviour
         move.canMove = true;
         cam.canRotate = true;
         cam.canMove = true;
+        tablettePhoto.canInOut = true;
+        UIManager.Instance.canMenu = true;
     }
 }

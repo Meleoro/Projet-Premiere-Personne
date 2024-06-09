@@ -21,7 +21,7 @@ public class IndicationTouche : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) && UIManager.Instance.canMenu)
         {
             TextOnOff(false);
             gameObject.SetActive(false);
