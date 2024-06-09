@@ -6,9 +6,14 @@ using UnityEngine.InputSystem;
 
 public class SlotDetection : MonoBehaviour, IPointerDownHandler
 {
+    private EventSystem m_EventSystem;
     public Transform myObject;
     private Vector3 LastPos;
     public float speedRotating;
+    void Start()
+    {
+        m_EventSystem = EventSystem.current;
+    }
     public void OnPointerDown(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
@@ -21,15 +26,17 @@ public class SlotDetection : MonoBehaviour, IPointerDownHandler
     {
         if(Input.GetKey(KeyCode.Mouse1))
         {
-            if(myObject != null)
+            if(myObject != null && m_EventSystem.currentSelectedGameObject != gameObject)
             {
                 Cursor.visible = false;
-            }
+                Cursor.lockState = CursorLockMode.Locked;
+            
             float xValue = Input.GetAxis("Mouse X");
             if(Input.GetAxis("Mouse X") != 0)
             {
                 print("Mouse moved left");
                 myObject.localEulerAngles += (new Vector3(0,0,-xValue)) * speedRotating;
+            }
             }
         } 
 
@@ -37,6 +44,7 @@ public class SlotDetection : MonoBehaviour, IPointerDownHandler
         {
             myObject = null;
             Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 }
