@@ -10,6 +10,8 @@ public class SteleScript : MonoBehaviour
     [SerializeField]  public string titleLogs;
     [SerializeField] [TextArea(5,10)] public string myInfo;
     public bool isFinalStele;
+    public ParticleSystem activationVFX;
+    public GameObject fumeVFX;
     
     [Header("Parameters Gizmos")] 
     [SerializeField] private bool showGizmosOnlyOnSelected;
@@ -18,6 +20,11 @@ public class SteleScript : MonoBehaviour
     void Start()
     {
         logsMenu = GameObject.Find("TabletteManager").GetComponent<LogsMenu>();
+        if (transform.childCount > 0)
+        {
+            activationVFX = transform.GetChild(0).GetComponent<ParticleSystem>();
+            fumeVFX = transform.GetChild(1).gameObject;
+        }
     }
 
     private void OnTriggerEnter(Collider other) 
