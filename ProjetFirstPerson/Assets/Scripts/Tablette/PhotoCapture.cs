@@ -106,6 +106,8 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                     if (SteleChargeImage.fillAmount >= 1)
                     {
                         //hitScript.isAlreadyInLogs = true;
+                        hitScript.activationVFX.Play();
+                        hitScript.fumeVFX.SetActive(false);
                         logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["NewLogAnim"].clip;
                         logsMenu.logPopUpAnim.Play();
                         AudioManager.Instance.PlaySoundOneShot(1, 17, 0);
