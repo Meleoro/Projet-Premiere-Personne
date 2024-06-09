@@ -24,17 +24,19 @@ public class CylindrePuzzle : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        meshRenderer.material = MaterialHighlighted;
+        if (!UIManager.Instance.isUIActive && !UIManager.Instance.cam.isAiming)
+            meshRenderer.material = MaterialHighlighted;
     }
 
     private void OnMouseExit()
     {
-        meshRenderer.material = MaterialOff;
+        if (!UIManager.Instance.isUIActive && !UIManager.Instance.cam.isAiming)
+            meshRenderer.material = MaterialOff;
     }
 
     private void OnMouseDown()
     {
-        if (!isMoving)
+        if (!isMoving && !UIManager.Instance.isUIActive && !UIManager.Instance.cam.isAiming)
         {
             if ((int)symbol < 3) //tout sauf feuille
             {

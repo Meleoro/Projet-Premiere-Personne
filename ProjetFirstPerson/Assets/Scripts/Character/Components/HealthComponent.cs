@@ -102,8 +102,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         hurtTimer = recoveryTime;
 
         StartCoroutine(InvincibleTime());
-        StartCoroutine(SlowCharacter(2, 0.5f));
-        StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
+        StartCoroutine(SlowCharacter(1, 0.5f));
+        StartCoroutine(CameraEffects.Instance.TakeDamage(1.2f));
         StartCoroutine(CameraEffects.Instance.HurtEffect(recoveryTime));
     }
 

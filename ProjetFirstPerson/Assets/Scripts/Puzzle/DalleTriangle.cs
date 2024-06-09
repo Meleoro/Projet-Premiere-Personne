@@ -37,20 +37,20 @@ namespace Puzzle
 
         private void OnMouseDown()
         {
-            if(canMove)
+            if(canMove && !UIManager.Instance.isUIActive && !UIManager.Instance.cam.isAiming)
              triangleManager.SelectDalle(this);
         }
 
 
         private void OnMouseEnter()
         {
-            if(canMove && !isSelected)
+            if(canMove && !isSelected && !UIManager.Instance.isUIActive && !UIManager.Instance.cam.isAiming)
                 meshRenderer.material = MaterialHighlighted;
         }
 
         private void OnMouseExit()
         {
-            if(!isSelected)
+            if(!isSelected && !UIManager.Instance.isUIActive && !UIManager.Instance.cam.isAiming)
                 meshRenderer.material = MaterialOff;
         }
     }
