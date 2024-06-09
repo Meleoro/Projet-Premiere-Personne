@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-    void Update()
+   /* void Update()
     {
         if(Input.GetKeyDown(KeyCode.Tab))
         {
@@ -37,5 +37,10 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
+
+   public void QuitSettings()
+   {
+       SettingsMenu.SetActive(false);
+   }
 }

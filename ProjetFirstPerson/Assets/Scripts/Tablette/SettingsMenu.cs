@@ -19,6 +19,7 @@ public class SettingsMenu : MonoBehaviour
     public Slider soundSlider;
     private GameObject player;
     private HealthComponent health;
+    public bool isMainMenu;
 
     public Toggle FullScreenToggle;
 
@@ -38,8 +39,11 @@ public class SettingsMenu : MonoBehaviour
 
     public void Start()
     {
-        player = GameObject.Find("Player");
-        health = player.GetComponent<HealthComponent>();
+        if (!isMainMenu)
+        {
+            player = GameObject.Find("Player");
+            health = player.GetComponent<HealthComponent>();
+        }
 
         resolutions = Screen.resolutions.Select(resolution => new Resolution { width = resolution.width, height = resolution.height }).Distinct().ToArray();
         resolutionDropdown.ClearOptions();

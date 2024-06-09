@@ -9,25 +9,42 @@ public class CinematiqueIntro : MonoBehaviour
     public CameraComponent cam;
     public GameObject capsule;
     public Animation camAnim;
+    public Animation eyesAnim;
+    public GameObject triggerLog;
+    public GameObject HUD;
+    public GameObject player;
     void Start()
     {
         if (doCinematique)
+        {
+            player.transform.position = new Vector3(0.525015116f, 90.1800003f, -108.139076f);
+            eyesAnim.gameObject.SetActive(true);
+            StartCoroutine(CameraEffects.Instance.FadeScreen(0.01f, 1));
+            triggerLog.SetActive(false);
             StartCoroutine(Cinematique());
+            HUD.SetActive(false);
+        }
     }
 
     public IEnumerator Cinematique()
     {
-        StartCoroutine(CameraEffects.Instance.FadeScreen(0, 1));
-        yield return new WaitForSeconds(0.2f);
-        StartCoroutine(CameraEffects.Instance.FadeScreen(1, 0));
-        yield return new WaitForSeconds(1f);
+        move.canMove = false;
+        cam.isInCinematicIntro = true;
         camAnim.clip = camAnim["CinematiqueIntro"].clip;
         camAnim.Play();
-        capsule.SetActive(false);
-        move.canMove = false;
-        cam.canRotate = false;
-        cam.canMove = false;
-        yield return new WaitForSeconds(2);
+        eyesAnim.Play();
+        StartCoroutine(CameraEffects.Instance.FadeScreen(1, 0));
+        yield return new WaitForSeconds(9.8f);
+        cam.transform.GetChild(2).transform.localPosition = new Vector3(0, 0.8f, 0);
+        cam.characterCamera.transform.localEulerAngles = new Vector3(348.700012f, 152.01001f, 0);
+        yield return new WaitForSeconds(0.2f);
+        eyesAnim.gameObject.SetActive(false);
+        HUD.SetActive(true);
+        triggerLog.SetActive(true);
+        cam.isInCinematicIntro = false;
+        yield return new WaitForSeconds(0.3f);
+        cam.transform.GetChild(2).transform.localPosition = new Vector3(0, 0.8f, 0);
+        cam.characterCamera.transform.localEulerAngles = new Vector3(348.700012f, 152.01001f, 0);
         move.canMove = true;
         cam.canRotate = true;
         cam.canMove = true;

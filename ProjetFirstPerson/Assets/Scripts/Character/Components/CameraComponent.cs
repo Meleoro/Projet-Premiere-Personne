@@ -49,6 +49,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     private float crouchModifierY;
     private bool lockCamera;
     public bool isInCinematic;
+    public bool isInCinematicIntro;
     public float cinematicLookSpeed;
     public Vector3 wantedRotCinematic;
 
@@ -117,6 +118,12 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     // ROTATES THE CAMERA
     private void RotateCamera()
     {
+        if (isInCinematicIntro)
+        {
+            characterCamera.transform.rotation = wantedCameraPos.transform.rotation;
+            return;
+        }
+        
         if (isInCinematic)
         {
             Vector3 dir = Vector3.Lerp(characterCamera.forward, wantedRotCinematic, Time.deltaTime * cinematicLookSpeed);
