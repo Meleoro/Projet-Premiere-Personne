@@ -287,7 +287,6 @@ namespace Creature
 
             if (creatureMover.navMeshAgent.velocity.magnitude < creatureMover.agressiveSpeed * 0.7f)
             {
-                Debug.Log(13);
                 return true;
             }
 
