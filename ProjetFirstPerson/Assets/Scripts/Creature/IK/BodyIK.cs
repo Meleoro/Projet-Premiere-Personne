@@ -107,7 +107,7 @@ namespace IK
             currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * Mathf.Abs(currentSpeed2 / (atan - currentAtanBack)));
             currentAtan = Mathf.Clamp(currentAtan, -data.maxRotDifFrontBack, data.maxRotDifFrontBack);
             
-            currentRotationDif = currentAtan / data.maxRotDifFrontBack;
+            currentRotationDif = currentAtan /( data.maxRotDifFrontBack * 0.9f);
             currentAtanDif = atan - currentAtanBack;
 
             float angleAddedPerJoint = currentAtan / bodyJoints.Length;

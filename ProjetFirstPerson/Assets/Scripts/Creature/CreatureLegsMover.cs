@@ -96,25 +96,32 @@ namespace Creature
                             
                             continue;
                         }
-                        else if(VerifyLegNeedsToMove(legs[i], false))
+                        else
                         {
-                            currentWantToMoveLegsCounter += 1;
                             legs[i].saveLastTargetPos =
                                 mainTrRotRefFront.InverseTransformPoint(legs[i].target.position);
+                        }
+
+                        if(VerifyLegNeedsToMove(legs[i], false))
+                        {
+                            currentWantToMoveLegsCounter += 1;
                             
                             continue;
                         }
                     }
-                    else if (VerifyLegNeedsToMove(legs[i], true))
+                    else if (creatureMover.isRunning)
                     {
-                        legs[i].target.position = mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos);
-                    }
-                    else if (!VerifyLegNeedsToMove(legs[i], false))
-                    {
-                        legs[i].saveLastTargetPos =
-                            mainTrRotRefFront.InverseTransformPoint(legs[i].target.position);
+                        if (VerifyLegNeedsToMove(legs[i], true))
+                        {
+                            legs[i].target.position = mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos);
+                        }
+                        else if (!VerifyLegNeedsToMove(legs[i], false))
+                        {
+                            legs[i].saveLastTargetPos =
+                                mainTrRotRefFront.InverseTransformPoint(legs[i].target.position);
 
-                        continue;
+                            continue;
+                        }
                     }
                 }
                 else
@@ -124,26 +131,36 @@ namespace Creature
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
                             currentWantToMoveLegsCounter += 1;
-                            
+                            legs[i].target.position = mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos);
+
                             continue;
                         }
-                        else if(VerifyLegNeedsToMove(legs[i], false))
+                        else
+                        {
+                            legs[i].saveLastTargetPos =
+                                mainTrRotRefBack.InverseTransformPoint(legs[i].target.position);
+                        }
+
+                        if(VerifyLegNeedsToMove(legs[i], false))
                         {
                             currentWantToMoveLegsCounter += 1;
-                            
+
                             continue;
                         }
                     }
-                    else if (VerifyLegNeedsToMove(legs[i], true))
+                    else if (creatureMover.isRunning)
                     {
-                        legs[i].target.position = mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos);
-                    }
-                    else if (!VerifyLegNeedsToMove(legs[i], false))
-                    {
-                        legs[i].saveLastTargetPos =
-                            mainTrRotRefFront.InverseTransformPoint(legs[i].target.position);
+                         if (VerifyLegNeedsToMove(legs[i], true))
+                         {
+                             legs[i].target.position = mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos);
+                         }
+                         else if (!VerifyLegNeedsToMove(legs[i], false))
+                         {
+                             legs[i].saveLastTargetPos =
+                                mainTrRotRefBack.InverseTransformPoint(legs[i].target.position);
 
-                        continue;
+                             continue;
+                         }
                     }
                 }
 
@@ -230,19 +247,19 @@ namespace Creature
                 
                 if (shouldntMove && !creatureMover.isRunning)
                 {
-                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.1f)
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.05)
                         return true;
 
-                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.1f)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.05)
                         return true;
                 }
 
                 else if (shouldntMove && creatureMover.isRunning)
                 {
-                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun * 1.1f)
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun * 1.05)
                         return true;
 
-                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun * 1.1f)
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun * 1.05)
                         return true;
                 }
 
@@ -282,8 +299,6 @@ namespace Creature
                     list.Add(legs[i]);
                 }
             }
-
-            bool result = true;
 
             if (creatureMover.navMeshAgent.velocity.magnitude < creatureMover.agressiveSpeed * 0.7f)
             {
