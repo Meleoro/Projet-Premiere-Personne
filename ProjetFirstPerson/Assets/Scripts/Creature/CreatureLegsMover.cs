@@ -285,6 +285,11 @@ namespace Creature
 
             bool result = true;
 
+            if (creatureMover.navMeshAgent.velocity.magnitude < creatureMover.agressiveSpeed * 0.7f)
+            {
+                return true;
+            }
+
             for(int i = 0; i < list.Count; i++)
             {
                 Leg currentLeg = list[i];
@@ -339,7 +344,10 @@ namespace Creature
                     if(forceFront)
                         dist = Vector3.Distance(hit.point, mainTrRotRefBack.position);
 
-                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1.05f)
+                    float maxDistMultiplier = Mathf.Lerp(0.9f, 1.05f,
+                        creatureMover.navMeshAgent.velocity.magnitude / creatureMover.navMeshAgent.speed);
+                    
+                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * maxDistMultiplier)
                     {
                         currentMax = dist;
                         chosenPos = hit.point;
