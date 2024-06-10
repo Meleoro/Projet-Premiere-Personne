@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class SneakZone : MonoBehaviour
 {
+    public MeshRenderer _renderer;
+
+    private void Start()
+    {
+        _renderer = GetComponentInChildren<MeshRenderer>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
