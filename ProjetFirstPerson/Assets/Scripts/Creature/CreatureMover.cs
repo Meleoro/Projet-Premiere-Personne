@@ -144,8 +144,6 @@ namespace Creature
             }
             else
             {
-                Debug.Log(12);
-                
                 bodyIKScript.frontYDif -= Time.deltaTime * 3;
             }
         }

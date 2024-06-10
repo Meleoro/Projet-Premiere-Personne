@@ -285,6 +285,12 @@ namespace Creature
 
             bool result = true;
 
+            if (creatureMover.navMeshAgent.velocity.magnitude < creatureMover.agressiveSpeed * 0.7f)
+            {
+                Debug.Log(13);
+                return true;
+            }
+
             for(int i = 0; i < list.Count; i++)
             {
                 Leg currentLeg = list[i];
