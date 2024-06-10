@@ -9,13 +9,22 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
     [Header("Parameters")] 
     private List<ICharacterComponent> characterComponents = new List<ICharacterComponent>();
 
+    [Header("Parameters Hideout")] 
+    [SerializeField] private float distMaxFade;
+    [SerializeField] private float distMinFade;
+    [SerializeField] private Color colorNormal;
+    [SerializeField] private Color colorFade;
+    
     [Header("Public Infos")] 
-    public IInteractible interactibleAtRange;
     public bool isInteracting;
+    public IInteractible interactibleAtRange;
     public NoiseType currentNoiseType;
     public bool isHidden;
     public bool isInSneakZone;
 
+    [Header("Private Infos")] 
+    private Coroutine hideEffectCoroutine;
+    
     [Header("Actions")] 
     public Action<ItemData> UseAdrenaline;
 
@@ -110,20 +119,62 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
                 UnHide();
             }
         }
+
+        if (crouchComponent.isCrouched)
+        {
+            ApplyTransparency();
+        }
     }
     
     private void Hide()
     {
         isHidden = true;
         
-        StartCoroutine(CameraEffects.Instance.Hide(1));
+        if(hideEffectCoroutine != null)
+            StopCoroutine(hideEffectCoroutine);
+        
+        hideEffectCoroutine = StartCoroutine(CameraEffects.Instance.Hide(1));
     }
 
     private void UnHide()
     {
         isHidden = false;
         
-        StartCoroutine(CameraEffects.Instance.Hide(0));
+        if(hideEffectCoroutine != null)
+            StopCoroutine(hideEffectCoroutine);
+        
+        hideEffectCoroutine = StartCoroutine(CameraEffects.Instance.Hide(0));
+        
+        RaycastHit[] hideColliders = Physics.SphereCastAll(transform.position, distMaxFade+  2, Vector3.up, 0);
+
+        for (int i = 0; i < hideColliders.Length; i++)
+        {
+            if (hideColliders[i].collider.TryGetComponent<SneakZone>(out SneakZone sneakZone))
+            {
+                sneakZone._renderer.materials[0].SetColor("_alphaControl", colorNormal);
+                sneakZone._renderer.materials[1].SetColor("_alphaControl", colorNormal);
+            }
+        }
+    }
+
+    private void ApplyTransparency()
+    {
+        RaycastHit[] hideColliders = Physics.SphereCastAll(transform.position, distMaxFade, Vector3.up, 0);
+
+        for (int i = 0; i < hideColliders.Length; i++)
+        {
+            if (hideColliders[i].collider.TryGetComponent<SneakZone>(out SneakZone sneakZone))
+            {
+                float dist = Vector3.Distance(transform.position, hideColliders[i].collider.transform.position);
+                dist = Mathf.Clamp(dist - distMinFade, 0, distMaxFade - distMinFade);
+                
+                float t = 1 - (dist / (distMaxFade - distMinFade));
+                
+                sneakZone._renderer.materials[0].SetColor("_alphaControl", Color.Lerp(colorNormal, colorFade, t));
+                sneakZone._renderer.materials[1].SetColor("_alphaControl", Color.Lerp(colorNormal, colorFade, t));
+            }
+        }
+        
     }
 
     #endregion
