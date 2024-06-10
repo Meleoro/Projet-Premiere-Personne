@@ -61,7 +61,7 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
         
         if (controls.Player.PickItem.WasPerformedThisFrame())
         {
-            if(interactibleAtRange != null)
+            if(interactibleAtRange != null && !isInteracting)
                 interactibleAtRange.Interact();
         }
         
