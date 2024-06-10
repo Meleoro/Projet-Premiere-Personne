@@ -151,8 +151,12 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
         {
             if (hideColliders[i].collider.TryGetComponent<SneakZone>(out SneakZone sneakZone))
             {
-                sneakZone._renderer.materials[0].SetColor("_alphaControl", colorNormal);
-                sneakZone._renderer.materials[1].SetColor("_alphaControl", colorNormal);
+                if (!hideColliders[i].collider.GetComponent<SneakZone>().isMaster)
+                {
+                    sneakZone._renderer.materials[0].SetColor("_alphaControl", colorNormal);
+                    sneakZone._renderer.materials[1].SetColor("_alphaControl", colorNormal);
+                }
+
             }
         }
     }
@@ -165,13 +169,17 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
         {
             if (hideColliders[i].collider.TryGetComponent<SneakZone>(out SneakZone sneakZone))
             {
-                float dist = Vector3.Distance(transform.position, hideColliders[i].collider.transform.position);
-                dist = Mathf.Clamp(dist - distMinFade, 0, distMaxFade - distMinFade);
+                if (!hideColliders[i].collider.GetComponent<SneakZone>().isMaster)
+                {
+                    float dist = Vector3.Distance(transform.position, hideColliders[i].collider.transform.position);
+                    dist = Mathf.Clamp(dist - distMinFade, 0, distMaxFade - distMinFade);
                 
-                float t = 1 - (dist / (distMaxFade - distMinFade));
+                    float t = 1 - (dist / (distMaxFade - distMinFade));
                 
-                sneakZone._renderer.materials[0].SetColor("_alphaControl", Color.Lerp(colorNormal, colorFade, t));
-                sneakZone._renderer.materials[1].SetColor("_alphaControl", Color.Lerp(colorNormal, colorFade, t));
+                    sneakZone._renderer.materials[0].SetColor("_alphaControl", Color.Lerp(colorNormal, colorFade, t));
+                    sneakZone._renderer.materials[1].SetColor("_alphaControl", Color.Lerp(colorNormal, colorFade, t));
+                }
+               
             }
         }
         

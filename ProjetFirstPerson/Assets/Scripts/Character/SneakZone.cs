@@ -6,15 +6,16 @@ using UnityEngine;
 public class SneakZone : MonoBehaviour
 {
     public MeshRenderer _renderer;
-
+    public bool isMaster;
     private void Start()
     {
-        _renderer = GetComponentInChildren<MeshRenderer>();
+        if(!isMaster)
+            _renderer = GetComponentInChildren<MeshRenderer>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && isMaster)
         {
             CharacterManager.Instance.isInSneakZone = true;
         }
@@ -22,7 +23,7 @@ public class SneakZone : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && isMaster)
         {
             CharacterManager.Instance.isInSneakZone = false;
         }
