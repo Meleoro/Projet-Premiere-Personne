@@ -55,7 +55,7 @@ namespace Puzzle
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape) && isInRange && CharacterManager.Instance.isInteracting)
+            if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E)) && isInRange && CharacterManager.Instance.isInteracting)
                 GetOutInteraction();
         }
 
