@@ -105,6 +105,10 @@ namespace Creature
                             continue;
                         }
                     }
+                    else if (VerifyLegNeedsToMove(legs[i], true))
+                    {
+                        legs[i].target.position = mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos);
+                    }
                     else if (!VerifyLegNeedsToMove(legs[i], false))
                     {
                         legs[i].saveLastTargetPos =
@@ -130,6 +134,10 @@ namespace Creature
                             continue;
                         }
                     }
+                    else if (VerifyLegNeedsToMove(legs[i], true))
+                    {
+                        legs[i].target.position = mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos);
+                    }
                     else if (!VerifyLegNeedsToMove(legs[i], false))
                     {
                         legs[i].saveLastTargetPos =
@@ -141,6 +149,14 @@ namespace Creature
 
                 if (!legs[i].isMoving)
                 {
+                    if(creatureMover.isRunning)
+                    {
+                        if (!VerifyLegCanMoveRun(legs[i].isFrontLeg))
+                        {
+                            continue;
+                        }
+                    }
+
                     if (VerifyLegNeedsToMove(legs[i], false) || (legs[i].isFrontLeg && currentMovingLegsFront == 1 && creatureMover.isRunning) || 
                         (!legs[i].isFrontLeg && currentMovingLegsBack == 1 && creatureMover.isRunning))
                     {
@@ -220,7 +236,16 @@ namespace Creature
                     if (!currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistWalk * 1.1f)
                         return true;
                 }
-                
+
+                else if (shouldntMove && creatureMover.isRunning)
+                {
+                    if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun * 1.1f)
+                        return true;
+
+                    if (!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun * 1.1f)
+                        return true;
+                }
+
                 else if (creatureMover.isRunning)
                 {
                     if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun)
@@ -245,6 +270,44 @@ namespace Creature
             }
             
             return false;
+        }
+
+        private bool VerifyLegCanMoveRun(bool verifyFront)
+        {
+            List<Leg> list = new List<Leg>();
+            for(int i = 0; i < legs.Count; i++)
+            {
+                if(verifyFront == legs[i].isFrontLeg)
+                {
+                    list.Add(legs[i]);
+                }
+            }
+
+            bool result = true;
+
+            if (creatureMover.navMeshAgent.velocity.magnitude < creatureMover.agressiveSpeed * 0.7f)
+            {
+                return true;
+            }
+
+            for(int i = 0; i < list.Count; i++)
+            {
+                Leg currentLeg = list[i];
+
+                float distOriginTarget = Vector3.Distance(currentLeg.isFrontLeg ? currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset :
+                    currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset, currentLeg.target.position);
+
+                if ((currentLeg.isFrontLeg && distOriginTarget < data.maxFrontLegDistRun * 0.8f) && !(currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun * 1.1f) && !currentLeg.isMoving)
+                    return false;
+
+                if ((!currentLeg.isFrontLeg && distOriginTarget < data.maxBackLegDistRun * 0.8f) && !(!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun * 1.1f) && !currentLeg.isMoving)
+                    return false;
+
+                if (mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > mainTrRotRefBack.InverseTransformPoint(currentLeg.origin.position).z)
+                    return false;
+            }
+
+            return true;
         }
 
         #endregion
@@ -281,7 +344,10 @@ namespace Creature
                     if(forceFront)
                         dist = Vector3.Distance(hit.point, mainTrRotRefBack.position);
 
-                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * 1.05f)
+                    float maxDistMultiplier = Mathf.Lerp(0.9f, 1.05f,
+                        creatureMover.navMeshAgent.velocity.magnitude / creatureMover.navMeshAgent.speed);
+                    
+                    if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * maxDistMultiplier)
                     {
                         currentMax = dist;
                         chosenPos = hit.point;

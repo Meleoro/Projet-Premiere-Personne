@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,13 +11,15 @@ public class LogsMenu : MonoBehaviour
     [SerializeField] private GameObject ContentLog;
     [SerializeField] private GameObject LogPrefab;
     [SerializeField] public GameObject currentLog;
+    [SerializeField] public GameObject bouttonToLog;
     [SerializeField] public Button TraductionButton;
     public Animation logPopUpAnim;
+    public TextMeshProUGUI unreadCounter;
     public List<GameObject> logsList;
     public List<GameObject> logIconUI;
 
     [Header("Lorem ipsum")]
-    [SerializeField] string characters = "abcdefghijklmnopqrstuvwyz0123456789";
+    [SerializeField] string characters = "abcdefghijklmnopqrstuvwyz";
     [SerializeField] private int loremIpsumLenghtValue = 150;
     [SerializeField] private string myRandomString;
     
@@ -28,6 +31,8 @@ public class LogsMenu : MonoBehaviour
         GameObject NewLog = Instantiate(LogPrefab,Vector3.zero,Quaternion.Euler(0,0,0),ContentLog.transform);
         NewLog.GetComponent<LogsScripts>().TitleArea.text = title;
         unreadLogs += 1;
+        unreadCounter.text = unreadLogs + "";
+        bouttonToLog.SetActive(true);
         for (int i = 0; i < logIconUI.Count; i++)
         {
             logIconUI[i].SetActive(true);
@@ -49,6 +54,17 @@ public class LogsMenu : MonoBehaviour
             NewLog.GetComponent<LogsScripts>().MyInformation = info;
         }
         logsList.Add(NewLog);
+    }
+
+   public void RefreshLogs()
+    {
+        for(int i = 0; i < logsList.Count ; i++)
+        {
+            if(logsList[i].GetComponent<LogsScripts>().isActive == true)
+            {
+                logsList[i].GetComponent<LogsScripts>().InstantiateMyInfo();
+            }
+        }
     }
 
    

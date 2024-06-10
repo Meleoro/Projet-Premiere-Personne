@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -47,6 +48,10 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     private Coroutine upDownCoroutine;
     private float crouchModifierY;
     private bool lockCamera;
+    public bool isInCinematic;
+    public bool isInCinematicIntro;
+    public float cinematicLookSpeed;
+    public Vector3 wantedRotCinematic;
 
     [Header("References")] 
     public Transform wantedCameraPos;
@@ -91,7 +96,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
 
     public void ComponentLateUpdate()
     {
-        if(!lockCamera)
+        if(!lockCamera && !isInCinematic)
             ActualiseInputs();
         
         if(canMove)
@@ -113,6 +118,20 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     // ROTATES THE CAMERA
     private void RotateCamera()
     {
+        if (isInCinematicIntro)
+        {
+            characterCamera.transform.rotation = wantedCameraPos.transform.rotation;
+            return;
+        }
+        
+        if (isInCinematic)
+        {
+            Vector3 dir = Vector3.Lerp(characterCamera.forward, wantedRotCinematic, Time.deltaTime * cinematicLookSpeed);
+            characterCamera.rotation = Quaternion.LookRotation(dir, Vector3.up);
+            
+            return;
+        }
+        
         if (lerpCameraRotation)
         {
             lerpedRotation = Vector2.Lerp(lerpedRotation, currentRotation, lerpSpeed * Time.deltaTime);
@@ -199,11 +218,17 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
 
             crouchModifierY = Mathf.Lerp(save, YModifier, crouchTimer / crouchDuration);
             
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
     }
     #endregion
 
+
+    public void LookTowardsCinematic(Transform lookedPoint)
+    {
+        wantedRotCinematic = lookedPoint.position - characterCamera.position;
+        isInCinematic = true;
+    }
 
     public void StartTilting()
     {

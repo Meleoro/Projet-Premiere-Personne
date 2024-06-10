@@ -34,48 +34,55 @@ public class Poids : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (currentSpot == 0)
+        if (!UIManager.Instance.isUIActive && !UIManager.Instance.cam.isAiming)
         {
-            if (manager.poid1Free)
+            if (currentSpot == 0)
             {
-                //transform.position = manager.poid1Position.transform.position;
-                manager.poid1Free = false;
-                currentSpot = 1;
-                manager.registedPoids1 = poids;
-                manager.CheckPoids();
-            }
+                if (manager.poid1Free)
+                {
+                    //transform.position = manager.poid1Position.transform.position;
+                    manager.poid1Free = false;
+                    currentSpot = 1;
+                    manager.registedPoids1 = poids;
+                    manager.CheckPoids();
+                }
             
-            else if (manager.poid2Free)
+                else if (manager.poid2Free)
+                {
+                    //transform.position = manager.poid2Position.transform.position;
+                    manager.poid2Free = false;
+                    currentSpot = 2;               
+                    manager.registedPoids2 = poids;
+                    manager.CheckPoids();
+                }
+                AudioManager.Instance.PlaySoundOneShot(2,1,0);
+            }
+            else
             {
-                //transform.position = manager.poid2Position.transform.position;
-                manager.poid2Free = false;
-                currentSpot = 2;               
-                manager.registedPoids2 = poids;
+                transform.position = originalPos;
+            
+                if(currentSpot == 1)
+                    manager.poid1Free = true;
+            
+                if(currentSpot == 2)
+                    manager.poid2Free = true;
+            
+                currentSpot = 0;
                 manager.CheckPoids();
+                AudioManager.Instance.PlaySoundOneShot(2,0,0);
             }
-        }
-        else
-        {
-            transform.position = originalPos;
-            
-            if(currentSpot == 1)
-                manager.poid1Free = true;
-            
-            if(currentSpot == 2)
-                manager.poid2Free = true;
-            
-            currentSpot = 0;
-            manager.CheckPoids();
         }
     }
 
     public void OnMouseEnter()
     {
-        mesh.material = MaterialOn;
+        if(!UIManager.Instance.isUIActive && !UIManager.Instance.cam.isAiming)
+            mesh.material = MaterialOn;
     }
 
     public void OnMouseExit()
-    {
-        mesh.material = MaterialOff;
+    { 
+        if(!UIManager.Instance.isUIActive && !UIManager.Instance.cam.isAiming)
+            mesh.material = MaterialOff;
     }
 }

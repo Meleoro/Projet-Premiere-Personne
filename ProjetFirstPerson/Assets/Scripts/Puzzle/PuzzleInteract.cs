@@ -66,7 +66,7 @@ namespace Puzzle
 
         public void GetInInteraction()
         {
-            CharacterManager.Instance.isInteracting = true;
+            Debug.Log("entre");
             CameraManager.Instance.transform.parent.transform.position = cameraPos.transform.position;
             CameraManager.Instance.transform.parent.transform.rotation = Quaternion.Euler(desiredRotation);
 
@@ -86,6 +86,7 @@ namespace Puzzle
             characterCameraScript.canRotate = false;
 
             boardMenu.favCanBeOpen = true;
+            CharacterManager.Instance.isInteracting = true;
         }
 
 

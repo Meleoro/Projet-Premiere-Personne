@@ -9,7 +9,12 @@ public class SteleScript : MonoBehaviour
     public bool isAlreadyInLogs;
     [SerializeField]  public string titleLogs;
     [SerializeField] [TextArea(5,10)] public string myInfo;
-    
+    public bool isFinalStele;
+    public float fadeDuration;
+    public MeshRenderer mesh;
+    [HideInInspector] public ParticleSystem activationVFX;
+    [HideInInspector] public GameObject fumeVFX;
+    [HideInInspector] public Material material;
     
     [Header("Parameters Gizmos")] 
     [SerializeField] private bool showGizmosOnlyOnSelected;
@@ -18,6 +23,12 @@ public class SteleScript : MonoBehaviour
     void Start()
     {
         logsMenu = GameObject.Find("TabletteManager").GetComponent<LogsMenu>();
+        if (transform.childCount > 0)
+        {
+            material = mesh.material;
+            activationVFX = transform.GetChild(0).GetComponent<ParticleSystem>();
+            fumeVFX = transform.GetChild(1).gameObject;
+        }
     }
 
     private void OnTriggerEnter(Collider other) 
@@ -52,5 +63,21 @@ public class SteleScript : MonoBehaviour
             
             Gizmos.DrawCube(Vector3.zero, transform.localScale);
         }
+    }
+
+    public IEnumerator ChangeShader()
+    {
+        float value = 1;
+        float time = 0;
+        while (time < fadeDuration)
+        {
+            time += Time.deltaTime;
+            value = Mathf.Lerp(value, 0, time / fadeDuration);
+            material.SetFloat("_ActivationTransition",value);
+            yield return null;
+        }
+
+        value = 0;
+        material.SetFloat("_ActivationTransition",value);
     }
 }

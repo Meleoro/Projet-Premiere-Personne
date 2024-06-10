@@ -24,6 +24,7 @@ public class CameraTestEthan : MonoBehaviour
         {
             if (canInOut)
             {
+                AudioManager.Instance.PlaySoundOneShot(1,21,0);
                 uIManager.InteractHUD.gameObject.SetActive(false);
                 UIPhotoTablette.SetActive(true);
                 anim.SetBool("in",true);
@@ -35,6 +36,7 @@ public class CameraTestEthan : MonoBehaviour
         {
             if (canInOut)
             {
+                AudioManager.Instance.PlaySoundOneShot(1,22,0);
                 isAiming = false;
                 if(CharacterManager.Instance.isInteracting)
                     uIManager.InteractHUD.gameObject.SetActive(true);
@@ -77,5 +79,18 @@ public class CameraTestEthan : MonoBehaviour
                 UIMenuGeneral.SetActive(false);
                 StopCoroutine(WaitForUI());
            }
+    }
+
+    public void AutoQuitPhoto()
+    {
+        AudioManager.Instance.PlaySoundOneShot(1,22,0);
+        isAiming = false;
+        if(CharacterManager.Instance.isInteracting)
+            uIManager.InteractHUD.gameObject.SetActive(true);
+        UIPhotoPlayer.SetActive(false);
+        UIPhotoTablette.SetActive(false);
+        StopCoroutine(WaitForUI());
+        anim.SetBool("in",false);
+        UIPhotoTablette.SetActive(false);
     }
 }

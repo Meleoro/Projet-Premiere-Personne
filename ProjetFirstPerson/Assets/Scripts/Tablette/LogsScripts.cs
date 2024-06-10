@@ -15,8 +15,9 @@ public class LogsScripts : MonoBehaviour
     public string MyInformation;
     [SerializeField] private Button TraductionButton;
     [HideInInspector] public bool isRead;
-    [HideInInspector] public bool isTraducted;
+    public bool isTraducted;
     public Coroutine traduction;
+    [SerializeField] private Sprite unselectedLogs, selectedLogs;
     [Header("Scripts Letter")]
     [SerializeField] private float typingSpeed = 0.05f;
     [HideInInspector] public bool isWriting;
@@ -41,6 +42,17 @@ public class LogsScripts : MonoBehaviour
         {
             newLogsList[i].SetActive(false);
             newLogsList[i].SetActive(true);
+
+            if(newLogsList[i] == gameObject)
+            {
+                newLogsList[i].GetComponent<LogsScripts>().isActive = true;
+                newLogsList[i].GetComponent<Image>().sprite = selectedLogs;
+            }
+            else
+            {
+                newLogsList[i].GetComponent<LogsScripts>().isActive = false;
+                newLogsList[i].GetComponent<Image>().sprite = unselectedLogs;
+            }
         }
     }
     
@@ -49,8 +61,6 @@ public class LogsScripts : MonoBehaviour
     {
         StopTraduction();
         logsMenu.currentLog = gameObject;
-        if (logsMenu.currentLog.GetComponent<LogsScripts>().traduction != null)
-            StopCoroutine(logsMenu.currentLog.GetComponent<LogsScripts>().traduction);
         
         LogsListFunction();
         
@@ -59,8 +69,10 @@ public class LogsScripts : MonoBehaviour
             isRead = true;
             transform.GetChild(1).gameObject.SetActive(false);
             logsMenu.unreadLogs -= 1;
+            logsMenu.unreadCounter.text = logsMenu.unreadLogs + "";
             if (logsMenu.unreadLogs == 0)
             {
+                logsMenu.bouttonToLog.SetActive(false);
                 for (int i = 0; i < logsMenu.logIconUI.Count; i++)
                 {
                     logsMenu.logIconUI[i].SetActive(false);
@@ -95,13 +107,9 @@ public class LogsScripts : MonoBehaviour
     {
         if (logsMenu.currentLog != null)
         {
-            if (logsMenu.currentLog.GetComponent<LogsScripts>().traduction != null)
-            {
-                StopCoroutine(logsMenu.currentLog.GetComponent<LogsScripts>().traduction);
-                logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
+            //    logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
                 isWriting = false;
-                TraductionButton.gameObject.SetActive(false);
-            }  
+                TraductionButton.gameObject.SetActive(false);  
         }
     }
     

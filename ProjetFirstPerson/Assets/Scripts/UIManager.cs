@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class UIManager : GenericSingletonClass<UIManager>
 {
@@ -27,8 +28,10 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private Image eyeIconImage;
     [SerializeField] private CameraComponent cameraComponent;
     [SerializeField] private MoveComponent moveComponent;
-    [SerializeField] private CameraTestEthan cam;
+    [SerializeField] public CameraTestEthan cam;
     [SerializeField] private TextMeshProUGUI interactText;
+    [SerializeField] private CinematiqueFinale cinematiqueFinale;
+    [SerializeField] private GameObject normalHUD;
     public Image fadeImage;
 
     [Header("References Menu Général Tablette")]
@@ -41,8 +44,13 @@ public class UIManager : GenericSingletonClass<UIManager>
     
     [Header("UI Variables")]
     [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, SettingsMenu;
+   /* [SerializeField] private Sprite BoardSprite, LogsSprite, SettingsSprite;
+    [SerializeField] private Sprite unselectedImage, selectedImage; */
     [SerializeField] private TextMeshProUGUI schedule;
     [SerializeField] public bool isUIActive = false;
+    public bool isFinalCinematic;
+    public bool canMenu;
+    private LogsMenu logsMenu;
 
     [Header("Cursor Variables")]
     public Texture2D cursorTexture;
@@ -55,6 +63,7 @@ public class UIManager : GenericSingletonClass<UIManager>
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
         HideInteractIcon();
         GeneralMenu.SetActive(false);
+        logsMenu = GameObject.Find("TabletteManager").GetComponent<LogsMenu>();
     }
 
     void Update()
@@ -69,13 +78,18 @@ public class UIManager : GenericSingletonClass<UIManager>
             StartCoroutine(OpenMenu());
         } 
     }
+    public void OpenMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 
     public IEnumerator OpenMenu()
     {
-        if (!cam.isAiming)
+        if (!cam.isAiming && !playerHealth.isDying && canMenu)
         {
             if(!isUIActive)
             {
+                AudioManager.Instance.PlaySoundOneShot(1,21,0);
                 if (playerHealth.isHurted)
                 {
                     textHealth.text = "État de Santé : Critique";
@@ -92,18 +106,21 @@ public class UIManager : GenericSingletonClass<UIManager>
                 tabletteWorldFakeMenu.SetActive(true);
                 yield return new WaitForSeconds(0.5f);
                 InteractHUD.gameObject.SetActive(false);
+                normalHUD.SetActive(false);
                 cameraComponent.canRotate = false;
                 moveComponent.canMove = false;
                 cameraComponent.LockedCursor(1);
                 isUIActive = true;
-                CloseAllPanel(true,false,false,false);
+                CloseAllPanel(false,true,false,false);
             }
             else
             {
+                AudioManager.Instance.PlaySoundOneShot(1,22,0);
                 tabletteWorldFakeMenu.SetActive(false);
                 cam.anim.SetBool("in",false);
                 if (!CharacterManager.Instance.isInteracting)
                 {
+                    normalHUD.SetActive(true);
                     cameraComponent.canRotate = true;
                     moveComponent.canMove = true;
                     cameraComponent.LockedCursor(2);
@@ -112,11 +129,27 @@ public class UIManager : GenericSingletonClass<UIManager>
             
                 isUIActive = false;
                 CloseAllPanel(false,false,false,false);
-            } 
+            }
+
+            if (isFinalCinematic)
+            {
+                //cameraComponent.canRotate = false;
+                //cameraComponent.canMove = false;
+                moveComponent.canMove = false;
+                cinematiqueFinale.lightEtape1.SetActive(false);
+                StartCoroutine(cinematiqueFinale.DoSecondPart());
+            }
         }
     }
 
-
+    public IEnumerator OpenLogMenu()
+    {
+       StartCoroutine(OpenMenu());
+       yield return new WaitForSeconds(0.5f);
+       CloseAllPanel(false,false,false,true);
+       isFinalCinematic = true;
+    }
+    
     public void HideHUD()
     {
         HUDParent.gameObject.SetActive(false);
@@ -156,6 +189,7 @@ public class UIManager : GenericSingletonClass<UIManager>
             {
                 CloseAllPanel(false,false,false,true);
                 isUIActive = true;
+                logsMenu.RefreshLogs();
             }
     }
     #endregion

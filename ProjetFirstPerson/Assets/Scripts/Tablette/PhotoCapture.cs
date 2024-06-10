@@ -10,6 +10,7 @@ public class PhotoCapture : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private CameraComponent cameraComponent;
+    [SerializeField] private MoveComponent moveComponent;
     [SerializeField] private UIManager uiManager;
     [SerializeField] private BoardMenu boardMenu;
     [SerializeField] private CameraTestEthan cameraTestEthan;
@@ -48,14 +49,19 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
     [Header("Album Variables")]
     [SerializeField] private GameObject Album;
     [SerializeField] private GameObject SlotAlbum;
+    private bool soundDone;
 
     private void Start()
     {
+        soundDone = false;
         logsMenu = GetComponent<LogsMenu>();
         screenCapture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
 
         // Suppression et création du dossier data
-        Directory.Delete(Application.dataPath + "/Scripts/Tablette/Data", true);
+        if(Directory.Exists(Application.dataPath + "/Scripts/Tablette/Data"))
+        {
+            Directory.Delete(Application.dataPath + "/Scripts/Tablette/Data", true);
+        }
         Directory.CreateDirectory(Application.dataPath + "/Scripts/Tablette/Data");
 
         ScreenRectTransform = ScreenPhotoImage.GetComponent<RectTransform>().rect;
@@ -90,10 +96,19 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                 var hitScript = hit.transform.GetComponent<SteleScript>();
                 if (!hitScript.isAlreadyInLogs)
                 {
+                    if (!soundDone)
+                    {
+                        AudioManager.Instance.PlaySoundOneShot(1,20,0);
+                        soundDone = true;
+                    }
                     SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime;
+                    
                     if (SteleChargeImage.fillAmount >= 1)
                     {
                         //hitScript.isAlreadyInLogs = true;
+                        StartCoroutine(hitScript.ChangeShader());
+                        hitScript.activationVFX.Play();
+                        hitScript.fumeVFX.SetActive(false);
                         logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["NewLogAnim"].clip;
                         logsMenu.logPopUpAnim.Play();
                         AudioManager.Instance.PlaySoundOneShot(1, 17, 0);
@@ -103,26 +118,44 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                         GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle,false);
                         hitScript.isAlreadyInLogs = true;
                         SteleChargeImage.fillAmount = 0;
+
+                        if (hitScript.isFinalStele)
+                        {
+                            StartCoroutine(AutoGoToLog());
+                        }
                     }
                 }
             }
             else if (SteleChargeImage.fillAmount > 0)
             {
                 SteleChargeImage.fillAmount -= ChargeLogsSpeed * Time.deltaTime;
+                soundDone = false;
             }
         }
         else
+        {
             SteleChargeImage.fillAmount = 0;
-
-
-
+            soundDone = false;
+        }
     }
 
+    IEnumerator AutoGoToLog()
+    {
+        cameraComponent.canRotate = false;
+        cameraComponent.canMove = false;
+        moveComponent.canMove = false;
+        cameraTestEthan.AutoQuitPhoto();
+        yield return new WaitForSeconds(1.5f);
+        StartCoroutine(UIManager.Instance.OpenLogMenu());
+    }
+    
     IEnumerator CapturePhoto()
     {
         // Take Photos
         if(!uiManager.isUIActive)
         {
+            SteleChargeImage.gameObject.SetActive(false);
+            AudioManager.Instance.PlaySoundOneShot(1,19,0);
             cameraUI.SetActive(false);
             tabletteFrame.SetActive(false);
             viewingPhoto = true;
@@ -137,6 +170,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
         ShowPhoto();
         yield return new WaitForSeconds(1.5f);
+        //SteleChargeImage.gameObject.SetActive(true);
         StartCoroutine(FadeOutPhoto());
         }
     }

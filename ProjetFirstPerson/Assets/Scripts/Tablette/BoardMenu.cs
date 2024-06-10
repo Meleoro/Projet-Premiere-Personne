@@ -7,12 +7,14 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using Unity.VisualScripting;
 using System;
+using System.Linq;
 
 public class BoardMenu : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private CameraComponent cameraComponent;
     [SerializeField] private UIManager uIManager;
+    [SerializeField] private SCR_UiDrag sCR_UiDrag;
 
     [Header("List Objects In Board")]
     public List<GameObject> listBoardElement;
@@ -34,11 +36,20 @@ public class BoardMenu : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private bool isOpen;
     [SerializeField] private Image theFavImageSelected;
+    [SerializeField] private Transform contentFavoritePhoto;
 
     
     // Update is called once per frame
     void Update()
     {
+        // Desactive touts les options panel du board
+        if(EventSystem.current.currentSelectedGameObject == MyBoard)
+        {
+            for(int i = 0; i < listBoardElement.Count ; i++)
+                 {
+                    listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().OptionPanel.SetActive(false);
+                 }
+        }
         if(Input.GetKeyDown(KeyCode.Mouse0) && isCreateArrow)
         {
             Instantiate(Arrow, Input.mousePosition, Quaternion.identity, MyBoard.transform);
@@ -47,24 +58,10 @@ public class BoardMenu : MonoBehaviour
 
         // Quand le joueur clic, on check si un élément est séléctionné dans l'Event system et on fait une variable
         if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
-       /*     GameObject NewGameObject = EventSystem.current.currentSelectedGameObject;
-            if(NewGameObject == currentSelect && NewGameObject != null && currentSelect.CompareTag("MovingUI"))
-            {
-                    currentSelect.GetComponent<ElementsOfBoard>().OptionPanel.SetActive(true);
-                    EventSystem.current.SetSelectedGameObject(null);
-                    currentSelect = null;
-                    Debug.Log("1");
-            } */
-            
+        {   
             if(EventSystem.current.currentSelectedGameObject == null)
             {
                 listBoardElement.RemoveAll(item => item == null);
-                for(int i = 0; i < listBoardElement.Count ; i++)
-                 {
-                        listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().DeleteButton.SetActive(false);
-                        //listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().FavoriteButton.SetActive(false);
-                 }
             }
 
             else
@@ -74,25 +71,12 @@ public class BoardMenu : MonoBehaviour
                 {
                     currentSelect.GetComponentInChildren<ElementsOfBoard>().isSelectedOneTime = true;
                 }
-                else
-                {
-                    for(int i = 0; i < listBoardElement.Count ; i++)
-                 {
-                        listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().DeleteButton.SetActive(false);
-                        //listBoardElement[i].GetComponentInChildren<ElementsOfBoard>().FavoriteButton.SetActive(false);
-                 }
-                }
             }
 
             
         }
         if(Input.GetKeyUp(KeyCode.Mouse0) && currentSelect != null)
         {
-            if(currentSelect.CompareTag("MovingUI"))
-                {
-                    currentSelect.GetComponent<ElementsOfBoard>().DeleteButton.SetActive(true);
-                    //currentSelect.GetComponent<ElementsOfBoard>().FavoriteButton.SetActive(true);
-                }
             currentSelect = null;
             EventSystem.current.SetSelectedGameObject(null);
         }
@@ -117,17 +101,6 @@ public class BoardMenu : MonoBehaviour
             {
                 HisMovingObject.position = Input.mousePosition;
             }
-
-            // La scale des éléments du board
-        /*    HisMovingObject.localScale += ( new Vector3(0.1f,0.1f,0) * Input.mouseScrollDelta.y );
-            if(HisMovingObject.localScale.x <= 0.1f)
-            {
-                HisMovingObject.localScale = new Vector3(0.1f,0.1f,0);
-            }
-           else if(HisMovingObject.localScale.x >= 3f)
-            {
-                HisMovingObject.localScale = new Vector3(3f,3f,0);
-            }     */
         }
 
         // OpenFavMenu
@@ -152,6 +125,17 @@ public class BoardMenu : MonoBehaviour
         }
         OffsetX = 0;
         OffsetY = 0;
+        if(newElement.CompareTag("Slot"))
+        {
+            // Delete
+            UnityAction UaDelete;
+            UaDelete = new UnityAction(() => DeleteElement(newElement,gameObject.GetComponent<BoardMenu>()));
+            newElement.GetComponentInChildren<ElementsOfBoard>().OptionPanel.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(UaDelete);
+            // Favoris
+            UnityAction UaFavorite;
+            UaFavorite = new UnityAction(() => AddFavoritePhoto(newElement.transform,contentFavoritePhoto));
+            newElement.GetComponentInChildren<ElementsOfBoard>().OptionPanel.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(UaFavorite);
+        }
     }
     public void AddBackgroundOnBoard(GameObject background)
     {
@@ -163,17 +147,22 @@ public class BoardMenu : MonoBehaviour
     {
         isCreateArrow = true;
     }
-    public void DeleteElement(GameObject parent)
+    public void DeleteElement(GameObject parent, BoardMenu boardMenu)
     {
-        Debug.Log("Destroy");
+        for(int i = 0 ; i < boardMenu.listBoardElement.Count; i++)
+        {
+            if(boardMenu.listBoardElement[i].gameObject == parent)
+            {
+                boardMenu.listBoardElement.RemoveAt(i);
+            }
+        }
         AudioManager.Instance.PlaySoundOneShot(1, 18, 0);
         Destroy(parent);
     }
 
-    public void AddFavoritePhoto(GameObject target)
+    public void AddFavoritePhoto(Transform target, Transform parent)
     {
-        GameObject contentFavoritePhoto = GameObject.Find("ContentFavoritePhoto");
-        Transform favElement = Instantiate(target.transform.parent,new Vector3(0,0,0), Quaternion.identity, contentFavoritePhoto.transform);
+        Transform favElement = Instantiate(target,new Vector3(0,0,0), Quaternion.identity, parent);
         favElement.GetComponentInChildren<ElementsOfBoard>().isFavorite = true;
         favElement.GetComponentInChildren<Button>().onClick.AddListener(SelectPhotoToFavoriteMod);
     }
@@ -201,5 +190,11 @@ public class BoardMenu : MonoBehaviour
         Image myImage = MyButton.transform.parent.GetComponent<SlotAlbum>().SlotImage;
         theFavImageSelected = GameObject.Find("FavImageSelected").GetComponent<Image>();
         theFavImageSelected.sprite = myImage.sprite;
+    }
+
+    public void SetZoomBoard()
+    {
+        float zoomValue = sCR_UiDrag.zoomSlider.value;
+        MyBoard.transform.localScale = new Vector3(zoomValue, zoomValue, zoomValue);
     }
 }

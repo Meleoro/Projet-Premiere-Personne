@@ -14,9 +14,12 @@ public class SettingsMenu : MonoBehaviour
 
     Resolution[] resolutions;
 
+    public Slider masterSlider;
     public Slider musicSlider;
     public Slider soundSlider;
     private GameObject player;
+    private HealthComponent health;
+    public bool isMainMenu;
 
     public Toggle FullScreenToggle;
 
@@ -36,13 +39,11 @@ public class SettingsMenu : MonoBehaviour
 
     public void Start()
     {
-        // Note à moi même : L'audio mixer est désactivé pour l'instant
-        player = GameObject.Find("Player");
-      /*  audioMixer.GetFloat("Music", out float musicValueForSlider);
-        musicSlider.value = musicValueForSlider;
-
-        audioMixer.GetFloat("Sound", out float soundValueForSlider);
-        soundSlider.value = soundValueForSlider; */
+        if (!isMainMenu)
+        {
+            player = GameObject.Find("Player");
+            health = player.GetComponent<HealthComponent>();
+        }
 
         resolutions = Screen.resolutions.Select(resolution => new Resolution { width = resolution.width, height = resolution.height }).Distinct().ToArray();
         resolutionDropdown.ClearOptions();
@@ -67,14 +68,19 @@ public class SettingsMenu : MonoBehaviour
 
     }
 
-    public void SetVolume(float volume)
+    public void SetMasterVolume()
     {
-        audioMixer.SetFloat("Music", volume);
+        audioMixer.SetFloat("Master", (Mathf.Log10(masterSlider.value)*20));
+    }
+    
+    public void SetMusicVolume()
+    {
+        audioMixer.SetFloat("Music", (Mathf.Log10(musicSlider.value)*20));
     }
 
-    public void SetSoundVolume(float volume)
+    public void SetSoundVolume()
     {
-        audioMixer.SetFloat("Sound", volume);
+        audioMixer.SetFloat("Effects", (Mathf.Log10(soundSlider.value)*20));
     }
 
     public void SetFullScreen(bool isFullScreen)
@@ -107,6 +113,11 @@ public class SettingsMenu : MonoBehaviour
     public void PlayUISound()
     {
         AudioManager.Instance.PlaySoundOneShot(1, 16, 0);
+    }
+
+    public void TpToCheckpoint()
+    {
+        health.transform.position = health.lastCheckPoint;
     }
 
 }

@@ -8,10 +8,15 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 {
     [Header("Parameters")] 
     [SerializeField] private float recoveryTime;
-    [SerializeField] private float cameraShakeIntensity;
-    [SerializeField] private float cameraShakeDuration;
     [SerializeField] private float fallMaxHeight;
     [SerializeField] private float fallRecovery;
+    [SerializeField] private float knockbackStrength;
+    [SerializeField] private float knockbackDuration;
+
+    [Header("Shake Parameters")]
+    [SerializeField] private float cameraShakeIntensity;
+    [SerializeField] private float cameraShakeDuration;
+    [SerializeField] private int cameraShakeChangePosFrames;      // Number of frames between every change of pos of the shake
 
     [Header("Public Infos")] 
     [HideInInspector] public Action DieAction;
@@ -19,11 +24,11 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     public TriggerPoursuiteFinale currentTriggerPoursuiteF;
 
     [Header("Private Infos")] 
-    private bool isDying;
+    public bool isDying;
     private bool isInvincible;
     private float hurtTimer;
     private Animation anim;
-    private Vector3 lastCheckPoint;
+    public Vector3 lastCheckPoint;
     public CameraComponent cam;
     public MoveComponent move;
 
@@ -63,7 +68,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         {
             StartCoroutine(SlowCharacter(fallRecovery, 0.1f));
             StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
-            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity);
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity, cameraShakeChangePosFrames);
         }
     }
 
@@ -74,14 +79,22 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     }
 
 
-    public void TakeDamage()
+    public void TakeDamage(Vector3 attackDir)
     {
         if (isInvincible) return;
 
         if(isHurted && !isDying)
             StartCoroutine(Die());
+        else 
+        {
+            StartCoroutine(move.AddKnockback(attackDir, knockbackStrength, knockbackDuration));
+            //anim.clip = anim["TakeDamage"].clip;
+            //anim.Play();
+        }
 
-        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity);
+        isInvincible = true;
+
+        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity, cameraShakeChangePosFrames);
 
         GetComponent<StaminaComponent>().RegainStamina();
 
@@ -89,8 +102,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         hurtTimer = recoveryTime;
 
         StartCoroutine(InvincibleTime());
-        StartCoroutine(SlowCharacter(2, 0.5f));
-        StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
+        StartCoroutine(SlowCharacter(1, 0.5f));
+        StartCoroutine(CameraEffects.Instance.TakeDamage(1.2f));
         StartCoroutine(CameraEffects.Instance.HurtEffect(recoveryTime));
     }
 

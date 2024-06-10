@@ -47,9 +47,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraComponent: {fileID: 0}
+  moveComponent: {fileID: 0}
   uiManager: {fileID: 0}
   boardMenu: {fileID: 7756654501049681333}
   cameraTestEthan: {fileID: 0}
+  logsMenu: {fileID: 0}
+  photoGC: {fileID: 0}
+  mainCam: {fileID: 0}
+  SteleChargeImage: {fileID: 0}
+  ChargeLogsSpeed: 0
+  photoFadeOutDuration: 0
   photoDisplayArea: {fileID: 0}
   photoFrame: {fileID: 0}
   cameraUI: {fileID: 0}
@@ -77,8 +84,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ef50f575a4e8d429b2988155a5ae70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraComponent: {fileID: 0}
+  uIManager: {fileID: 0}
+  sCR_UiDrag: {fileID: 0}
   listBoardElement: []
   MyBoard: {fileID: 0}
+  BoardPanel: {fileID: 0}
   currentSelect: {fileID: 0}
   isRotating: 0
   mousePos: {x: 0, y: 0, z: 0}
@@ -86,6 +97,11 @@ MonoBehaviour:
   OffsetX: 0
   OffsetY: 0
   isCreateArrow: 0
+  favCanBeOpen: 0
+  animator: {fileID: 0}
+  isOpen: 0
+  theFavImageSelected: {fileID: 0}
+  contentFavoritePhoto: {fileID: 0}
 --- !u!114 &7762516462128654230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,3 +117,12 @@ MonoBehaviour:
   ContentLog: {fileID: 0}
   LogPrefab: {fileID: 3425198217964587000, guid: 66ece5496e7988b47b5bc1c5535fba4d,
     type: 3}
+  currentLog: {fileID: 0}
+  TraductionButton: {fileID: 0}
+  logPopUpAnim: {fileID: 0}
+  logsList: []
+  logIconUI: []
+  characters: abcdefghijklmnopqrstuvwyz0123456789
+  loremIpsumLenghtValue: 100
+  myRandomString: 
+  unreadLogs: 0

@@ -231,7 +231,9 @@ namespace Creature
             
             Vector3 currentDir = - headIK.headJointTr.right;
             bool isInPeripheral = false;
-            headIK.StopFollowChara();
+
+            if(currentState != CreatureState.aggressive)
+                headIK.StopFollowChara();
             
             for (int x = 0; x < visionRadiusX; x+= raycastDensity)
             {
@@ -269,7 +271,7 @@ namespace Creature
                 }
                 
                 headIK.headJointTr.rotation = Quaternion.Euler(headIK.headJointTr.rotation.eulerAngles.x,
-                    headIK.headJointTr.rotation.eulerAngles.y - visionRadiusY - peripheralVisionRadius - raycastDensity * 0.5f, 
+                    headIK.headJointTr.rotation.eulerAngles.y - visionRadiusY - peripheralVisionRadius, 
                     headIK.headJointTr.rotation.eulerAngles.z + raycastDensity);
 
                 currentDir = -headIK.headJointTr.right;
@@ -323,6 +325,7 @@ namespace Creature
                 {
                     creatureRefScript.coleretteAnimator.SetBool("IsOpen", true);
                     StartCoroutine(moveScript.StartAggressiveBehavior(detectedWaitDuration));
+                    headIK.FollowChara();
                 }
 
                 currentState = CreatureState.aggressive;
@@ -330,7 +333,6 @@ namespace Creature
 
                 if (currentSuspicion <= 0)
                 {
-                    creatureRefScript.coleretteAnimator.SetBool("IsOpen", false);
                     StartCoroutine(QuitAggressiveBehavior());
                 }
             }
@@ -352,7 +354,10 @@ namespace Creature
 
             moveScript.StartWalkSpeed();
 
+            headIK.StopFollowChara();
+
             specialMovesScript.LookLeftRight(2.5f);
+            creatureRefScript.coleretteAnimator.SetBool("IsOpen", false);
 
             yield return new WaitForSeconds(2.5f);
 

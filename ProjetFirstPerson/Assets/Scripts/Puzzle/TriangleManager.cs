@@ -45,15 +45,6 @@ namespace Puzzle
             }
         }
 
-
-
-        private void Update()
-        {
-            if(!won) VerifyWin();
-            
-        }
-
-
         public void SelectDalle(DalleTriangle selectedDalle)
         {
             if (isMovingDalles) return;
@@ -81,6 +72,7 @@ namespace Puzzle
         {
             if (isMovingDalles) yield break;
             isMovingDalles = true;
+            AudioManager.Instance.PlaySoundOneShot(2,7,0);
 
             float timer = 0;
             (dalle1.currentIndex, dalle2.currentIndex) = (dalle2.currentIndex, dalle1.currentIndex);
@@ -107,6 +99,7 @@ namespace Puzzle
             selectedDalle2 = null;
 
             isMovingDalles = false;
+            VerifyWin();
         }
 
 
@@ -136,6 +129,7 @@ namespace Puzzle
 
         private IEnumerator Win()
         {
+            AudioManager.Instance.PlaySoundOneShot(3,4,0);
             for (int i = 0; i < dalles.Length; i++)
             {
                 dalles[i].canMove = false;
