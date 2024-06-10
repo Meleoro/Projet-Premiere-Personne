@@ -150,14 +150,14 @@ namespace Creature
 
         private void AdaptSpeedAccordingToLegs()
         {
-            if (legsScript.currentWantToMoveLegsCounter >= 1)
+            /*if (legsScript.currentWantToMoveLegsCounter >= 1)
             {
                 navMeshAgent.speed = saveSpeed * data.legCantMoveSpeedMultiplier;
             }
             else
             {
                 navMeshAgent.speed = saveSpeed;
-            }
+            }*/
         }
 
         #endregion
