@@ -81,7 +81,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
     public void TakeDamage(Vector3 attackDir)
     {
-        if (isInvincible) return;
+        if (isInvincible || isDying) return;
 
         if(isHurted && !isDying)
             StartCoroutine(Die());
@@ -104,7 +104,9 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         StartCoroutine(InvincibleTime());
         StartCoroutine(SlowCharacter(1, 0.5f));
         StartCoroutine(CameraEffects.Instance.TakeDamage(1.2f));
-        StartCoroutine(CameraEffects.Instance.HurtEffect(recoveryTime));
+        
+        if(!isDying)
+            StartCoroutine(CameraEffects.Instance.HurtEffect(recoveryTime));
     }
 
     private IEnumerator SlowCharacter(float duration, float slowRatio)
@@ -134,6 +136,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         anim.Play();
         cam.canRotate = false;
         move.canMove = false;
+        move.rb.isKinematic = true;
         yield return new WaitForSeconds(3);
         StartCoroutine(CameraEffects.Instance.FadeScreen(2f, 1));
 
@@ -146,14 +149,17 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         
         if(currentTriggerPoursuiteF != null)
             currentTriggerPoursuiteF.ActivateTrigger();
+        
+        DieAction.Invoke();
 
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.75f, 0));
         yield return new WaitForSeconds(0.5f);
         cam.canMove = true;
         cam.canRotate = true;
+        move.rb.isKinematic = false;
         move.canMove = true;
         isDying = false;
-
+        
         DieAction.Invoke();
     }
 }
