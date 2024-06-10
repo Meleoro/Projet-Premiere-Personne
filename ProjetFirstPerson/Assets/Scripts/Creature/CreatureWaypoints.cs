@@ -349,6 +349,12 @@ namespace Creature
         {
             Vector3 wantedPos = creaturePos + (characterPos - creaturePos).normalized * 5f;
 
+            if (Physics.Raycast(creaturePos, (characterPos - creaturePos).normalized, out RaycastHit hit, 5f,
+                    LayerManager.Instance.defaultLayer))
+            {
+                wantedPos = hit.point - (characterPos - creaturePos).normalized * Mathf.Clamp(hit.distance, 1f, 1.5f);
+            }
+
             creatureMoverScript.forcedRot = Vector3.zero;
             creatureMoverScript.wantedPos = wantedPos;
 
