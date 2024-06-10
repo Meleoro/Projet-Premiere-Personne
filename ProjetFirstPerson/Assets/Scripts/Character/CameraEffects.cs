@@ -78,6 +78,7 @@ public class CameraEffects : GenericSingletonClass<CameraEffects>
 
             yield return null;
         }
+        healthVolume.weight = 0;
     }
 
 
