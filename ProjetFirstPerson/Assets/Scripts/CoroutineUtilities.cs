@@ -9,24 +9,23 @@ namespace ArthurUtilities
     {
 
         private Dictionary<Transform, Coroutine> currentShakePositions = new();
-        public void ShakePosition(Transform tr, float duration, float intensity, int changePosFrames = 1)
+        public void ShakePosition(Transform tr, float duration, float intensity, float changePosDuration)
         {
             if (currentShakePositions.Keys.Contains(tr))
             {
                 StopCoroutine(currentShakePositions[tr]);
-                currentShakePositions[tr] = StartCoroutine(ShakePositionCoroutine(tr, duration, intensity, changePosFrames));
+                currentShakePositions[tr] = StartCoroutine(ShakePositionCoroutine(tr, duration, intensity, changePosDuration));
             }
             else
             {
-                currentShakePositions.Add(tr, StartCoroutine(ShakePositionCoroutine(tr, duration, intensity, changePosFrames)));
+                currentShakePositions.Add(tr, StartCoroutine(ShakePositionCoroutine(tr, duration, intensity, changePosDuration)));
             }
         }
 
-        private IEnumerator ShakePositionCoroutine(Transform tr, float duration, float intensity, int changePosFrames = 1)
+        private IEnumerator ShakePositionCoroutine(Transform tr, float duration, float intensity, float changePosDuration)
         {
-
-            int currentFrameCounter = 0;
             float timer = 0;
+            float changePosTimer = 0;
             float startIntensity = intensity;
             Vector3 originalPos = tr.position;
             Vector3 currentPos = new Vector3(Random.Range(-intensity, intensity), Random.Range(-intensity, intensity), Random.Range(-intensity, intensity));
@@ -34,16 +33,18 @@ namespace ArthurUtilities
             while (timer < duration)
             {
                 timer += Time.deltaTime;
-                currentFrameCounter--;
+                changePosTimer += Time.deltaTime;
+                
+                intensity = Mathf.Lerp(startIntensity, 0, timer / duration);
 
-                if (currentFrameCounter <= 0)
+                if (changePosTimer >= changePosDuration)
                 {
-                    currentFrameCounter = changePosFrames;
+                    changePosTimer = 0;
                     currentPos = new Vector3(Random.Range(-intensity, intensity), Random.Range(-intensity, intensity), Random.Range(-intensity, intensity));
                 }
-
-                intensity = Mathf.Lerp(startIntensity, 0, timer / duration);
-                tr.position = Vector3.Lerp(tr.position, originalPos + new Vector3(Random.Range(-intensity, intensity), Random.Range(-intensity, intensity), Random.Range(-intensity, intensity)), Time.deltaTime * 5);
+                
+                tr.position = Vector3.Lerp(tr.position, 
+                    originalPos + currentPos, changePosTimer / changePosDuration);
 
                 yield return null;
             }
