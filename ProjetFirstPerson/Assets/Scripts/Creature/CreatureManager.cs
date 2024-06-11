@@ -243,7 +243,7 @@ namespace Creature
                     if (y < peripheralVisionRadius * 0.5f || y > visionRadiusY + peripheralVisionRadius * 0.5f)
                         isInPeripheral = true;
                     
-                    Debug.DrawLine( headIK.headJointTr.position,  headIK.headJointTr.position + currentDir * visionRange, isInPeripheral ? Color.yellow : Color.cyan, 0.1f);
+                    //Debug.DrawLine( headIK.headJointTr.position,  headIK.headJointTr.position + currentDir * visionRange, isInPeripheral ? Color.yellow : Color.cyan, 0.1f);
 
                     if (Physics.Raycast( headIK.headJointTr.position, currentDir, out RaycastHit hit, visionRange,
                             LayerManager.Instance.playerGroundLayer))
