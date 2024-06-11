@@ -14459,7 +14459,6 @@ GameObject:
   - component: {fileID: 5228780265070465627}
   - component: {fileID: 119616973811728826}
   - component: {fileID: 5413966286281837906}
-  - component: {fileID: 6382344223560835396}
   m_Layer: 5
   m_Name: BoardMenu
   m_TagString: Untagged
@@ -14528,19 +14527,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6382344223560835396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5565610470570066231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c28e09e80032631419f52b72954f324b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 100
 --- !u!1 &5588168958770545147
 GameObject:
   m_ObjectHideFlags: 0
@@ -16184,6 +16170,10 @@ MonoBehaviour:
   typingSpeed: 0.02
   isWriting: 0
   isActive: 0
+  normalPolice: {fileID: 0}
+  codedPolice: {fileID: 0}
+  colorWorld: []
+  colorInt: 
 --- !u!1 &6239575610123290988
 GameObject:
   m_ObjectHideFlags: 0
@@ -23754,6 +23744,7 @@ MonoBehaviour:
   masterSlider: {fileID: 7619706637789925899}
   musicSlider: {fileID: 2224333252656174267}
   soundSlider: {fileID: 3318846661125052846}
+  isMainMenu: 0
   FullScreenToggle: {fileID: 5626045696985587869}
 --- !u!114 &4957443079005591444 stripped
 MonoBehaviour:
