@@ -319,8 +319,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.29112032, y: 0.57415926, z: 1.0399262}
-  m_Center: {x: 0.018276313, y: -0.21292095, z: 0.35760075}
+  m_Size: {x: 0.29112032, y: 0.7918679, z: 1.0399262}
+  m_Center: {x: 0.018276313, y: -0.104066774, z: 0.35760075}
 --- !u!1 &4371542583716786461
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,6 +861,7 @@ MonoBehaviour:
   attackSpeed: 10
   attackDuration: 1.3
   attackCooldown: 3.5
+  attackMaxDistanceWall: 1.2
   attacked: 0
   attackCollider: {fileID: 6979097725273048898}
 --- !u!195 &165752235812173066
@@ -1131,7 +1132,7 @@ GameObject:
   - component: {fileID: 872285433498719275}
   - component: {fileID: 6979097725273048898}
   - component: {fileID: 2645283580871714519}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ColliderAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1147,7 +1148,7 @@ Transform:
   m_GameObject: {fileID: 8966184530350811631}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.071, y: -0.275, z: 0.513}
+  m_LocalPosition: {x: -0.071, y: -0.275, z: 0.852}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1355,6 +1356,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: P_CreatureFinale
+      objectReference: {fileID: 0}
+    - target: {fileID: 2928816303468274605, guid: 53e921929bb5e9a47b4bf1a948d2658d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3201656917763751395, guid: 53e921929bb5e9a47b4bf1a948d2658d,
         type: 3}
