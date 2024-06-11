@@ -37,10 +37,18 @@ public class SteleScript : MonoBehaviour
         {
             logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["NewLogAnim"].clip;
             logsMenu.logPopUpAnim.Play();
+            StartCoroutine(WaitAndLoopPopUp());
             AudioManager.Instance.PlaySoundOneShot(1, 17, 0);
             isAlreadyInLogs = true;
             logsMenu.AddLogsToContent(myInfo,titleLogs,true);
         }
+    }
+
+    IEnumerator WaitAndLoopPopUp()
+    {
+        yield return new WaitForSeconds(logsMenu.logPopUpAnim.clip.length);
+        logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["PopUpLogIdle"].clip;
+        logsMenu.logPopUpAnim.Play();
     }
     
     private void OnDrawGizmos()
@@ -67,17 +75,17 @@ public class SteleScript : MonoBehaviour
 
     public IEnumerator ChangeShader()
     {
-        float value = 1;
+        float value = 0;
         float time = 0;
         while (time < fadeDuration)
         {
             time += Time.deltaTime;
-            value = Mathf.Lerp(value, 0, time / fadeDuration);
+            value = Mathf.Lerp(value, 1, time / fadeDuration);
             material.SetFloat("_ActivationTransition",value);
             yield return null;
         }
 
-        value = 0;
+        value = 1;
         material.SetFloat("_ActivationTransition",value);
     }
 }
