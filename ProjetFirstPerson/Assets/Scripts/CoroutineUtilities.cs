@@ -27,7 +27,7 @@ namespace ArthurUtilities
             float timer = 0;
             float changePosTimer = 0;
             float startIntensity = intensity;
-            Vector3 originalPos = tr.position;
+            Vector3 originalPos = tr.localPosition;
             Vector3 currentPos = new Vector3(Random.Range(-intensity, intensity), Random.Range(-intensity, intensity), Random.Range(-intensity, intensity));
 
             while (timer < duration)
@@ -43,11 +43,13 @@ namespace ArthurUtilities
                     currentPos = new Vector3(Random.Range(-intensity, intensity), Random.Range(-intensity, intensity), Random.Range(-intensity, intensity));
                 }
                 
-                tr.position = Vector3.Lerp(tr.position, 
+                tr.localPosition = Vector3.Lerp(tr.localPosition, 
                     originalPos + currentPos, changePosTimer / changePosDuration);
 
                 yield return null;
             }
+
+            tr.localPosition = originalPos;
         }
     }
 }
