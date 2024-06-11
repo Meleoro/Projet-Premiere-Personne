@@ -37,6 +37,8 @@ public class PorteCylindre : MonoBehaviour
         interactScript.GetOutInteraction();
         //anim.clip = anim["OpenCylindresIntro"].clip;
         anim.Play();
+        yield return new WaitForSeconds(0.2f);
+        AudioManager.Instance.PlaySoundOneShot(2,10,0);
     }
     
     public enum CylindreSymbols

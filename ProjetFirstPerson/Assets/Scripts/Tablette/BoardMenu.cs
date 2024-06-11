@@ -71,12 +71,20 @@ public class BoardMenu : MonoBehaviour
                 {
                     currentSelect.GetComponentInChildren<ElementsOfBoard>().isSelectedOneTime = true;
                 }
+                if(currentSelect.transform.parent.parent.name == "TextSpace(Clone)")
+                {
+                    currentSelect.GetComponentInChildren<ElementsOfBoard>().OptionPanel.SetActive(false);
+                }
             }
 
             
         }
         if(Input.GetKeyUp(KeyCode.Mouse0) && currentSelect != null)
         {
+            if(currentSelect.transform.parent.parent.name == "TextSpace(Clone)")
+                {
+                    currentSelect.GetComponentInChildren<ElementsOfBoard>().OptionPanel.SetActive(true);
+                }
             currentSelect = null;
             EventSystem.current.SetSelectedGameObject(null);
         }
