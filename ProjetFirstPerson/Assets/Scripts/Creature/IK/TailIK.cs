@@ -83,19 +83,19 @@ namespace IK
                 {
                     tailHeightsSave[i] = Vector3.Distance(tailJoints[i].position, hit.point);
 
-                    tailHeightRatioSave[i] = tailHeightsSave[i] / saveOriginalHeight;
+                    tailHeightRatioSave[i] = Mathf.Clamp(tailHeightsSave[i] / saveOriginalHeight, 0, 1);
                 }
             }
             
             tailTargets[tailTargets.Length - 1] =
-                tailJoints[tailJoints.Length - 1].position - tailJoints[tailJoints.Length - 1].right * 0.25f;
+                tailJoints[tailJoints.Length - 1].position - tailJoints[tailJoints.Length - 1].right * 0.5f;
             
             tailPositionsSave[tailTargets.Length - 1] =
                 tailStart.InverseTransformPoint(tailTargets[tailTargets.Length - 1]);
             
             tailHeightsSave[tailTargets.Length - 1] = tailHeightsSave[tailTargets.Length - 2];
 
-            tailHeightRatioSave[tailJoints.Length - 1] = 0;
+            tailHeightRatioSave[tailTargets.Length - 1] = tailHeightRatioSave[tailTargets.Length - 2];
         }
 
 
@@ -121,7 +121,9 @@ namespace IK
 
             for (int i = 0; i < tailTargets.Length; i++)
             {
-                Vector3 wantedGlobalPos = Vector3.Lerp(tailTargets[i], tailStart.TransformPoint(tailPositionsSave[i] + new Vector3(0, 0, 1f * (saveOriginalHeight - maxHeight))), Time.deltaTime * (5 - (i / ((float)tailTargets.Length) * 2f)));
+                Vector3 wantedGlobalPos = Vector3.Lerp(tailTargets[i], 
+                    tailStart.TransformPoint(tailPositionsSave[i] + new Vector3(0, 0, 1f * (saveOriginalHeight - maxHeight))), 
+                    Time.deltaTime * (5 - (i / (float)tailTargets.Length) * 4f));
 
                 tailTargets[i] = new Vector3(wantedGlobalPos.x, tailTargets[i].y, wantedGlobalPos.z);
 
@@ -198,7 +200,7 @@ namespace IK
 
         private void ApplyHeightIK()
         {
-            for (int i = 1; i < tailJoints.Length; i++)
+            for (int i = 0; i < tailJoints.Length; i++)
             {
                 ApplyIKOnOneJoint(tailJoints[i], tailTargets[i + 1]);
                 Debug.DrawLine(tailJoints[i].position, tailTargets[i + 1]);
@@ -218,7 +220,7 @@ namespace IK
             // We apply the angles to the joints
             Vector3 eulerJoint1 = jointA.eulerAngles;
             eulerJoint1.z = angleJointA;
-            jointA.eulerAngles = eulerJoint1;
+            jointA.rotation = Quaternion.Euler(eulerJoint1);
         }
 
         #endregion
