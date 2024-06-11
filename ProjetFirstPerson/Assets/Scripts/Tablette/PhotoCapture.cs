@@ -106,6 +106,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                     if (SteleChargeImage.fillAmount >= 1)
                     {
                         //hitScript.isAlreadyInLogs = true;
+                        StartCoroutine(WaitAndLoopPopUp());
                         StartCoroutine(hitScript.ChangeShader());
                         hitScript.activationVFX.Play();
                         hitScript.fumeVFX.SetActive(false);
@@ -140,6 +141,13 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         }
     }
 
+    IEnumerator WaitAndLoopPopUp()
+    {
+        yield return new WaitForSeconds(logsMenu.logPopUpAnim.clip.length);
+        logsMenu.logPopUpAnim.clip = logsMenu.logPopUpAnim["PopUpLogIdle"].clip;
+        logsMenu.logPopUpAnim.Play();
+    }
+    
     IEnumerator AutoGoToLog()
     {
         cameraComponent.canRotate = false;
