@@ -33,11 +33,11 @@ namespace IK
         private void Awake()
         {
             tailStart = referencesScript.tailBones[0];
-            tailJoints = new Transform[referencesScript.tailBones.Count - 1];
+            tailJoints = new Transform[referencesScript.tailBones.Count];
 
-            for (int i = 1; i < referencesScript.tailBones.Count; i++)
+            for (int i = 0; i < referencesScript.tailBones.Count; i++)
             {
-                tailJoints[i - 1] = referencesScript.tailBones[i];
+                tailJoints[i] = referencesScript.tailBones[i];
             }
         }
 
@@ -121,7 +121,7 @@ namespace IK
 
             for (int i = 0; i < tailTargets.Length; i++)
             {
-                Vector3 wantedGlobalPos = Vector3.Lerp(tailTargets[i], 
+                Vector3 wantedGlobalPos = Vector3.Slerp(tailTargets[i], 
                     tailStart.TransformPoint(tailPositionsSave[i] + new Vector3(0, 0, 1f * (saveOriginalHeight - maxHeight))), 
                     Time.deltaTime * (5 - (i / (float)tailTargets.Length) * 4f));
 
@@ -134,7 +134,7 @@ namespace IK
                 }
                 else
                 {
-                    tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, tailStart.TransformPoint(tailPositionsSave[i]).y, Time.deltaTime * 5);
+                    tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, tailStart.TransformPoint(tailPositionsSave[i]).y, Time.deltaTime * 10);
                 }
 
                 if (i != 0)
