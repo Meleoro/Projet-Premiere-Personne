@@ -9,6 +9,7 @@ public class SteleScript : MonoBehaviour
     public bool isAlreadyInLogs;
     [SerializeField]  public string titleLogs;
     [SerializeField] [TextArea(5,10)] public string myInfo;
+    [SerializeField]  public List<string> ColorWordList;
     public bool isFinalStele;
     public float fadeDuration;
     public MeshRenderer mesh;
@@ -40,7 +41,7 @@ public class SteleScript : MonoBehaviour
             StartCoroutine(WaitAndLoopPopUp());
             AudioManager.Instance.PlaySoundOneShot(1, 17, 0);
             isAlreadyInLogs = true;
-            logsMenu.AddLogsToContent(myInfo,titleLogs,true);
+            logsMenu.AddLogsToContent(myInfo,titleLogs,true,ColorWordList);
         }
     }
 
