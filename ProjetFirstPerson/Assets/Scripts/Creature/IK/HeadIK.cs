@@ -118,14 +118,22 @@ namespace IK
 
             Vector3 dir2 = legsScript.mainTrRotRefFront.forward;
             float angle2 = Mathf.Atan2(dir2.x, dir2.z) * Mathf.Rad2Deg;
-
-            /*if (angle1 < 0)
-                angle1 += 360;
-
-            if (angle2 < 0)
-                angle2 += 360;*/
+            
+            if (angle1 < -80f && angle2 > 80f)
+                angle2 -= 360f;
+            else if (angle2 < -80f && angle1 > 80f)
+                angle2 += 360f;
+            
+            if (angle1 < -80f && angle2 > 80f)
+                angle1 -= 360f;
+            else if (angle2 < -80f && angle1 > 80f)
+                angle1 += 360f;
+            
+            Debug.Log(angle1);
+            Debug.Log(angle2);
 
             float finalAngle = angle1 - angle2;
+                
             
             ModifyRotationHead(Mathf.Clamp(0.5f + (finalAngle / 90), 0, 1));
         }
