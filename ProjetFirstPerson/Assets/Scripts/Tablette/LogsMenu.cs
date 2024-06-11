@@ -25,7 +25,7 @@ public class LogsMenu : MonoBehaviour
     
     public int unreadLogs;
 
-    public void AddLogsToContent(string info, string title, bool isTriggered)
+    public void AddLogsToContent(string info, string title, bool isTriggered, List<string> wordList)
     {
         TraductionButton.gameObject.SetActive(true);
         GameObject NewLog = Instantiate(LogPrefab,Vector3.zero,Quaternion.Euler(0,0,0),ContentLog.transform);
@@ -46,12 +46,15 @@ public class LogsMenu : MonoBehaviour
             NewLog.GetComponent<LogsScripts>().codedInfo = info;
             NewLog.GetComponent<LogsScripts>().MyInformation = info;
             NewLog.GetComponent<LogsScripts>().isTraducted = true;
+
+            NewLog.GetComponent<LogsScripts>().colorWorld = wordList;
         }
         else
         {
             NewLog.GetComponent<LogsScripts>().codedInfo = myRandomString;
             myRandomString = null;
             NewLog.GetComponent<LogsScripts>().MyInformation = info;
+            NewLog.GetComponent<LogsScripts>().colorWorld = wordList;
         }
         logsList.Add(NewLog);
     }

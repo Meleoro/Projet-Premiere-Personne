@@ -123,7 +123,7 @@ namespace IK
             {
                 Vector3 wantedGlobalPos = Vector3.Slerp(tailTargets[i], 
                     tailStart.TransformPoint(tailPositionsSave[i] + new Vector3(0, 0, 1f * (saveOriginalHeight - maxHeight))), 
-                    Time.deltaTime * (5 - (i / (float)tailTargets.Length) * 4f));
+                    Time.deltaTime * (10 - (i / (float)tailTargets.Length) * 8f));
 
                 tailTargets[i] = new Vector3(wantedGlobalPos.x, tailTargets[i].y, wantedGlobalPos.z);
 
