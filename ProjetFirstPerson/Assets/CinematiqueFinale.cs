@@ -26,7 +26,7 @@ public class CinematiqueFinale : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            AudioManager.Instance.PlaySoundOneShot(2,2,0);
+            AudioManager.Instance.PlaySoundOneShot(2,10,0);
             doorAnim.clip = doorAnim["FermeturePorte"].clip;
             doorAnim.Play();
             collider.enabled = false;
@@ -40,7 +40,7 @@ public class CinematiqueFinale : MonoBehaviour
         camera.cinematicLookSpeed = 0;
         camera.isInCinematic = true;
         yield return new WaitForSeconds(0.4f);
-        AudioManager.Instance.PlaySoundOneShot(2,2,0);
+        AudioManager.Instance.PlaySoundOneShot(2,10,0);
         lightEtape2.SetActive(true);
         doorAnim.clip = doorAnim["OuverturePorteFinale"].clip;
         doorAnim.Play();

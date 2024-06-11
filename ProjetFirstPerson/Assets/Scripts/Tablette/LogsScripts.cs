@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 
 public class LogsScripts : MonoBehaviour
@@ -22,6 +23,14 @@ public class LogsScripts : MonoBehaviour
     [SerializeField] private float typingSpeed = 0.05f;
     [HideInInspector] public bool isWriting;
     public bool isActive;
+
+    [Header("Police")]
+    [SerializeField] private TMP_FontAsset normalPolice;
+    [SerializeField] private TMP_FontAsset codedPolice;
+
+   // public string myWord;
+    public List<string> colorWorld;
+    public List<int> colorInt;
     
     void Start()
     {
@@ -88,17 +97,49 @@ public class LogsScripts : MonoBehaviour
             InformationArea.text = codedInfo;
             TraductionButton.gameObject.SetActive(true);
             TraductionButton.interactable = true;
+            InformationArea.font = codedPolice;
         }
         else
         {
-            InformationArea.text = MyInformation;
+            InformationArea.font = normalPolice;
             TraductionButton.gameObject.SetActive(false);
+
+            InformationArea.text = "";
+            int currentValue = 0;
+
+        for(int i = 0; i < MyInformation.Length ; i++)
+        {
+            if(currentValue < colorInt.Count)
+            {
+                if(i >= colorInt[currentValue] && i < colorInt[currentValue + 1])
+            {
+                string newLetter = MyInformation[i].ToString();
+                InformationArea.text += "<color=orange>" + newLetter + "</color>";
+                if(i == colorInt[currentValue + 1] - 1)
+                {
+                    currentValue += 2;
+                }
+            }
+            else
+            {
+                InformationArea.text += MyInformation[i];
+            }
+            }
+            else
+            {
+                InformationArea.text += MyInformation[i];
+            }
+        }
         }
         TraductionButton.GetComponent<LogsScripts>().MyInformation = MyInformation;
+
+        TraductionButton.GetComponent<LogsScripts>().colorInt = colorInt;
+        TraductionButton.GetComponent<LogsScripts>().colorWorld = colorWorld;
     }
     public void Traduction()
     {
       //  InformationArea.text = MyInformation;
+        InformationArea.font = normalPolice;
         traduction = StartCoroutine(TypeText(MyInformation));
         TraductionButton.interactable = false;
     }
@@ -107,7 +148,6 @@ public class LogsScripts : MonoBehaviour
     {
         if (logsMenu.currentLog != null)
         {
-            //    logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
                 isWriting = false;
                 TraductionButton.gameObject.SetActive(false);  
         }
@@ -123,14 +163,40 @@ public class LogsScripts : MonoBehaviour
         logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
         isWriting = true;
         InformationArea.text = "";
-          foreach(char letter in text.ToCharArray())
+        int currentValue = 0;
+
+        for(int i = 0; i < colorWorld.Count ; i++)
+        {
+            int newIndex = text.IndexOf(colorWorld[i]);
+            int largeNewIndex = newIndex + colorWorld[i].Length;
+            colorInt.Add(newIndex);
+            colorInt.Add(largeNewIndex);
+        }
+
+        for(int i = 0; i < text.Length ; i++)
+        {
+            if(currentValue < colorInt.Count)
             {
-                if(isWriting)
+                if(i >= colorInt[currentValue] && i < colorInt[currentValue + 1])
+            {
+                string newLetter = text[i].ToString();
+                InformationArea.text += "<color=orange>" + newLetter + "</color>";
+                if(i == colorInt[currentValue + 1] - 1)
                 {
-                    InformationArea.text += letter;
-                    yield return new WaitForSeconds(typingSpeed);
+                    currentValue += 2;
                 }
-            }  
+            }
+            else
+            {
+                InformationArea.text += text[i];
+            }
+            }
+            else
+            {
+                InformationArea.text += text[i];
+            }
+            yield return new WaitForSeconds(typingSpeed);
+        }
             TraductionButton.gameObject.SetActive(false);
     }
 }

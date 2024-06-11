@@ -11,6 +11,7 @@ namespace Creature
         [SerializeField] private float attackSpeed;
         [SerializeField] private float attackDuration;
         [SerializeField] private float attackCooldown;
+        [SerializeField] private float attackMaxDistanceWall;
         
         [Header("Public Infos")] 
         [HideInInspector] public bool attacked;
@@ -61,7 +62,7 @@ namespace Creature
             attackCollider.enabled = true;
 
             moveScript.RestartMoving();
-            waypointsScript.DoAttack(saveTr, charSaveTr);
+            waypointsScript.DoAttack(saveTr, charSaveTr, attackMaxDistanceWall);
             moveScript.StartAttackSpeed(attackSpeed);
             
             yield return new WaitForSeconds(attackDuration);
