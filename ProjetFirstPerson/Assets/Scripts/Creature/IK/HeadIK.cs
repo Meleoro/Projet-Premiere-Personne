@@ -129,9 +129,6 @@ namespace IK
             else if (angle2 < -80f && angle1 > 80f)
                 angle1 += 360f;
             
-            Debug.Log(angle1);
-            Debug.Log(angle2);
-
             float finalAngle = angle1 - angle2;
                 
             
