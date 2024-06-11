@@ -21,6 +21,7 @@ namespace IK
         private Vector3 backLocalPosSave;
         private Vector3[] savesLocalEulers;
         private Quaternion saveRotThorax;
+        private float rotationSpeedModifier;
         
         [Header("References")]
         [SerializeReference] private CreatureReferences referencesScript;
@@ -82,6 +83,14 @@ namespace IK
             float currentSpeed1 = moveScript.isRunning ? data.aggressiveRotationSpeed : data.rotationSpeed;
             float currentSpeed2 = moveScript.isRunning ? data.aggressiveRotationSpeedFrontJoints : data.rotationSpeedFrontJoints;
 
+            if (Mathf.Abs(currentRotationDif) < 0.01f)
+                rotationSpeedModifier -= Time.deltaTime;
+            
+            else
+                rotationSpeedModifier += Time.deltaTime;
+
+            rotationSpeedModifier = Mathf.Clamp(rotationSpeedModifier, 0.1f, 1f);
+
             Vector3 dif = backJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
 
@@ -97,14 +106,14 @@ namespace IK
                 currentAtan += 360f;
             
             // Back Part
-            currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * Mathf.Abs(currentSpeed1 / (atan - currentAtanBack)));
+            currentAtanBack = Mathf.Lerp(currentAtanBack, atan, Time.deltaTime * Mathf.Abs(currentSpeed1 / (atan - currentAtanBack)) * rotationSpeedModifier);
 
             Vector3 eulerBack = backJoint.localEulerAngles;
             eulerBack.y = saveOffset2.y + currentAtanBack;
             backJoint.localEulerAngles = eulerBack;
             
             // Spine Part
-            currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * Mathf.Abs(currentSpeed2 / (atan - currentAtanBack)));
+            currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * Mathf.Abs(currentSpeed2 / (atan - currentAtanBack)) * rotationSpeedModifier);
             currentAtan = Mathf.Clamp(currentAtan, -data.maxRotDifFrontBack, data.maxRotDifFrontBack);
             
             currentRotationDif = currentAtan /( data.maxRotDifFrontBack * 0.9f);
