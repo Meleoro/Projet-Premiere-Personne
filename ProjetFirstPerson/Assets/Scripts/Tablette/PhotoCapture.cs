@@ -114,8 +114,9 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                         AudioManager.Instance.PlaySoundOneShot(1, 17, 0);
                         string theInfo = hitScript.myInfo;
                         string theTitle = hitScript.titleLogs;
+                        List<string> wordList = hitScript.ColorWordList;
                         GetComponent<LogsMenu>().TraductionButton.gameObject.SetActive(true);
-                        GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle,false);
+                        GetComponent<LogsMenu>().AddLogsToContent(theInfo, theTitle,false,wordList);
                         hitScript.isAlreadyInLogs = true;
                         SteleChargeImage.fillAmount = 0;
 
