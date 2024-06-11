@@ -101,9 +101,8 @@ namespace IK
                 Vector3 dirToRotateTo = (moveScript.wantedPos - moveScript.transform.position).normalized * 10;
                 if (Vector3.Distance(moveScript.wantedPos, moveScript.transform.position) < 1f)
                     dirToRotateTo = (baseNeckTr.position - moveScript.transform.position).normalized * 10;
-
-                dirToRotateTo.y = 0;
-
+                
+            
                 Vector3 currentDir = target.position - moveScript.transform.position;
                 currentDir = currentDir.normalized * 10;
 
@@ -118,19 +117,14 @@ namespace IK
 
             Vector3 dir2 = legsScript.mainTrRotRefFront.forward;
             float angle2 = Mathf.Atan2(dir2.x, dir2.z) * Mathf.Rad2Deg;
-            
-            if (angle1 < -80f && angle2 > 80f)
-                angle2 -= 360f;
-            else if (angle2 < -80f && angle1 > 80f)
-                angle2 += 360f;
-            
-            if (angle1 < -80f && angle2 > 80f)
-                angle1 -= 360f;
-            else if (angle2 < -80f && angle1 > 80f)
-                angle1 += 360f;
-            
+
+            if (angle1 < 0)
+                angle1 += 360;
+
+            if (angle2 < 0)
+                angle2 += 360;
+
             float finalAngle = angle1 - angle2;
-                
             
             ModifyRotationHead(Mathf.Clamp(0.5f + (finalAngle / 90), 0, 1));
         }

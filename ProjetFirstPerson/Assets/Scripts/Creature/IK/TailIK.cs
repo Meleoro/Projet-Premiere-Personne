@@ -200,7 +200,7 @@ namespace IK
 
         private void ApplyHeightIK()
         {
-            for (int i = 1; i < tailJoints.Length; i++)
+            for (int i = 0; i < tailJoints.Length; i++)
             {
                 ApplyIKOnOneJoint(tailJoints[i], tailTargets[i + 1]);
                 Debug.DrawLine(tailJoints[i].position, tailTargets[i + 1]);

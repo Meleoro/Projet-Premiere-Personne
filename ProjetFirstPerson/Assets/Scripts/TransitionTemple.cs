@@ -21,22 +21,7 @@ public class TransitionTemple : MonoBehaviour
     [SerializeField][ColorUsage(true, true)]  private Color inAmbientGroundColor;
     [SerializeField] private Color inFogColor;
     [SerializeField] private Volume inVolume;
-
-
-    private void Start()
-    {
-        CharacterManager.Instance.GetComponent<HealthComponent>().DieAction += ResetVolume;
-    }
-
-    private void ResetVolume()
-    {
-        RenderSettings.ambientEquatorColor = Color.Lerp(outAmbientEquatorColor, inAmbientEquatorColor, 0);
-        RenderSettings.ambientGroundColor = Color.Lerp(outAmbientGroundColor, inAmbientGroundColor, 0);
-        RenderSettings.fogColor = Color.Lerp(outFogColor, inFogColor, 0);
-        
-        if (outVolume != null) outVolume.weight = Mathf.Clamp(1, 0 ,1);
-        if (inVolume != null) inVolume.weight = Mathf.Clamp(0, 0 ,1);
-    }
+    
 
 
     private void OnTriggerStay(Collider other)

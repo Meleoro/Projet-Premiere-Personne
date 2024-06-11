@@ -54,8 +54,6 @@ namespace Creature
         }
 
 
-        private float previousDist = 0;
-        private float blockedTimer = 0;
         public void ComponentUpdate()
         {
             float currentDist = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
@@ -66,20 +64,6 @@ namespace Creature
                 if(currentDist < 1f)
                 {
                     ReachedWaypoint();
-                }
-                else if (Mathf.Abs(currentDist - previousDist) < 0.01)
-                {
-                    blockedTimer += Time.deltaTime;
-
-                    if (blockedTimer > 5)
-                    {
-                        blockedTimer = 0;
-                        NextWaypoint();
-                    }
-                }
-                else
-                {
-                    blockedTimer = 0;
                 }
             }
 
@@ -92,32 +76,7 @@ namespace Creature
                 {
                     ReachedPlaceToGo();
                 }
-                
-                else if (Mathf.Abs(currentDist - previousDist) < 0.01)
-                {
-                    blockedTimer += Time.deltaTime;
-
-                    if (blockedTimer > 5)
-                    {
-                        blockedTimer = 0;
-                        StartCoroutine(StopLookLeftRight(2.5f));
-                
-                        creatureMoverScript.forcedRot = Vector3.zero;
-                        didWaypointAction = false;
-                        mainScript.currentState = CreatureState.none;
-                
-                        AudioManager.Instance.FadeOutAudioSource(2.5f, 1);
-
-                        creatureMoverScript.StartWalkSpeed();
-                    }
-                }
-                else
-                {
-                    blockedTimer = 0;
-                }
             }
-
-            previousDist = currentDist;
         }
 
 
@@ -348,12 +307,6 @@ namespace Creature
         public void DoAttack(Vector3 creaturePos, Vector3 characterPos)
         {
             Vector3 wantedPos = creaturePos + (characterPos - creaturePos).normalized * 5f;
-
-            if (Physics.Raycast(creaturePos, (characterPos - creaturePos).normalized, out RaycastHit hit, 5f,
-                    LayerManager.Instance.defaultLayer))
-            {
-                wantedPos = hit.point - (characterPos - creaturePos).normalized * Mathf.Clamp(hit.distance, 1f, 1.5f);
-            }
 
             creatureMoverScript.forcedRot = Vector3.zero;
             creatureMoverScript.wantedPos = wantedPos;
