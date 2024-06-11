@@ -44,8 +44,7 @@ public class UIManager : GenericSingletonClass<UIManager>
     
     [Header("UI Variables")]
     [SerializeField] private GameObject GeneralMenu, BoardMenu, LogsMenu, SettingsMenu;
-   /* [SerializeField] private Sprite BoardSprite, LogsSprite, SettingsSprite;
-    [SerializeField] private Sprite unselectedImage, selectedImage; */
+    private GameObject LastPanelOpen;
     [SerializeField] private TextMeshProUGUI schedule;
     [SerializeField] public bool isUIActive = false;
     public bool isFinalCinematic;
@@ -111,7 +110,16 @@ public class UIManager : GenericSingletonClass<UIManager>
                 moveComponent.canMove = false;
                 cameraComponent.LockedCursor(1);
                 isUIActive = true;
-                CloseAllPanel(false,true,false,false);
+
+                if(LastPanelOpen == null)
+                {
+                    LastPanelOpen = BoardMenu;
+                    LastPanelOpen.SetActive(true);
+                }
+                else
+                {
+                    LastPanelOpen.SetActive(true);
+                }
             }
             else
             {
@@ -173,6 +181,7 @@ public class UIManager : GenericSingletonClass<UIManager>
             {
                 CloseAllPanel(false,true,false,false);
                 isUIActive = true;
+                LastPanelOpen = BoardMenu;
             }
     }
     public void OpenSettingsMenu()
@@ -181,6 +190,7 @@ public class UIManager : GenericSingletonClass<UIManager>
             {
                 CloseAllPanel(false,false,true,false);
                 isUIActive = true;
+                LastPanelOpen = SettingsMenu;
             }
     }
     public void OpenLogsMenu()
@@ -189,6 +199,7 @@ public class UIManager : GenericSingletonClass<UIManager>
             {
                 CloseAllPanel(false,false,false,true);
                 isUIActive = true;
+                LastPanelOpen = LogsMenu;
                 logsMenu.RefreshLogs();
                 logsMenu.OpenFirstUnreadLogs();
             }
