@@ -190,6 +190,7 @@ public class UIManager : GenericSingletonClass<UIManager>
                 CloseAllPanel(false,false,false,true);
                 isUIActive = true;
                 logsMenu.RefreshLogs();
+                logsMenu.OpenFirstUnreadLogs();
             }
     }
     #endregion

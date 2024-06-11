@@ -70,5 +70,21 @@ public class LogsMenu : MonoBehaviour
         }
     }
 
+    public void OpenFirstUnreadLogs()
+    {
+        for(int i = 0; i < logsList.Count ; i++)
+        {
+            if(logsList[i].GetComponent<LogsScripts>().isRead == true)
+            {
+                Debug.Log("Read");
+            }
+            else
+            {
+                Debug.Log("UnRead");
+                logsList[i].GetComponent<LogsScripts>().InstantiateMyInfo();
+            }
+        }
+    }
+
    
 }
