@@ -73,7 +73,6 @@ namespace Puzzle
             if (isMovingDalles) yield break;
             isMovingDalles = true;
             AudioManager.Instance.PlaySoundOneShot(2,7,0);
-
             float timer = 0;
             (dalle1.currentIndex, dalle2.currentIndex) = (dalle2.currentIndex, dalle1.currentIndex);
 
@@ -141,6 +140,8 @@ namespace Puzzle
 
             anim.clip = anim["Open"].clip;
             anim.Play();
+            yield return new WaitForSeconds(0.2f);
+            AudioManager.Instance.PlaySoundOneShot(2,10,0);
         }
     }
 }
