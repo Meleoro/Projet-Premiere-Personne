@@ -42,7 +42,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BlendTexture:
-        m_Texture: {fileID: 2800000, guid: 871ed4ad8ddac4f48997b85a95095186, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
@@ -71,14 +71,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AOSoftening: 1
+    - _AOSoftening: 5
     - _Ampli: 0.4
     - _Amplitude_A: 0.3
-    - _BightnessModif: 1
-    - _BlendTextureBrightness: 1
-    - _BlendTextureContrast: 1
-    - _BlendTextureTiling: 1
-    - _Contrast: 1
+    - _BightnessModif: 1.5
+    - _BlendTextureBrightness: 0
+    - _BlendTextureContrast: 0
+    - _BlendTextureTiling: 0
+    - _Contrast: 0.7
     - _Frequency_B: 0.01
     - _Grayscale_0: 1
     - _GroundBlendHeight: 0
@@ -89,15 +89,15 @@ Material:
     - _MovementSpeed_H: 0.05
     - _NoiseScale: 15
     - _NormalStrengh: 0
-    - _NormalsOnly: 1
+    - _NormalsOnly: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RoughMapOpacity: 1
-    - _Saturation: 1
+    - _RoughMapOpacity: 0.14
+    - _Saturation: 0.8
     - _UseBasicAlbedo: 0
     - _UseGroundBlend: 0
     m_Colors:
     - _BasicAlbedo: {r: 1, g: 1, b: 1, a: 0}
-    - _ColorMultiply: {r: 1, g: 1, b: 1, a: 0}
+    - _ColorMultiply: {r: 0.0039215684, g: 0.6402423, b: 1, a: 0}
     - _MotionSpeed_Direction: {r: -0.05, g: -0.02, b: 0, a: 0}
   m_BuildTextureStacks: []

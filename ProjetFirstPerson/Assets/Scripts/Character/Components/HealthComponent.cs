@@ -16,7 +16,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     [Header("Shake Parameters")]
     [SerializeField] private float cameraShakeIntensity;
     [SerializeField] private float cameraShakeDuration;
-    [SerializeField] private int cameraShakeChangePosFrames;      // Number of frames between every change of pos of the shake
+    [SerializeField] private float cameraShakeChangePosDuration;      // Number of frames between every change of pos of the shake
 
     [Header("Public Infos")] 
     [HideInInspector] public Action DieAction;
@@ -68,7 +68,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         {
             StartCoroutine(SlowCharacter(fallRecovery, 0.1f));
             StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
-            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity, cameraShakeChangePosFrames);
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity, cameraShakeChangePosDuration);
         }
     }
 
@@ -94,7 +94,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
         isInvincible = true;
 
-        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity, cameraShakeChangePosFrames);
+        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, cameraShakeDuration, cameraShakeIntensity, cameraShakeChangePosDuration);
 
         GetComponent<StaminaComponent>().RegainStamina();
 
@@ -103,6 +103,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
         StartCoroutine(InvincibleTime());
         StartCoroutine(SlowCharacter(1, 0.5f));
+        Debug.Log(12);
+        
         StartCoroutine(CameraEffects.Instance.TakeDamage(1.2f));
         
         if(!isDying)
