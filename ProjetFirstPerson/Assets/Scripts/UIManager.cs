@@ -25,7 +25,8 @@ public class UIManager : GenericSingletonClass<UIManager>
     [SerializeField] private RectTransform HUDParent;
     [SerializeField] public RectTransform InteractHUD;
     [SerializeField] private Image interactImage;
-    [SerializeField] private Image eyeIconImage;
+    [SerializeField] private Image eyeIconImageClosed;
+    [SerializeField] private Image eyeIconImageOpened;
     [SerializeField] private CameraComponent cameraComponent;
     [SerializeField] private MoveComponent moveComponent;
     [SerializeField] public CameraTestEthan cam;
@@ -237,7 +238,16 @@ public class UIManager : GenericSingletonClass<UIManager>
         }
         
         currentTimer = Mathf.Clamp(currentTimer, 0, 1);
-        eyeIconImage.rectTransform.sizeDelta = new Vector2(eyeIconImage.rectTransform.sizeDelta.x, Mathf.Lerp(minYEyeIcon, maxYEyeIcon, currentTimer));
+
+        eyeIconImageClosed.color = new Color(eyeIconImageClosed.color.r, eyeIconImageClosed.color.g,
+            eyeIconImageClosed.color.b,
+            Mathf.Lerp(1, 0, currentTimer)); 
+        
+        eyeIconImageOpened.color = new Color(eyeIconImageClosed.color.r, eyeIconImageClosed.color.g,
+            eyeIconImageClosed.color.b,
+            Mathf.Lerp(0, 1, currentTimer));
+
+        //eyeIconImage.rectTransform.sizeDelta = new Vector2(eyeIconImage.rectTransform.sizeDelta.x, Mathf.Lerp(minYEyeIcon, maxYEyeIcon, currentTimer));
     }
 
     #endregion
