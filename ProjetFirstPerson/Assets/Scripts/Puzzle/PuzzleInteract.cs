@@ -16,6 +16,7 @@ namespace Puzzle
 
         [Header("Private Infos")]
         private bool isInRange;
+        private bool justInteracted;
 
         [Header("References")]
         private BoxCollider puzzleCollider;
@@ -55,6 +56,12 @@ namespace Puzzle
                 }
             }
 
+            if (justInteracted)
+            {
+                justInteracted = false;
+                return;
+            }
+            
             if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E)) && isInRange && CharacterManager.Instance.isInteracting)
                 GetOutInteraction();
         }
@@ -66,7 +73,8 @@ namespace Puzzle
 
         public void GetInInteraction()
         {
-            Debug.Log("entre");
+            justInteracted = true;
+            
             CameraManager.Instance.transform.parent.transform.position = cameraPos.transform.position;
             CameraManager.Instance.transform.parent.transform.rotation = Quaternion.Euler(desiredRotation);
 
