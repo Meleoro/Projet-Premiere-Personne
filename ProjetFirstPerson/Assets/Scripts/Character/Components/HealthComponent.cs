@@ -12,11 +12,16 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     [SerializeField] private float fallRecovery;
     [SerializeField] private float knockbackStrength;
     [SerializeField] private float knockbackDuration;
-
+    
     [Header("Shake Parameters")]
     [SerializeField] private float cameraShakeIntensity;
     [SerializeField] private float cameraShakeDuration;
-    [SerializeField] private float cameraShakeChangePosDuration;      // Number of frames between every change of pos of the shake
+    [SerializeField] private float cameraShakeChangePosDuration;    
+    
+    [Header("Shake Fall Parameters")]
+    [SerializeField] private float cameraShakeIntensityFall;
+    [SerializeField] private float cameraShakeDurationFall;
+    [SerializeField] private float cameraShakeChangePosDurationFall;    
 
     [Header("Public Infos")] 
     [HideInInspector] public Action DieAction;
@@ -31,6 +36,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     public Vector3 lastCheckPoint;
     public CameraComponent cam;
     public MoveComponent move;
+    private Coroutine hurtCoroutine;
 
 
     private void Start()
@@ -69,7 +75,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
             AudioManager.Instance.PlaySoundOneShot(1,0,0);
             StartCoroutine(SlowCharacter(fallRecovery, 0.1f));
             StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
-            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity, cameraShakeChangePosDuration);
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeIntensityFall, cameraShakeIntensityFall, 
+                cameraShakeChangePosDurationFall);
         }
     }
 
@@ -109,7 +116,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         StartCoroutine(CameraEffects.Instance.TakeDamage(1.2f));
         
         if(!isDying)
-            StartCoroutine(CameraEffects.Instance.HurtEffect(recoveryTime));
+            hurtCoroutine = StartCoroutine(CameraEffects.Instance.HurtEffect(recoveryTime));
     }
 
     private IEnumerator SlowCharacter(float duration, float slowRatio)
@@ -153,6 +160,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         if(currentTriggerPoursuiteF != null)
             currentTriggerPoursuiteF.ActivateTrigger();
         
+        StopCoroutine(hurtCoroutine);
+        CameraEffects.Instance.hurtVolume.weight = 0;
         DieAction.Invoke();
 
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.75f, 0));
