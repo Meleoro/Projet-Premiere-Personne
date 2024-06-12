@@ -1819,6 +1819,10 @@ MonoBehaviour:
   currentVelocity: {x: 0, y: 0, z: 0}
   rb: {fileID: 5884659323695599222}
   wantedCamPos: {fileID: 3191963914546153222}
+  footLeftDecalPrefab: {fileID: 6944865323803689979, guid: cee4a30821dbcbf4ead08684f3a42f0f,
+    type: 3}
+  footRightDecalPrefab: {fileID: 7549826257417637869, guid: a6ba52cfe44101d469d80611ca96d00b,
+    type: 3}
 --- !u!114 &7728063047835042173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15927,6 +15931,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hideEffectLerpDuration: 0.15
   damageEffectDuration: 0.3
+  flickerSpeed: 2
+  flickerMinValue: 0.5
   hiddenVolume: {fileID: 4676322895977136312}
   healthVolume: {fileID: 4767111273343339663}
   hurtVolume: {fileID: 6338404949715200352}
