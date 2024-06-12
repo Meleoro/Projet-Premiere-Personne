@@ -166,7 +166,7 @@ namespace Creature
 
                 if (!legs[i].isMoving)
                 {
-                    if(creatureMover.isRunning)
+                    if(creatureMover.isRunning && creatureMover.navMeshAgent.velocity.magnitude > 2)
                     {
                         if (!VerifyLegCanMoveRun(legs[i].isFrontLeg))
                         {
@@ -239,11 +239,11 @@ namespace Creature
 
             if (currentLeg.timerCooldownMove <= 0)
             {
-                if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z > -0.1f)
+                /*if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z > 0.1f)
                     return false;
                 
-                if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > -0.1f)
-                    return false;
+                if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > 0.1f)
+                    return false;*/
                 
                 if (shouldntMove && !creatureMover.isRunning)
                 {

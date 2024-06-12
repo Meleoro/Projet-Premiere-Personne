@@ -19,7 +19,7 @@ namespace IK
 
         [Header("Public Infos")] 
         [HideInInspector] public float currentPatouneZRot;
-        [HideInInspector] public bool canMove;
+        public bool canMove;
         [HideInInspector] public bool isMoving;
 
         [Header("Private Infos")]
@@ -222,8 +222,10 @@ namespace IK
             
             Debug.DrawLine(target.position, transformRotTrRef.TransformPoint(saveTargetOriginOffset));
             
-            if (moveScript.navMeshAgent.velocity.magnitude < 0.25)
+            if (moveScript.navMeshAgent.velocity.magnitude < 0.25 && Mathf.Abs(moveScript.bodyIKScript.currentRotationDif) < 0.25)
             {
+                //Debug.Log(moveScript.bodyIKScript.currentRotationDif);
+                
                 float offset = isFront ? managerScript.legData.frontLegsOffset :managerScript.legData.backLegsOffset;
                 
                 Vector3 wantedPos = Vector3.Lerp(target.position, transformRotTrRef.TransformPoint(saveTargetOriginOffset), Time.deltaTime * 2f);

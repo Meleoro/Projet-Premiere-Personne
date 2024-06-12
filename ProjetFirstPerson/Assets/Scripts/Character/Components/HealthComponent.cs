@@ -105,7 +105,6 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
         StartCoroutine(InvincibleTime());
         StartCoroutine(SlowCharacter(1, 0.5f));
-        Debug.Log(12);
         
         StartCoroutine(CameraEffects.Instance.TakeDamage(1.2f));
         
