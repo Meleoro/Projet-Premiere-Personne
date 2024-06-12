@@ -66,6 +66,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     {
         if (fallDist > fallMaxHeight)
         {
+            AudioManager.Instance.PlaySoundOneShot(1,0,0);
             StartCoroutine(SlowCharacter(fallRecovery, 0.1f));
             StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
             CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity, cameraShakeChangePosDuration);
@@ -87,6 +88,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
             StartCoroutine(Die());
         else 
         {
+            AudioManager.Instance.PlaySoundOneShot(1,0,0);
             StartCoroutine(move.AddKnockback(attackDir, knockbackStrength, knockbackDuration));
             //anim.clip = anim["TakeDamage"].clip;
             //anim.Play();
@@ -103,7 +105,6 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
         StartCoroutine(InvincibleTime());
         StartCoroutine(SlowCharacter(1, 0.5f));
-        Debug.Log(12);
         
         StartCoroutine(CameraEffects.Instance.TakeDamage(1.2f));
         

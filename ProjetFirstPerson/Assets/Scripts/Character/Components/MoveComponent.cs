@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using Random = UnityEngine.Random;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using Task = System.Threading.Tasks.Task;
 
 public class MoveComponent : MonoBehaviour, ICharacterComponent
@@ -47,6 +48,8 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     [Header("References")] 
     public Rigidbody rb;
     [SerializeField] private Transform wantedCamPos;
+    [SerializeField] private DecalProjector footLeftDecalPrefab;
+    [SerializeField] private DecalProjector footRightDecalPrefab;
     private Controls controls;
     private CameraComponent cameraComponent;
     private StaminaComponent staminaComponent;
@@ -267,6 +270,27 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         {
             walkSoundTimer = 0;
             AudioManager.Instance.PlaySoundOneShot(1, Random.Range(6, 16), 0);
+            CreateFootDecal();
+        }
+    }
+
+
+    private bool leftDecal;
+    private void CreateFootDecal()
+    {
+        leftDecal = !leftDecal;
+
+        Vector3 decalPos = transform.position + Vector3.down * 0.8f;
+
+        if (!leftDecal)
+        {
+            decalPos += transform.right * 0.2f;
+            Instantiate(footLeftDecalPrefab.gameObject, decalPos, Quaternion.Euler(90, cameraComponent.characterCamera.rotation.eulerAngles.y - 90, -270));
+        }
+        else
+        {
+            decalPos -= transform.right * 0.2f;
+            Instantiate(footRightDecalPrefab.gameObject, decalPos, Quaternion.Euler(90, cameraComponent.characterCamera.rotation.eulerAngles.y - 90, -90));
         }
     }
 
@@ -281,7 +305,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
         {
             timer += Time.fixedDeltaTime;
 
-            rb.AddForce(knockbackDir * knockBackStength * (knockbackDuration - timer) * Time.fixedDeltaTime, ForceMode.Force);
+            rb.AddForce(knockbackDir * (knockBackStength * (knockbackDuration - timer) * Time.fixedDeltaTime), ForceMode.Force);
 
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
