@@ -32,7 +32,7 @@ namespace Creature
         private bool stopMoving;
 
         [Header("References")] 
-        [SerializeField] private BodyIK bodyIKScript;
+        public BodyIK bodyIKScript;
         [SerializeField] private HeadIK headIKScript;
         [SerializeField] private CreatureSpecialMoves specialMovesScript;
         public Transform targetIKBody;
