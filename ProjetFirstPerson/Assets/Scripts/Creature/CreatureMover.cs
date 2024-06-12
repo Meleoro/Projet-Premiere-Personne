@@ -32,8 +32,8 @@ namespace Creature
         private bool stopMoving;
 
         [Header("References")] 
-        [SerializeField] private BodyIK bodyIKScript;
-        [SerializeField] private HeadIK headIKScript;
+        public BodyIK bodyIKScript;
+        public HeadIK headIKScript;
         [SerializeField] private CreatureSpecialMoves specialMovesScript;
         public Transform targetIKBody;
         [HideInInspector] public NavMeshAgent navMeshAgent;

@@ -71,9 +71,7 @@ namespace Creature
 
 
         #region Verify Functions
-
-        private bool moveFrontLegs;
-        private bool moveBackLegs;
+        
         private void VerifyLegs()
         {
             currentWantToMoveLegsCounter = 0;
@@ -100,6 +98,8 @@ namespace Creature
                         {
                             legs[i].saveLastTargetPos =
                                 mainTrRotRefFront.InverseTransformPoint(legs[i].target.position);
+
+                            continue;
                         }
 
                         if(VerifyLegNeedsToMove(legs[i], false))
@@ -139,6 +139,8 @@ namespace Creature
                         {
                             legs[i].saveLastTargetPos =
                                 mainTrRotRefBack.InverseTransformPoint(legs[i].target.position);
+                            
+                            continue;
                         }
 
                         if(VerifyLegNeedsToMove(legs[i], false))
@@ -166,7 +168,7 @@ namespace Creature
 
                 if (!legs[i].isMoving)
                 {
-                    if(creatureMover.isRunning)
+                    if(creatureMover.isRunning && creatureMover.navMeshAgent.velocity.magnitude > 2)
                     {
                         if (!VerifyLegCanMoveRun(legs[i].isFrontLeg))
                         {
@@ -177,8 +179,6 @@ namespace Creature
                     if (VerifyLegNeedsToMove(legs[i], false) || (legs[i].isFrontLeg && currentMovingLegsFront == 1 && creatureMover.isRunning) || 
                         (!legs[i].isFrontLeg && currentMovingLegsBack == 1 && creatureMover.isRunning))
                     {
-                        if(!legs[i].isFrontLeg) moveBackLegs = false;
-                        if(legs[i].isFrontLeg) moveFrontLegs = false;
 
                         Vector3 endPos = GetNextPos(legs[i], creatureMover.isRunning);
                         float moveDuration = legs[i].isFrontLeg ? data.frontLegMoveDuration : data.backLegMoveDuration;
@@ -195,16 +195,6 @@ namespace Creature
                         {
                             StartCoroutine(CooldownMoveLeg());
                             StartCoroutine(MoveLeg(legs[i], endPos, moveDuration * durationModifierByRot * durationModifierBySpeed, YModifierBySpeed * YModifierByRot));
-
-                            if (creatureMover.isRunning && !legs[i].isFrontLeg)
-                            {
-                                moveBackLegs = true;
-                            }
-
-                            if (creatureMover.isRunning && legs[i].isFrontLeg)
-                            {
-                                moveFrontLegs = true;
-                            }
                         }
                     }
                 }
@@ -239,10 +229,10 @@ namespace Creature
 
             if (currentLeg.timerCooldownMove <= 0)
             {
-                if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z > -0.1f)
+                if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z > 0.1f)
                     return false;
                 
-                if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > -0.1f)
+                if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > 0.1f)
                     return false;
                 
                 if (shouldntMove && !creatureMover.isRunning)

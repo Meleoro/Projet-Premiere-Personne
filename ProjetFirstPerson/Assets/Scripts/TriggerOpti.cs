@@ -25,12 +25,12 @@ public class TriggerOpti : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
 
         // True si le joueur suit le sens du jeu 
-        bool goFront = transform.InverseTransformPoint(other.transform.position).z < 0;
+        bool goFront = transform.InverseTransformPoint(other.transform.position).z > 0;
 
         for (int i = 0; i < objectToActivate.Count; i++)
         {
