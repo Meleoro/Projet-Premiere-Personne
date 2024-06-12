@@ -288,7 +288,7 @@ namespace Creature
         /// </summary>
         public void ChangeDestinationAggressive(Vector3 suspicousPlace)
         {
-            if (isAttacking) return;
+            //if (isAttacking) return;
 
             stoppedNormalBehavior = true;
             waitTimer = 0;
@@ -361,6 +361,8 @@ namespace Creature
             creatureMoverScript.wantedPos = wantedPos;
 
             isAttacking = true;
+            
+            creatureMoverScript.headIKScript.FollowChara();
         }
     }
 }
