@@ -36,12 +36,12 @@ public class AudioManager : GenericSingletonClass<AudioManager>
 
     private void ApplySneakAudioEffect()
     {
-        mixer.DOSetFloat("_LowPass", minMaxLowPass.x, lowPassEffectDuration).SetEase(lowPassCurve);
+        mixer.DOSetFloat("_LowPass2", minMaxLowPass.x, lowPassEffectDuration).SetEase(lowPassCurve);
     }
     
     private void RemoveSneakAudioEffect()
     {
-        mixer.DOSetFloat("_LowPass", minMaxLowPass.y, lowPassEffectDuration).SetEase(lowPassCurve);
+        mixer.DOSetFloat("_LowPass2", minMaxLowPass.y, lowPassEffectDuration).SetEase(lowPassCurve);
     }
 
     public void SetAudioSource(int index, AudioSource audioSource)
