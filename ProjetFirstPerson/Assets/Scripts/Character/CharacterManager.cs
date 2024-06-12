@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CharacterManager : GenericSingletonClass<CharacterManager>
 {
@@ -27,6 +28,8 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
     
     [Header("Actions")] 
     public Action<ItemData> UseAdrenaline;
+    public Action enterSneakZone;
+    public Action exitSneakZone;
 
     [Header("References")]
     public MeshRenderer capsule;
@@ -106,10 +109,12 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
             if (crouchComponent.isCrouched && !isHidden)
             {
                 Hide();
+                enterSneakZone.Invoke();
             }
             else if(!crouchComponent.isCrouched && isHidden)
             {
                 UnHide();
+                exitSneakZone.Invoke();
             }
         }
         else
@@ -117,6 +122,7 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
             if (isHidden)
             {
                 UnHide();
+                exitSneakZone.Invoke();
             }
         }
 
