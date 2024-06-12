@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ArthurUtilities;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -10,6 +11,10 @@ public class CameraEffects : GenericSingletonClass<CameraEffects>
     
     [Header("Damage Effect Paramaters")] 
     [SerializeField] private float damageEffectDuration;
+    
+    [Header("Hurt Effect Paramaters")] 
+    [SerializeField] private float flickerSpeed;
+    [SerializeField] [Range(0f, 1f)] private float flickerMinValue;
     
     [Header("References")] 
     [SerializeField] private Volume hiddenVolume;
@@ -63,18 +68,38 @@ public class CameraEffects : GenericSingletonClass<CameraEffects>
 
 
     private float hurtTimer;
+    private float secondaryTimer;
+    private bool goUp;
     public IEnumerator HurtEffect(float duration)
     {
         hurtVolume.weight = 1;
+        
+        hurtTimer = 0;
+        secondaryTimer = 1;
+        goUp = false;
+        while(hurtTimer < duration * 0.9f)
+        {
+            hurtTimer += Time.deltaTime;
+            secondaryTimer += goUp ? Time.deltaTime * flickerSpeed : -Time.deltaTime * flickerSpeed;
 
-        yield return new WaitForSeconds(duration * 0.9f);
+            hurtVolume.weight = Mathf.Lerp(flickerMinValue, 1, secondaryTimer);
 
+            if (secondaryTimer < 0)
+                goUp = true;
+            
+            else if (secondaryTimer > 1)
+                goUp = false;
+
+            yield return null;
+        }
+
+        float saveWeight = hurtVolume.weight;
         hurtTimer = 0;
         while(hurtTimer < duration * 0.1f)
         {
             hurtTimer += Time.deltaTime;
 
-            hurtVolume.weight = Mathf.Lerp(1, 0, hurtTimer / (duration * 0.1f));
+            hurtVolume.weight = Mathf.Lerp(saveWeight, 0, hurtTimer / (duration * 0.1f));
 
             yield return null;
         }
