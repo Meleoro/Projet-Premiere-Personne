@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Creature;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CinematiqueFinale : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class CinematiqueFinale : MonoBehaviour
     public CreatureMover creatureMover;
     public CreatureManager creatureManager;
     public CreatureReferences creatureReferences;
+    public TextMeshProUGUI titre;
 
     private void Start()
     {
@@ -52,5 +55,23 @@ public class CinematiqueFinale : MonoBehaviour
         AudioManager.Instance.PlaySoundOneShot(0,1,1);
         yield return new WaitForSeconds(2.3f);
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.01f, 1));
+        titre.gameObject.SetActive(true);
+        yield return new WaitForSeconds(4f);
+        StartCoroutine(FadeOutTitre(5.5f));
+        yield return new WaitForSeconds(5.5f);
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public IEnumerator FadeOutTitre(float duration)
+    {
+        float timer = 0;
+        while (timer < duration)
+        {
+            titre.alpha = Mathf.Lerp(titre.alpha, 0, timer / duration);
+            timer += Time.deltaTime;
+            
+            yield return null;
+        }
+        titre.alpha = 0;
     }
 }

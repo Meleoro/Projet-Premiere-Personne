@@ -52,6 +52,7 @@ namespace Creature
 
             if (turnsTheCreatureAggressive)
             {
+                AudioManager.Instance.PlaySoundContinuous(0, 1, 1);
                 creatureToMove.GetComponent<CreatureManager>().TurnAggressive();
             }
 
