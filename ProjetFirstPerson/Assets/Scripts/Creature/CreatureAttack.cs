@@ -64,6 +64,7 @@ namespace Creature
             moveScript.RestartMoving();
             waypointsScript.DoAttack(saveTr, charSaveTr, attackMaxDistanceWall);
             moveScript.StartAttackSpeed(attackSpeed);
+            AudioManager.Instance.PlaySoundOneShot(0,11,1);
             
             yield return new WaitForSeconds(attackDuration);
 

@@ -165,13 +165,17 @@ public class LogsScripts : MonoBehaviour
         InformationArea.text = "";
         int currentValue = 0;
 
-        for(int i = 0; i < colorWorld.Count ; i++)
+        if (colorWorld.Count > 0)
         {
-            int newIndex = text.IndexOf(colorWorld[i]);
-            int largeNewIndex = newIndex + colorWorld[i].Length;
-            colorInt.Add(newIndex);
-            colorInt.Add(largeNewIndex);
+            for(int i = 0; i < colorWorld.Count ; i++)
+            {
+                int newIndex = text.IndexOf(colorWorld[i]);
+                int largeNewIndex = newIndex + colorWorld[i].Length;
+                colorInt.Add(newIndex);
+                colorInt.Add(largeNewIndex);
+            } 
         }
+      
 
         for(int i = 0; i < text.Length ; i++)
         {
