@@ -168,7 +168,6 @@ namespace Creature
                 {
                     if(creatureMover.isRunning && creatureMover.navMeshAgent.velocity.magnitude > 2)
                     {
-                        Debug.Log(12);
                         if (!VerifyLegCanMoveRun(legs[i].isFrontLeg))
                         {
                             continue;

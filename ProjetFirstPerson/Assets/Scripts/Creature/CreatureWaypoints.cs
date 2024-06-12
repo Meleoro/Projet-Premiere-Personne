@@ -347,13 +347,15 @@ namespace Creature
 
         public void DoAttack(Vector3 creaturePos, Vector3 characterPos, float maxWallDist)
         {
-            Vector3 wantedPos = creaturePos + (characterPos - creaturePos).normalized * 5f;
+            Vector3 wantedPos = creaturePos;
 
-            if (Physics.Raycast(creaturePos, (characterPos - creaturePos).normalized, out RaycastHit hit, 5f,
+            /*Debug.DrawLine(creaturePos, creaturePos + (characterPos - creaturePos).normalized * maxWallDist, Color.magenta, 2);
+            if (Physics.Raycast(creaturePos, (characterPos - creaturePos).normalized, out RaycastHit hit, maxWallDist,
                     LayerManager.Instance.defaultLayer))
             {
-                wantedPos = hit.point - (characterPos - creaturePos).normalized * Mathf.Clamp(hit.distance, maxWallDist, 5f);
-            }
+                wantedPos = hit.point - (characterPos - creaturePos).normalized * maxWallDist;
+                Debug.Log(12);
+            }*/
 
             creatureMoverScript.forcedRot = Vector3.zero;
             creatureMoverScript.wantedPos = wantedPos;
