@@ -31,6 +31,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     public Vector3 lastCheckPoint;
     public CameraComponent cam;
     public MoveComponent move;
+    private Coroutine hurtCoroutine;
 
 
     private void Start()
@@ -109,7 +110,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         StartCoroutine(CameraEffects.Instance.TakeDamage(1.2f));
         
         if(!isDying)
-            StartCoroutine(CameraEffects.Instance.HurtEffect(recoveryTime));
+            hurtCoroutine = StartCoroutine(CameraEffects.Instance.HurtEffect(recoveryTime));
     }
 
     private IEnumerator SlowCharacter(float duration, float slowRatio)
@@ -153,6 +154,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         if(currentTriggerPoursuiteF != null)
             currentTriggerPoursuiteF.ActivateTrigger();
         
+        StopCoroutine(hurtCoroutine);
+        CameraEffects.Instance.hurtVolume.weight = 0;
         DieAction.Invoke();
 
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.75f, 0));

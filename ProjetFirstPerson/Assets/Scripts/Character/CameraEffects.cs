@@ -19,7 +19,7 @@ public class CameraEffects : GenericSingletonClass<CameraEffects>
     [Header("References")] 
     [SerializeField] private Volume hiddenVolume;
     [SerializeField] private Volume healthVolume;
-    [SerializeField] private Volume hurtVolume;
+    public Volume hurtVolume;
 
 
     private float hideTimer;
