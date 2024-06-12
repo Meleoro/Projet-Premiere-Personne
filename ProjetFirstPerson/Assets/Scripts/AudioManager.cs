@@ -1,11 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
 public class AudioManager : GenericSingletonClass<AudioManager>
 {
+    [Header("Mixer")] 
+    [SerializeField] private AudioMixer mixer;
+
+    [Header("Effects")] 
+    [SerializeField] private Vector2 minMaxLowPass;
+    [SerializeField] private float lowPassEffectDuration = 1f;
+    [SerializeField] private AnimationCurve lowPassCurve;
+    
     [Header("Sounds")] 
     [SerializeField] private List<SoundCategory> soundList;
     [SerializeField] private int musicCategoryID;
@@ -18,6 +28,21 @@ public class AudioManager : GenericSingletonClass<AudioManager>
     [Range(0f, 1f)] [SerializeField] private float musicVolume;
     [Range(0f, 1f)] [SerializeField] private float sfxVolume;
 
+    private void Start()
+    {
+        CharacterManager.Instance.enterSneakZone += ApplySneakAudioEffect;
+        CharacterManager.Instance.exitSneakZone += RemoveSneakAudioEffect;
+    }
+
+    private void ApplySneakAudioEffect()
+    {
+        mixer.DOSetFloat("_LowPass", minMaxLowPass.x, lowPassEffectDuration).SetEase(lowPassCurve);
+    }
+    
+    private void RemoveSneakAudioEffect()
+    {
+        mixer.DOSetFloat("_LowPass", minMaxLowPass.y, lowPassEffectDuration).SetEase(lowPassCurve);
+    }
 
     public void SetAudioSource(int index, AudioSource audioSource)
     {
