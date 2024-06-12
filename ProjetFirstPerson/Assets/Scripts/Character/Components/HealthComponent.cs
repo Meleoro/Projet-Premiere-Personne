@@ -16,12 +16,14 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     [Header("Shake Parameters")]
     [SerializeField] private float cameraShakeIntensity;
     [SerializeField] private float cameraShakeDuration;
-    [SerializeField] private float cameraShakeChangePosDuration;    
+    [SerializeField] private float cameraShakeChangePosDuration;  
+    [SerializeField] private float cameraShakeRotationIntensity;  
     
     [Header("Shake Fall Parameters")]
     [SerializeField] private float cameraShakeIntensityFall;
     [SerializeField] private float cameraShakeDurationFall;
     [SerializeField] private float cameraShakeChangePosDurationFall;    
+    [SerializeField] private float cameraShakeRotationIntensityFall;    
 
     [Header("Public Infos")] 
     [HideInInspector] public Action DieAction;
@@ -75,8 +77,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
             AudioManager.Instance.PlaySoundOneShot(1,0,0);
             StartCoroutine(SlowCharacter(fallRecovery, 0.1f));
             StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
-            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeIntensityFall, cameraShakeIntensityFall, 
-                cameraShakeChangePosDurationFall);
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeIntensityFall, cameraShakeDurationFall, 
+                cameraShakeChangePosDurationFall, cameraShakeRotationIntensityFall);
         }
     }
 
@@ -103,7 +105,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
         isInvincible = true;
 
-        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, cameraShakeDuration, cameraShakeIntensity, cameraShakeChangePosDuration);
+        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, cameraShakeDuration, cameraShakeIntensity, 
+            cameraShakeChangePosDuration, cameraShakeRotationIntensity);
 
         GetComponent<StaminaComponent>().RegainStamina();
 
