@@ -5046,6 +5046,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f539d84a4c50934f887c222f6d9526a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mixer: {fileID: 24100000, guid: 54bdfc6f025bd8045b5a9f66391258ab, type: 2}
+  minMaxLowPass: {x: 1000, y: 22000}
+  lowPassEffectDuration: 0.5
+  lowPassCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   soundList:
   - listSoundIdentities:
     - audioClip: {fileID: 8300000, guid: 08a930806b6e4044d9623371beaec070, type: 3}
@@ -5076,7 +5103,7 @@ MonoBehaviour:
       volume: 2
   - listSoundIdentities:
     - audioClip: {fileID: 8300000, guid: 38be4f53101dc78429863460df88b00a, type: 3}
-      volume: 1
+      volume: 2.1
     - audioClip: {fileID: 0}
       volume: 0
     - audioClip: {fileID: 0}
@@ -7372,7 +7399,7 @@ AudioSource:
   m_GameObject: {fileID: 3543697547854998547}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -5645364118734804063, guid: 54bdfc6f025bd8045b5a9f66391258ab,
+  OutputAudioMixerGroup: {fileID: -98192430237952467, guid: 54bdfc6f025bd8045b5a9f66391258ab,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
