@@ -12,11 +12,16 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     [SerializeField] private float fallRecovery;
     [SerializeField] private float knockbackStrength;
     [SerializeField] private float knockbackDuration;
-
+    
     [Header("Shake Parameters")]
     [SerializeField] private float cameraShakeIntensity;
     [SerializeField] private float cameraShakeDuration;
-    [SerializeField] private float cameraShakeChangePosDuration;      // Number of frames between every change of pos of the shake
+    [SerializeField] private float cameraShakeChangePosDuration;    
+    
+    [Header("Shake Fall Parameters")]
+    [SerializeField] private float cameraShakeIntensityFall;
+    [SerializeField] private float cameraShakeDurationFall;
+    [SerializeField] private float cameraShakeChangePosDurationFall;    
 
     [Header("Public Infos")] 
     [HideInInspector] public Action DieAction;
@@ -70,7 +75,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
             AudioManager.Instance.PlaySoundOneShot(1,0,0);
             StartCoroutine(SlowCharacter(fallRecovery, 0.1f));
             StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
-            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeDuration, cameraShakeIntensity, cameraShakeChangePosDuration);
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeIntensityFall, cameraShakeIntensityFall, 
+                cameraShakeChangePosDurationFall);
         }
     }
 
