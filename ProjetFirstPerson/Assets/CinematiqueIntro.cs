@@ -22,7 +22,7 @@ public class CinematiqueIntro : MonoBehaviour
             UIManager.Instance.canMenu = false;
             tablettePhoto.canInOut = false;
             capsule.enabled = false;
-            player.transform.position = new Vector3(0.525015116f, 90.1800003f, -108.139076f);
+            player.transform.position =  new Vector3(0.232999995f, 88.007225f, -106.825996f);
             eyesAnim.gameObject.SetActive(true);
             StartCoroutine(CameraEffects.Instance.FadeScreen(0.01f, 1));
             triggerLog.SetActive(false);
