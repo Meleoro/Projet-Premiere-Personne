@@ -74,7 +74,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     {
         if (fallDist > fallMaxHeight)
         {
-            AudioManager.Instance.PlaySoundOneShot(1,0,0);
+            AudioManager.Instance.PlaySoundOneShot(1,1,0);
             StartCoroutine(SlowCharacter(fallRecovery, 0.1f));
             StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
             CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent, cameraShakeIntensityFall, cameraShakeDurationFall, 
