@@ -33,7 +33,7 @@ namespace Creature
 
         [Header("References")] 
         public BodyIK bodyIKScript;
-        [SerializeField] private HeadIK headIKScript;
+        public HeadIK headIKScript;
         [SerializeField] private CreatureSpecialMoves specialMovesScript;
         public Transform targetIKBody;
         [HideInInspector] public NavMeshAgent navMeshAgent;
