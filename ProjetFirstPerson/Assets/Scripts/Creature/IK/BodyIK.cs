@@ -129,8 +129,7 @@ namespace IK
                 bodyJoints[i].eulerAngles = eulerJointBody;
             }
         }
-
-        private float changedZ = 0;
+        
         private void ApplyZIK()
         {
             // Ground Part

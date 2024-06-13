@@ -1504,6 +1504,25 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1237478014}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &269895732 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4979732809733691508, guid: eee32820edab3104297fe82ef6223e68,
+    type: 3}
+  m_PrefabInstance: {fileID: 370800535}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &269895736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269895732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67c356f9bf38584786650ea072a2f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockLayerIndex: 3
 --- !u!1 &279333335
 GameObject:
   m_ObjectHideFlags: 0
@@ -1632,6 +1651,33 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c21574a285064aa48810bf40948aacb5, type: 3}
+--- !u!1 &287283159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 986206889004871767, guid: 2a43794d725102441bbf198e681ad618,
+    type: 3}
+  m_PrefabInstance: {fileID: 2070575978468801751}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &287283163
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287283159}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.5317943, y: 0.13586506, z: 2.5315008}
+  m_Center: {x: -0.000007688999, y: 0.000007610768, z: -0.000015258789}
 --- !u!1 &292658147
 GameObject:
   m_ObjectHideFlags: 0
@@ -2024,7 +2070,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1887622380}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4979732809733691508, guid: eee32820edab3104297fe82ef6223e68,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 269895736}
   m_SourcePrefab: {fileID: 100100000, guid: eee32820edab3104297fe82ef6223e68, type: 3}
 --- !u!1 &376416334
 GameObject:
@@ -3578,20 +3628,50 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1439798391}
+    - target: {fileID: 2925051965562705916, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: rockSoundMaterials.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925051965562705916, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: rockSoundMaterials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3cc3ce4a69bc5424688b696cc76224bb, type: 2}
+    - target: {fileID: 2925051965562705916, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: rockSoundMaterials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 961e27f46c412c34e9a55f48de051edc, type: 2}
+    - target: {fileID: 2925051965562705916, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: rockSoundMaterials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: e6636f9c65f47b343baf21b46c46a56e, type: 2}
+    - target: {fileID: 2925051965562705916, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: rockSoundMaterials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65954bbea9bcba3438038213b59b1ab5, type: 2}
+    - target: {fileID: 2925051965562705916, guid: c95f2f9fcecbba643a30eaf70d80938b,
+        type: 3}
+      propertyPath: rockSoundMaterials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: a6905ae787d935445b047f2eb25deea3, type: 2}
     - target: {fileID: 3159081065610885539, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 101.8
+      value: -9.1
       objectReference: {fileID: 0}
     - target: {fileID: 3159081065610885539, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 89.317
+      value: 91.89
       objectReference: {fileID: 0}
     - target: {fileID: 3159081065610885539, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 70
+      value: 14.8
       objectReference: {fileID: 0}
     - target: {fileID: 3350420873121842016, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
@@ -8654,6 +8734,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: "MODULE 2  - OmbrePort\xE9e"
       objectReference: {fileID: 0}
+    - target: {fileID: 986206889004871767, guid: 2a43794d725102441bbf198e681ad618,
+        type: 3}
+      propertyPath: m_TagString
+      value: RockGround
+      objectReference: {fileID: 0}
     - target: {fileID: 1081460088361233227, guid: 2a43794d725102441bbf198e681ad618,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8772,7 +8857,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 986206889004871767, guid: 2a43794d725102441bbf198e681ad618,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 287283163}
   m_SourcePrefab: {fileID: 100100000, guid: 2a43794d725102441bbf198e681ad618, type: 3}
 --- !u!1001 &3903610453900550094
 PrefabInstance:
