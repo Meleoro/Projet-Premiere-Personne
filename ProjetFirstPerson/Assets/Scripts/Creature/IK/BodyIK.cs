@@ -254,8 +254,8 @@ namespace IK
             bodyJoints[0].rotation = saveRotSpine1;
             //headIK.baseNeckTr.rotation = saveRotNeck;
 
-            //currentAddedBackY = Mathf.Abs(0.3f - Mathf.Abs(currentRotXPelvis) / 40);
-            //currentAddedFrontY = Mathf.Abs(0.4f - Mathf.Abs(currentRotXThorax) / 40);
+            currentAddedBackY = - Mathf.Abs(currentRotXPelvis) / 40;
+            currentAddedFrontY = 0.1f - Mathf.Abs(currentRotXThorax) / 40;
 
             ApplyLegsEffects();
         }

@@ -5,6 +5,7 @@ using Creature;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CinematiqueFinale : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class CinematiqueFinale : MonoBehaviour
     public CreatureMover creatureMover;
     public CreatureManager creatureManager;
     public CreatureReferences creatureReferences;
-    public TextMeshProUGUI titre;
+    public Image titre;
 
     private void Start()
     {
@@ -30,7 +31,7 @@ public class CinematiqueFinale : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             AudioManager.Instance.PlaySoundOneShot(2,10,0);
-            doorAnim.clip = doorAnim["FermeturePorte"].clip;
+            doorAnim.clip = doorAnim["FermeturePorte 1"].clip;
             doorAnim.Play();
             collider.enabled = false;
         }
@@ -45,7 +46,7 @@ public class CinematiqueFinale : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
         AudioManager.Instance.PlaySoundOneShot(2,10,0);
         lightEtape2.SetActive(true);
-        doorAnim.clip = doorAnim["OuverturePorteFinale"].clip;
+        doorAnim.clip = doorAnim["OuverturePorteFinale 1"].clip;
         doorAnim.Play();
         yield return new WaitForSeconds(1.4f);
         camera.cinematicLookSpeed = lookSpeed;
@@ -56,22 +57,24 @@ public class CinematiqueFinale : MonoBehaviour
         yield return new WaitForSeconds(2.3f);
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.01f, 1));
         titre.gameObject.SetActive(true);
-        yield return new WaitForSeconds(4f);
-        StartCoroutine(FadeOutTitre(5.5f));
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(FadeOutTitre(5f));
         yield return new WaitForSeconds(5.5f);
         SceneManager.LoadScene("MainMenu");
     }
 
     public IEnumerator FadeOutTitre(float duration)
     {
+        float alpha = 1;
         float timer = 0;
         while (timer < duration)
         {
-            titre.alpha = Mathf.Lerp(titre.alpha, 0, timer / duration);
+            alpha = Mathf.Lerp(1, 0, timer / duration);
+            titre.color = new Color(1,1,1,alpha);
             timer += Time.deltaTime;
             
             yield return null;
         }
-        titre.alpha = 0;
+        alpha = 0;
     }
 }

@@ -71,11 +71,11 @@ namespace IK
             tailTargets = new Vector3[tailJoints.Length + 1];
             tailHeightRatioSave = new float[tailJoints.Length + 1];
 
-            saveOriginalHeight = (tailStart.transform.position.y - tailJoints[tailJoints.Length - 1].position.y);
+            saveOriginalHeight = (referencesScript.pantherPelvis.transform.position.y - tailJoints[tailJoints.Length - 1].position.y);
 
             for (int i = 0; i < tailJoints.Length; i++)
             {
-                tailPositionsSave[i] = tailStart.InverseTransformPoint(tailJoints[i].position);
+                tailPositionsSave[i] = referencesScript.pantherPelvis.InverseTransformPoint(tailJoints[i].position);
                 tailTargets[i] = tailJoints[i].position;
 
                 RaycastHit hit;
@@ -91,7 +91,7 @@ namespace IK
                 tailJoints[tailJoints.Length - 1].position - tailJoints[tailJoints.Length - 1].right * 0.5f;
             
             tailPositionsSave[tailTargets.Length - 1] =
-                tailStart.InverseTransformPoint(tailTargets[tailTargets.Length - 1]);
+                referencesScript.pantherPelvis.InverseTransformPoint(tailTargets[tailTargets.Length - 1]);
             
             tailHeightsSave[tailTargets.Length - 1] = tailHeightsSave[tailTargets.Length - 2];
 
@@ -110,38 +110,43 @@ namespace IK
         
         private void ActualiseTargets()
         {
-            Vector3 saveTailStartAngles = tailStart.eulerAngles;
+            Vector3 saveTailStartAngles = referencesScript.pantherPelvis.eulerAngles;
 
             RaycastHit hit;
             float maxHeight = 0;
-            if (Physics.Raycast(tailStart.position + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
+            if (Physics.Raycast(referencesScript.pantherPelvis.position + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
             {
-                maxHeight = Vector3.Distance(hit.point, tailStart.position);
+                maxHeight = Vector3.Distance(hit.point, referencesScript.pantherPelvis.position);
             }
 
             for (int i = 0; i < tailTargets.Length; i++)
             {
-                Vector3 wantedGlobalPos = Vector3.Slerp(tailTargets[i], 
-                    tailStart.TransformPoint(tailPositionsSave[i] + new Vector3(0, 0, 1f * (saveOriginalHeight - maxHeight))), 
+                Vector3 localPos = tailPositionsSave[i] + new Vector3(2f * (saveOriginalHeight - maxHeight), 0, 0);
+
+                localPos = new Vector3(localPos.x, 
+                    localPos.y, Mathf.Lerp(referencesScript.pantherPelvis.InverseTransformPoint(tailTargets[i]).z, localPos.z, Time.deltaTime * 10));
+                
+                Vector3 wantedGlobalPos = Vector3.Slerp(tailTargets[i], referencesScript.pantherPelvis.TransformPoint(localPos), 
                     Time.deltaTime * (10 - (i / (float)tailTargets.Length) * 8f));
+                
 
                 tailTargets[i] = new Vector3(wantedGlobalPos.x, tailTargets[i].y, wantedGlobalPos.z);
 
-                if (Physics.Raycast(tailTargets[i] + Vector3.up, Vector3.down, out hit, 3.5f, LayerManager.Instance.groundLayer))
+                if (Physics.Raycast(tailTargets[i] + Vector3.up, Vector3.down, out hit, 4f, LayerManager.Instance.groundLayer))
                 {
                     Vector3 wantedPos = hit.point + new Vector3(0, maxHeight * tailHeightRatioSave[i], 0);
-                    tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, wantedPos.y, Time.deltaTime * 5);
+                    tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, wantedPos.y, Time.deltaTime * 10);
                 }
                 else
                 {
-                    tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, tailStart.TransformPoint(tailPositionsSave[i]).y, Time.deltaTime * 10);
+                    tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, referencesScript.pantherPelvis.TransformPoint(tailPositionsSave[i]).y, Time.deltaTime * 10);
                 }
 
                 if (i != 0)
                     Debug.DrawLine(tailTargets[i], tailTargets[i - 1], Color.red);
             }
             
-            tailStart.eulerAngles = saveTailStartAngles;
+            referencesScript.pantherPelvis.eulerAngles = saveTailStartAngles;
         }
         
         
