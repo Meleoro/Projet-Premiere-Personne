@@ -50,6 +50,8 @@ namespace Creature
 
             saveSpeed = navMeshAgent.speed;
 
+            heightModifierFrontTimer = 0.5f;
+            
             StartWalkSpeed();
         }
 
@@ -118,6 +120,7 @@ namespace Creature
 
         private void AdaptHeightBySpeed()
         {
+            ActualiseIdleModificator();
             float currentSpeed = navMeshAgent.velocity.magnitude / agressiveSpeed;
             float wantedYFront = data.frontWantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
             float wantedYBack = data.backWantedHeight * data.heightModifierCurveBySpeed.Evaluate(currentSpeed);
@@ -127,7 +130,9 @@ namespace Creature
             if(Physics.Raycast(bodyIKScript.backJoint.position + Vector3.up, Vector3.down, out groundHitBack, data.maxHeight + 1, LayerManager.Instance.groundLayer))
             {
                 bodyIKScript.backJoint.position =
-                    Vector3.Lerp(bodyIKScript.backJoint.position, groundHitBack.point + Vector3.up * (wantedYBack + bodyIKScript.currentAddedBackY), Time.deltaTime * 5);
+                    Vector3.Lerp(bodyIKScript.backJoint.position, 
+                        groundHitBack.point + Vector3.up * (wantedYBack + bodyIKScript.currentAddedBackY + heightModifierBack), 
+                        Time.deltaTime * 5);
             }
             else
             {
@@ -140,12 +145,43 @@ namespace Creature
             {
                 Vector3 wantedPosition = groundHitFront.point + Vector3.up * (wantedYFront + bodyIKScript.currentAddedFrontY);
 
-                bodyIKScript.frontYDif = wantedPosition.y - bodyIKScript.bodyJoint.position.y;
+                bodyIKScript.frontYDif = wantedPosition.y - bodyIKScript.bodyJoint.position.y + heightModifierFront;
             }
             else
             {
                 bodyIKScript.frontYDif -= Time.deltaTime * 3;
             }
+        }
+
+
+        private float heightModifierFrontTimer;
+        private float heightModifierBackTimer;
+        private float heightModifierFront = -0.4f;
+        private float heightModifierBack;
+        private bool goUpFront;
+        private bool goUpBack;
+        private void ActualiseIdleModificator()
+        {
+            heightModifierFrontTimer += Time.deltaTime;
+            if (heightModifierFrontTimer > 1)
+            {
+                heightModifierFrontTimer = -0.1f;
+                goUpFront = !goUpFront;
+            }
+            
+            heightModifierBackTimer += Time.deltaTime;
+            if (heightModifierBackTimer > 1)
+            {
+                heightModifierBackTimer = -0.1f;
+                goUpBack = !goUpBack;
+            }
+            
+            if (goUpFront) heightModifierFront = Mathf.Lerp(0, 0.1f, heightModifierFrontTimer);
+            else heightModifierFront = Mathf.Lerp(0.1f, 0, heightModifierFrontTimer);
+            
+            if (goUpBack) heightModifierBack = Mathf.Lerp(0, 0.1f, heightModifierBackTimer);
+            else heightModifierBack = Mathf.Lerp(0.1f, 0, heightModifierBackTimer);
+            
         }
 
         private void AdaptSpeedAccordingToLegs()
