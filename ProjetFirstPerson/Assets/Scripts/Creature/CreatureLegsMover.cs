@@ -31,6 +31,8 @@ namespace Creature
         [HideInInspector] public Transform mainTrRotRefFront;
         [HideInInspector] public Transform mainTrRotRefBack;
         [SerializeField] private BodyIK bodyIK;
+        [SerializeField] private DecalScript decalCreatureLeft;
+        [SerializeField] private DecalScript decalCreatureRight;
         private CreatureMover creatureMover;
         private CreatureManager creatureManager;
 
@@ -447,6 +449,16 @@ namespace Creature
             else
                 AudioManager.Instance.PlaySoundOneShot(0, Random.Range(5, 8), 1);
 
+            if (mainTrRotRefFront.InverseTransformPoint(currentLeg.origin.position).x < 0)
+            {
+                Instantiate(decalCreatureLeft, currentLeg.target.position + mainTrRotRefFront.forward * 0.2f, 
+                    Quaternion.Euler(90, mainTrRotRefFront.rotation.eulerAngles.y - 90, -270));
+            }
+            else
+            {
+                Instantiate(decalCreatureRight, currentLeg.target.position + mainTrRotRefFront.forward * 0.2f, 
+                    Quaternion.Euler(90, mainTrRotRefFront.rotation.eulerAngles.y - 90, -90));
+            }
         }
 
         #endregion
