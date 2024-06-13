@@ -31,7 +31,7 @@ public class CinematiqueFinale : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             AudioManager.Instance.PlaySoundOneShot(2,10,0);
-            doorAnim.clip = doorAnim["FermeturePorte"].clip;
+            doorAnim.clip = doorAnim["FermeturePorte 1"].clip;
             doorAnim.Play();
             collider.enabled = false;
         }
@@ -46,7 +46,7 @@ public class CinematiqueFinale : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
         AudioManager.Instance.PlaySoundOneShot(2,10,0);
         lightEtape2.SetActive(true);
-        doorAnim.clip = doorAnim["OuverturePorteFinale"].clip;
+        doorAnim.clip = doorAnim["OuverturePorteFinale 1"].clip;
         doorAnim.Play();
         yield return new WaitForSeconds(1.4f);
         camera.cinematicLookSpeed = lookSpeed;
@@ -57,8 +57,8 @@ public class CinematiqueFinale : MonoBehaviour
         yield return new WaitForSeconds(2.3f);
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.01f, 1));
         titre.gameObject.SetActive(true);
-        yield return new WaitForSeconds(4f);
-        StartCoroutine(FadeOutTitre(5.5f));
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(FadeOutTitre(5f));
         yield return new WaitForSeconds(5.5f);
         SceneManager.LoadScene("MainMenu");
     }
