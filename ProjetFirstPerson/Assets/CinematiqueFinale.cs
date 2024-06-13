@@ -5,6 +5,7 @@ using Creature;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CinematiqueFinale : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class CinematiqueFinale : MonoBehaviour
     public CreatureMover creatureMover;
     public CreatureManager creatureManager;
     public CreatureReferences creatureReferences;
-    public TextMeshProUGUI titre;
+    public Image titre;
 
     private void Start()
     {
@@ -64,14 +65,16 @@ public class CinematiqueFinale : MonoBehaviour
 
     public IEnumerator FadeOutTitre(float duration)
     {
+        float alpha = 1;
         float timer = 0;
         while (timer < duration)
         {
-            titre.alpha = Mathf.Lerp(titre.alpha, 0, timer / duration);
+            alpha = Mathf.Lerp(1, 0, timer / duration);
+            titre.color = new Color(1,1,1,alpha);
             timer += Time.deltaTime;
             
             yield return null;
         }
-        titre.alpha = 0;
+        alpha = 0;
     }
 }
