@@ -43,18 +43,25 @@ public class CinematiqueIntro : MonoBehaviour
         camAnim.Play();
         eyesAnim.Play();
         StartCoroutine(CameraEffects.Instance.FadeScreen(1, 0));
+        
         yield return new WaitForSeconds(9.8f);
-        cam.transform.GetChild(2).transform.localPosition = new Vector3(0, 0.8f, 0);
-        cam.characterCamera.transform.localEulerAngles = new Vector3(348.700012f, 152.01001f, 0);
+        
+        /*cam.transform.GetChild(2).transform.localPosition = new Vector3(0, 0.8f, 0);
+        cam.characterCamera.transform.localEulerAngles = new Vector3(348.700012f, 152.01001f, 0);*/
+        
         yield return new WaitForSeconds(0.2f);
+        
         eyesAnim.gameObject.SetActive(false);
         HUD.SetActive(true);
         triggerLog.SetActive(true);
-        cam.isInCinematicIntro = false;
-        yield return new WaitForSeconds(0.3f);
-        cam.transform.GetChild(2).transform.localPosition = new Vector3(0, 0.8f, 0);
-        cam.characterCamera.transform.localEulerAngles = new Vector3(348.700012f, 152.01001f, 0);
+        
+        //yield return new WaitForSeconds(0.25f);
+        
+        /*cam.transform.GetChild(2).transform.localPosition = new Vector3(0, 0.8f, 0);
+        cam.characterCamera.transform.localEulerAngles = new Vector3(348.700012f, 152.01001f, 0);*/
+        cam.ResetCamera();
         move.canMove = true;
+        cam.isInCinematicIntro = false;
         cam.canRotate = true;
         cam.canMove = true;
         tablettePhoto.canInOut = true;

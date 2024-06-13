@@ -41,8 +41,8 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     
     [Header("Private Infos")] 
     private Vector2 inputDirection;
-    private Vector2 currentRotation;
-    private Vector2 lerpedRotation;
+    public Vector2 currentRotation;
+    public Vector2 lerpedRotation;
     private float moveFeelTimer;
     private bool moveFeelGoDown;
     private Coroutine upDownCoroutine;
@@ -83,6 +83,14 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
         }
     }
 
+    public void ResetCamera()
+    {
+        currentRotation = (Vector2)characterCamera.rotation.eulerAngles + new Vector2(-360, 0);
+        lerpedRotation = currentRotation;
+        wantedCameraPos.rotation = Quaternion.Euler(0, wantedCameraPos.eulerAngles.y, 0);
+        //characterCamera.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, tiltRotAddedPos.z);
+    }
+
     public void ComponentUpdate()
     {
         //Application.targetFrameRate = 60;
@@ -112,7 +120,8 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     // MOVES THE CAMERA
     private void MoveCamera()
     {
-        characterCamera.position = Vector3.Lerp(characterCamera.position, wantedCameraPos.position + new Vector3(0, crouchModifierY, 0) + tiltPosAddedPos, Time.deltaTime * 50);
+        characterCamera.position = Vector3.Lerp(characterCamera.position, 
+            wantedCameraPos.position + new Vector3(0, crouchModifierY, 0) + tiltPosAddedPos, Time.deltaTime * 50);
     }
 
     // ROTATES THE CAMERA
@@ -120,7 +129,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
     {
         if (isInCinematicIntro)
         {
-            characterCamera.transform.rotation = wantedCameraPos.transform.rotation;
+            characterCamera.rotation = wantedCameraPos.rotation;
             return;
         }
         
@@ -142,7 +151,7 @@ public class CameraComponent : MonoBehaviour, ICharacterComponent
         else
         {
             characterCamera.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, tiltRotAddedPos.z);
-            wantedCameraPos.rotation = Quaternion.Euler(0, lerpedRotation.y, 0);
+            wantedCameraPos.rotation = Quaternion.Euler(0, currentRotation.y, 0);
         }
     }
     
