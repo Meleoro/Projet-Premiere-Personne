@@ -34,8 +34,6 @@ public class TerrainDetector
     public bool GetIsWalkingOnRock(Vector3 position)
     {
         Vector3 terrainCord = ConvertToSplatMapCoordinate(position);
-        int activeTerrainIndex = 0;
-        float largestOpacity = 0f;
 
         if (splatmapData[(int)terrainCord.z, (int)terrainCord.x, rockIndex] > 0.3f)
         {

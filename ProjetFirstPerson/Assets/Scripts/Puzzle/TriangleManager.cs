@@ -14,7 +14,6 @@ namespace Puzzle
 
         [Header("Private Infos")]
         private bool isMovingDalles;
-        private bool won;
         [HideInInspector] public DalleTriangle selectedDalle1;
         private DalleTriangle selectedDalle2;
 
@@ -134,7 +133,6 @@ namespace Puzzle
                 dalles[i].canMove = false;
             }
             yield return new WaitForSeconds(1f);
-            won = true;
 
             interactScript.GetOutInteraction();
 
