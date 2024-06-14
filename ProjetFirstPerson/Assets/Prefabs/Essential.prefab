@@ -1754,6 +1754,8 @@ MonoBehaviour:
   cameraShakeRotationIntensityFall: 4.5
   isHurted: 0
   currentTriggerPoursuiteF: {fileID: 0}
+  interactPuzzle: {fileID: 0}
+  eyeAnim: {fileID: 0}
   isDying: 0
   lastCheckPoint: {x: 0, y: 0, z: 0}
   cam: {fileID: 3956260122818378176}
@@ -1789,6 +1791,8 @@ MonoBehaviour:
   canMove: 1
   tiltPosAddedPos: {x: 0, y: 0, z: 0}
   tiltRotAddedPos: {x: 0, y: 0, z: 0}
+  currentRotation: {x: 0, y: 0}
+  lerpedRotation: {x: 0, y: 0}
   isInCinematic: 0
   isInCinematicIntro: 0
   cinematicLookSpeed: 0.8
@@ -1952,7 +1956,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 806445747457324766}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!82 &5456574144194047253
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15967,7 +15971,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7498477984615012159}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!114 &5447193768710624759
 MonoBehaviour:
   m_ObjectHideFlags: 0

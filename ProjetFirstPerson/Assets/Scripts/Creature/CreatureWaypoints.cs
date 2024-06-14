@@ -213,19 +213,22 @@ namespace Creature
         {
             waypoints = newWaypointManager.waypoints;
 
+            waitTimer = 0;
+            currentIndex = 0;
+            
             if (tp)
             {
                 Vector3 moveDir = waypoints[0].transform.position - transform.position;
                 transform.parent.transform.position += moveDir;
+                
+                creatureMoverScript.tailIKScript.RebootTargets();
             }
 
-            creatureMoverScript.tailIKScript.RebootTargets();
-
-            waitTimer = 0;
-            currentIndex = 0;
-
-            RestartWaypointBehavior();
-            NextWaypoint();
+            if (mainScript.currentState != CreatureState.aggressive || tp)
+            {
+                RestartWaypointBehavior();
+                NextWaypoint();
+            }
         }
 
         private void ResetCurrentWaypointManager()
