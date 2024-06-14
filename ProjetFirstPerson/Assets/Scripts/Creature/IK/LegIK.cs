@@ -36,7 +36,7 @@ namespace IK
         private Transform joint0;
         private Transform joint1;
         private Transform joint2;
-        private Transform effector;
+        public Transform effector;
         private Transform[] foot;
         [SerializeField] private Transform transformRotTrRef;
         [SerializeField] private CreatureMover moveScript;

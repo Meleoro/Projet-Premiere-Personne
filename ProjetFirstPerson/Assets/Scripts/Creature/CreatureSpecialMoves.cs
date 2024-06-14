@@ -13,10 +13,12 @@ namespace Creature
         [Header("Private Infos")]
         private bool isDoingHugeTurn;
         private Coroutine lookLeftRightCoroutine;
+        private Coroutine turnCoroutine;
 
         [Header("References")]
         [SerializeField] private CreatureMover bodyScript;
         [SerializeField] private CreatureLegsMover legsScript;
+        [SerializeField] private CreatureManager manager;
         private BodyIK bodyIKScript;
         private HeadIK headIKScript;
 
@@ -41,6 +43,16 @@ namespace Creature
                 StopCoroutine(lookLeftRightCoroutine);
                 headIKScript.isLookingLeftRight = false;
             }
+
+            if (turnCoroutine != null)
+            {
+                StopCoroutine(turnCoroutine);
+
+                bodyScript.forcedRot = Vector3.zero;
+                bodyScript.forcedPos = Vector3.zero;
+                
+                isDoingHugeTurn = false;
+            }
         }
 
 
@@ -48,14 +60,15 @@ namespace Creature
 
         private void VerifyHugeTurn()
         {
-            if (isDoingHugeTurn || bodyScript.isRunning) return;
+            if (isDoingHugeTurn) return;
 
             Vector3 dir1 = bodyIKScript.target.position - bodyScript.transform.position;
             Vector3 dir2 = bodyIKScript.bodyJoint.position - bodyIKScript.backJoint.position;
             
             if (Vector3.Angle(dir1, dir2) > 150)
             {
-                StartCoroutine(DoHugeTurnCoroutine(Vector3.Distance(bodyScript.wantedPos, bodyScript.transform.position) < 3));
+                turnCoroutine = StartCoroutine(DoHugeTurnCoroutine(Vector3.Distance(bodyScript.wantedPos, bodyScript.transform.position) < 3 || 
+                                                                manager.currentState != CreatureState.none));
             }
         }
 

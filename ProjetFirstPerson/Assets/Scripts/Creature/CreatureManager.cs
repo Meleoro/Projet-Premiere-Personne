@@ -20,6 +20,7 @@ namespace Creature
         
         [Header("Debug Parameters")] 
         public bool debugIK;
+        public bool cantSeeOrHear;
         
         [Header("View / Hear Parameters")] 
         [SerializeField] private float earLoudRadius;
@@ -110,10 +111,13 @@ namespace Creature
 
             // Do AI Part
             float saveSuspision = currentSuspicion;
-            
-            DoEarAI();
-            DoViewAI();
-            ManageSuspision();
+
+            if (!cantSeeOrHear)
+            {
+                DoEarAI();
+                DoViewAI();
+                ManageSuspision();
+            }
             
             if (saveSuspision == currentSuspicion && currentSuspicion > 0 && !attackScript.attacked)
                 currentSuspicion -= (currentState == CreatureState.aggressive) ? Time.deltaTime * suspisionLostSpeedAggressive : Time.deltaTime * suspisionLostSpeed;
@@ -323,6 +327,7 @@ namespace Creature
             {
                 if (currentState != CreatureState.aggressive)
                 {
+                    specialMovesScript.CancelSpecialMoves();
                     creatureRefScript.coleretteAnimator.SetBool("IsOpen", true);
                     StartCoroutine(moveScript.StartAggressiveBehavior(detectedWaitDuration));
                     headIK.FollowChara();

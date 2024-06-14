@@ -164,8 +164,24 @@ namespace Creature
             waitTimer = 0;
             currentWaypoint = waypoints[currentIndex];
             creatureMoverScript.wantedPos = currentWaypoint.transform.position;
+
+            StartCoroutine(ManualAccelerationWaypoint());
         }
 
+        private IEnumerator ManualAccelerationWaypoint()
+        {
+            float timer = 0;
+
+            while (timer < 1)
+            {
+                timer += Time.deltaTime;
+
+                creatureMoverScript.navMeshAgent.acceleration = Mathf.Lerp(0, 8, timer);
+                
+                yield return null;
+            }
+        }
+        
         private int GetNearestWaypointIndex()
         {
             int index = 0;
@@ -213,19 +229,22 @@ namespace Creature
         {
             waypoints = newWaypointManager.waypoints;
 
+            waitTimer = 0;
+            currentIndex = 0;
+            
             if (tp)
             {
                 Vector3 moveDir = waypoints[0].transform.position - transform.position;
                 transform.parent.transform.position += moveDir;
+                
+                creatureMoverScript.tailIKScript.RebootTargets();
             }
 
-            creatureMoverScript.tailIKScript.RebootTargets();
-
-            waitTimer = 0;
-            currentIndex = 0;
-
-            RestartWaypointBehavior();
-            NextWaypoint();
+            if (mainScript.currentState != CreatureState.aggressive || tp)
+            {
+                RestartWaypointBehavior();
+                NextWaypoint();
+            }
         }
 
         private void ResetCurrentWaypointManager()
