@@ -61,8 +61,8 @@ namespace Creature
 
             attackCollider.enabled = true;
 
-            moveScript.RestartMoving();
-            waypointsScript.DoAttack(saveTr, charSaveTr, attackMaxDistanceWall);
+            //moveScript.RestartMoving();
+            //waypointsScript.DoAttack(saveTr, charSaveTr, attackMaxDistanceWall);
             moveScript.StartAttackSpeed(attackSpeed);
             
             yield return new WaitForSeconds(attackDuration);

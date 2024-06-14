@@ -17,6 +17,7 @@ namespace Creature
         [Header("References")]
         [SerializeField] private CreatureMover bodyScript;
         [SerializeField] private CreatureLegsMover legsScript;
+        [SerializeField] private CreatureManager manager;
         private BodyIK bodyIKScript;
         private HeadIK headIKScript;
 
@@ -48,7 +49,7 @@ namespace Creature
 
         private void VerifyHugeTurn()
         {
-            if (isDoingHugeTurn || bodyScript.isRunning) return;
+            if (isDoingHugeTurn || manager.currentState != CreatureState.aggressive) return;
 
             Vector3 dir1 = bodyIKScript.target.position - bodyScript.transform.position;
             Vector3 dir2 = bodyIKScript.bodyJoint.position - bodyIKScript.backJoint.position;
