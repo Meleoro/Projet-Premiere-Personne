@@ -121,7 +121,7 @@ namespace IK
 
             for (int i = 0; i < tailTargets.Length; i++)
             {
-                Vector3 localPos = tailPositionsSave[i] + new Vector3(2f * (saveOriginalHeight - maxHeight), 0, 0);
+                Vector3 localPos = tailPositionsSave[i] + new Vector3(0, 0, -2f * (saveOriginalHeight - maxHeight));
 
                 localPos = new Vector3(localPos.x, 
                     localPos.y, Mathf.Lerp(referencesScript.pantherPelvis.InverseTransformPoint(tailTargets[i]).z, localPos.z, Time.deltaTime * 10));
@@ -158,7 +158,7 @@ namespace IK
             else if (atanOrigin < -80f && wantedAtan > 80f)
                 atanOrigin += 360f;
             
-            if (wantedAtan < -80f && atanToRemove > 80f)
+            else if (wantedAtan < -80f && atanToRemove > 80f)
                 atanToRemove -= 360f;
             else if (atanToRemove < -80f && wantedAtan > 80f)
                 atanToRemove += 360f;
@@ -186,7 +186,7 @@ namespace IK
                 else if (newAtan < -80f && currentAtan > 80f)
                     newAtan += 360f;
 
-                if (currentAtan < -80f && newAtan > 80f)
+                else if (currentAtan < -80f && newAtan > 80f)
                     currentAtan -= 360f;
                 else if (newAtan < -80f && currentAtan > 80f)
                     currentAtan += 360f;

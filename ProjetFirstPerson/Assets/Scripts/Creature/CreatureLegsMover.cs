@@ -378,7 +378,7 @@ namespace Creature
                     if(forceFront)
                         dist = Vector3.Distance(hit.point, mainTrRotRefBack.position);
 
-                    float maxDistMultiplier = Mathf.Lerp(0.85f, 1.05f,
+                    float maxDistMultiplier = Mathf.Lerp(0.95f, 1.05f,
                         creatureMover.navMeshAgent.velocity.magnitude / creatureMover.navMeshAgent.speed);
                     
                     if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * maxDistMultiplier)
@@ -413,19 +413,19 @@ namespace Creature
             AnimationCurve currentYCurve = currentLeg.isFrontLeg ? data.frontLegMovementYCurve : data.backLegMovementYCurve;
             float timer = 0;
             RaycastHit hit;
+            float wantedY = currentLeg.target.position.y;
 
             while (timer < moveDuration)
             {
                 timer += Time.deltaTime;
                 
-                float wantedY = 0;
                 float addedY = currentYCurve.Evaluate(timer / moveDuration);
                 currentLeg.currentAddedY = addedY;
 
                 if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
                         LayerManager.Instance.groundLayer))
                 {
-                    wantedY = hit.point.y + addedY * yMultiplier;
+                    wantedY = Mathf.Lerp(wantedY, hit.point.y + addedY * yMultiplier, Time.deltaTime * 18);
                 }
                 
                 Vector3 wantedPos = Vector3.Lerp(startPos, localEnd, timer / moveDuration) + new Vector3(0, addedY, 0);
@@ -458,12 +458,12 @@ namespace Creature
 
             if (mainTrRotRefFront.InverseTransformPoint(currentLeg.origin.position).x < 0)
             {
-                Instantiate(decalCreatureLeft, currentLeg.target.position + mainTrRotRefFront.forward * 0.2f, 
+                Instantiate(decalCreatureLeft, currentLeg.scriptIK.effector.position + mainTrRotRefFront.forward * 0.2f + Vector3.down * 0.6f, 
                     Quaternion.Euler(90, mainTrRotRefFront.rotation.eulerAngles.y - 90, -270));
             }
             else
             {
-                Instantiate(decalCreatureRight, currentLeg.target.position + mainTrRotRefFront.forward * 0.2f, 
+                Instantiate(decalCreatureRight, currentLeg.scriptIK.effector.position + mainTrRotRefFront.forward * 0.2f + Vector3.down * 0.6f, 
                     Quaternion.Euler(90, mainTrRotRefFront.rotation.eulerAngles.y - 90, -90));
             }
         }
