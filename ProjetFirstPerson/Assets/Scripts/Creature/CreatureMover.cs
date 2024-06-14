@@ -92,6 +92,10 @@ namespace Creature
         {
             // Y Rotation
             Vector3 dirToRotateTo = navMeshAgent.velocity.normalized;
+
+            if (navMeshAgent.velocity.magnitude < 0.01f)
+                dirToRotateTo = currentDir;
+            
             if (forcedRot != Vector3.zero) dirToRotateTo = forcedRot;
             else if (forcedPos != Vector3.zero) dirToRotateTo = forcedPos - legsScript.mainTrRotRefBack.position;
 

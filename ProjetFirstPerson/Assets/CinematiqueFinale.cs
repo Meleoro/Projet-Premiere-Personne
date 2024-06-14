@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ArthurUtilities;
 using Creature;
 using TMPro;
 using UnityEngine;
@@ -21,6 +22,12 @@ public class CinematiqueFinale : MonoBehaviour
     public CreatureReferences creatureReferences;
     public Image titre;
 
+    [Header("Parameters Shake")] 
+    [SerializeField] private float shakeDuration;
+    [SerializeField] private float shakeAmplitude;
+    [SerializeField] private float shakeChangeFrameDuration;
+    [SerializeField] private float shakeRotIntensity;
+    
     private void Start()
     {
         collider = GetComponent<BoxCollider>();
@@ -34,6 +41,9 @@ public class CinematiqueFinale : MonoBehaviour
             doorAnim.clip = doorAnim["FermeturePorte 1"].clip;
             doorAnim.Play();
             collider.enabled = false;
+            
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
+                shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
         }
     }
     

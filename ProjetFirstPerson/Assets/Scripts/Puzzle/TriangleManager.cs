@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ArthurUtilities;
 using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
 
@@ -12,9 +13,14 @@ namespace Puzzle
         [SerializeField] DalleSymbols[] wantedOrder = new DalleSymbols[5];
         [SerializeField] private float moveDuration;
 
+        [Header("Parameters Shake")] 
+        [SerializeField] private float shakeDuration;
+        [SerializeField] private float shakeAmplitude;
+        [SerializeField] private float shakeChangeFrameDuration;
+        [SerializeField] private float shakeRotIntensity;
+        
         [Header("Private Infos")]
         private bool isMovingDalles;
-        private bool won;
         [HideInInspector] public DalleTriangle selectedDalle1;
         private DalleTriangle selectedDalle2;
 
@@ -134,10 +140,12 @@ namespace Puzzle
                 dalles[i].canMove = false;
             }
             yield return new WaitForSeconds(1f);
-            won = true;
 
             interactScript.GetOutInteraction();
 
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
+                shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
+            
             anim.clip = anim["Open"].clip;
             anim.Play();
             yield return new WaitForSeconds(0.2f);

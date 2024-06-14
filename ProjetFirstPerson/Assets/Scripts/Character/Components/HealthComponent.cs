@@ -2,6 +2,7 @@ using ArthurUtilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Puzzle;
 using UnityEngine;
 
 public class HealthComponent : MonoBehaviour, ICharacterComponent
@@ -29,6 +30,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     [HideInInspector] public Action DieAction;
     public bool isHurted;
     public TriggerPoursuiteFinale currentTriggerPoursuiteF;
+    public PuzzleInteract interactPuzzle;
+    public Animation eyeAnim;
 
     [Header("Private Infos")] 
     public bool isDying;
@@ -93,6 +96,15 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     {
         if (isInvincible || isDying) return;
 
+        if(CharacterManager.Instance.isInteracting)
+        {
+            interactPuzzle.GetOutInteraction();
+            interactPuzzle.GetOutInteraction();
+        }
+        
+        AudioManager.Instance.PlaySoundOneShot(0,11,1);
+
+        
         if(isHurted && !isDying)
             StartCoroutine(Die());
         else 
@@ -146,6 +158,9 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         AudioManager.Instance.PlaySoundOneShot(1,4,0);
         isDying = true;
         anim.clip = anim["Death"].clip;
+        eyeAnim.gameObject.SetActive(true);
+        eyeAnim.clip = eyeAnim["DeathEyeClose"].clip;
+        eyeAnim.Play();
         anim.Play();
         cam.canRotate = false;
         move.canMove = false;
@@ -168,13 +183,13 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         DieAction.Invoke();
 
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.75f, 0));
+        eyeAnim.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
         cam.canMove = true;
         cam.canRotate = true;
         move.rb.isKinematic = false;
         move.canMove = true;
         isDying = false;
-        
         DieAction.Invoke();
     }
 }

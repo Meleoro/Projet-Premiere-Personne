@@ -44,6 +44,7 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
     private float walkSoundTimer;
     private float walkSoundDuration;
     private bool isInKnockback;
+    private List<TerrainDetector> terrainDetectors = new List<TerrainDetector>();
 
     [Header("References")] 
     public Rigidbody rb;
@@ -268,6 +269,48 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
 
         if(walkSoundTimer > walkSoundDuration)
         {
+            bool isOnRock = false;
+
+            RaycastHit hitInfo;
+            if (Physics.Raycast(transform.position, Vector3.down, out hitInfo, 3f, LayerManager.Instance.groundLayer))
+            {
+                if (hitInfo.collider.TryGetComponent<TerrainCollider>(out TerrainCollider terrain))
+                {
+                    int wantedIndex = -1;
+                    for (int i = 0; i < terrainDetectors.Count; i++)
+                    {
+                        if (terrainDetectors[i].terrainData == terrain.terrainData)
+                        {
+                            wantedIndex = i;
+                            break;
+                        }
+                    }
+
+                    
+                    if (wantedIndex == -1)
+                    {
+                        terrainDetectors.Add(new TerrainDetector(terrain.terrainData, hitInfo.collider.GetComponent<Terrain>(), hitInfo.collider.GetComponent<TerrainRock>().rockLayerIndex));
+                        
+                        if (terrainDetectors[^1].GetIsWalkingOnRock(transform.position))
+                        {
+                            isOnRock = true;
+                        }
+                    }
+
+                    else
+                    {
+                        if (terrainDetectors[wantedIndex].GetIsWalkingOnRock(transform.position))
+                        {
+                            isOnRock = true;
+                        }
+                    }
+                }
+                else if (hitInfo.collider.CompareTag("RockGround"))
+                {
+                    isOnRock = true;
+                }
+            }
+            
             walkSoundTimer = 0;
             AudioManager.Instance.PlaySoundOneShot(1, Random.Range(6, 16), 0);
             CreateFootDecal();
