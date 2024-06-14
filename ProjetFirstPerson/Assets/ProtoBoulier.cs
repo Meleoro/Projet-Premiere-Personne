@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ArthurUtilities;
 using Puzzle;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,6 +14,12 @@ public class ProtoBoulier : MonoBehaviour
     
     public List<ProtoBoulier> allBouliers;
     public Animation anim;
+    
+    [Header("Parameters Shake")] 
+    [SerializeField] private float shakeDuration;
+    [SerializeField] private float shakeAmplitude;
+    [SerializeField] private float shakeChangeFrameDuration;
+    [SerializeField] private float shakeRotIntensity;
     
     public void CheckIfGood()
     {
@@ -45,6 +52,9 @@ public class ProtoBoulier : MonoBehaviour
             anim.Play();
             interactManager.GetOutInteraction();
             Debug.Log("win");
+            
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
+                shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
         }
     }
 }
