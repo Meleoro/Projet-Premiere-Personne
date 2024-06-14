@@ -323,6 +323,7 @@ namespace Creature
             {
                 if (currentState != CreatureState.aggressive)
                 {
+                    specialMovesScript.CancelSpecialMoves();
                     creatureRefScript.coleretteAnimator.SetBool("IsOpen", true);
                     StartCoroutine(moveScript.StartAggressiveBehavior(detectedWaitDuration));
                     headIK.FollowChara();

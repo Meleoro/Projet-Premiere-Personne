@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ArthurUtilities;
 using Puzzle;
 using UnityEngine;
 
@@ -10,6 +11,12 @@ public class PorteCylindre : MonoBehaviour
     public Animation anim;
     public PuzzleInteract interactScript;
     //public string animationName;
+
+    [Header("Parameters Shake")] 
+    [SerializeField] private float shakeDuration;
+    [SerializeField] private float shakeAmplitude;
+    [SerializeField] private float shakeChangeFrameDuration;
+    [SerializeField] private float shakeRotIntensity;
 
     public void CheckIfWin()
     {
@@ -33,7 +40,12 @@ public class PorteCylindre : MonoBehaviour
         {
             cylinders[i].isMoving = true;
         }
+        
         yield return new WaitForSeconds(1);
+        
+        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
+            shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
+        
         interactScript.GetOutInteraction();
         //anim.clip = anim["OpenCylindresIntro"].clip;
         anim.Play();

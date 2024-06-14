@@ -180,13 +180,14 @@ namespace Creature
                         }
                     }
 
-                    if (VerifyLegNeedsToMove(legs[i], false) || (legs[i].isFrontLeg && currentMovingLegsFront == 1 && creatureMover.isRunning && !cooldownFront) || 
-                        (!legs[i].isFrontLeg && currentMovingLegsBack == 1 && creatureMover.isRunning && !cooldownBack))
+                    if (VerifyLegNeedsToMove(legs[i], false) 
+                        || (legs[i].isFrontLeg && currentMovingLegsFront == 1 && creatureMover.isRunning && !cooldownFront) 
+                        || (!legs[i].isFrontLeg && currentMovingLegsBack == 1 && creatureMover.isRunning && !cooldownBack))
                     {
                         Vector3 endPos = GetNextPos(legs[i], creatureMover.isRunning);
                         float moveDuration = legs[i].isFrontLeg ? data.frontLegMoveDuration : data.backLegMoveDuration;
                         float currentSpeedRatio = creatureMover.navMeshAgent.speed / creatureMover.agressiveSpeed;
-                        float currentRotRatio = bodyIK.currentRotationDif;
+                        float currentRotRatio = Mathf.Abs(bodyIK.currentRotationDif);
 
                         float YModifierBySpeed = legs[i].isFrontLeg ? data.frontLegYModifierBySpeed.Evaluate(currentSpeedRatio) : data.backLegYModifierBySpeed.Evaluate(currentSpeedRatio);
                         float YModifierByRot = legs[i].isFrontLeg ? data.frontLegYModifierByRot.Evaluate(currentRotRatio) : data.backLegYModifierByRot.Evaluate(currentRotRatio);
@@ -196,12 +197,16 @@ namespace Creature
                         if (endPos != Vector3.zero)
                         {
                             StartCoroutine(CooldownMoveLeg());
-                            StartCoroutine(MoveLeg(legs[i], endPos, moveDuration * durationModifierByRot * durationModifierBySpeed, YModifierBySpeed * YModifierByRot));
+                            StartCoroutine(MoveLeg(legs[i], endPos, moveDuration * durationModifierByRot * durationModifierBySpeed, 
+                                YModifierBySpeed * YModifierByRot));
                         }
 
                         if (creatureMover.isRunning && creatureMover.navMeshAgent.velocity.magnitude > 2)
                         {
-                            StartCoroutine(CooldownLegRun(0.1f, legs[i].isFrontLeg));
+                            if (legs[i].isFrontLeg) cooldownFront = true;
+                            else cooldownBack = true;
+                            
+                            StartCoroutine(CooldownLegRun(0.14f, legs[i].isFrontLeg));
                         }
                     }
                 }
@@ -230,9 +235,6 @@ namespace Creature
 
         private IEnumerator CooldownLegRun(float duration, bool front)
         {
-            if (front) cooldownFront = true;
-            else cooldownBack = true;
-            
             yield return new WaitForSeconds(duration);
             
             if (front) cooldownFront = false;
@@ -247,10 +249,12 @@ namespace Creature
 
             if (currentLeg.timerCooldownMove <= 0)
             {
-                if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z > 0.1f)
+                if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z + data.frontLegsOffset > 0.15f &&
+                    distOriginTarget > data.maxFrontLegDistWalk * 0.95)
                     return false;
                 
-                if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > 0.1f)
+                if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z + data.backLegsOffset > 0.15f&&
+                    distOriginTarget > data.maxBackLegDistWalk * 0.95)
                     return false;
                 
                 if (shouldntMove && !creatureMover.isRunning)
@@ -273,6 +277,9 @@ namespace Creature
 
                 else if (creatureMover.isRunning)
                 {
+                    if ((cooldownFront && currentLeg.isFrontLeg) || (cooldownBack && !currentLeg.isFrontLeg))
+                        return false;
+                    
                     if (currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun)
                         return true;
 
@@ -308,7 +315,7 @@ namespace Creature
                 }
             }
 
-            if (creatureMover.navMeshAgent.velocity.magnitude < creatureMover.agressiveSpeed * 0.5f)
+            if (creatureMover.navMeshAgent.velocity.magnitude < 2)
             {
                 return true;
             }
@@ -371,7 +378,7 @@ namespace Creature
                     if(forceFront)
                         dist = Vector3.Distance(hit.point, mainTrRotRefBack.position);
 
-                    float maxDistMultiplier = Mathf.Lerp(0.9f, 1.05f,
+                    float maxDistMultiplier = Mathf.Lerp(0.85f, 1.05f,
                         creatureMover.navMeshAgent.velocity.magnitude / creatureMover.navMeshAgent.speed);
                     
                     if (dist > currentMax && Vector3.Distance(hit.point, origin) < legMaxDist * maxDistMultiplier)
