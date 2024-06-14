@@ -164,8 +164,24 @@ namespace Creature
             waitTimer = 0;
             currentWaypoint = waypoints[currentIndex];
             creatureMoverScript.wantedPos = currentWaypoint.transform.position;
+
+            StartCoroutine(ManualAccelerationWaypoint());
         }
 
+        private IEnumerator ManualAccelerationWaypoint()
+        {
+            float timer = 0;
+
+            while (timer < 1)
+            {
+                timer += Time.deltaTime;
+
+                creatureMoverScript.navMeshAgent.acceleration = Mathf.Lerp(0, 8, timer);
+                
+                yield return null;
+            }
+        }
+        
         private int GetNearestWaypointIndex()
         {
             int index = 0;
