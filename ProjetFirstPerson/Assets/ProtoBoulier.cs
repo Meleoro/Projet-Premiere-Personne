@@ -16,6 +16,7 @@ public class ProtoBoulier : MonoBehaviour
     public Animation anim;
     
     [Header("Parameters Shake")] 
+    [SerializeField] private float waitBeforeShake;
     [SerializeField] private float shakeDuration;
     [SerializeField] private float shakeAmplitude;
     [SerializeField] private float shakeChangeFrameDuration;
@@ -52,9 +53,15 @@ public class ProtoBoulier : MonoBehaviour
             anim.Play();
             interactManager.GetOutInteraction();
             Debug.Log("win");
-            
-            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
-                shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
+            StartCoroutine(PlayDoorEffects());
         }
+    }
+
+    public IEnumerator PlayDoorEffects()
+    {
+        yield return new WaitForSeconds(waitBeforeShake);
+        AudioManager.Instance.PlaySoundOneShot(2,10,0);
+        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
+            shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
     }
 }
