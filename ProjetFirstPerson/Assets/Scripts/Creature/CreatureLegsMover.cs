@@ -249,10 +249,12 @@ namespace Creature
 
             if (currentLeg.timerCooldownMove <= 0)
             {
-                if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z + data.frontLegsOffset > 0.15f)
+                if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z + data.frontLegsOffset > 0.15f &&
+                    distOriginTarget > data.maxFrontLegDistWalk * 0.95)
                     return false;
                 
-                if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z + data.backLegsOffset > 0.15f)
+                if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z + data.backLegsOffset > 0.15f&&
+                    distOriginTarget > data.maxBackLegDistWalk * 0.95)
                     return false;
                 
                 if (shouldntMove && !creatureMover.isRunning)
