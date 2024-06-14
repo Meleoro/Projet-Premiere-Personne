@@ -155,11 +155,12 @@ public class LogsScripts : MonoBehaviour
     
     public void PlayUISound()
     {
-        AudioManager.Instance.PlaySoundOneShot(1, 16, 1);
+        AudioManager.Instance.PlaySoundOneShot(1, 16, 0);
     }
 
      private IEnumerator TypeText(string text)
     {
+        AudioManager.Instance.PlaySoundOneShot(1, 23, 0);
         logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
         isWriting = true;
         InformationArea.text = "";
