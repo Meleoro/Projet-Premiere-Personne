@@ -413,7 +413,7 @@ namespace Creature
             AnimationCurve currentYCurve = currentLeg.isFrontLeg ? data.frontLegMovementYCurve : data.backLegMovementYCurve;
             float timer = 0;
             RaycastHit hit;
-            float wantedY = currentLeg.target.position.y;
+            float wantedY = mainTrRotRefBack.TransformPoint(currentLeg.scriptIK.saveTargetOriginOffset).y;
 
             while (timer < moveDuration)
             {
