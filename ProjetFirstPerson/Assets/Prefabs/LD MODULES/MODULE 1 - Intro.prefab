@@ -1411,6 +1411,7 @@ GameObject:
   - component: {fileID: 89157967325030279}
   - component: {fileID: 1612170480902658042}
   - component: {fileID: 7978579590480340181}
+  - component: {fileID: 2910827296718877353}
   m_Layer: 6
   m_Name: Terrain_(-173.50, 0.00, -348.30)
   m_TagString: Untagged
@@ -1493,6 +1494,19 @@ TerrainCollider:
   m_TerrainData: {fileID: 15600000, guid: b14c96f68e59b6245a3e317629dec190, type: 2}
   m_EnableTreeColliders: 1
 --- !u!114 &7978579590480340181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2152220125535587502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67c356f9bf38584786650ea072a2f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockLayerIndex: 1
+--- !u!114 &2910827296718877353
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4604,6 +4618,7 @@ GameObject:
   - component: {fileID: 1895037202246772238}
   - component: {fileID: 3659894065125557299}
   - component: {fileID: 1540870532301076425}
+  - component: {fileID: 1310609395270366076}
   m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
@@ -4686,6 +4701,19 @@ TerrainCollider:
   m_TerrainData: {fileID: 15600000, guid: 153b238c83f1bf04fab864782d56fdf6, type: 2}
   m_EnableTreeColliders: 1
 --- !u!114 &1540870532301076425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4979732809733691508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67c356f9bf38584786650ea072a2f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockLayerIndex: 3
+--- !u!114 &1310609395270366076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13250,7 +13278,7 @@ PrefabInstance:
     - target: {fileID: 4727626143013529692, guid: 389b8dc04437c4642aafb848d1c8e500,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.2
+      value: -0.75
       objectReference: {fileID: 0}
     - target: {fileID: 4727626143013529692, guid: 389b8dc04437c4642aafb848d1c8e500,
         type: 3}
@@ -13260,7 +13288,7 @@ PrefabInstance:
     - target: {fileID: 4727626143013529692, guid: 389b8dc04437c4642aafb848d1c8e500,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.29
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4727626143013529692, guid: 389b8dc04437c4642aafb848d1c8e500,
         type: 3}
@@ -25885,11 +25913,12 @@ PrefabInstance:
     - target: {fileID: 1188569847465540733, guid: c3f8fe04a2f2f74479c2545b043ebb9f,
         type: 3}
       propertyPath: myInfo
-      value: "Quand un \xE9l\xE9ment attire votre curiosit\xE9, prenez le en photo
-        avec votre tablette. Maintenez clic droit pour regarder au travers de son
-        objectif et appuyez sur clic gauche pour immortaliser votre d\xE9couverte.
-        Vous pouvez ensuite consulter et organiser vos recherches dans la section
-        Board de ta tablette en appuyant sur Tab."
+      value: "Quand un \xE9l\xE9ment attire votre curiosit\xE9, <color=orange>prenez
+        le en photo </color> avec votre tablette. <color=orange>Maintenez clic droit</color>
+        pour regarder au travers de son objectif et appuyez sur <color=orange>clic
+        gauche</color> pour immortaliser votre d\xE9couverte. Vous pouvez ensuite
+        consulter et organiser vos recherches dans la section <color=orange>Board</color>
+        de votre tablette en appuyant sur <color=orange>Tab</color>."
       objectReference: {fileID: 0}
     - target: {fileID: 1188569847465540733, guid: c3f8fe04a2f2f74479c2545b043ebb9f,
         type: 3}
@@ -38775,6 +38804,21 @@ PrefabInstance:
       objectReference: {fileID: 7717330262067965950}
     - target: {fileID: 2727060314856482176, guid: e5e49599e85848f46a5f10911f42d30b,
         type: 3}
+      propertyPath: shakeAmplitude
+      value: 0.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2727060314856482176, guid: e5e49599e85848f46a5f10911f42d30b,
+        type: 3}
+      propertyPath: shakeRotIntensity
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2727060314856482176, guid: e5e49599e85848f46a5f10911f42d30b,
+        type: 3}
+      propertyPath: shakeChangeFrameDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2727060314856482176, guid: e5e49599e85848f46a5f10911f42d30b,
+        type: 3}
       propertyPath: wantedOrder.Array.data[2]
       value: 1
       objectReference: {fileID: 0}
@@ -45003,13 +45047,14 @@ PrefabInstance:
     - target: {fileID: 1188569847465540733, guid: c3f8fe04a2f2f74479c2545b043ebb9f,
         type: 3}
       propertyPath: myInfo
-      value: "Dr. Elena Laroche\r\nCheffe du Centre de Recherche des Civilisations
-        Anciennes\r\nJe viens directement vous joindre suite \xE0 votre dernier rapport.
-        Nos experts confirment que l\u2019\xE9boulement a rendu le chemin retour
-        impraticable. Nous esp\xE9rons que vous avez pu \xE9tablir un camp pour la
-        nuit. Vous devez maintenant faire preuve de prudence et continuer votre exp\xE9dition
-        au-del\xE0 de ces falaises. Nous esp\xE9rons que vos d\xE9couvertes nous
-        permettront de mieux comprendre cette ancienne civilisation.\r"
+      value: "<color=orange>Dr. Elena Laroche</color>\r\nCheffe du <color=orange>Centre
+        de Recherche des Civilisations Anciennes</color>\r\nJe viens directement
+        vous joindre suite \xE0 votre dernier rapport. Nos experts confirment que
+        l\u2019\xE9boulement a rendu le chemin du retour impraticable. Nous esp\xE9rons
+        que vous avez pu \xE9tablir un camp pour la nuit. Vous devez maintenant faire
+        preuve de prudence et continuer votre exp\xE9dition au-del\xE0 de ces falaises.
+        Nous esp\xE9rons que vos d\xE9couvertes nous permettront de mieux comprendre
+        cette <color=orange>ancienne civilisation</color>.\r"
       objectReference: {fileID: 0}
     - target: {fileID: 1188569847465540733, guid: c3f8fe04a2f2f74479c2545b043ebb9f,
         type: 3}
