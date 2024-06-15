@@ -370,7 +370,7 @@ namespace Creature
 
             for (int i = 0; i < 45; i++)
             {
-                Debug.DrawRay(origin, transformRef.TransformDirection(raycastDir * (legMaxDist * 2f)), Color.blue, 1);
+                //Debug.DrawRay(origin, transformRef.TransformDirection(raycastDir * (legMaxDist * 2f)), Color.blue, 1);
 
                 if (Physics.Raycast(origin, transformRef.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist * 2f, groundLayer))
                 {
