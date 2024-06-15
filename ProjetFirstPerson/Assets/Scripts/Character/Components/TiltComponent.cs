@@ -49,7 +49,23 @@ public class TiltComponent : MonoBehaviour, ICharacterComponent
 
     public void ComponentUpdate()
     {
-        if (controls.Player.Tilt.IsPressed())
+        if (CharacterManager.Instance.interactibleAtRange is not null)
+            return;
+
+        if(Input.GetKey(KeyCode.E)) 
+        {
+            TiltRight();
+        }
+        else if (Input.GetKey(KeyCode.Q))
+        {
+            TiltLeft();
+        }
+        else
+        {
+            NoTilt();
+        }
+
+        /*if (controls.Player.Tilt.IsPressed())
         {
             if(!isTilting) StartTilt();
             Tilt();
@@ -58,7 +74,7 @@ public class TiltComponent : MonoBehaviour, ICharacterComponent
         else
         {
             if (isTilting) EndTilt();
-        }
+        }*/
     }
 
     public void ComponentFixedUpdate()
@@ -81,9 +97,9 @@ public class TiltComponent : MonoBehaviour, ICharacterComponent
         isTilting = false;
         cameraScript.StopTilting();
 
-        currentTiltValue = Vector3.zero;
-        currentTiltRotValue = Vector3.zero;
-        
+        currentTiltValue = Vector3.Slerp(currentTiltValue, Vector3.zero, Time.deltaTime* 15);
+        currentTiltRotValue = Vector3.Slerp(currentTiltRotValue, Vector3.zero, Time.deltaTime * 15);
+
         cameraScript.tiltPosAddedPos = currentTiltValue;
         cameraScript.tiltRotAddedPos = currentTiltRotValue;
     }
@@ -101,5 +117,27 @@ public class TiltComponent : MonoBehaviour, ICharacterComponent
         
         cameraScript.tiltPosAddedPos = currentTiltValue;
         cameraScript.tiltRotAddedPos = currentTiltRotValue;
+    }
+
+
+    private void TiltLeft()
+    {
+        cameraScript.tiltPosAddedPos = Vector3.Slerp(cameraScript.tiltPosAddedPos, cameraScript.characterCamera.TransformDirection(Vector3.left * maxTilt), Time.deltaTime * 10);
+        cameraScript.tiltRotAddedPos = Vector3.Slerp(cameraScript.tiltRotAddedPos, new Vector3(0, 0, maxTiltRot), Time.deltaTime * 10);
+    }
+
+    private void TiltRight()
+    {
+        cameraScript.tiltPosAddedPos = Vector3.Slerp(cameraScript.tiltPosAddedPos, cameraScript.characterCamera.TransformDirection(Vector3.right * maxTilt), Time.deltaTime * 10);
+        cameraScript.tiltRotAddedPos = Vector3.Slerp(cameraScript.tiltRotAddedPos, new Vector3(0, 0, -maxTiltRot), Time.deltaTime * 10);
+    }
+
+    private void NoTilt()
+    {
+        currentTiltValue = Vector3.zero;
+        currentTiltRotValue = Vector3.zero;
+
+        cameraScript.tiltPosAddedPos = Vector3.Slerp(cameraScript.tiltPosAddedPos, Vector3.zero, Time.deltaTime * 10);
+        cameraScript.tiltRotAddedPos = Vector3.Slerp(cameraScript.tiltRotAddedPos, Vector3.zero, Time.deltaTime * 10);
     }
 }

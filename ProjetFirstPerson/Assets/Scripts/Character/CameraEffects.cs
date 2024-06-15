@@ -16,8 +16,8 @@ public class CameraEffects : GenericSingletonClass<CameraEffects>
     [SerializeField] private float flickerSpeed;
     [SerializeField] [Range(0f, 1f)] private float flickerMinValue;
     
-    [Header("References")] 
-    [SerializeField] private Volume hiddenVolume;
+    [Header("References")]
+    public Volume hiddenVolume;
     [SerializeField] private Volume healthVolume;
     public Volume hurtVolume;
 
@@ -31,7 +31,7 @@ public class CameraEffects : GenericSingletonClass<CameraEffects>
         while (hideTimer < hideEffectLerpDuration)
         {
             hideTimer += Time.deltaTime;
-
+             
             hiddenVolume.weight = Mathf.Lerp(save, wantedValue, hideTimer / hideEffectLerpDuration);
             yield return null;
         }
