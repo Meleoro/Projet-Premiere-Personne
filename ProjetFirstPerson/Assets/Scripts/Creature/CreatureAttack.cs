@@ -1,3 +1,4 @@
+using IK;
 using System.Collections;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace Creature
 
         [Header("References")] 
         [SerializeField] private Collider attackCollider;
+        [SerializeField] private HeadIK headIK;
         private CreatureMover moveScript;
         private CreatureManager mainScript;
         private CreatureWaypoints waypointsScript;
@@ -69,7 +71,9 @@ namespace Creature
 
             moveScript.StopMoving();
             attackCollider.enabled = false;
-            
+
+            StartCoroutine(headIK.ShakeHeadAttack(attackCooldown, 50, 0.075f));
+
             yield return new WaitForSeconds(attackCooldown);
 
             waypointsScript.isAttacking = false;
