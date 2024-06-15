@@ -28,10 +28,16 @@ public class AudioManager : GenericSingletonClass<AudioManager>
     [Range(0f, 1f)] [SerializeField] private float musicVolume;
     [Range(0f, 1f)] [SerializeField] private float sfxVolume;
 
+    [Header("MainMenu")]
+    public bool isMainMenu;
+
     private void Start()
     {
-        CharacterManager.Instance.enterSneakZone += ApplySneakAudioEffect;
-        CharacterManager.Instance.exitSneakZone += RemoveSneakAudioEffect;
+        if(!isMainMenu)
+        {
+            CharacterManager.Instance.enterSneakZone += ApplySneakAudioEffect;
+            CharacterManager.Instance.exitSneakZone += RemoveSneakAudioEffect;
+        }
     }
 
     private void ApplySneakAudioEffect()
