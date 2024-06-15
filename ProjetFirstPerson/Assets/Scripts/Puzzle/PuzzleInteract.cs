@@ -110,7 +110,7 @@ namespace Puzzle
 
             characterMoveScript.canMove = true;
             characterMoveScript.rb.isKinematic = false;
-            CharacterManager.Instance.capsule.GetComponent<MeshRenderer>().enabled = true;
+            //CharacterManager.Instance.capsule.GetComponent<MeshRenderer>().enabled = true;
 
             UIManager.Instance.ShowHUD();
             UIManager.Instance.InteractHUD.gameObject.SetActive(false);
