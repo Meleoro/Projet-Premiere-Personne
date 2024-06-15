@@ -626,6 +626,7 @@ GameObject:
   - component: {fileID: 164447004}
   - component: {fileID: 164447003}
   - component: {fileID: 164447005}
+  - component: {fileID: 164447006}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -678,6 +679,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4d23580728166a458b001fdb0996670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &164447006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164447002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017fc64142c836e4db84cf561546c574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 54bdfc6f025bd8045b5a9f66391258ab, type: 2}
+  resolutionDropdown: {fileID: 1841983614}
+  masterSlider: {fileID: 1630590103}
+  musicSlider: {fileID: 1514801467}
+  soundSlider: {fileID: 783693206}
+  isMainMenu: 1
+  FullScreenToggle: {fileID: 1497404122}
 --- !u!1 &178740077
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,9 +919,8 @@ GameObject:
   - component: {fileID: 293515819}
   - component: {fileID: 293515822}
   - component: {fileID: 293515821}
-  - component: {fileID: 293515820}
   m_Layer: 5
-  m_Name: SettingsMenu (1)
+  m_Name: SettingsMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -928,25 +947,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 3840, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &293515820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293515818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017fc64142c836e4db84cf561546c574, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: 54bdfc6f025bd8045b5a9f66391258ab, type: 2}
-  resolutionDropdown: {fileID: 1841983614}
-  masterSlider: {fileID: 1630590103}
-  musicSlider: {fileID: 1514801467}
-  soundSlider: {fileID: 783693206}
-  isMainMenu: 1
-  FullScreenToggle: {fileID: 1497404122}
 --- !u!114 &293515821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2371,7 +2371,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 293515820}
+      - m_Target: {fileID: 164447006}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
         m_MethodName: SetSoundVolume
         m_Mode: 1
@@ -3785,7 +3785,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 164447006}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
         m_MethodName: SetFullScreen
         m_Mode: 0
@@ -3797,7 +3797,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 164447006}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
         m_MethodName: TheFullScreenToggle
         m_Mode: 1
@@ -3809,7 +3809,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 164447006}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
         m_MethodName: PlayUISound
         m_Mode: 1
@@ -3912,7 +3912,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 293515820}
+      - m_Target: {fileID: 164447006}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
         m_MethodName: SetMusicVolume
         m_Mode: 1
@@ -4439,7 +4439,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 293515820}
+      - m_Target: {fileID: 164447006}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
         m_MethodName: SetMasterVolume
         m_Mode: 1
@@ -5056,7 +5056,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 164447006}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
         m_MethodName: SetResolution
         m_Mode: 0
@@ -5068,7 +5068,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 164447006}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
         m_MethodName: PlayUISound
         m_Mode: 1
