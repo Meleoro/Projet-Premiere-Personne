@@ -74,7 +74,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         Gizmos.DrawRay(mainCam.transform.position, ScreenDetectionLogs.transform.forward * maxDistance);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if(Input.GetMouseButtonDown(0))
         {
@@ -101,7 +101,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                         AudioManager.Instance.PlaySoundOneShot(1,20,0);
                         soundDone = true;
                     }
-                    SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime;
+                    SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.fixedDeltaTime;
                     
                     if (SteleChargeImage.fillAmount >= 1)
                     {

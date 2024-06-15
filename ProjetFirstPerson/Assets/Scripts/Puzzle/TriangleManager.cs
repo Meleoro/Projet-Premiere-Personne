@@ -143,13 +143,14 @@ namespace Puzzle
 
             interactScript.GetOutInteraction();
 
-            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
-                shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
+          
             
             anim.clip = anim["Open"].clip;
             anim.Play();
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(2.51f);
             AudioManager.Instance.PlaySoundOneShot(2,10,0);
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
+                shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
         }
     }
 }
