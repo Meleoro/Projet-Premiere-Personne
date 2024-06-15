@@ -18,6 +18,7 @@ namespace IK
         private Vector3 saveHeadJoint;
         private Quaternion saveResetBaseNeck;
         private bool followChara;
+        private float offsetRotationXBaseNeck;
 
         [Header("References")]
         [SerializeField] private CreatureReferences referencesScript;
@@ -69,6 +70,38 @@ namespace IK
                 baseNeckTr.localEulerAngles.x, baseNeckTr.localEulerAngles.y, currentZ)), Time.deltaTime * 5);    */
         }
 
+
+        public IEnumerator ShakeHeadAttack(float duration, float amplitude, float secondsPerMove)
+        {
+            float timer = 0;
+            float globalTimer = 0;
+            bool goLeft = true;
+            float startValue;
+            float startAmplitude = amplitude;
+
+            while (globalTimer < duration) 
+            {
+                goLeft = !goLeft;
+
+                globalTimer += timer;
+                timer = 0;
+
+                amplitude = Mathf.Lerp(startAmplitude, 0, globalTimer / duration);
+
+                startValue = offsetRotationXBaseNeck;
+
+                while (timer < secondsPerMove)
+                {
+                    timer += Time.deltaTime;
+
+                    offsetRotationXBaseNeck = Mathf.Lerp(startValue, goLeft ? amplitude : - amplitude, timer / secondsPerMove);
+
+                    yield return null;  
+                }
+            }
+
+            offsetRotationXBaseNeck = 0;
+        }
 
 
         public void FollowChara()
@@ -145,7 +178,7 @@ namespace IK
 
             saveZ = currentZ;
             
-            baseNeckTr.localRotation = Quaternion.Lerp(baseNeckTr.localRotation, Quaternion.Euler(euler), Time.deltaTime * 5);
+            baseNeckTr.localRotation = Quaternion.Lerp(baseNeckTr.localRotation, Quaternion.Euler(euler + new Vector3(offsetRotationXBaseNeck, 0, 0)), Time.deltaTime * 5);
         }
 
 

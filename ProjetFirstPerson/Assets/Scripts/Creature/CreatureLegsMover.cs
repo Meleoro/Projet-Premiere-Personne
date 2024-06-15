@@ -442,6 +442,8 @@ namespace Creature
             else
                 AudioManager.Instance.PlaySoundOneShot(0, Random.Range(5, 8), 1);
 
+            if (VerifyRock(currentLeg.target.position)) yield break;
+
             if (mainTrRotRefFront.InverseTransformPoint(currentLeg.origin.position).x < 0)
             {
                 Instantiate(decalCreatureLeft, currentLeg.scriptIK.effector.position + mainTrRotRefFront.forward * 0.2f + Vector3.down * 0.6f, 
@@ -452,6 +454,54 @@ namespace Creature
                 Instantiate(decalCreatureRight, currentLeg.scriptIK.effector.position + mainTrRotRefFront.forward * 0.2f + Vector3.down * 0.6f, 
                     Quaternion.Euler(90, mainTrRotRefFront.rotation.eulerAngles.y - 90, -90));
             }
+        }
+
+        private List<TerrainDetector> terrainDetectors = new List<TerrainDetector>();
+        private bool VerifyRock(Vector3 origin)
+        {
+            bool isOnRock = false;
+
+            RaycastHit hitInfo;
+            if (Physics.Raycast(origin, Vector3.down, out hitInfo, 3f, LayerManager.Instance.groundLayer))
+            {
+                if (hitInfo.collider.TryGetComponent<TerrainCollider>(out TerrainCollider terrain))
+                {
+                    int wantedIndex = -1;
+                    for (int i = 0; i < terrainDetectors.Count; i++)
+                    {
+                        if (terrainDetectors[i].terrainData == terrain.terrainData)
+                        {
+                            wantedIndex = i;
+                            break;
+                        }
+                    }
+
+
+                    if (wantedIndex == -1)
+                    {
+                        terrainDetectors.Add(new TerrainDetector(terrain.terrainData, hitInfo.collider.GetComponent<Terrain>(), hitInfo.collider.GetComponent<TerrainRock>().rockLayerIndex));
+
+                        if (terrainDetectors[^1].GetIsWalkingOnRock(origin))
+                        {
+                            isOnRock = true;
+                        }
+                    }
+
+                    else
+                    {
+                        if (terrainDetectors[wantedIndex].GetIsWalkingOnRock(origin))
+                        {
+                            isOnRock = true;
+                        }
+                    }
+                }
+                else if (hitInfo.collider.CompareTag("RockGround"))
+                {
+                    isOnRock = true;
+                }
+            }
+
+            return isOnRock;
         }
 
         #endregion

@@ -317,7 +317,8 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
             else
                 AudioManager.Instance.PlaySoundOneShot(1, Random.Range(24, 34), 0);
 
-            CreateFootDecal();
+            if(!isOnRock)
+                CreateFootDecal();
         }
     }
 

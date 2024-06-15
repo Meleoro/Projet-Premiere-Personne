@@ -150,6 +150,7 @@ public class LogsScripts : MonoBehaviour
         {
                 isWriting = false;
                 TraductionButton.gameObject.SetActive(false);  
+                //AudioManager.Instance.FadeOutAudioSource(0.5f,0);
         }
     }
     
@@ -202,6 +203,7 @@ public class LogsScripts : MonoBehaviour
             }
             yield return new WaitForSeconds(typingSpeed);
         }
+        AudioManager.Instance.FadeOutAudioSource(0.5f,0);
             TraductionButton.gameObject.SetActive(false);
     }
 }
