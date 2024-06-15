@@ -46,11 +46,33 @@ public class SettingsMenu : MonoBehaviour
             player = GameObject.Find("Player");
             health = player.GetComponent<HealthComponent>();
         }
-
-        // Setup le son
-        masterSlider.value = PlayerPrefs.GetFloat("MasterVolume");
-        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
-        soundSlider.value = PlayerPrefs.GetFloat("EffectsVolume");
+        // Son Général
+        if(PlayerPrefs.GetFloat("MasterVolume") == 0)
+        {
+            masterSlider.value = 1;
+        }
+        else
+        {
+            masterSlider.value = PlayerPrefs.GetFloat("MasterVolume");
+        }
+        // Son Music
+         if(PlayerPrefs.GetFloat("MusicVolume") == 0)
+        {
+            musicSlider.value = 1;
+        }
+        else
+        {
+            musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+        }
+        // Son Effet
+         if(PlayerPrefs.GetFloat("EffectsVolume") == 0)
+        {
+            soundSlider.value = 1;
+        }
+        else
+        {
+            soundSlider.value = PlayerPrefs.GetFloat("EffectsVolume");
+        }
 
         resolutions = Screen.resolutions.Select(resolution => new Resolution { width = resolution.width, height = resolution.height }).Distinct().ToArray();
         resolutionDropdown.ClearOptions();
