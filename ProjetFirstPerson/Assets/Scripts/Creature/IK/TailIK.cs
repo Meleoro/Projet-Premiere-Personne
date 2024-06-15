@@ -132,7 +132,7 @@ namespace IK
 
                 tailTargets[i] = new Vector3(wantedGlobalPos.x, tailTargets[i].y, wantedGlobalPos.z);
 
-                if (Physics.Raycast(tailTargets[i] + Vector3.up, Vector3.down, out hit, 4f, LayerManager.Instance.groundLayer))
+                if (Physics.Raycast(tailTargets[i] + Vector3.up * 0.2f, Vector3.down, out hit, 4f, LayerManager.Instance.groundLayer))
                 {
                     Vector3 wantedPos = hit.point + new Vector3(0, maxHeight * tailHeightRatioSave[i], 0);
                     tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, wantedPos.y, Time.deltaTime * 10);

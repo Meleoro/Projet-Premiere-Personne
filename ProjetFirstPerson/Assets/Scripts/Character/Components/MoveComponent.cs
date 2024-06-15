@@ -312,7 +312,11 @@ public class MoveComponent : MonoBehaviour, ICharacterComponent
             }
             
             walkSoundTimer = 0;
-            AudioManager.Instance.PlaySoundOneShot(1, Random.Range(6, 16), 0);
+            if(!isOnRock)
+                AudioManager.Instance.PlaySoundOneShot(1, Random.Range(6, 16), 0);
+            else
+                AudioManager.Instance.PlaySoundOneShot(1, Random.Range(24, 34), 0);
+
             CreateFootDecal();
         }
     }

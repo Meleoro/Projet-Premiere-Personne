@@ -94,7 +94,7 @@ namespace Creature
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
                             currentWantToMoveLegsCounter += 1;
-                            legs[i].target.position = mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos);
+                            legs[i].target.position = Vector3.Slerp(legs[i].target.position, mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos), Time.deltaTime * 20);
                             
                             continue;
                         }
@@ -105,13 +105,6 @@ namespace Creature
 
                             continue;
                         }
-
-                        if(VerifyLegNeedsToMove(legs[i], false))
-                        {
-                            currentWantToMoveLegsCounter += 1;
-                            
-                            continue;
-                        }
                     }
                     else if (creatureMover.isRunning)
                     {
@@ -119,7 +112,7 @@ namespace Creature
                         {
                             legs[i].target.position = mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos);
                         }
-                        else if (!VerifyLegNeedsToMove(legs[i], false))
+                        else
                         {
                             legs[i].saveLastTargetPos =
                                 mainTrRotRefFront.InverseTransformPoint(legs[i].target.position);
@@ -135,7 +128,7 @@ namespace Creature
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
                             currentWantToMoveLegsCounter += 1;
-                            legs[i].target.position = mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos);
+                            legs[i].target.position = Vector3.Slerp(legs[i].target.position, mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos), Time.deltaTime * 20);
 
                             continue;
                         }
@@ -146,13 +139,6 @@ namespace Creature
                             
                             continue;
                         }
-
-                        if(VerifyLegNeedsToMove(legs[i], false))
-                        {
-                            currentWantToMoveLegsCounter += 1;
-
-                            continue;
-                        }
                     }
                     else if (creatureMover.isRunning)
                     {
@@ -160,7 +146,7 @@ namespace Creature
                          {
                              legs[i].target.position = mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos);
                          }
-                         else if (!VerifyLegNeedsToMove(legs[i], false))
+                         else
                          {
                              legs[i].saveLastTargetPos =
                                 mainTrRotRefBack.InverseTransformPoint(legs[i].target.position);
@@ -413,7 +399,7 @@ namespace Creature
             AnimationCurve currentYCurve = currentLeg.isFrontLeg ? data.frontLegMovementYCurve : data.backLegMovementYCurve;
             float timer = 0;
             RaycastHit hit;
-            float wantedY = currentLeg.target.position.y;
+            float wantedY = mainTrRotRefBack.TransformPoint(currentLeg.scriptIK.saveTargetOriginOffset).y;
 
             while (timer < moveDuration)
             {
