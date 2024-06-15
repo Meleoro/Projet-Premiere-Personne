@@ -94,7 +94,7 @@ namespace Creature
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
                             currentWantToMoveLegsCounter += 1;
-                            legs[i].target.position = Vector3.Slerp(legs[i].target.position, mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos), Time.deltaTime * 15);
+                            legs[i].target.position = Vector3.Slerp(legs[i].target.position, mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos), Time.deltaTime * 20);
                             
                             continue;
                         }
@@ -128,7 +128,7 @@ namespace Creature
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
                             currentWantToMoveLegsCounter += 1;
-                            legs[i].target.position = mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos);
+                            legs[i].target.position = Vector3.Slerp(legs[i].target.position, mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos), Time.deltaTime * 20);
 
                             continue;
                         }
