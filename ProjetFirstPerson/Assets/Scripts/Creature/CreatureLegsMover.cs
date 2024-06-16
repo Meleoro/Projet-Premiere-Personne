@@ -94,7 +94,7 @@ namespace Creature
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
                             currentWantToMoveLegsCounter += 1;
-                            legs[i].target.position = mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos);
+                            legs[i].target.position = Vector3.Slerp(legs[i].target.position, mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos), Time.deltaTime * 20);
                             
                             continue;
                         }
@@ -105,13 +105,6 @@ namespace Creature
 
                             continue;
                         }
-
-                        if(VerifyLegNeedsToMove(legs[i], false))
-                        {
-                            currentWantToMoveLegsCounter += 1;
-                            
-                            continue;
-                        }
                     }
                     else if (creatureMover.isRunning)
                     {
@@ -119,7 +112,7 @@ namespace Creature
                         {
                             legs[i].target.position = mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos);
                         }
-                        else if (!VerifyLegNeedsToMove(legs[i], false))
+                        else
                         {
                             legs[i].saveLastTargetPos =
                                 mainTrRotRefFront.InverseTransformPoint(legs[i].target.position);
@@ -135,7 +128,7 @@ namespace Creature
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
                             currentWantToMoveLegsCounter += 1;
-                            legs[i].target.position = mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos);
+                            legs[i].target.position = Vector3.Slerp(legs[i].target.position, mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos), Time.deltaTime * 20);
 
                             continue;
                         }
@@ -146,13 +139,6 @@ namespace Creature
                             
                             continue;
                         }
-
-                        if(VerifyLegNeedsToMove(legs[i], false))
-                        {
-                            currentWantToMoveLegsCounter += 1;
-
-                            continue;
-                        }
                     }
                     else if (creatureMover.isRunning)
                     {
@@ -160,7 +146,7 @@ namespace Creature
                          {
                              legs[i].target.position = mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos);
                          }
-                         else if (!VerifyLegNeedsToMove(legs[i], false))
+                         else
                          {
                              legs[i].saveLastTargetPos =
                                 mainTrRotRefBack.InverseTransformPoint(legs[i].target.position);
@@ -370,7 +356,7 @@ namespace Creature
 
             for (int i = 0; i < 45; i++)
             {
-                Debug.DrawRay(origin, transformRef.TransformDirection(raycastDir * (legMaxDist * 2f)), Color.blue, 1);
+                //Debug.DrawRay(origin, transformRef.TransformDirection(raycastDir * (legMaxDist * 2f)), Color.blue, 1);
 
                 if (Physics.Raycast(origin, transformRef.TransformDirection(raycastDir), out RaycastHit hit, legMaxDist * 2f, groundLayer))
                 {
@@ -413,7 +399,7 @@ namespace Creature
             AnimationCurve currentYCurve = currentLeg.isFrontLeg ? data.frontLegMovementYCurve : data.backLegMovementYCurve;
             float timer = 0;
             RaycastHit hit;
-            float wantedY = currentLeg.target.position.y;
+            float wantedY = mainTrRotRefBack.TransformPoint(currentLeg.scriptIK.saveTargetOriginOffset).y;
 
             while (timer < moveDuration)
             {
@@ -456,6 +442,8 @@ namespace Creature
             else
                 AudioManager.Instance.PlaySoundOneShot(0, Random.Range(5, 8), 1);
 
+            if (VerifyRock(currentLeg.target.position)) yield break;
+
             if (mainTrRotRefFront.InverseTransformPoint(currentLeg.origin.position).x < 0)
             {
                 Instantiate(decalCreatureLeft, currentLeg.scriptIK.effector.position + mainTrRotRefFront.forward * 0.2f + Vector3.down * 0.6f, 
@@ -466,6 +454,54 @@ namespace Creature
                 Instantiate(decalCreatureRight, currentLeg.scriptIK.effector.position + mainTrRotRefFront.forward * 0.2f + Vector3.down * 0.6f, 
                     Quaternion.Euler(90, mainTrRotRefFront.rotation.eulerAngles.y - 90, -90));
             }
+        }
+
+        private List<TerrainDetector> terrainDetectors = new List<TerrainDetector>();
+        private bool VerifyRock(Vector3 origin)
+        {
+            bool isOnRock = false;
+
+            RaycastHit hitInfo;
+            if (Physics.Raycast(origin, Vector3.down, out hitInfo, 3f, LayerManager.Instance.groundLayer))
+            {
+                if (hitInfo.collider.TryGetComponent<TerrainCollider>(out TerrainCollider terrain))
+                {
+                    int wantedIndex = -1;
+                    for (int i = 0; i < terrainDetectors.Count; i++)
+                    {
+                        if (terrainDetectors[i].terrainData == terrain.terrainData)
+                        {
+                            wantedIndex = i;
+                            break;
+                        }
+                    }
+
+
+                    if (wantedIndex == -1)
+                    {
+                        terrainDetectors.Add(new TerrainDetector(terrain.terrainData, hitInfo.collider.GetComponent<Terrain>(), hitInfo.collider.GetComponent<TerrainRock>().rockLayerIndex));
+
+                        if (terrainDetectors[^1].GetIsWalkingOnRock(origin))
+                        {
+                            isOnRock = true;
+                        }
+                    }
+
+                    else
+                    {
+                        if (terrainDetectors[wantedIndex].GetIsWalkingOnRock(origin))
+                        {
+                            isOnRock = true;
+                        }
+                    }
+                }
+                else if (hitInfo.collider.CompareTag("RockGround"))
+                {
+                    isOnRock = true;
+                }
+            }
+
+            return isOnRock;
         }
 
         #endregion

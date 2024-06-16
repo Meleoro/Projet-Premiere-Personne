@@ -13,6 +13,7 @@ public class TriggerPoursuiteFinale : MonoBehaviour
     [SerializeField] private CreatureTrigger triggerToReset;
     [SerializeField] private Transform creatureTPPos;
     [SerializeField] private CreatureWaypoints creatureToMove;
+    [SerializeField] private List<GameObject> objectsToActivate = new List<GameObject>();
 
     private void Start()
     {
@@ -34,16 +35,26 @@ public class TriggerPoursuiteFinale : MonoBehaviour
         }
 
         // We reactivate the trigger
-        triggerToReset.gameObject.SetActive(true);
+        if(triggerToReset != null)
+            triggerToReset.gameObject.SetActive(true);
 
         // We move the creature
-        creatureToMove.transform.GetComponent<CreatureMover>().navMeshAgent.enabled = false;
-        Vector3 moveDir = creatureTPPos.position - creatureToMove.transform.position;
-        creatureToMove.transform.parent.transform.position += moveDir;
+        if (creatureToMove != null)
+        {
+            creatureToMove.transform.GetComponent<CreatureMover>().navMeshAgent.enabled = false;
+            Vector3 moveDir = creatureTPPos.position - creatureToMove.transform.position;
+            creatureToMove.transform.parent.transform.position += moveDir;
 
-        creatureToMove.transform.GetComponent<CreatureMover>().tailIKScript.RebootTargets();
+            creatureToMove.transform.GetComponent<CreatureMover>().tailIKScript.RebootTargets();
 
-        creatureToMove.transform.GetComponent<CreatureMover>().navMeshAgent.enabled = true;
+            creatureToMove.transform.GetComponent<CreatureMover>().navMeshAgent.enabled = true;
+        }
+       
+
+        for (int i = 0; i < objectsToActivate.Count; i++)
+        {
+            objectsToActivate[i].SetActive(true);
+        }
     }
 
 

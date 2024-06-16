@@ -23,11 +23,11 @@ Material:
   m_Name: M_Triplanar_Fut_Pillar
   m_Shader: {fileID: -6465566751694194690, guid: 1e10b98f86d483e449eb88b51011a4e9,
     type: 3}
-  m_Parent: {fileID: 0}
+  m_Parent: {fileID: 2100000, guid: e4041984ac9539145b450432fd30a33a, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -41,14 +41,6 @@ Material:
         m_Texture: {fileID: 2800000, guid: e076ec92fe83c3946ae9414a0ad591a3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _BlendTexture:
-        m_Texture: {fileID: 2800000, guid: 871ed4ad8ddac4f48997b85a95095186, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _BlendTextureNormals:
-        m_Texture: {fileID: 2800000, guid: e42bc7aa02b75454382116a05909c1d5, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _Normal:
         m_Texture: {fileID: 2800000, guid: a4a1db9cb65e5da4a99874a3dbbef2fa, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -57,48 +49,18 @@ Material:
         m_Texture: {fileID: 2800000, guid: 2b4fe7648e398d9478880818cbd34236, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - unity_Lightmaps:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_LightmapsInd:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_ShadowMasks:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _AOSoftening: 1
-    - _BightnessModif: 1.5
-    - _BlendTextureBrightness: 1
-    - _BlendTextureContrast: 1
-    - _BlendTextureNormalStrength: 1
-    - _Contrast: 1
-    - _Grayscale_0: 1
-    - _GroundBlendHeight: 0
-    - _GroundBlendHeight_1: 0
-    - _GroundBlendHeight_2: 0
-    - _GroundBlendSmoothness: 0
-    - _HueOffset: 0
-    - _Metallic: 0
+    - _BightnessModif: 2
     - _NormalStrengh: 0.7
-    - _QueueControl: 0
-    - _QueueOffset: 0
     - _RoughMapOpacity: 0.587
     - _SandDepositHeight: 0
     - _SandDepositThreshold: -2
     - _Saturation: 0.97
-    - _Smoothness: 0.1
     - _TriplanarTiling: 0.32
     - _TriplanarUpOffset: 6.71
-    - _UseGroundBlend: 0
     m_Colors:
     - _BlendTextureTiling: {r: 1, g: 1, b: 0, a: 0}
-    - _ColorModif: {r: 1, g: 1, b: 1, a: 0}
     - _ColorMultiply: {r: 1, g: 0.93741524, b: 0.8915094, a: 0}
-    - _TripTiling: {r: 0.1, g: 0.1, b: 0, a: 0}
-    - _TriplanarOffset: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []

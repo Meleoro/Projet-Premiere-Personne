@@ -5,6 +5,8 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using System.Linq;
 using TMPro;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -44,6 +46,33 @@ public class SettingsMenu : MonoBehaviour
             player = GameObject.Find("Player");
             health = player.GetComponent<HealthComponent>();
         }
+        // Son Général
+        if(PlayerPrefs.GetFloat("MasterVolume") == 0)
+        {
+            masterSlider.value = 1;
+        }
+        else
+        {
+            masterSlider.value = PlayerPrefs.GetFloat("MasterVolume");
+        }
+        // Son Music
+         if(PlayerPrefs.GetFloat("MusicVolume") == 0)
+        {
+            musicSlider.value = 1;
+        }
+        else
+        {
+            musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+        }
+        // Son Effet
+         if(PlayerPrefs.GetFloat("EffectsVolume") == 0)
+        {
+            soundSlider.value = 1;
+        }
+        else
+        {
+            soundSlider.value = PlayerPrefs.GetFloat("EffectsVolume");
+        }
 
         resolutions = Screen.resolutions.Select(resolution => new Resolution { width = resolution.width, height = resolution.height }).Distinct().ToArray();
         resolutionDropdown.ClearOptions();
@@ -71,16 +100,19 @@ public class SettingsMenu : MonoBehaviour
     public void SetMasterVolume()
     {
         audioMixer.SetFloat("Master", (Mathf.Log10(masterSlider.value)*20));
+        PlayerPrefs.SetFloat("MasterVolume", masterSlider.value);
     }
     
     public void SetMusicVolume()
     {
         audioMixer.SetFloat("Music", (Mathf.Log10(musicSlider.value)*20));
+        PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
     }
 
     public void SetSoundVolume()
     {
         audioMixer.SetFloat("Effects", (Mathf.Log10(soundSlider.value)*20));
+        PlayerPrefs.SetFloat("EffectsVolume", soundSlider.value);
     }
 
     public void SetFullScreen(bool isFullScreen)

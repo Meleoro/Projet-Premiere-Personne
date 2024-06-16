@@ -150,16 +150,18 @@ public class LogsScripts : MonoBehaviour
         {
                 isWriting = false;
                 TraductionButton.gameObject.SetActive(false);  
+                //AudioManager.Instance.FadeOutAudioSource(0.5f,0);
         }
     }
     
     public void PlayUISound()
     {
-        AudioManager.Instance.PlaySoundOneShot(1, 16, 1);
+        AudioManager.Instance.PlaySoundOneShot(1, 16, 0);
     }
 
      private IEnumerator TypeText(string text)
     {
+        AudioManager.Instance.PlaySoundOneShot(1, 23, 0);
         logsMenu.currentLog.GetComponent<LogsScripts>().isTraducted = true;
         isWriting = true;
         InformationArea.text = "";
@@ -201,6 +203,7 @@ public class LogsScripts : MonoBehaviour
             }
             yield return new WaitForSeconds(typingSpeed);
         }
+        AudioManager.Instance.FadeOutAudioSource(0.5f,0);
             TraductionButton.gameObject.SetActive(false);
     }
 }

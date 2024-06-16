@@ -180,11 +180,16 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         
         StopCoroutine(hurtCoroutine);
         CameraEffects.Instance.hurtVolume.weight = 0;
+        CameraEffects.Instance.hiddenVolume.weight = 0;
         DieAction.Invoke();
+
+        CharacterManager.Instance.isHidden = false;
 
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.75f, 0));
         eyeAnim.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
+        CameraEffects.Instance.hiddenVolume.weight = 0;
+
         cam.canMove = true;
         cam.canRotate = true;
         move.rb.isKinematic = false;
