@@ -86,5 +86,9 @@ public class LogsMenu : MonoBehaviour
         }
     }
 
+    public void ShutTraductionSound()
+    {
+        AudioManager.Instance.FadeOutAudioSource(0.5f,8);
+    }
    
 }
