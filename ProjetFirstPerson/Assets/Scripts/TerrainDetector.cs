@@ -35,7 +35,7 @@ public class TerrainDetector
     {
         Vector3 terrainCord = ConvertToSplatMapCoordinate(position);
 
-        if (splatmapData[(int)terrainCord.z, (int)terrainCord.x, rockIndex] > 0.3f)
+        if (splatmapData[(int)terrainCord.z, (int)terrainCord.x, rockIndex] > 0.23f)
         {
             return true;
         }
