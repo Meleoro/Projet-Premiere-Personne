@@ -65,6 +65,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         Directory.CreateDirectory(Application.dataPath + "/Scripts/Tablette/Data");
 
         ScreenRectTransform = ScreenPhotoImage.GetComponent<RectTransform>().rect;
+        SteleChargeImage.fillAmount = 0;
 
         ScreenDetectionLogs = GameObject.Find("DetectPhotoScreen");
     }
@@ -74,7 +75,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
         Gizmos.DrawRay(mainCam.transform.position, ScreenDetectionLogs.transform.forward * maxDistance);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if(Input.GetMouseButtonDown(0))
         {
@@ -101,7 +102,8 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
                         AudioManager.Instance.PlaySoundOneShot(1,20,0);
                         soundDone = true;
                     }
-                    SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.fixedDeltaTime;
+                    SteleChargeImage.gameObject.SetActive(true);
+                    SteleChargeImage.fillAmount += ChargeLogsSpeed * Time.deltaTime;
                     
                     if (SteleChargeImage.fillAmount >= 1)
                     {
