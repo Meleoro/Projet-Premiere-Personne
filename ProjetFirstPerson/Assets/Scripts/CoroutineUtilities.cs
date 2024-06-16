@@ -83,6 +83,7 @@ namespace ArthurUtilities
             float startIntensity = intensity;
             float startIntensityRot = rotationIntensity;
             Vector3 originalPos = tr.localPosition;
+            Quaternion originalRot = tr.localRotation;
             Vector3 currentPos = new Vector3(Random.Range(-intensity, intensity), Random.Range(-intensity, intensity), Random.Range(-intensity, intensity));
             Vector3 savePos;
             Quaternion currentRot = Quaternion.Euler(new Vector3(Random.Range(-rotationIntensity, rotationIntensity), 
@@ -104,12 +105,14 @@ namespace ArthurUtilities
                     currentRot = Quaternion.Euler(new Vector3(Random.Range(-rotationIntensity, rotationIntensity), 
                         Random.Range(-rotationIntensity, rotationIntensity), 
                         Random.Range(-rotationIntensity, rotationIntensity)));
+                    
+                    Debug.Log(currentPos);
                 }
                 
                 tr.localPosition = Vector3.Lerp(tr.localPosition, 
                     originalPos + currentPos, Time.deltaTime * 0.1f / changePosDuration);
                 
-                tr.localRotation = Quaternion.Lerp(tr.localRotation, currentRot, Time.deltaTime *0.1f / changePosDuration);
+                tr.localRotation = Quaternion.Lerp(tr.localRotation, originalRot * currentRot, Time.deltaTime * 0.1f / changePosDuration);
 
                 yield return null;
             }
