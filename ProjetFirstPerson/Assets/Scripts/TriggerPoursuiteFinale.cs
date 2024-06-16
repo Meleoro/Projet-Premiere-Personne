@@ -71,6 +71,7 @@ public class TriggerPoursuiteFinale : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.transform.parent.GetComponent<HealthComponent>().currentTriggerPoursuiteF = null;
+            AmbianceManager.Instance.GoOutside();
         }
     }
 }

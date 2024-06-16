@@ -36,6 +36,8 @@ public class TransitionTemple : MonoBehaviour
         
         if (outVolume != null) outVolume.weight = Mathf.Clamp(1, 0 ,1);
         if (inVolume != null) inVolume.weight = Mathf.Clamp(0, 0 ,1);
+        
+        AmbianceManager.Instance.GoOutside();
     }
 
 
