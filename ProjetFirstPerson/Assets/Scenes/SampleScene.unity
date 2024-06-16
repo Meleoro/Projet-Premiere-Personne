@@ -1411,7 +1411,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1063163828}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
   m_Name: 
@@ -1847,6 +1847,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1881606537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1214350762 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1222528487119935662, guid: c9faf7fde6dd30446b243016d6dde89b,
+    type: 3}
+  m_PrefabInstance: {fileID: 6801004467023592941}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1214350765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214350762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneShape: 1
+  drawBones: 1
+  drawTripods: 0
+  boneSize: 1
+  tripodSize: 1
+  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
+  m_Transforms:
+  - {fileID: 297633530}
+  - {fileID: 504363347}
+  - {fileID: 39568232}
+  - {fileID: 620181441}
+  - {fileID: 808464138}
 --- !u!4 &1244211757 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8189806695289466484, guid: ce9756547e7585f4abc85c2a1d5e5a6b,
@@ -3201,6 +3231,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CreatureFinale
       objectReference: {fileID: 0}
+    - target: {fileID: 435151637245488089, guid: c9faf7fde6dd30446b243016d6dde89b,
+        type: 3}
+      propertyPath: gizmos
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 603328190074138371, guid: c9faf7fde6dd30446b243016d6dde89b,
         type: 3}
       propertyPath: m_Layer
@@ -3239,7 +3274,7 @@ PrefabInstance:
     - target: {fileID: 1222528487119935662, guid: c9faf7fde6dd30446b243016d6dde89b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1321786726186684325, guid: c9faf7fde6dd30446b243016d6dde89b,
         type: 3}
@@ -3275,6 +3310,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1735999437257108652, guid: c9faf7fde6dd30446b243016d6dde89b,
+        type: 3}
+      propertyPath: gizmos
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1870633974970030261, guid: c9faf7fde6dd30446b243016d6dde89b,
         type: 3}
@@ -3879,6 +3919,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1063163832}
+    - targetCorrespondingSourceObject: {fileID: 1222528487119935662, guid: c9faf7fde6dd30446b243016d6dde89b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1214350765}
   m_SourcePrefab: {fileID: 100100000, guid: c9faf7fde6dd30446b243016d6dde89b, type: 3}
 --- !u!1001 &7624139030553268913
 PrefabInstance:
