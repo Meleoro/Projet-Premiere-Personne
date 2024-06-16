@@ -313,7 +313,7 @@ namespace Creature
                 }
             }
 
-            if (currentSuspicion == 0)
+            if (currentSuspicion == 0 && !CharacterManager.Instance.cameraComponent.isInCinematic)
             {
                 creatureRefScript.coleretteAnimator.SetBool("IsOpen", false);
             }
