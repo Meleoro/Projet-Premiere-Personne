@@ -66,7 +66,7 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
 
         ScreenRectTransform = ScreenPhotoImage.GetComponent<RectTransform>().rect;
 
-        ScreenDetectionLogs = GameObject.Find("DetectPhotoScreen");
+      //  ScreenDetectionLogs = GameObject.Find("DetectPhotoScreen");
     }
     void OnDrawGizmos()
     {
