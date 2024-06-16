@@ -11,5 +11,11 @@ public class CameraLongShake : MonoBehaviour
     void Start()
     {
         CoroutineUtilities.Instance.LongShakePosition(transform, 1000000, intensity, changePosDuration, rotationForce);
+        AudioManager.Instance.PlaySoundContinuous(3,7,1);
+    }
+
+    public void PlayStartSound()
+    {
+        AudioManager.Instance.PlaySoundOneShot(3,4,0);
     }
 }
