@@ -162,7 +162,7 @@ namespace IK
                 if(Mathf.Abs(changedZ - eulerJointBody.z) < -80)
                     changedZ += 360;
 
-                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z , changedZ, Time.deltaTime * 10);
+                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z , changedZ, Time.deltaTime * 15);
 
                 bodyJoints[i].localRotation = Quaternion.Euler(eulerJointBody);
             }
@@ -232,10 +232,8 @@ namespace IK
                 frontAddedY = frontAveragePos.y - backAveragePos.y;
                 backAddedY = -frontAveragePos.y + backAveragePos.y;
             }
-
-            float followSpeed = 3;
-
-            backJoint.transform.localPosition = Vector3.Lerp(backJoint.transform.localPosition, backLocalPosSave + Vector3.up * backAddedY, Time.deltaTime * followSpeed);
+            
+            backJoint.transform.localPosition = Vector3.Lerp(backJoint.transform.localPosition, backLocalPosSave + Vector3.up * backAddedY, Time.deltaTime * 4);
         }
 
 

@@ -44,6 +44,8 @@ namespace IK
             saveHeadJoint = headJointTr.localEulerAngles;
 
             saveResetBaseNeck = baseNeckTr.rotation;
+            
+            offsetRotationXBaseNeck = 0;
         }
 
         private void Update()
