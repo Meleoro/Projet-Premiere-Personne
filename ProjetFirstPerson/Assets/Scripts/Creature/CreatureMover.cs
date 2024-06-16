@@ -153,7 +153,7 @@ namespace Creature
             }
             else
             {
-                bodyIKScript.frontYDif -= Time.deltaTime * 3;
+                bodyIKScript.frontYDif -= Time.deltaTime * 5;
             }
         }
 
