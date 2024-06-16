@@ -110,7 +110,7 @@ namespace Creature
                     {
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
-                            legs[i].target.position = mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos);
+                            legs[i].target.position = Vector3.Slerp(legs[i].target.position, mainTrRotRefFront.TransformPoint(legs[i].saveLastTargetPos), Time.deltaTime * 20);
                         }
                         else
                         {
@@ -144,7 +144,8 @@ namespace Creature
                     {
                          if (VerifyLegNeedsToMove(legs[i], true))
                          {
-                             legs[i].target.position = mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos);
+                             Vector3.Slerp(legs[i].target.position, mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos), Time.deltaTime * 20);
+
                          }
                          else
                          {
@@ -411,7 +412,7 @@ namespace Creature
                 if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
                         LayerManager.Instance.groundLayer))
                 {
-                    wantedY = Mathf.Lerp(wantedY, hit.point.y + addedY * yMultiplier, Time.deltaTime * 18);
+                    wantedY = Mathf.Lerp(wantedY, hit.point.y + addedY * yMultiplier, Time.deltaTime * 20);
                 }
                 
                 Vector3 wantedPos = Vector3.Lerp(startPos, localEnd, timer / moveDuration) + new Vector3(0, addedY, 0);
@@ -479,7 +480,8 @@ namespace Creature
 
                     if (wantedIndex == -1)
                     {
-                        terrainDetectors.Add(new TerrainDetector(terrain.terrainData, hitInfo.collider.GetComponent<Terrain>(), hitInfo.collider.GetComponent<TerrainRock>().rockLayerIndex));
+                        terrainDetectors.Add(new TerrainDetector(terrain.terrainData, hitInfo.collider.GetComponent<Terrain>(), 
+                            hitInfo.collider.GetComponent<TerrainRock>().rockLayerIndex));
 
                         if (terrainDetectors[^1].GetIsWalkingOnRock(origin))
                         {

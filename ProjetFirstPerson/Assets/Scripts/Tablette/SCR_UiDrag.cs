@@ -67,8 +67,8 @@ public class SCR_UiDrag : MonoBehaviour
 
             RectBoard.transform.localPosition = pos;
 
-             ClampX = 3000 * RectBoard.localScale.x;
-             ClampY = 2000 * RectBoard.localScale.y;
+             ClampX = 2800 * RectBoard.localScale.x;
+             ClampY = 1800 * RectBoard.localScale.y;
              if(RectBoard.localScale.x <= 0.6f)
             {
                 RectBoard.localScale = new Vector3(0.6f,0.6f,0);
