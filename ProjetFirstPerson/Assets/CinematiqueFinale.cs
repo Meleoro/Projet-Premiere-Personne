@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ArthurUtilities;
 using Creature;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,7 +24,7 @@ public class CinematiqueFinale : MonoBehaviour
     public Image titre;
     public RectTransform credits;
     [SerializeField] private float creditDuration;
-    [SerializeField] private float creditFinalPos;
+    [SerializeField] private float creditYToAdd;
     [Header("Parameters Shake")] 
     [SerializeField] private float shakeDuration;
     [SerializeField] private float shakeAmplitude;
@@ -78,9 +79,11 @@ public class CinematiqueFinale : MonoBehaviour
         AudioManager.Instance.PlaySoundFadingIn(1, 3, 8, 7);
         StartCoroutine(FadeOutTitre(6f));
         yield return new WaitForSeconds(6f);
-        StartCoroutine(LerpCredits(creditDuration));
         credits.gameObject.SetActive(true);
+        credits.transform.DOMove(credits.transform.position + new Vector3(0, creditYToAdd, 0),creditDuration).SetEase(Ease.Linear);
         yield return new WaitForSeconds(creditDuration);
+        AudioManager.Instance.FadeOutAudioSource(3.5f,7);
+        yield return new WaitForSeconds(3.5f);
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -99,7 +102,7 @@ public class CinematiqueFinale : MonoBehaviour
         alpha = 0;
     }
     
-    public IEnumerator LerpCredits(float duration)
+    /*public IEnumerator LerpCredits(float duration)
     {
         float positionY = credits.position.y;
         float timer = 0;
@@ -113,5 +116,5 @@ public class CinematiqueFinale : MonoBehaviour
         }
         positionY = creditFinalPos;
         credits.position = new Vector3(0, creditFinalPos, 0);
-    }
+    }*/
 }
