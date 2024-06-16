@@ -313,6 +313,7 @@ namespace Creature
             waitTimer = 0;
             
             creatureMoverScript.forcedRot = Vector3.zero;
+            creatureMoverScript.forcedPos = Vector3.zero;
 
             placeToGo = suspicousPlace;
             creatureMoverScript.wantedPos = suspicousPlace;
