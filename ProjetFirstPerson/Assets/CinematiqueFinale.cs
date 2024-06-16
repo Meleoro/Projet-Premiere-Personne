@@ -21,12 +21,15 @@ public class CinematiqueFinale : MonoBehaviour
     public CreatureManager creatureManager;
     public CreatureReferences creatureReferences;
     public Image titre;
-
+    public RectTransform credits;
+    [SerializeField] private float creditDuration;
+    [SerializeField] private float creditFinalPos;
     [Header("Parameters Shake")] 
     [SerializeField] private float shakeDuration;
     [SerializeField] private float shakeAmplitude;
     [SerializeField] private float shakeChangeFrameDuration;
     [SerializeField] private float shakeRotIntensity;
+    [SerializeField] private AudioSource beteAudio;
     
     private void Start()
     {
@@ -38,6 +41,9 @@ public class CinematiqueFinale : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             AudioManager.Instance.PlaySoundOneShot(2,10,0);
+            AudioManager.Instance.FadeOutAudioSource(1, 4);
+            AudioManager.Instance.FadeOutAudioSource(1, 5);
+            AudioManager.Instance.FadeOutAudioSource(1, 6);
             doorAnim.clip = doorAnim["FermeturePorte 1"].clip;
             doorAnim.Play();
             collider.enabled = false;
@@ -67,9 +73,14 @@ public class CinematiqueFinale : MonoBehaviour
         yield return new WaitForSeconds(2.3f);
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.01f, 1));
         titre.gameObject.SetActive(true);
-        yield return new WaitForSeconds(3f);
-        StartCoroutine(FadeOutTitre(5f));
-        yield return new WaitForSeconds(5.5f);
+        yield return new WaitForSeconds(4f);
+        beteAudio.enabled = false;
+        AudioManager.Instance.PlaySoundFadingIn(1, 3, 8, 7);
+        StartCoroutine(FadeOutTitre(6f));
+        yield return new WaitForSeconds(6f);
+        StartCoroutine(LerpCredits(creditDuration));
+        credits.gameObject.SetActive(true);
+        yield return new WaitForSeconds(creditDuration);
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -86,5 +97,21 @@ public class CinematiqueFinale : MonoBehaviour
             yield return null;
         }
         alpha = 0;
+    }
+    
+    public IEnumerator LerpCredits(float duration)
+    {
+        float positionY = credits.position.y;
+        float timer = 0;
+        while (timer < duration)
+        {
+            positionY = Mathf.Lerp(credits.position.y, creditFinalPos, timer / duration);
+            credits.position = new Vector3(0, positionY, 0);
+            timer += Time.deltaTime;
+            
+            yield return null;
+        }
+        positionY = creditFinalPos;
+        credits.position = new Vector3(0, creditFinalPos, 0);
     }
 }

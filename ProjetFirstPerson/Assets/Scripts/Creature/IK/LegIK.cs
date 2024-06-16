@@ -220,7 +220,7 @@ namespace IK
             
             RaycastHit hit;
             
-            if (moveScript.navMeshAgent.velocity.magnitude < 0.25 && Mathf.Abs(moveScript.bodyIKScript.currentRotationDif) < 0.25)
+            if (moveScript.navMeshAgent.velocity.magnitude < 0.25 && Mathf.Abs(moveScript.bodyIKScript.currentRotationDif) < 0.05)
             {
                 //Debug.Log(moveScript.bodyIKScript.currentRotationDif);
                 
@@ -252,7 +252,7 @@ namespace IK
 
             Vector3 currentTargetPos = target.position;
             currentTargetPos = joint0.InverseTransformPoint(currentTargetPos);
-            currentTargetPos = new Vector3(currentTargetPos.x, currentTargetPos.y - Mathf.Abs(currentTargetPos.z) * Time.deltaTime * 5, 0);
+            currentTargetPos = new Vector3(currentTargetPos.x, currentTargetPos.y - Mathf.Abs(currentTargetPos.z) * Time.deltaTime * 3, 0);
             target.position = Vector3.Lerp(target.position, joint0.TransformPoint(currentTargetPos), Time.deltaTime * 5);
 
 

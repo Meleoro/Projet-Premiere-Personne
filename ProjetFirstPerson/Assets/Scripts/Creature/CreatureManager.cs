@@ -312,6 +312,11 @@ namespace Creature
                     AudioManager.Instance.PlaySoundOneShot(0, 5, 1);
                 }
             }
+
+            if (currentSuspicion == 0)
+            {
+                creatureRefScript.coleretteAnimator.SetBool("IsOpen", false);
+            }
             
             if(currentSuspicion > suspisionThresholdSuspicieux && currentState == CreatureState.none)
             {

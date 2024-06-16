@@ -138,6 +138,7 @@ public class UIManager : GenericSingletonClass<UIManager>
             
                 isUIActive = false;
                 CloseAllPanel(false,false,false,false);
+                logsMenu.ShutTraductionSound();
             }
 
             if (isFinalCinematic)
