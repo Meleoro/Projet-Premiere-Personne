@@ -35,6 +35,7 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
     public MeshRenderer capsule;
     private Controls controls;
     private CrouchComponent crouchComponent;
+    public CameraComponent cameraComponent;
 
 
     public override void Awake()
@@ -59,6 +60,7 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
     {
         characterComponents = GetComponents<ICharacterComponent>().ToList();
         crouchComponent = GetComponent<CrouchComponent>();
+        cameraComponent = GetComponent<CameraComponent>();
     }
     
     

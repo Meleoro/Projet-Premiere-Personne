@@ -31,6 +31,7 @@ namespace IK
         public Transform target;
         public CreatureLegsMover legsScript;
         public CreatureMover moveScript;
+        private CreatureManager manager;
         public HeadIK headIK;
 
 
@@ -52,6 +53,7 @@ namespace IK
         {
             data = moveScript.GetComponent<CreatureManager>().bodyData;
             dataLegs = moveScript.GetComponent<CreatureManager>().legData;
+            manager = moveScript.GetComponent<CreatureManager>();
 
             backLocalPosSave = backJoint.localPosition;
             saveOffset2 = backJoint.localEulerAngles;
@@ -160,7 +162,7 @@ namespace IK
                 if(Mathf.Abs(changedZ - eulerJointBody.z) < -80)
                     changedZ += 360;
 
-                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z , changedZ, Time.deltaTime * 10);
+                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z , changedZ, Time.deltaTime * 15);
 
                 bodyJoints[i].localRotation = Quaternion.Euler(eulerJointBody);
             }
@@ -171,13 +173,26 @@ namespace IK
             Vector3 frontAveragePos = Vector3.zero;
             Vector3 backAveragePos = Vector3.zero;
 
+            if (manager.debugIK)
+            {
+                for (int i = 0; i < legsScript.legs.Count; i++)
+                {
+                    RaycastHit hit;
+                    if (Physics.Raycast(legsScript.legs[i].target.position + Vector3.up * 1f, -legsScript.legs[i].target.up, out hit, 3f,
+                         LayerManager.Instance.groundLayer))
+                    {
+                        legsScript.legs[i].currentAddedY = -legsScript.legs[i].origin.position.y + legsScript.legs[i].target.position.y;
+                    }
+                }
+            }
+            
             for (int i = 0; i < legsScript.legs.Count; i++)
             {
-                if (legsScript.legs[i].isFrontLeg && legsScript.legs[i].isMoving)
+                if (legsScript.legs[i].isFrontLeg && (legsScript.legs[i].isMoving || manager.debugIK))
                 {
                     frontAveragePos += Vector3.up * legsScript.legs[i].currentAddedY;
                 }
-                else if(legsScript.legs[i].isMoving)
+                else if(legsScript.legs[i].isMoving || manager.debugIK)
                 {
                     backAveragePos += Vector3.up * legsScript.legs[i].currentAddedY;
                 }
@@ -193,22 +208,32 @@ namespace IK
             float backAddedY = 0;
             float reductiveFactor = 0.5f;
 
-            for(int i = 0; i < legsScript.legs.Count; i++)
+            if (!manager.debugIK)
             {
-                if (legsScript.legs[i].isFrontLeg)
+                for(int i = 0; i < legsScript.legs.Count; i++)
                 {
-                    frontAddedY += legsScript.legs[i].currentAddedY * reductiveFactor;
-                }
+                    if (legsScript.legs[i].isFrontLeg)
+                    {
+                        frontAddedY += legsScript.legs[i].currentAddedY * reductiveFactor;
+                    }
 
-                else
-                {
-                    backAddedY += legsScript.legs[i].currentAddedY * reductiveFactor;
+                    else
+                    {
+                        backAddedY += legsScript.legs[i].currentAddedY * reductiveFactor;
+                    }
                 }
             }
+            else
+            {
+                Vector3 frontAveragePos;
+                Vector3 backAveragePos;
 
-            float followSpeed = 3;
-
-            backJoint.transform.localPosition = Vector3.Lerp(backJoint.transform.localPosition, backLocalPosSave + Vector3.up * backAddedY, Time.deltaTime * followSpeed);
+                (frontAveragePos, backAveragePos) = GetLegsAveragePositions();
+                frontAddedY = frontAveragePos.y - backAveragePos.y;
+                backAddedY = -frontAveragePos.y + backAveragePos.y;
+            }
+            
+            backJoint.transform.localPosition = Vector3.Lerp(backJoint.transform.localPosition, backLocalPosSave + Vector3.up * backAddedY, Time.deltaTime * 4);
         }
 
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Creature;
@@ -16,6 +17,7 @@ namespace IK
         [SerializeField] private float articulationXRotMultiplicator;
         [SerializeField] private float articulationXRotMax;
         [SerializeField] private float yEffectorOffset;
+        [SerializeField] private bool gizmos;
 
         [Header("Public Infos")] 
         [HideInInspector] public float currentPatouneZRot;
@@ -220,7 +222,7 @@ namespace IK
             
             RaycastHit hit;
             
-            if (moveScript.navMeshAgent.velocity.magnitude < 0.25 && Mathf.Abs(moveScript.bodyIKScript.currentRotationDif) < 0.25)
+            if (moveScript.navMeshAgent.velocity.magnitude < 0.25 && Mathf.Abs(moveScript.bodyIKScript.currentRotationDif) < 0.05)
             {
                 //Debug.Log(moveScript.bodyIKScript.currentRotationDif);
                 
@@ -249,13 +251,30 @@ namespace IK
                     target.position = new Vector3(target.position.x, Mathf.Lerp(target.position.y, hit.point.y, Time.deltaTime * 10), target.position.z);
                 }
             }
-
+            
             Vector3 currentTargetPos = target.position;
             currentTargetPos = joint0.InverseTransformPoint(currentTargetPos);
-            currentTargetPos = new Vector3(currentTargetPos.x, currentTargetPos.y - Mathf.Abs(currentTargetPos.z) * Time.deltaTime * 5, 0);
+            currentTargetPos = new Vector3(currentTargetPos.x, currentTargetPos.y - Mathf.Abs(currentTargetPos.z) * Time.deltaTime * 3, 0);
             target.position = Vector3.Lerp(target.position, joint0.TransformPoint(currentTargetPos), Time.deltaTime * 5);
+        }
 
-
+        private void OnDrawGizmos()
+        {
+            if (gizmos)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawSphere(joint0.position, 0.2f);
+                Gizmos.DrawLine(joint0.position,joint1.position);
+                Gizmos.DrawSphere(joint1.position, 0.2f);
+                Gizmos.DrawLine(joint1.position,joint2.position);
+                if(joint2 != null)
+                    Gizmos.DrawSphere(joint2.position, 0.2f);
+                
+                Gizmos.DrawLine(joint2.position,target.position);
+                
+                Gizmos.color = Color.red;
+                Gizmos.DrawSphere(target.position, 0.25f);
+            }
         }
     }
 }

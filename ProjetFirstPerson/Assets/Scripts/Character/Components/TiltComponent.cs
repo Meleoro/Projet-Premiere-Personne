@@ -52,18 +52,27 @@ public class TiltComponent : MonoBehaviour, ICharacterComponent
         if (CharacterManager.Instance.interactibleAtRange is not null)
             return;
 
-        if(Input.GetKey(KeyCode.E)) 
+        if (!UIManager.Instance.isUIActive)
         {
-            TiltRight();
-        }
-        else if (Input.GetKey(KeyCode.Q))
-        {
-            TiltLeft();
+            if(Input.GetKey(KeyCode.E)) 
+            {
+                TiltRight();
+            }
+            else if (Input.GetKey(KeyCode.Q))
+            {
+                TiltLeft();
+            }
+            else
+            {
+                NoTilt();
+            }
         }
         else
         {
             NoTilt();
         }
+       
+        
 
         /*if (controls.Player.Tilt.IsPressed())
         {

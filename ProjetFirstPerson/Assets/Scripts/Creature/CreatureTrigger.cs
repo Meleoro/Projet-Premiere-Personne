@@ -13,7 +13,8 @@ namespace Creature
         [SerializeField] private int newWaypointTillChase;
         [SerializeField] private bool changeWalkSpeed;
         [SerializeField] private float newWalkSpeed;
-
+        [SerializeField] private bool isFinalPoursuite;
+        
         [Header("Parameters Gizmos")] 
         [SerializeField] private bool showGizmosOnlyOnSelected;
         [SerializeField] private Color gizmosColor;
@@ -64,6 +65,11 @@ namespace Creature
             if (changeWalkSpeed)
             {
                 creatureToMove.GetComponent<CreatureMover>().walkSpeed = newWalkSpeed;
+            }
+
+            if (isFinalPoursuite)
+            {
+                AmbianceManager.Instance.StartEndPoursuite();
             }
         }
     
