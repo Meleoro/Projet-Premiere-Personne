@@ -121,7 +121,16 @@ namespace IK
 
             for (int i = 0; i < tailTargets.Length; i++)
             {
-                Vector3 localPos = tailPositionsSave[i] + new Vector3(0, 0, -2f * (saveOriginalHeight - maxHeight));
+                /*if (i > 0)
+                {
+                    referencesScript.pantherPelvis.eulerAngles = saveTailStartAngles;
+                    
+                    //Vector3 dir = referencesScript.pantherPelvis.InverseTransformDirection(tailTargets[i + 1] - tailTargets[i]);
+                    referencesScript.pantherPelvis.rotation = Quaternion.Euler(new Vector3(saveTailStartAngles.x, tailJoints[i - 1].rotation.y,
+                        saveTailStartAngles.z));
+                }*/
+                
+                Vector3 localPos = tailPositionsSave[i] + new Vector3(Mathf.Clamp(1.2f * (saveOriginalHeight - maxHeight), 0, 1.2f), 0, 0);
 
                 localPos = new Vector3(localPos.x, 
                     localPos.y, Mathf.Lerp(referencesScript.pantherPelvis.InverseTransformPoint(tailTargets[i]).z, localPos.z, Time.deltaTime * 10));
@@ -155,12 +164,12 @@ namespace IK
             // To avoid too much abrupt body rotations
             if (wantedAtan < -80f && atanOrigin > 80f)
                 atanOrigin -= 360f;
-            else if (atanOrigin < -80f && wantedAtan > 80f)
+            if (atanOrigin < -80f && wantedAtan > 80f)
                 atanOrigin += 360f;
             
-            else if (wantedAtan < -80f && atanToRemove > 80f)
+            if (wantedAtan < -80f && atanToRemove > 80f)
                 atanToRemove -= 360f;
-            else if (atanToRemove < -80f && wantedAtan > 80f)
+            if (atanToRemove < -80f && wantedAtan > 80f)
                 atanToRemove += 360f;
 
             
@@ -183,12 +192,12 @@ namespace IK
 
                 if (currentAtan < -80f && newAtan > 80f)
                     newAtan -= 360f;
-                else if (newAtan < -80f && currentAtan > 80f)
+                if (newAtan < -80f && currentAtan > 80f)
                     newAtan += 360f;
 
-                else if (currentAtan < -80f && newAtan > 80f)
+                if (currentAtan < -80f && newAtan > 80f)
                     currentAtan -= 360f;
-                else if (newAtan < -80f && currentAtan > 80f)
+                if (newAtan < -80f && currentAtan > 80f)
                     currentAtan += 360f;
 
                 float angle = currentAtan - newAtan;
