@@ -72,7 +72,7 @@ namespace Creature
             moveScript.StopMoving();
             attackCollider.enabled = false;
 
-            StartCoroutine(headIK.ShakeHeadAttack(attackCooldown, 50, 0.075f));
+            //StartCoroutine(headIK.ShakeHeadAttack(attackCooldown, 50, 0.075f));
 
             yield return new WaitForSeconds(attackCooldown);
 
