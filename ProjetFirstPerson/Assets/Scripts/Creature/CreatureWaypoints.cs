@@ -63,7 +63,7 @@ namespace Creature
             
             if (!stoppedNormalBehavior)
             {
-                if(currentDist < 1f)
+                if(currentDist < 1f && transform.position.y > currentWaypoint.transform.position.y)
                 {
                     ReachedWaypoint();
                 }
