@@ -316,12 +316,11 @@ namespace Creature
                 float distOriginTarget = Vector3.Distance(currentLeg.isFrontLeg ? currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset :
                     currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset, currentLeg.target.position);
 
-                if ((currentLeg.isFrontLeg && distOriginTarget < data.maxFrontLegDistRun * 0.8f) && 
-                    !(currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun * 1.1f) && !currentLeg.isMoving)
+                if (currentLeg.isFrontLeg && distOriginTarget < data.maxFrontLegDistRun * 0.8f && !currentLeg.isMoving)
                     return false;
 
-                if ((!currentLeg.isFrontLeg && distOriginTarget < data.maxBackLegDistRun * 0.8f) && 
-                    !(!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun * 1.1f) && !currentLeg.isMoving)
+                if ((!currentLeg.isFrontLeg && distOriginTarget < data.maxBackLegDistRun * 0.78f) && 
+                    !(!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun * 1.15f) && !currentLeg.isMoving)
                     return false;
 
                 if (mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > mainTrRotRefBack.InverseTransformPoint(currentLeg.origin.position).z - 0.05f)
