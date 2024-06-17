@@ -9,6 +9,7 @@ public class TransitionTemple : MonoBehaviour
 {
     [Header("Gizmos Parameters")] 
     [SerializeField] private Color gizmosColor;
+    [SerializeField] private bool noSoundModif;
 
     [Header("Outside Parameters")] 
     [SerializeField][ColorUsage(true, true)] private Color outAmbientEquatorColor;
@@ -36,6 +37,8 @@ public class TransitionTemple : MonoBehaviour
         
         if (outVolume != null) outVolume.weight = Mathf.Clamp(1, 0 ,1);
         if (inVolume != null) inVolume.weight = Mathf.Clamp(0, 0 ,1);
+
+        if (noSoundModif) return;
         
         AmbianceManager.Instance.GoOutside();
     }
@@ -52,6 +55,8 @@ public class TransitionTemple : MonoBehaviour
 
         if (outVolume != null) outVolume.weight = Mathf.Clamp(1 - t, 0 ,1);
         if (inVolume != null) inVolume.weight = Mathf.Clamp(t, 0 ,1);
+        
+        if (noSoundModif) return;
 
         if(t < 0.5f)
         {
