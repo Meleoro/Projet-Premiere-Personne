@@ -194,7 +194,7 @@ namespace Creature
                             if (legs[i].isFrontLeg) cooldownFront = true;
                             else cooldownBack = true;
                             
-                            StartCoroutine(CooldownLegRun(0.12f, legs[i].isFrontLeg));
+                            StartCoroutine(CooldownLegRun(0.05f, legs[i].isFrontLeg));
                         }
                     }
                 }
@@ -330,7 +330,7 @@ namespace Creature
                     !(!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun * 1.15f) && !currentLeg.isMoving)
                     return false;
 
-                if (mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > mainTrRotRefBack.InverseTransformPoint(currentLeg.origin.position).z - 0.03f)
+                if (mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > mainTrRotRefBack.InverseTransformPoint(currentLeg.origin.position).z - 0.05f)
                     return false;
             }
 
