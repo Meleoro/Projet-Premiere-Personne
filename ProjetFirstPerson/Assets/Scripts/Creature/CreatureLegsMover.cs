@@ -129,7 +129,7 @@ namespace Creature
                         if (VerifyLegNeedsToMove(legs[i], true))
                         {
                             currentWantToMoveLegsCounter += 1;
-                            legs[i].target.position = Vector3.Slerp(legs[i].target.position, mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos), Time.deltaTime * 20);
+                            legs[i].target.position = Vector3.Slerp(legs[i].target.position, mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos), 0.9f);
 
                             continue;
                         }
@@ -145,7 +145,7 @@ namespace Creature
                     {
                          if (VerifyLegNeedsToMove(legs[i], true))
                          {
-                             Vector3.Slerp(legs[i].target.position, mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos), Time.deltaTime * 20);
+                             Vector3.Slerp(legs[i].target.position, mainTrRotRefBack.TransformPoint(legs[i].saveLastTargetPos), 0.9f);
 
                          }
                          else
@@ -323,14 +323,14 @@ namespace Creature
 
                 float distOriginTarget = Vector3.Distance(origin, currentLeg.target.position);
 
-                if (currentLeg.isFrontLeg && distOriginTarget < data.maxFrontLegDistRun * 0.8f && !currentLeg.isMoving)
+                if (currentLeg.isFrontLeg && distOriginTarget < data.maxFrontLegDistRun * 0.85f && !currentLeg.isMoving)
                     return false;
 
                 if ((!currentLeg.isFrontLeg && distOriginTarget < data.maxBackLegDistRun * 0.78f) && 
                     !(!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun * 1.15f) && !currentLeg.isMoving)
                     return false;
 
-                if (mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > mainTrRotRefBack.InverseTransformPoint(currentLeg.origin.position).z - 0.05f)
+                if (mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > mainTrRotRefBack.InverseTransformPoint(currentLeg.origin.position).z)
                     return false;
             }
 

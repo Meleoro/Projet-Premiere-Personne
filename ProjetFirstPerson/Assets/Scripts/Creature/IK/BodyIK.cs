@@ -208,8 +208,8 @@ namespace IK
             float backAddedY = 0;
             float reductiveFactor = 0.1f;
 
-            if (moveScript.isRunning && moveScript.navMeshAgent.velocity.magnitude > 2)
-                reductiveFactor = 0.15f;
+            /*if (moveScript.isRunning && moveScript.navMeshAgent.velocity.magnitude > 2)
+                reductiveFactor = 0.15f;*/
 
             if (!manager.debugIK)
             {
