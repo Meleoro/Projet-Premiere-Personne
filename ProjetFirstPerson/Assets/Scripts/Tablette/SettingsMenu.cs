@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,10 @@ public class SettingsMenu : MonoBehaviour
     public static SettingsMenu instance;
 
     public List<Transform> checkpointList = new List<Transform>();
+    
+    public List<TriggerOpti> triggerOpti = new List<TriggerOpti>();
+    
+    public List<int> nbTriggerToActivate = new List<int>();
 
     private void Awake()
     {
@@ -99,6 +104,11 @@ public class SettingsMenu : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        if (isInStart) isInStart = false;
+    }
+
     public void SetMasterVolume()
     {
         audioMixer.SetFloat("Master", (Mathf.Log10(masterSlider.value)*20));
@@ -144,19 +154,35 @@ public class SettingsMenu : MonoBehaviour
     PlayerPrefs.SetInt("FullScreen", enable);
     }
 
+    private bool isInStart = true;
     public void PlayUISound()
     {
+        if (isInStart) return;
+        
         AudioManager.Instance.PlaySoundOneShot(1, 16, 0);
     }
 
     public void TpToCheckpoint()
     {
-        health.transform.position = health.lastCheckPoint;
+        StartCoroutine(UIManager.Instance.OpenMenu());
+        health.isTP = true;
+        StartCoroutine(health.Die());
     }
 
     public void TpCheckpoint(int index)
     {
-        player.transform.position = checkpointList[index].position + new Vector3(0,2,0);
+        for (int i = 0; i < nbTriggerToActivate[index]; i++)
+        {
+            triggerOpti[i].Activate();
+        }
+        for (int i = nbTriggerToActivate[index]+1; i < triggerOpti.Count - nbTriggerToActivate[index]; i++)
+        {
+            triggerOpti[i].Desactivate();
+        }
+        player.transform.position = checkpointList[index].position + new Vector3(0,3,0);
+        
+        if(health.currentTriggerPoursuiteF != null)
+            health.currentTriggerPoursuiteF.ActivateTrigger();
     }
 }
 

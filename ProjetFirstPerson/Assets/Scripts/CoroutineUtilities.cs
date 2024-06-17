@@ -9,16 +9,21 @@ namespace ArthurUtilities
     {
 
         private Dictionary<Transform, Coroutine> currentShakePositions = new();
+        private Dictionary<Transform, Vector3> currentShakePositionsSaves = new();
         public void ShakePosition(Transform tr, float duration, float intensity, float changePosDuration, float rotationIntensity)
         {
             if (currentShakePositions.Keys.Contains(tr))
             {
+                tr.localPosition = currentShakePositionsSaves[tr];
+                
                 StopCoroutine(currentShakePositions[tr]);
                 currentShakePositions[tr] = StartCoroutine(ShakePositionCoroutine(tr, duration, intensity, changePosDuration, rotationIntensity));
+                currentShakePositionsSaves[tr] = tr.localPosition;
             }
             else
             {
                 currentShakePositions.Add(tr, StartCoroutine(ShakePositionCoroutine(tr, duration, intensity, changePosDuration, rotationIntensity)));
+                currentShakePositionsSaves.Add(tr, tr.localPosition);
             }
         }
 

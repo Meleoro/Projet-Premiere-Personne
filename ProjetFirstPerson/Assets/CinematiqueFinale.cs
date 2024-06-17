@@ -59,7 +59,8 @@ public class CinematiqueFinale : MonoBehaviour
     public IEnumerator DoSecondPart()
     { 
         notifLog.SetActive(false);
-        creatureMover.agressiveSpeed = 0;
+        //creatureMover.agressiveSpeed = 0;
+        creatureMover.headIKScript.FollowChara();
         camera.cinematicLookSpeed = 0;
         camera.isInCinematic = true;
         yield return new WaitForSeconds(0.4f);
@@ -86,6 +87,7 @@ public class CinematiqueFinale : MonoBehaviour
         yield return new WaitForSeconds(creditDuration);
         AudioManager.Instance.FadeOutAudioSource(3.5f,7);
         yield return new WaitForSeconds(3.5f);
+        CharacterManager.Instance.cameraComponent.LockedCursor(0);
         SceneManager.LoadScene("MainMenu");
     }
 

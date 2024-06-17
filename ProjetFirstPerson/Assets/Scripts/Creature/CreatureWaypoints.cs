@@ -174,7 +174,7 @@ namespace Creature
 
             while (timer < 1)
             {
-                timer += Time.deltaTime;
+                timer += Time.deltaTime * 0.75f;
 
                 creatureMoverScript.navMeshAgent.acceleration = Mathf.Lerp(0, 8, timer);
                 

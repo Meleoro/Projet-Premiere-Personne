@@ -47,6 +47,8 @@ namespace Creature
                 creatureToMove.transform.parent.transform.position += moveDir;
 
                 creatureToMove.transform.GetComponent<CreatureMover>().tailIKScript.RebootTargets();
+                creatureToMove.GetComponent<CreatureManager>().currentState = CreatureState.none;
+                creatureToMove.GetComponent<CreatureManager>().currentSuspicion = 0;
 
                 creatureToMove.transform.GetComponent<CreatureMover>().navMeshAgent.enabled = true;
             }
