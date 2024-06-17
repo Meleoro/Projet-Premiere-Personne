@@ -81,7 +81,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
             AudioManager.Instance.PlaySoundOneShot(1,1,0);
             StartCoroutine(SlowCharacter(fallRecovery, 0.1f));
             StartCoroutine(CameraEffects.Instance.TakeDamage(0.8f));
-            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, cameraShakeIntensityFall, cameraShakeDurationFall, 
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent.parent, cameraShakeIntensityFall, cameraShakeDurationFall, 
                 cameraShakeChangePosDurationFall, cameraShakeRotationIntensityFall);
         }
     }
@@ -118,7 +118,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
 
         isInvincible = true;
 
-        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, cameraShakeDuration, cameraShakeIntensity, 
+        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent.parent, cameraShakeDuration, cameraShakeIntensity, 
             cameraShakeChangePosDuration, cameraShakeRotationIntensity);
 
         GetComponent<StaminaComponent>().RegainStamina();
