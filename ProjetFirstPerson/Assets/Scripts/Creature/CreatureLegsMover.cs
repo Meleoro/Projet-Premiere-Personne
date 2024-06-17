@@ -236,13 +236,13 @@ namespace Creature
 
             if (currentLeg.timerCooldownMove <= 0)
             {
-                if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z + data.frontLegsOffset > 0.15f &&
+                /*if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z + data.frontLegsOffset > 0.15f &&
                     distOriginTarget > data.maxFrontLegDistWalk * 0.95)
                     return false;
                 
                 if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z + data.backLegsOffset > 0.15f&&
                     distOriginTarget > data.maxBackLegDistWalk * 0.95)
-                    return false;
+                    return false;*/
                 
                 if (shouldntMove && !creatureMover.isRunning)
                 {
@@ -427,11 +427,11 @@ namespace Creature
                 yield return null;
             }
             
-            if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
+            /*if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
                     LayerManager.Instance.groundLayer))
             {
                 currentLeg.target.position = hit.point;
-            }
+            }*/
             //currentLeg.target.position = transform.TransformPoint(localEnd);
 
             currentLeg.timerCooldownMove = 0.3f;
