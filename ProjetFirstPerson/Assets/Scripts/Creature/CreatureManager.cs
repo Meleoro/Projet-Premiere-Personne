@@ -316,6 +316,11 @@ namespace Creature
             if (currentSuspicion == 0 && !CharacterManager.Instance.cameraComponent.isInCinematic)
             {
                 creatureRefScript.coleretteAnimator.SetBool("IsOpen", false);
+
+                if (waypointsScript.stoppedNormalBehavior && currentState == CreatureState.none)
+                {
+                    waypointsScript.RestartWaypointBehavior();
+                }
             }
             
             if(currentSuspicion > suspisionThresholdSuspicieux && currentState == CreatureState.none)

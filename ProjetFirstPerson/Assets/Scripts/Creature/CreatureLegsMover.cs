@@ -193,7 +193,7 @@ namespace Creature
                             if (legs[i].isFrontLeg) cooldownFront = true;
                             else cooldownBack = true;
                             
-                            StartCoroutine(CooldownLegRun(0.14f, legs[i].isFrontLeg));
+                            StartCoroutine(CooldownLegRun(0.12f, legs[i].isFrontLeg));
                         }
                     }
                 }
@@ -236,13 +236,13 @@ namespace Creature
 
             if (currentLeg.timerCooldownMove <= 0)
             {
-                if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z + data.frontLegsOffset > 0.15f &&
+                /*if (currentLeg.isFrontLeg && mainTrRotRefFront.InverseTransformPoint(currentLeg.target.position).z + data.frontLegsOffset > 0.15f &&
                     distOriginTarget > data.maxFrontLegDistWalk * 0.95)
                     return false;
                 
                 if (!currentLeg.isFrontLeg && mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z + data.backLegsOffset > 0.15f&&
                     distOriginTarget > data.maxBackLegDistWalk * 0.95)
-                    return false;
+                    return false;*/
                 
                 if (shouldntMove && !creatureMover.isRunning)
                 {
@@ -316,15 +316,14 @@ namespace Creature
                 float distOriginTarget = Vector3.Distance(currentLeg.isFrontLeg ? currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset :
                     currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset, currentLeg.target.position);
 
-                if ((currentLeg.isFrontLeg && distOriginTarget < data.maxFrontLegDistRun * 0.8f) && 
-                    !(currentLeg.isFrontLeg && distOriginTarget > data.maxFrontLegDistRun * 1.1f) && !currentLeg.isMoving)
+                if (currentLeg.isFrontLeg && distOriginTarget < data.maxFrontLegDistRun * 0.8f && !currentLeg.isMoving)
                     return false;
 
-                if ((!currentLeg.isFrontLeg && distOriginTarget < data.maxBackLegDistRun * 0.8f) && 
-                    !(!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun * 1.1f) && !currentLeg.isMoving)
+                if ((!currentLeg.isFrontLeg && distOriginTarget < data.maxBackLegDistRun * 0.78f) && 
+                    !(!currentLeg.isFrontLeg && distOriginTarget > data.maxBackLegDistRun * 1.15f) && !currentLeg.isMoving)
                     return false;
 
-                if (mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > mainTrRotRefBack.InverseTransformPoint(currentLeg.origin.position).z - 0.05f)
+                if (mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position).z > mainTrRotRefBack.InverseTransformPoint(currentLeg.origin.position).z - 0.03f)
                     return false;
             }
 
@@ -427,11 +426,11 @@ namespace Creature
                 yield return null;
             }
             
-            if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
+            /*if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
                     LayerManager.Instance.groundLayer))
             {
                 currentLeg.target.position = hit.point;
-            }
+            }*/
             //currentLeg.target.position = transform.TransformPoint(localEnd);
 
             currentLeg.timerCooldownMove = 0.3f;
