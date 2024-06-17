@@ -59,7 +59,8 @@ public class CinematiqueFinale : MonoBehaviour
     public IEnumerator DoSecondPart()
     { 
         notifLog.SetActive(false);
-        creatureMover.agressiveSpeed = 0;
+        //creatureMover.agressiveSpeed = 0;
+        creatureMover.headIKScript.FollowChara();
         camera.cinematicLookSpeed = 0;
         camera.isInCinematic = true;
         yield return new WaitForSeconds(0.4f);
