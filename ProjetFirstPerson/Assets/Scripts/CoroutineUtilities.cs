@@ -61,7 +61,7 @@ namespace ArthurUtilities
                 
                 tr.localRotation = Quaternion.Lerp(tr.localRotation, currentRot, changePosTimer / changePosDuration);
 
-                yield return null;
+                yield return new WaitForEndOfFrame();
             }
 
             tr.localPosition = originalPos;
