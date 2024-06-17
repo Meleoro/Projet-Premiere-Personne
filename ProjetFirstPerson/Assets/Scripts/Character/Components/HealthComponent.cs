@@ -42,6 +42,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     public CameraComponent cam;
     public MoveComponent move;
     private Coroutine hurtCoroutine;
+    public bool isTP;
 
 
     private void Start()
@@ -178,7 +179,8 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         if(currentTriggerPoursuiteF != null)
             currentTriggerPoursuiteF.ActivateTrigger();
         
-        StopCoroutine(hurtCoroutine);
+        if(!isTP)
+            StopCoroutine(hurtCoroutine);
         CameraEffects.Instance.hurtVolume.weight = 0;
         CameraEffects.Instance.hiddenVolume.weight = 0;
         DieAction.Invoke();
@@ -190,6 +192,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
         yield return new WaitForSeconds(0.5f);
         CameraEffects.Instance.hiddenVolume.weight = 0;
 
+        isTP = false;
         cam.canMove = true;
         cam.canRotate = true;
         move.rb.isKinematic = false;

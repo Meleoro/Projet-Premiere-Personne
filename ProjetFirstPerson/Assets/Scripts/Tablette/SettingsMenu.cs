@@ -155,7 +155,10 @@ public class SettingsMenu : MonoBehaviour
 
     public void TpToCheckpoint()
     {
-        health.transform.position = health.lastCheckPoint;
+        StartCoroutine(UIManager.Instance.OpenMenu());
+        health.isTP = true;
+        StartCoroutine(health.Die());
+        
     }
 
     public void TpCheckpoint(int index)
