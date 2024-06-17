@@ -153,7 +153,7 @@ public class HealthComponent : MonoBehaviour, ICharacterComponent
     }
 
 
-    private IEnumerator Die()
+    public IEnumerator Die()
     {
         AudioManager.Instance.PlaySoundOneShot(1,4,0);
         isDying = true;
