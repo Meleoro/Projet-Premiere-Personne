@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -103,6 +104,11 @@ public class SettingsMenu : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        if (isInStart) isInStart = false;
+    }
+
     public void SetMasterVolume()
     {
         audioMixer.SetFloat("Master", (Mathf.Log10(masterSlider.value)*20));
@@ -148,8 +154,11 @@ public class SettingsMenu : MonoBehaviour
     PlayerPrefs.SetInt("FullScreen", enable);
     }
 
+    private bool isInStart = true;
     public void PlayUISound()
     {
+        if (isInStart) return;
+        
         AudioManager.Instance.PlaySoundOneShot(1, 16, 0);
     }
 
