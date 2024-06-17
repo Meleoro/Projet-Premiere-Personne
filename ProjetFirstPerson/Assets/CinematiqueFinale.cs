@@ -86,6 +86,7 @@ public class CinematiqueFinale : MonoBehaviour
         yield return new WaitForSeconds(creditDuration);
         AudioManager.Instance.FadeOutAudioSource(3.5f,7);
         yield return new WaitForSeconds(3.5f);
+        CharacterManager.Instance.cameraComponent.LockedCursor(0);
         SceneManager.LoadScene("MainMenu");
     }
 

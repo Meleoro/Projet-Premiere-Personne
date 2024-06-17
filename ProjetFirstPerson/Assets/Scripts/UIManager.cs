@@ -148,6 +148,8 @@ public class UIManager : GenericSingletonClass<UIManager>
                 moveComponent.canMove = false;
                 cinematiqueFinale.lightEtape1.SetActive(false);
                 StartCoroutine(cinematiqueFinale.DoSecondPart());
+                canMenu = false;
+                cam.canInOut = false;
             }
         }
     }

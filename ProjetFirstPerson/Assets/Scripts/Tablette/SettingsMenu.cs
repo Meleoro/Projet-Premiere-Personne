@@ -155,7 +155,9 @@ public class SettingsMenu : MonoBehaviour
 
     public void TpToCheckpoint()
     {
-        health.transform.position = health.lastCheckPoint;
+        StartCoroutine(UIManager.Instance.OpenMenu());
+        health.isTP = true;
+        StartCoroutine(health.Die());
     }
 
     public void TpCheckpoint(int index)
@@ -169,6 +171,9 @@ public class SettingsMenu : MonoBehaviour
             triggerOpti[i].Desactivate();
         }
         player.transform.position = checkpointList[index].position + new Vector3(0,3,0);
+        
+        if(health.currentTriggerPoursuiteF != null)
+            health.currentTriggerPoursuiteF.ActivateTrigger();
     }
 }
 
