@@ -67,13 +67,13 @@ public class CinematiqueFinale : MonoBehaviour
         lightEtape2.SetActive(true);
         doorAnim.clip = doorAnim["OuverturePorteFinale 1"].clip;
         doorAnim.Play();
-        yield return new WaitForSeconds(1.4f);
+        yield return new WaitForSeconds(2.2f);
         camera.cinematicLookSpeed = lookSpeed;
         camera.LookTowardsCinematic(pointToLook.transform);
-        yield return new WaitForSeconds(2.17f);
+        yield return new WaitForSeconds(4f);
         creatureReferences.coleretteAnimator.SetBool("IsOpen", true);
         AudioManager.Instance.PlaySoundOneShot(0,1,1);
-        yield return new WaitForSeconds(2.3f);
+        yield return new WaitForSeconds(3f);
         StartCoroutine(CameraEffects.Instance.FadeScreen(0.01f, 1));
         titre.gameObject.SetActive(true);
         yield return new WaitForSeconds(4f);
@@ -102,21 +102,6 @@ public class CinematiqueFinale : MonoBehaviour
             yield return null;
         }
         alpha = 0;
+        titre.color = new Color(1,1,1,0);
     }
-    
-    /*public IEnumerator LerpCredits(float duration)
-    {
-        float positionY = credits.position.y;
-        float timer = 0;
-        while (timer < duration)
-        {
-            positionY = Mathf.Lerp(credits.position.y, creditFinalPos, timer / duration);
-            credits.position = new Vector3(0, positionY, 0);
-            timer += Time.deltaTime;
-            
-            yield return null;
-        }
-        positionY = creditFinalPos;
-        credits.position = new Vector3(0, creditFinalPos, 0);
-    }*/
 }
