@@ -43,7 +43,7 @@ public class PorteCylindre : MonoBehaviour
         
         yield return new WaitForSeconds(1);
         
-        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent.parent, shakeDuration,
+        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
             shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
         
         interactScript.GetOutInteraction();
