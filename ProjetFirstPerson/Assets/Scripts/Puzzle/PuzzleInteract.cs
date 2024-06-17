@@ -95,6 +95,8 @@ namespace Puzzle
 
             boardMenu.favCanBeOpen = true;
             CharacterManager.Instance.isInteracting = true;
+
+            CharacterManager.Instance.GetInPuzzle();
         }
 
 
@@ -129,6 +131,8 @@ namespace Puzzle
 
             isInRange = false;
             CharacterManager.Instance.interactibleAtRange = null;
+
+            CharacterManager.Instance.GetOutPuzzle();
 
             boardMenu.favCanBeOpen = false;
 
