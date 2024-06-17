@@ -43,6 +43,32 @@ public class TriggerOpti : MonoBehaviour
         
     }
 
+    public void Activate()
+    {
+        bool goFront = true;
+        for (int i = 0; i < objectToActivate.Count; i++)
+        {
+            objectToActivate[i].SetActive(goFront);
+        }
+        for (int i = 0; i < objectToDeactivate.Count; i++)
+        {
+            objectToDeactivate[i].SetActive(!goFront);
+        }
+    }
+    
+    public void Desactivate()
+    {
+        bool goFront = false;
+        for (int i = 0; i < objectToActivate.Count; i++)
+        {
+            objectToActivate[i].SetActive(goFront);
+        }
+        for (int i = 0; i < objectToDeactivate.Count; i++)
+        {
+            objectToDeactivate[i].SetActive(!goFront);
+        }
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = gizmosColor;

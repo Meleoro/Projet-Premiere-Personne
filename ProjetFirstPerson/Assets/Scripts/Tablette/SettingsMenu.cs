@@ -28,6 +28,10 @@ public class SettingsMenu : MonoBehaviour
     public static SettingsMenu instance;
 
     public List<Transform> checkpointList = new List<Transform>();
+    
+    public List<TriggerOpti> triggerOpti = new List<TriggerOpti>();
+    
+    public List<int> nbTriggerToActivate = new List<int>();
 
     private void Awake()
     {
@@ -156,7 +160,15 @@ public class SettingsMenu : MonoBehaviour
 
     public void TpCheckpoint(int index)
     {
-        player.transform.position = checkpointList[index].position;
+        for (int i = 0; i < nbTriggerToActivate[index]; i++)
+        {
+            triggerOpti[i].Activate();
+        }
+        for (int i = nbTriggerToActivate[index]+1; i < triggerOpti.Count - nbTriggerToActivate[index]; i++)
+        {
+            triggerOpti[i].Desactivate();
+        }
+        player.transform.position = checkpointList[index].position + new Vector3(0,3,0);
     }
 }
 
