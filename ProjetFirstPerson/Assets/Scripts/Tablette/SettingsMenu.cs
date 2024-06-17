@@ -156,7 +156,7 @@ public class SettingsMenu : MonoBehaviour
 
     public void TpCheckpoint(int index)
     {
-        player.transform.position = checkpointList[index].position + new Vector3(0,2,0);
+        player.transform.position = checkpointList[index].position + new Vector3(0,5,0);
     }
 }
 
