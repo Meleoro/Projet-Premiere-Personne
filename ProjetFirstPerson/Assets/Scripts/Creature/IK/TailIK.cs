@@ -79,7 +79,7 @@ namespace IK
                 tailTargets[i] = tailJoints[i].position;
 
                 RaycastHit hit;
-                if (Physics.Raycast(tailJoints[i].position + Vector3.up, Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
+                if (Physics.Raycast(new Vector3(tailJoints[i].position.x, tailStart.transform.position.y, tailJoints[i].position.z), Vector3.down, out hit, 10, LayerManager.Instance.groundLayer))
                 {
                     tailHeightsSave[i] = Vector3.Distance(tailJoints[i].position, hit.point);
 
@@ -141,7 +141,7 @@ namespace IK
 
                 tailTargets[i] = new Vector3(wantedGlobalPos.x, tailTargets[i].y, wantedGlobalPos.z);
 
-                if (Physics.Raycast(tailTargets[i] + Vector3.up * 0.2f, Vector3.down, out hit, 4f, LayerManager.Instance.groundLayer))
+                if (Physics.Raycast(new Vector3(tailTargets[i].x, tailStart.transform.position.y, tailTargets[i].z), Vector3.down, out hit, 4f, LayerManager.Instance.groundLayer))
                 {
                     Vector3 wantedPos = hit.point + new Vector3(0, maxHeight * tailHeightRatioSave[i], 0);
                     tailTargets[i].y = Mathf.Lerp(tailTargets[i].y, wantedPos.y, Time.deltaTime * 10);

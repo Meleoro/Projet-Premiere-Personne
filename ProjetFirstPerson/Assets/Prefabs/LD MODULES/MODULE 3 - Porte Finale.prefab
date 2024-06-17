@@ -6028,7 +6028,7 @@ Transform:
   m_GameObject: {fileID: 5938833313557073302}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0007, y: -0.34, z: -31.05}
+  m_LocalPosition: {x: -0.13032588, y: -0.279, z: -35.234306}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8627,19 +8627,20 @@ MonoBehaviour:
   doorAnim: {fileID: 8386526087250075839}
   camera: {fileID: 0}
   pointToLook: {fileID: 8789537157323869451}
-  lookSpeed: 0.04
+  lookSpeed: 0.02
   creatureMover: {fileID: 0}
   creatureManager: {fileID: 0}
   creatureReferences: {fileID: 0}
   titre: {fileID: 0}
   credits: {fileID: 0}
-  creditDuration: 0
-  creditYToAdd: 0
+  creditDuration: 20
+  creditYToAdd: 4500
   shakeDuration: 0
   shakeAmplitude: 0
   shakeChangeFrameDuration: 0
   shakeRotIntensity: 0
   beteAudio: {fileID: 0}
+  notifLog: {fileID: 0}
 --- !u!65 &2720258417868888536
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16488,10 +16489,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 779724015822389412}
     m_Modifications:
+    - target: {fileID: 579380912759875664, guid: 7993b82cd38f5b244a9d1fb242c3910b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1661674311906380947, guid: 7993b82cd38f5b244a9d1fb242c3910b,
         type: 3}
       propertyPath: m_Name
       value: Sm_LargeCloth_Low (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661674311906380947, guid: 7993b82cd38f5b244a9d1fb242c3910b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1790986076664718536, guid: 7993b82cd38f5b244a9d1fb242c3910b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2036932525789681193, guid: 7993b82cd38f5b244a9d1fb242c3910b,
         type: 3}
@@ -27886,6 +27902,11 @@ PrefabInstance:
       propertyPath: placeToTP
       value: 
       objectReference: {fileID: 3442582613452447223}
+    - target: {fileID: 8302417925977016096, guid: b68445a28865ad0429b35d4910ba57bf,
+        type: 3}
+      propertyPath: isFinalPoursuite
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8302417925977016096, guid: b68445a28865ad0429b35d4910ba57bf,
         type: 3}
       propertyPath: turnsTheCreatureAggressive
@@ -58978,10 +58999,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 779724015822389412}
     m_Modifications:
+    - target: {fileID: 579380912759875664, guid: 7993b82cd38f5b244a9d1fb242c3910b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1661674311906380947, guid: 7993b82cd38f5b244a9d1fb242c3910b,
         type: 3}
       propertyPath: m_Name
       value: Sm_LargeCloth_Low
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661674311906380947, guid: 7993b82cd38f5b244a9d1fb242c3910b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1790986076664718536, guid: 7993b82cd38f5b244a9d1fb242c3910b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2036932525789681193, guid: 7993b82cd38f5b244a9d1fb242c3910b,
         type: 3}
