@@ -91,7 +91,7 @@ namespace IK
             else
                 rotationSpeedModifier += Time.deltaTime;
 
-            rotationSpeedModifier = Mathf.Clamp(rotationSpeedModifier, 0.01f, 1f);
+            rotationSpeedModifier = Mathf.Clamp(rotationSpeedModifier, 0.02f, 1f);
 
             Vector3 dif = backJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;

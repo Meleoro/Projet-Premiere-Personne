@@ -179,8 +179,9 @@ namespace IK
                 currentZ);
 
             saveZ = currentZ;
-            
-            baseNeckTr.localRotation = Quaternion.Lerp(baseNeckTr.localRotation, Quaternion.Euler(euler + new Vector3(offsetRotationXBaseNeck, 0, 0)), Time.deltaTime * 5);
+
+            baseNeckTr.localRotation = Quaternion.Lerp(baseNeckTr.localRotation,
+                Quaternion.Euler(euler + new Vector3(offsetRotationXBaseNeck, 0, 0)), Time.deltaTime * 3.5f);
         }
 
 

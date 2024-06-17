@@ -21,7 +21,7 @@ namespace Creature
         public bool isAttacking;
 
         [Header("Private Infos")]
-        private bool stoppedNormalBehavior;
+        public bool stoppedNormalBehavior;
         private bool didWaypointAction;
         private bool isDoingSpecialAction;
         public int currentWaypointCountNear;
