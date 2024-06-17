@@ -77,6 +77,7 @@ namespace Puzzle
             
             CameraManager.Instance.transform.parent.transform.position = cameraPos.transform.position;
             CameraManager.Instance.transform.parent.transform.rotation = Quaternion.Euler(desiredRotation);
+            CameraManager.Instance.transform.localPosition = new Vector3(0,0.8f,0);
 
             characterMoveScript.canMove = false;
             characterMoveScript.rb.isKinematic = true;
