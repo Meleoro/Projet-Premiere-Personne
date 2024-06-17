@@ -21,7 +21,7 @@ namespace IK
         private Vector3 backLocalPosSave;
         private Vector3[] savesLocalEulers;
         private Quaternion saveRotThorax;
-        private float rotationSpeedModifier;
+        public float rotationSpeedModifier;
         
         [Header("References")]
         [SerializeReference] private CreatureReferences referencesScript;
@@ -85,13 +85,13 @@ namespace IK
             float currentSpeed1 = moveScript.isRunning ? data.aggressiveRotationSpeed : data.rotationSpeed;
             float currentSpeed2 = moveScript.isRunning ? data.aggressiveRotationSpeedFrontJoints : data.rotationSpeedFrontJoints;
 
-            if (Mathf.Abs(currentRotationDif) < 0.01f)
+            if (Mathf.Abs(currentRotationDif) < 0.05f)
                 rotationSpeedModifier -= Time.deltaTime;
             
             else
                 rotationSpeedModifier += Time.deltaTime;
 
-            rotationSpeedModifier = Mathf.Clamp(rotationSpeedModifier, 0.02f, 1f);
+            rotationSpeedModifier = Mathf.Clamp(rotationSpeedModifier, 0.1f, 1f);
 
             Vector3 dif = backJoint.position - target.position;
             float atan = Mathf.Atan2(-dif.z, dif.x) * Mathf.Rad2Deg;
@@ -138,7 +138,7 @@ namespace IK
             for (int i = 0; i < bodyJoints.Length; i++)
             {
                 Vector3 eulerJointBody = bodyJoints[i].localEulerAngles;
-                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z, bodyJoints[i].localEulerAngles.z + frontYDif, Time.deltaTime * 15);
+                eulerJointBody.z = Mathf.Lerp(bodyJoints[i].localEulerAngles.z, bodyJoints[i].localEulerAngles.z + frontYDif, Time.deltaTime * 10);
 
                 bodyJoints[i].localEulerAngles = eulerJointBody;
             }

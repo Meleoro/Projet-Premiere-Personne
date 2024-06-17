@@ -119,7 +119,7 @@ namespace Creature
         {
             float currentRotationDif = Mathf.Abs(bodyIKScript.currentRotationDif);
 
-            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.2f, currentRotationDif);
+            navMeshAgent.speed = Mathf.Lerp(saveSpeed, saveSpeed * 0.2f, currentRotationDif) * 1;
         }
 
         private void AdaptHeightBySpeed()
@@ -131,29 +131,31 @@ namespace Creature
 
             // Back
             RaycastHit groundHitBack;
-            if(Physics.Raycast(bodyIKScript.backJoint.position + Vector3.up, Vector3.down, out groundHitBack, data.maxHeight + 1, LayerManager.Instance.groundLayer))
+            if(Physics.Raycast(bodyIKScript.backJoint.position + Vector3.up - bodyIKScript.backJoint.forward * 0.2f, 
+                   Vector3.down, out groundHitBack, data.maxHeight + 1, LayerManager.Instance.groundLayer))
             {
                 bodyIKScript.backJoint.position =
                     Vector3.Lerp(bodyIKScript.backJoint.position, 
                         groundHitBack.point + Vector3.up * (wantedYBack + bodyIKScript.currentAddedBackY + heightModifierBack), 
-                        Time.deltaTime * 5);
+                        Time.deltaTime * 6);
             }
             else
             {
-                bodyIKScript.backJoint.position -= Vector3.up * (Time.deltaTime * 3);
+                bodyIKScript.backJoint.position -= Vector3.up * (Time.deltaTime * 2);
             }
 
             // Front
             RaycastHit groundHitFront;
-            if (Physics.Raycast(bodyIKScript.bodyJoint.position + Vector3.up, Vector3.down, out groundHitFront, data.maxHeight + 1, LayerManager.Instance.groundLayer))
+            if (Physics.Raycast(bodyIKScript.bodyJoint.position + Vector3.up - bodyIKScript.bodyJoint.forward * 0.25f, 
+                    Vector3.down, out groundHitFront, data.maxHeight + 1f, LayerManager.Instance.groundLayer))
             {
                 Vector3 wantedPosition = groundHitFront.point + Vector3.up * (wantedYFront + bodyIKScript.currentAddedFrontY);
 
-                bodyIKScript.frontYDif = wantedPosition.y - bodyIKScript.bodyJoint.position.y + heightModifierFront;
+                bodyIKScript.frontYDif = Mathf.Lerp(bodyIKScript.frontYDif, wantedPosition.y - bodyIKScript.bodyJoint.position.y + heightModifierFront, 0.85f);
             }
             else
             {
-                bodyIKScript.frontYDif -= Time.deltaTime * 5;
+                bodyIKScript.frontYDif -= Time.deltaTime * 2;
             }
         }
 
