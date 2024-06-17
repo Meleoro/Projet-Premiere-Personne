@@ -27,6 +27,8 @@ public class SettingsMenu : MonoBehaviour
 
     public static SettingsMenu instance;
 
+    public List<Transform> checkpointList = new List<Transform>();
+
     private void Awake()
     {
         if (instance != null)
@@ -152,5 +154,9 @@ public class SettingsMenu : MonoBehaviour
         health.transform.position = health.lastCheckPoint;
     }
 
+    public void TpCheckpoint(int index)
+    {
+        player.transform.position = checkpointList[index].position;
+    }
 }
 
