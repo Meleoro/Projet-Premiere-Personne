@@ -339,6 +339,13 @@ namespace Creature
         {
             Vector3 origin = currentLeg.isFrontLeg ? currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset 
                 : currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset;
+
+            if(creatureMover.isRunning && creatureMover.navMeshAgent.velocity.magnitude > 3)
+            {
+                origin += currentLeg.isFrontLeg ? mainTrRotRefBack.forward * 0.2f
+                : mainTrRotRefBack.forward * data.backLegsOffset * 0.2f;
+            }
+
             Vector3 currentTargetPos = currentLeg.target.position;
             Transform transformRef = currentLeg.isFrontLeg ? mainTrRotRefFront : mainTrRotRefBack;
 
@@ -394,6 +401,7 @@ namespace Creature
         public IEnumerator MoveLeg(Leg currentLeg, Vector3 endPos, float moveDuration, float yMultiplier)
         {
             currentLeg.isMoving = true;
+            currentLeg.scriptIK.isMoving = true;
             Vector3 startPos = mainTrRotRefBack.InverseTransformPoint(currentLeg.target.position);
             Vector3 localEnd = mainTrRotRefBack.InverseTransformPoint(endPos);
             AnimationCurve currentYCurve = currentLeg.isFrontLeg ? data.frontLegMovementYCurve : data.backLegMovementYCurve;
@@ -435,8 +443,9 @@ namespace Creature
 
             currentLeg.timerCooldownMove = 0.3f;
             currentLeg.isMoving = false;
+            currentLeg.scriptIK.isMoving = false;
 
-            if(!creatureMover.isRunning)
+            if (!creatureMover.isRunning)
                 AudioManager.Instance.PlaySoundOneShot(0, Random.Range(2, 5), 1);
 
             else
