@@ -31,6 +31,7 @@ public class CinematiqueFinale : MonoBehaviour
     [SerializeField] private float shakeChangeFrameDuration;
     [SerializeField] private float shakeRotIntensity;
     [SerializeField] private AudioSource beteAudio;
+    [SerializeField] private GameObject notifLog;
     
     private void Start()
     {
@@ -56,7 +57,8 @@ public class CinematiqueFinale : MonoBehaviour
     
 
     public IEnumerator DoSecondPart()
-    {
+    { 
+        notifLog.SetActive(false);
         creatureMover.agressiveSpeed = 0;
         camera.cinematicLookSpeed = 0;
         camera.isInCinematic = true;

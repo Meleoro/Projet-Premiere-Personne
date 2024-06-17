@@ -1841,6 +1841,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1900110271}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &223626387 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6133507292161840143, guid: c95f2f9fcecbba643a30eaf70d80938b,
+    type: 3}
+  m_PrefabInstance: {fileID: 904948436}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &230118641 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3662411771044479485, guid: 5c191cc1c52c83e4da916132a888c836,
@@ -2332,6 +2338,11 @@ PrefabInstance:
       propertyPath: eyesAnim
       value: 
       objectReference: {fileID: 1069742393}
+    - target: {fileID: 7284045020558144306, guid: eee32820edab3104297fe82ef6223e68,
+        type: 3}
+      propertyPath: doCinematique
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7284045020558144306, guid: eee32820edab3104297fe82ef6223e68,
         type: 3}
       propertyPath: tablettePhoto
@@ -3445,9 +3456,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3272198037858573758, guid: 5c191cc1c52c83e4da916132a888c836,
         type: 3}
+      propertyPath: objectToActivate.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3272198037858573758, guid: 5c191cc1c52c83e4da916132a888c836,
+        type: 3}
       propertyPath: objectToDeactivate.Array.size
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3272198037858573758, guid: 5c191cc1c52c83e4da916132a888c836,
+        type: 3}
+      propertyPath: objectToActivate.Array.data[0]
+      value: 
+      objectReference: {fileID: 532014999}
     - target: {fileID: 3272198037858573758, guid: 5c191cc1c52c83e4da916132a888c836,
         type: 3}
       propertyPath: objectToDeactivate.Array.data[0]
@@ -3790,17 +3811,17 @@ PrefabInstance:
     - target: {fileID: 3159081065610885539, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 91
+      value: 1.32
       objectReference: {fileID: 0}
     - target: {fileID: 3159081065610885539, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 95.36
+      value: 87.601204
       objectReference: {fileID: 0}
     - target: {fileID: 3159081065610885539, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -101.5
+      value: -105.95
       objectReference: {fileID: 0}
     - target: {fileID: 3350420873121842016, guid: c95f2f9fcecbba643a30eaf70d80938b,
         type: 3}
@@ -4476,16 +4497,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4713181856270276237, guid: 5cdf20f2f68fa5742bff5436079e3a1a,
-        type: 3}
-      propertyPath: ColorWordList.Array.data[0]
-      value: la fin de notre ascencion
-      objectReference: {fileID: 0}
-    - target: {fileID: 5938808986472158739, guid: 5cdf20f2f68fa5742bff5436079e3a1a,
-        type: 3}
-      propertyPath: newWalkSpeed
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5938808986472158739, guid: 5cdf20f2f68fa5742bff5436079e3a1a,
         type: 3}
@@ -5738,7 +5749,7 @@ PrefabInstance:
     - target: {fileID: 3272198037858573758, guid: 5c191cc1c52c83e4da916132a888c836,
         type: 3}
       propertyPath: objectToActivate.Array.size
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3272198037858573758, guid: 5c191cc1c52c83e4da916132a888c836,
         type: 3}
@@ -5942,7 +5953,7 @@ PrefabInstance:
     - target: {fileID: 3272198037858573758, guid: 5c191cc1c52c83e4da916132a888c836,
         type: 3}
       propertyPath: objectsToDeactivateOnStart.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3272198037858573758, guid: 5c191cc1c52c83e4da916132a888c836,
         type: 3}
@@ -5969,6 +5980,11 @@ PrefabInstance:
       propertyPath: objectsToDeactivateOnStart.Array.data[4]
       value: 
       objectReference: {fileID: 1812432591}
+    - target: {fileID: 3272198037858573758, guid: 5c191cc1c52c83e4da916132a888c836,
+        type: 3}
+      propertyPath: objectsToDeactivateOnStart.Array.data[5]
+      value: 
+      objectReference: {fileID: 532014999}
     - target: {fileID: 3662411771044479485, guid: 5c191cc1c52c83e4da916132a888c836,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6027,7 +6043,7 @@ PrefabInstance:
     - target: {fileID: 7494439437402807614, guid: 5c191cc1c52c83e4da916132a888c836,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8681,6 +8697,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 143891641856150985, guid: c573b9e956e44fa4e825f51ccaa3ce44,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 161377466771002780, guid: c573b9e956e44fa4e825f51ccaa3ce44,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -8891,6 +8912,11 @@ PrefabInstance:
       propertyPath: credits
       value: 
       objectReference: {fileID: 2041519940}
+    - target: {fileID: 9065338280414882379, guid: c573b9e956e44fa4e825f51ccaa3ce44,
+        type: 3}
+      propertyPath: notifLog
+      value: 
+      objectReference: {fileID: 223626387}
     - target: {fileID: 9065338280414882379, guid: c573b9e956e44fa4e825f51ccaa3ce44,
         type: 3}
       propertyPath: beteAudio
