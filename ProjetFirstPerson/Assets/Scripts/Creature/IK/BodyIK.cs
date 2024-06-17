@@ -206,7 +206,7 @@ namespace IK
         {
             float frontAddedY = 0;
             float backAddedY = 0;
-            float reductiveFactor = 0.1f;
+            float reductiveFactor = 0.08f;
 
             /*if (moveScript.isRunning && moveScript.navMeshAgent.velocity.magnitude > 2)
                 reductiveFactor = 0.15f;*/

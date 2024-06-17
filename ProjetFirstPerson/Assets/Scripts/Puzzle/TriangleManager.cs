@@ -149,7 +149,7 @@ namespace Puzzle
             anim.Play();
             yield return new WaitForSeconds(2.51f);
             AudioManager.Instance.PlaySoundOneShot(2,10,0);
-            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent.parent, shakeDuration,
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
                 shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
         }
     }
