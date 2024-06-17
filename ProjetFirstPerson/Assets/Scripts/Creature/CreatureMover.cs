@@ -131,7 +131,7 @@ namespace Creature
 
             // Back
             RaycastHit groundHitBack;
-            if(Physics.Raycast(bodyIKScript.backJoint.position + Vector3.up - bodyIKScript.backJoint.forward * 0.2f, 
+            if(Physics.Raycast(bodyIKScript.backJoint.position + Vector3.up, 
                    Vector3.down, out groundHitBack, data.maxHeight + 1, LayerManager.Instance.groundLayer))
             {
                 bodyIKScript.backJoint.position =
@@ -146,7 +146,7 @@ namespace Creature
 
             // Front
             RaycastHit groundHitFront;
-            if (Physics.Raycast(bodyIKScript.bodyJoint.position + Vector3.up - bodyIKScript.bodyJoint.forward * 0.25f, 
+            if (Physics.Raycast(bodyIKScript.bodyJoint.position + Vector3.up, 
                     Vector3.down, out groundHitFront, data.maxHeight + 1f, LayerManager.Instance.groundLayer))
             {
                 Vector3 wantedPosition = groundHitFront.point + Vector3.up * (wantedYFront + bodyIKScript.currentAddedFrontY);
