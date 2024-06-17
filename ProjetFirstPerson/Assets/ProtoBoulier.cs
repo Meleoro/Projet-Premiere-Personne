@@ -61,7 +61,7 @@ public class ProtoBoulier : MonoBehaviour
     {
         yield return new WaitForSeconds(waitBeforeShake);
         AudioManager.Instance.PlaySoundOneShot(2,10,0);
-        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
+        CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent.parent, shakeDuration,
             shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
     }
 }

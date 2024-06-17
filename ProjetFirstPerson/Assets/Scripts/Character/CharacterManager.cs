@@ -33,6 +33,9 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
 
     [Header("References")]
     public MeshRenderer capsule;
+    public CapsuleCollider capsuleCollider;
+    public CapsuleCollider crouchedCollider;
+    public CapsuleCollider capsuleColliderPuzzles;
     private Controls controls;
     private CrouchComponent crouchComponent;
     public CameraComponent cameraComponent;
@@ -61,6 +64,27 @@ public class CharacterManager : GenericSingletonClass<CharacterManager>
         characterComponents = GetComponents<ICharacterComponent>().ToList();
         crouchComponent = GetComponent<CrouchComponent>();
         cameraComponent = GetComponent<CameraComponent>();
+    }
+
+    public void GetInPuzzle()
+    {
+        capsuleCollider.enabled = false;
+        crouchedCollider.enabled = false;
+        capsuleColliderPuzzles.enabled = true;
+    }
+
+    public void GetOutPuzzle()
+    {
+        if (crouchComponent.isCrouched)
+        {
+            crouchedCollider.enabled = true;
+        }
+        else
+        {
+            capsuleCollider.enabled = true;
+        }
+
+        capsuleColliderPuzzles.enabled = false;
     }
     
     

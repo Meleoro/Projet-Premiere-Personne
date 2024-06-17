@@ -71,7 +71,7 @@ namespace Creature
 
             if (isFinalPoursuite)
             {
-                StartCoroutine(AmbianceManager.Instance.StartEndPoursuite());
+                AmbianceManager.Instance.StartEndPoursuite();
             }
         }
     

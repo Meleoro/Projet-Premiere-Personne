@@ -54,7 +54,12 @@ public class AmbianceManager : GenericSingletonClass<AmbianceManager>
         AudioManager.Instance.PlaySoundFadingIn(2, 3, 5, 4);
     }
 
-    public IEnumerator StartEndPoursuite()
+    public void StartEndPoursuite()
+    {
+        StartCoroutine(DoThing());
+    }
+
+    IEnumerator DoThing()
     {
         yield return new WaitForSeconds(2);
 

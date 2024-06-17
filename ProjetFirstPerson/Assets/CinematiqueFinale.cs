@@ -50,7 +50,7 @@ public class CinematiqueFinale : MonoBehaviour
             doorAnim.Play();
             collider.enabled = false;
             
-            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform, shakeDuration,
+            CoroutineUtilities.Instance.ShakePosition(CameraManager.Instance.transform.parent.parent, shakeDuration,
                 shakeAmplitude, shakeChangeFrameDuration, shakeRotIntensity);
         }
     }

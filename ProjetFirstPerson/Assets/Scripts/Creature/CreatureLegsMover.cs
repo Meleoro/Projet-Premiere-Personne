@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 using Random = UnityEngine.Random;
 
 namespace Creature
@@ -312,9 +313,15 @@ namespace Creature
                 Leg currentLeg = list[i];
 
                 if (currentLeg.isMoving) return true;
+                Vector3 origin = currentLeg.isFrontLeg ? currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset
+               : currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset;
+                if (creatureMover.isRunning && creatureMover.navMeshAgent.velocity.magnitude > 3)
+                {
+                    origin += currentLeg.isFrontLeg ? mainTrRotRefBack.forward * 0.2f
+                    : mainTrRotRefBack.forward * data.backLegsOffset * 0.2f;
+                }
 
-                float distOriginTarget = Vector3.Distance(currentLeg.isFrontLeg ? currentLeg.origin.position + mainTrRotRefBack.forward * data.frontLegsOffset :
-                    currentLeg.origin.position + mainTrRotRefBack.forward * data.backLegsOffset, currentLeg.target.position);
+                float distOriginTarget = Vector3.Distance(origin, currentLeg.target.position);
 
                 if (currentLeg.isFrontLeg && distOriginTarget < data.maxFrontLegDistRun * 0.8f && !currentLeg.isMoving)
                     return false;
@@ -419,7 +426,7 @@ namespace Creature
                 if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,
                         LayerManager.Instance.groundLayer))
                 {
-                    wantedY = Mathf.Lerp(wantedY, hit.point.y + addedY * yMultiplier, Time.deltaTime * 20);
+                    wantedY = Mathf.Lerp(wantedY, hit.point.y + addedY * yMultiplier, 0.8f);
                 }
                 
                 Vector3 wantedPos = Vector3.Lerp(startPos, localEnd, timer / moveDuration) + new Vector3(0, addedY, 0);
@@ -431,7 +438,7 @@ namespace Creature
 
                 currentLeg.scriptIK.currentPatouneZRot = data.frontPatouneRot.Evaluate(timer / moveDuration) * data.frontPatouneRotMultiplier;
 
-                yield return null;
+                yield return new WaitForEndOfFrame();
             }
             
             /*if (Physics.Raycast(currentLeg.target.position + Vector3.up * 1f, -currentLeg.target.up, out hit, 3f,

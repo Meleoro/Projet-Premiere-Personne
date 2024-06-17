@@ -1732,6 +1732,9 @@ MonoBehaviour:
   isHidden: 0
   isInSneakZone: 0
   capsule: {fileID: 139744874286770523}
+  capsuleCollider: {fileID: 0}
+  crouchedCollider: {fileID: 0}
+  capsuleColliderPuzzles: {fileID: 0}
   cameraComponent: {fileID: 0}
 --- !u!114 &2424812859929637196
 MonoBehaviour:
@@ -4596,6 +4599,38 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &2087266078507795458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 941026365672275196}
+  m_Layer: 0
+  m_Name: CameraCameraParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &941026365672275196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087266078507795458}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 303.28848, y: 56.340374, z: -0.7873613}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8258690270071513285}
+  m_Father: {fileID: 7813203946165383007}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2192275008732111515
 GameObject:
   m_ObjectHideFlags: 0
@@ -13134,7 +13169,7 @@ Transform:
   m_GameObject: {fileID: 5781816748784015832}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: -303.28848, y: -55.340374, z: 0.7873613}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13144,7 +13179,7 @@ Transform:
   - {fileID: 7722462915071286579}
   - {fileID: 1194221718342892815}
   - {fileID: 7218546073554372051}
-  m_Father: {fileID: 7813203946165383007}
+  m_Father: {fileID: 941026365672275196}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5816240148025161954
 GameObject:
@@ -13466,7 +13501,7 @@ Transform:
   - {fileID: 3841938894544608486}
   - {fileID: 7535388608282153215}
   - {fileID: 8300677095455640453}
-  - {fileID: 8258690270071513285}
+  - {fileID: 941026365672275196}
   - {fileID: 3159081065610885539}
   - {fileID: 8490800013381387527}
   - {fileID: 4646695550623331620}

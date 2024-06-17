@@ -112,7 +112,7 @@ namespace IK
 
             Vector3 eulerBack = backJoint.localEulerAngles;
             eulerBack.y = saveOffset2.y + currentAtanBack;
-            backJoint.localEulerAngles = eulerBack;
+            backJoint.localRotation = Quaternion.Lerp(backJoint.localRotation, Quaternion.Euler(eulerBack), 0.8f);
             
             // Spine Part
             currentAtan = Mathf.Lerp(currentAtan, atan - currentAtanBack, Time.deltaTime * Mathf.Abs(currentSpeed2 / (atan - currentAtanBack)) * rotationSpeedModifier);
@@ -206,7 +206,7 @@ namespace IK
         {
             float frontAddedY = 0;
             float backAddedY = 0;
-            float reductiveFactor = 0.5f;
+            float reductiveFactor = 0.1f;
 
             if (!manager.debugIK)
             {
@@ -233,7 +233,7 @@ namespace IK
                 backAddedY = -frontAveragePos.y + backAveragePos.y;
             }
             
-            backJoint.transform.localPosition = Vector3.Lerp(backJoint.transform.localPosition, backLocalPosSave + Vector3.up * backAddedY, Time.deltaTime * 4);
+            backJoint.transform.position += new Vector3(0, backAddedY, 0);
         }
 
 
