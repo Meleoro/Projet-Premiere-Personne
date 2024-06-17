@@ -152,11 +152,13 @@ public List<MyPhoto> MyPhotos = new List<MyPhoto>();
     
     IEnumerator AutoGoToLog()
     {
+        uiManager.canMenu = false;
         cameraComponent.canRotate = false;
         cameraComponent.canMove = false;
         moveComponent.canMove = false;
         cameraTestEthan.AutoQuitPhoto();
         yield return new WaitForSeconds(1.5f);
+        uiManager.canMenu = true;
         StartCoroutine(UIManager.Instance.OpenLogMenu());
     }
     
